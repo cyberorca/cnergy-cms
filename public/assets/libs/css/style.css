@@ -2701,6 +2701,7 @@ clip-path: polygon(10% 25%, 10% 0, 35% 0%, 65% 0%, 90% 0, 90% 25%, 90% 50%, 91% 
     color: #fff;
     background-color: #f0346e;
     border-color: #f0346e;
+    box-shadow: 0 0 0 1px rgb(222, 17, 80);
 }
 
 .btn-secondary.focus,
@@ -2717,6 +2718,43 @@ clip-path: polygon(10% 25%, 10% 0, 35% 0%, 65% 0%, 90% 0, 90% 25%, 90% 50%, 91% 
     color: #fff;
     background-color: #f0346e;
     border-color: #f0346e;
+}
+
+
+/*--- btn tertiary --*/
+
+.btn-tertiary {
+    color: #fff;
+    background-color: #dd4b39;
+    border-color: #dd4b39;
+}
+
+.btn-tertiary:hover {
+    color: #fff;
+    background-color: #ce321e;
+    border-color: #ce321e;
+}
+
+.btn-tertiary.focus,
+.btn-tertiary:focus {
+    color: #fff;
+    background-color: #ce321e;
+    border-color: #ce321e;
+    box-shadow: 0 0 0 1px rgb(189, 29, 8);
+}
+
+.btn-tertiary:not(:disabled):not(.disabled).active:focus,
+.btn-tertiary:not(:disabled):not(.disabled):active:focus,
+.show>.btn-tertiary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgb(189, 29, 8);
+}
+
+.btn-tertiary:not(:disabled):not(.disabled).active,
+.btn-tertiary:not(:disabled):not(.disabled):active,
+.show>.btn-tertiary.dropdown-toggle {
+    color: #fff;
+    background-color: #ce321e;
+    border-color: #ce321e;
 }
 
 
