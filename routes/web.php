@@ -15,6 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $data = News::with('category')->get();
-    return response()->json($data);
+    return view('welcome');
 });
