@@ -20,3 +20,5 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return view('welcome');
 });
+
+Route::get('/users','App\Http\Controllers\C_Users@index');
