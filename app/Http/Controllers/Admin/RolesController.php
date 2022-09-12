@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RoleRequest;
 use App\Models\Role;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Validator;
 
 class RolesController extends Controller
 {
+
     public function index()
     {
         $roles = Role::all();
@@ -22,26 +22,17 @@ class RolesController extends Controller
 
     }
 
-    public function store(Request $request)
+    public function store(RoleRequest $request)
     {
         $data = $request->input();
-        $validator = Validator::make($data, [
-            'role' => 'required|unique:roles'
+        $role = new Role([
+            'role' => strtoupper($data['role'])
         ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            return Redirect::back()->withErrors($errors);
-        } else {
-            $role = new Role([
-                'role' => strtoupper($data['role'])
-            ]);
-            try {
-                $role->save();
-                return Redirect::back()->with('status', 'SUCCESS');
-            } catch (\Throwable $e) {
-                return Redirect::back()->withErrors($e);
-            }
-
+        try {
+            $role->save();
+            return Redirect::back()->with('status', 'SUCCESS');
+        } catch (\Throwable $e) {
+            return Redirect::back()->withErrors($e);
         }
     }
 
@@ -57,23 +48,15 @@ class RolesController extends Controller
         //
     }
 
-    public function update(Request $request, $id)
+    public function update(RoleRequest $request, $id)
     {
         $data = $request->input();
-        $validator = Validator::make($data, [
-            'role' => 'required|unique:roles'
-        ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            return Redirect::back()->withErrors($errors);
-        } else {
             try {
-                Role::where('id',$id)->update(['role'=>strtoupper($data['role'])]);
+                Role::where('id', $id)->update(['role' => strtoupper($data['role'])]);
                 return Redirect::back()->with('status', 'SUCCESS');
             } catch (\Throwable $e) {
                 return Redirect::back()->withErrors($e);
             }
-        }
     }
 
     public function destroy($id)
