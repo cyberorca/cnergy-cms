@@ -22,3 +22,7 @@ Route::get('/home', function () {
 });
 
 Route::get('/users','App\Http\Controllers\C_Users@index');
+
+Route::get('/createUser', function () {
+    return view('createUser');
+});
