@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\UsersController;
 use App\Models\News;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,4 +23,4 @@ Route::get('/home', function () {
     return view('welcome');
 });
 
-Route::get('/users','App\Http\Controllers\C_Users@index');
+Route::get('/users', [UsersController::class, 'index']);
