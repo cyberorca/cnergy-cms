@@ -24,3 +24,7 @@ Route::get('/home', function () {
 });
 
 Route::get('/users', [UsersController::class, 'index']);
+
+Route::get('/createUser', function () {
+    return view('createUser');
+});
