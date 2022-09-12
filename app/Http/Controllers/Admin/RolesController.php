@@ -32,7 +32,7 @@ class RolesController extends Controller
             $role->save();
             return Redirect::back()->with('status', 'SUCCESS');
         } catch (\Throwable $e) {
-            return Redirect::back()->withErrors($e);
+            return Redirect::back()->withErrors($e->getMessage());
         }
     }
 
@@ -55,7 +55,7 @@ class RolesController extends Controller
                 Role::where('id', $id)->update(['role' => strtoupper($data['role'])]);
                 return Redirect::back()->with('status', 'SUCCESS');
             } catch (\Throwable $e) {
-                return Redirect::back()->withErrors($e);
+                return Redirect::back()->withErrors($e->getMessage());
             }
     }
 
