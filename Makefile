@@ -3,7 +3,15 @@ phpArtisanCMD=php artisan
 
 phpArtisanRun=$(phpArtisanCMD)
 
+# Composer
+composerCMD=composer
+
+composerRun=$(composerCMD)
+
 # Make for Unix / WSL
+init:
+	$(composerRun) install
+
 key-gen:
 	$(phpArtisanRun) key:generate
 
@@ -20,6 +28,9 @@ clean:
 	$(phpArtisanRun) route:clear
 
 # Make for Windows
+init:
+	$(composerRun) install
+
 key-gen:
 	$(phpArtisanRun) key:generate
 
