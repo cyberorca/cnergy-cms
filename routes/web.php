@@ -1,6 +1,7 @@
 <?php
 
-use App\Models\News;
+use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\Admin\RolesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,8 +22,12 @@ Route::get('/home', function () {
     return view('welcome');
 });
 
-Route::get('/users','App\Http\Controllers\C_Users@index');
+Route::get('/users', [UsersController::class, 'index']);
 
 Route::get('/createUser', function () {
     return view('createUser');
 });
+
+// START roles feature
+Route::resource('roles', RolesController::class);
+// END roles feature
