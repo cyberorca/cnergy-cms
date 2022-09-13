@@ -15,10 +15,10 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::with(['roles']);
-        return view('home_user', compact('users'));
+        $users = User::with(['roles'])->get();
+        return view('admin.users.home', compact('users'));
     }
-
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -26,7 +26,7 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.users.create');
     }
 
     /**

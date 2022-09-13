@@ -23,8 +23,6 @@ Route::get('/home', function () {
     return view('welcome');
 });
 
-Route::get('/users', [UsersController::class, 'index']);
 
-Route::get('/createUser', function () {
-    return view('createUser');
-});
+Route::resource('users', UsersController::class);
+

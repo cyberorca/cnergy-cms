@@ -33,8 +33,23 @@
         <!-- ============================================================== -->
         <div class="dashboard-wrapper">
             <div class="dashboard-ecommerce">
-                <div class="container-fluid dashboard-content ">
-                    <x-page-header />
+                <div class="container-fluid dashboard-content">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="page-header">
+                                <h2 class="pageheader-title">@yield('title_page_header', "Dashboard")</h2>
+                                <div class="page-breadcrumb">
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="#"
+                                                    class="breadcrumb-link">Dashboard</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">Management</li>
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     @yield('body')
                 </div>
             </div>
@@ -49,7 +64,6 @@
     <!-- ============================================================== -->
     <!-- Optional JavaScript -->
     <!-- jquery 3.3.1 -->
-    @yield('javascript')
     <script src="{{ asset('assets/vendor/jquery/jquery-3.3.1.min.js') }}"></script>
     <!-- bootstap bundle js -->
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.js') }}"></script>
@@ -57,18 +71,8 @@
     <script src="{{ asset('assets/vendor/slimscroll/jquery.slimscroll.js') }}"></script>
     <!-- main js -->
     <script src="{{ asset('assets/libs/js/main-js.js') }}"></script>
-    <!-- chart chartist js -->
-    <script src="{{ asset('assets/vendor/charts/chartist-bundle/chartist.min.js') }}"></script>
-    <!-- sparkline js -->
-    <script src="{{ asset('assets/vendor/charts/sparkline/jquery.sparkline.js') }}"></script>
-    <!-- morris js -->
-    <script src="{{ asset('assets/vendor/charts/morris-bundle/raphael.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/charts/morris-bundle/morris.js') }}"></script>
-    <!-- chart c3 js -->
-    <script src="{{ asset('assets/vendor/charts/c3charts/c3.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/charts/c3charts/d3-5.4.0.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/charts/c3charts/C3chartjs.js') }}"></script>
-    <script src="{{ asset('assets/libs/js/dashboard-ecommerce.js') }}"></script>
+    
+    @yield('javascript')
 </body>
 
 </html>
