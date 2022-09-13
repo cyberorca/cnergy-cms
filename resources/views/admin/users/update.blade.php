@@ -13,22 +13,22 @@
 @section('title_page_header', 'Create User')
 
 @section('body')
-    <div class="row">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <div class="page-header">
-                <h2 class="pageheader-title">Create User</h2>
-                <div class="page-breadcrumb">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                            <li class="breadcrumb-item" aria-current="page">User</li>
-                            <li class="breadcrumb-item active" aria-current="page">Create</li>
-                        </ol>
-                    </nav>
-                </div>
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-header">
+            <h2 class="pageheader-title">Update User</h2>
+            <div class="page-breadcrumb">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
+                        <li class="breadcrumb-item" aria-current="page">User</li>
+                        <li class="breadcrumb-item active" aria-current="page">Update</li>
+                    </ol>
+                </nav>
             </div>
         </div>
     </div>
+</div>
     <div class="row">
         <!-- ============================================================== -->
         <!-- basic form -->
@@ -52,9 +52,10 @@
                             <label for="inputPassword">Role</label>
                             <select class="form-control" id="input-select" name="role">
                                 <option disabled selected>Choose Role</option>
-                                @foreach ($roles as $role)
-                                    <option value="{{ $role->id }}">{{ $role->role }}</option>
-                                @endforeach
+                                <option>Admin</option>
+                                <option>Editor</option>
+                                <option>Photographer</option>
+                                <option>Content Creator</option>
                             </select>
                         </div>
                         <div class="col-sm-12 pl-0 mt-3 pr-0">
