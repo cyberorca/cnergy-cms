@@ -7,6 +7,7 @@ use App\Http\Requests\UserRequest;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class UsersController extends Controller
 {
@@ -40,7 +41,20 @@ class UsersController extends Controller
      */
     public function store(UserRequest $request)
     {
-        
+        $data = $request->input();
+        $user = new User([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => $data['password'],
+            'role_id' => $data['role'],
+            'is_active' => 1,
+        ]);
+        try {
+            $user->save();
+            return redirect('users')->with('status', 'SUCCESS');
+        } catch (\Throwable $e) {
+            return redirect('users')->withErrors($e->getMessage());
+        }
     }
 
     /**

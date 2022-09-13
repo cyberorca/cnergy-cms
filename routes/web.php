@@ -22,4 +22,5 @@ Route::get('/home', function () {
     return view('welcome');
 });
 Route::resource('users', UsersController::class);
+
 Route::resource('roles', RolesController::class);

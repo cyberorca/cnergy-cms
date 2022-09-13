@@ -37,7 +37,8 @@
             <div class="card">
                 <h5 class="card-header">Basic Form</h5>
                 <div class="card-body">
-                    <form action="#" id="basicform" data-parsley-validate="">
+                    <form action="{{ route('users.store') }}" method="post" id="basicform" data-parsley-validate="">
+                    @csrf
                         <div class="form-group">
                             <label for="inputUserName">User Name</label>
                             <input id="inputUserName" type="text" name="name" data-parsley-trigger="change"
@@ -47,6 +48,11 @@
                             <label for="inputEmail">Email address</label>
                             <input id="inputEmail" type="email" name="email" data-parsley-trigger="change"
                                 required="" placeholder="Enter email" autocomplete="off" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail">Password</label>
+                            <input id="inputEmail" type="text" name="password" data-parsley-trigger="change"
+                                required="" placeholder="Enter password" autocomplete="off" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="inputPassword">Role</label>
