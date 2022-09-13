@@ -1,9 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\UsersController;
-use App\Models\News;
+use App\Http\Controllers\Admin\RolesController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\URL;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +21,5 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return view('welcome');
 });
-
-
 Route::resource('users', UsersController::class);
-
+Route::resource('roles', RolesController::class);
