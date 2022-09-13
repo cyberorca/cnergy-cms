@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('roles_permissions', function (Blueprint $table) {
+        Schema::create('user_access', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('role_id');
-            $table->unsignedBigInteger('permission_id');
+            $table->unsignedBigInteger('menu_id');
             $table->timestamps();
 
             $table->foreign('role_id')
@@ -24,9 +24,9 @@ return new class extends Migration
                 ->on('roles')
                 ->onCascade('delete');
 
-            $table->foreign('permission_id')
+            $table->foreign('menu_id')
                 ->references('id')
-                ->on('permissions')
+                ->on('menu')
                 ->onCascade('delete');
         });
     }
@@ -38,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roles_permissions');
+        Schema::dropIfExists('user_access');
     }
 };

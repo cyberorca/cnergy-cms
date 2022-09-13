@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('permissions', function (Blueprint $table) {
+        Schema::create('menu', function (Blueprint $table) {
             $table->id();
-            $table->string('permission_name', 255);
-            $table->timestamps();
+            $table->string('menu_name', 255);
+            $table->string('slug', 255);
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permissions');
+        Schema::dropIfExists('menu');
     }
 };
