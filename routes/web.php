@@ -21,13 +21,6 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return view('welcome');
 });
+Route::resource('users', UsersController::class);
 
-Route::get('/users', [UsersController::class, 'index']);
-
-Route::get('/createUser', function () {
-    return view('createUser');
-});
-
-// START roles feature
 Route::resource('roles', RolesController::class);
-// END roles feature

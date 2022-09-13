@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class UsersController extends Controller
 {
@@ -15,10 +18,10 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::with(['roles']);
-        return view('home_user', compact('users'));
+        $users = User::with(['roles'])->get();
+        return view('admin.users.home', compact('users'));
     }
-
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -26,7 +29,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //
+        $roles = Role::all();
+        return view('admin.users.create', compact('roles'));
     }
 
     /**
@@ -35,9 +39,22 @@ class UsersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        //
+        $data = $request->input();
+        $user = new User([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => $data['password'],
+            'role_id' => $data['role'],
+            'is_active' => 1,
+        ]);
+        try {
+            $user->save();
+            return redirect('users')->with('status', 'SUCCESS');
+        } catch (\Throwable $e) {
+            return redirect('users')->withErrors($e->getMessage());
+        }
     }
 
     /**
