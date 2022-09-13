@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\UsersController;
-use App\Http\Controllers\Admin\RolesController;
+use App\Models\News;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,12 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get('/', function () {
+//     return view('auth');
+// });
 Route::get('/', function () {
-    return view('auth');
-});
-Route::get('/home', function () {
     return view('welcome');
 });
-Route::resource('users', UsersController::class);
 
-Route::resource('roles', RolesController::class);
+// Route::get('/users','App\Http\Controllers\C_Users@index');
