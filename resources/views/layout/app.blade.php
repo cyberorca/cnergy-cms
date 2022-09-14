@@ -87,7 +87,7 @@
                                     <a href="{{route('role.index')}}">Roles Settings</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="#">Tags Settings</a>
+                                    <a href="{{route('tags.index')}}">Tags Settings</a>
                                 </li>
                                 <li class="submenu-item ">
                                     <a href="{{route('categories.index')}}">Categories Settings</a>
