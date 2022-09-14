@@ -14,11 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('auth');
-// });
+Route::get('/', function () {
+    return view('auth');
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/users','App\Http\Controllers\C_Users@index');
+Route::get('/users','App\Http\Controllers\C_Users@index');
