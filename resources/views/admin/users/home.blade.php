@@ -51,7 +51,7 @@
                             <td> <span class="badge bg-danger">Inactive</span> </td>
                             @endif
                             <td>
-                                <a href="#" class="btn icon btn-primary"><i class="bi bi-pencil"></i></a>
+                                <a href="{{ route('users.edit', $u->uuid) }}" class="btn icon btn-primary"><i class="bi bi-pencil"></i></a>
                                 <button type="button" data-toggle="modal" data-target="#deleteModal{{ $u->uuid }}" class="btn icon btn-danger"><i class="bi bi-trash"></i></button>
                             </td>
                         </tr>

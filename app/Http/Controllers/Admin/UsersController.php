@@ -78,8 +78,9 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $post   = Post::whereId($id)->first();
-        return view('admin.users.update')->with('post', $post);
+        $post   = User::where('uuid', $id)->with(['roles'])->first();
+        $roles = Role::all();
+        return view('admin.users.update', compact('roles'))->with('post', $post);
     }
 
     /**
@@ -92,25 +93,18 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->input();
-        $validator = Validator::make($data, [
-            'email' => 'required|unique:users'
-        ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            return Redirect::back()->withErrors($errors);
-        } else {
+        
             try {
                 User::where('uuid',$id)->update([
                     'name' => $data['name'],
                     'email' => $data['email'],
-                    'password' => $data['password'],
                     'role_id' => $data['role'],
+                    'is_active' => $data['is_active'],
                 ]);
-                return Redirect::back()->with('status', 'SUCCESS');
+                return redirect('users')->with('status', 'SUCCESS');
             } catch (\Throwable $e) {
                 return Redirect::back()->withErrors($e);
             }
-        }
     }
 
     /**
