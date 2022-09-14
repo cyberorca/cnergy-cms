@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\MenuController;
 use App\Models\News;
 use Illuminate\Support\Facades\Route;
 
@@ -15,11 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('auth');
-});
-
-Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/users','App\Http\Controllers\C_Users@index');
+Route::resource('menu', MenuController::class);

@@ -4,16 +4,20 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class Footer extends Component
+class PageHeading extends Component
 {
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public $title;
+    public $subtitle;
+
+    public function __construct($title, $subtitle)
     {
-        //
+        $this->title = $title;
+        $this->subtitle = $subtitle;
     }
 
     /**
@@ -23,6 +27,6 @@ class Footer extends Component
      */
     public function render()
     {
-        return view('components.footer');
+        return view('components.page-heading');
     }
 }

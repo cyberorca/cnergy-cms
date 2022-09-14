@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_access', function (Blueprint $table) {
+        Schema::create('roles_menus', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('role_id');
             $table->unsignedBigInteger('menu_id');
@@ -26,7 +26,7 @@ return new class extends Migration
 
             $table->foreign('menu_id')
                 ->references('id')
-                ->on('menu')
+                ->on('menus')
                 ->onCascade('delete');
         });
     }
