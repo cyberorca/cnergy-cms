@@ -90,7 +90,7 @@
                                     <a href="#">Tags Settings</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="#">Categories Settings</a>
+                                    <a href="{{route('categories.index')}}">Categories Settings</a>
                                 </li>
                             </ul>
                         </li>

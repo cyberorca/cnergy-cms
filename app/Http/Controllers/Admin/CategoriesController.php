@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 
 class CategoriesController extends Controller
 {
@@ -26,7 +29,7 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.categories.create');
     }
 
     /**
@@ -35,9 +38,20 @@ class CategoriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        //
+        $data = $request->input();
+        $category = new Category([
+            'category' => $data['category'],
+            'slug' => $data['slug'],
+            'type' => $data['type'],
+        ]);
+        try {
+            $user->save();
+            return Redirect::back()->with('status', 'SUCCESS');
+        } catch (\Throwable $e) {
+            return Redirect::back()->withErrors($e->getMessage());
+        }
     }
 
     /**
@@ -59,7 +73,8 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post   = Post::whereId($id)->first();
+        return view('admin.categories.update')->with('post', $post);
     }
 
     /**
@@ -71,7 +86,25 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->input();
+        $validator = Validator::make($data, [
+            'category' => 'required|unique:categories'
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return Redirect::back()->withErrors($errors);
+        } else {
+            try {
+                Categories::where('id',$id)->update([
+                    'category' => $data['category'],
+                    'slug' => $data['slug'],
+                    'type' => $data['type'],
+                ]);
+                return Redirect::back()->with('status', 'SUCCESS');
+            } catch (\Throwable $e) {
+                return Redirect::back()->withErrors($e);
+            }
+        }
     }
 
     /**
@@ -82,6 +115,11 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            User::destroy($id);
+            return Redirect::back()->with('status', 'SUCCESS');
+        } catch (\Throwable $e) {
+            return Redirect::back()->withErrors($e->getMessage());
+        }
     }
 }
