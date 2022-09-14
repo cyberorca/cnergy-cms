@@ -9,8 +9,13 @@ class Tag extends Model
 {
     use HasFactory;
 
-    public function news()
-    {
-        return $this->belongsToMany(News::class, 'news_tags');
-    }
+    protected $table = 'tags';
+
+    protected $primaryKey = 'id';
+
+    public $timestamps = false;
+
+    protected $fillable = ['tags', 'slug', 'is_active', 'created_by', 'deleted_by'];
+
+    // 
 }

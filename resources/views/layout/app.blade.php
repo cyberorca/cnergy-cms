@@ -62,8 +62,6 @@
                 </div>
                 <div class="sidebar-menu">
                     <ul class="menu">
-                        <li class="sidebar-title">Menu</li>
-
                         <li class="sidebar-item  ">
                             <a href="index.html" class='sidebar-link'>
                                 <i class="bi bi-grid-fill"></i>
@@ -74,23 +72,23 @@
                         <li class="sidebar-item  has-sub">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-stack"></i>
-                                <span>Components</span>
+                                <span>Master</span>
                             </a>
                             <ul class="submenu">
                                 <li class="submenu-item ">
-                                    <a href="#">Menu Settings</a>
+                                    <a href="{{route('menu.index')}}">Menu Settings</a>
                                 </li>
                                 <li class="submenu-item ">
                                     <a href="{{route('users.index')}}">Users Settings</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="#">Roles Settings</a>
+                                    <a href="{{route('role.index')}}">Roles Settings</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="#">Tags Settings</a>
+                                    <a href="{{route('tags.index')}}">Tags Settings</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="#">Categories Settings</a>
+                                    <a href="{{route('categories.index')}}">Categories Settings</a>
                                 </li>
                             </ul>
                         </li>
