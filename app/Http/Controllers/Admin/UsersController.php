@@ -31,7 +31,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('admin.users.create');
+        $roles = Role::all();
+        return view('admin.users.create', compact('roles'));
     }
 
     /**
@@ -52,9 +53,9 @@ class UsersController extends Controller
         ]);
         try {
             $user->save();
-            return Redirect::back()->with('status', 'SUCCESS');
+            return redirect('users')->with('status', 'SUCCESS');
         } catch (\Throwable $e) {
-            return Redirect::back()->withErrors($e->getMessage());
+            return redirect('users')->withErrors($e->getMessage());
         }
     }
 
