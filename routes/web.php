@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\MenuController;
-use App\Models\News;
+use App\Http\Controllers\Admin\RoleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +20,5 @@ Route::get('/', function () {
 });
 
 Route::resource('menu', MenuController::class);
+
+Route::resource('role', RoleController::class);
