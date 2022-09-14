@@ -17,6 +17,7 @@
                             <th>Status</th>
                             <th>Type</th>
                             <th>Slug</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,11 +29,11 @@
                             @else
                             <td> <span class="badge bg-danger">Inactive</span> </td>
                             @endif
-                            <td>
                             <td>{{ $c->types }}</td>
                             <td>{{ $c->slug }}</td>
+                            <td>
                                 <a href="#" class="btn icon btn-primary"><i class="bi bi-pencil"></i></a>
-                                <a href="users" class="btn icon btn-danger"><i class="far fa-trash-alt"></i></a>
+                                <a href="#" class="btn icon btn-danger"><i class="bi bi-trash"></i></a>
                             </td>
                         </tr>
                         @endforeach
