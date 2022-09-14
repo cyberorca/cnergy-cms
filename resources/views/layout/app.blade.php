@@ -81,7 +81,7 @@
                                     <a href="#">Menu Settings</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="#">Users Settings</a>
+                                    <a href="{{route('users.index')}}">Users Settings</a>
                                 </li>
                                 <li class="submenu-item ">
                                     <a href="#">Roles Settings</a>

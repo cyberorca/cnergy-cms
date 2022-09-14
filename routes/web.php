@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\UsersController;
 use App\Models\News;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,5 @@ Route::get('/', function () {
 });
 
 Route::resource('menu', MenuController::class);
+
+Route::resource('users', UsersController::class);
