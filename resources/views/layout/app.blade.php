@@ -78,10 +78,10 @@
                             </a>
                             <ul class="submenu">
                                 <li class="submenu-item ">
-                                    <a href="#">Menu Settings</a>
+                                    <a href="{{route('menu.index')}}">Menu Settings</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="{{route('users.index')}}">Users Settings</a>
+                                    <a href="#">Users Settings</a>
                                 </li>
                                 <li class="submenu-item ">
                                     <a href="{{route('role.index')}}">Roles Settings</a>
