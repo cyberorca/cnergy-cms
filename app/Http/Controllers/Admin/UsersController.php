@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -21,7 +22,7 @@ class UsersController extends Controller
     {
         $users = User::with(['roles'])->get();
         $roles = Role::all();
-        return view('admin.users.home', compact('users', 'roles'));
+        return view('admin.users.index', compact('users', 'roles'));
     }
     
     /**
@@ -44,12 +45,12 @@ class UsersController extends Controller
     public function store(UserRequest $request)
     {
         $data = $request->input();
+        $hash= Hash::make($data['password']);
         $user = new User([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => $data['password'],
+            'password' => $hash,
             'role_id' => $data['role'],
-            'is_active' => '0',
         ]);
         try {
             $user->save();
