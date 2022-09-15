@@ -10,7 +10,7 @@
             <div class="card-header"><span class="h4">Add Menu</span></div>
             <div class="card-body d-flex flex-column gap-2">
                 <form action="{{ route('menu.store') }}" method="post">
-                    @csrf
+                    @csrf  
                     <div class="col-md-12">
                         @if ($parent)
                             <input type="hidden" name="parent_id" value="{{ $parent->id }}">

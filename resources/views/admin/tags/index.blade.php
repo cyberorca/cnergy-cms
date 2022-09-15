@@ -40,7 +40,7 @@
                     <tbody>
                         @foreach ($tags as $t)
                             <tr>
-                                <td>{{ $t->id }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $t->tags }}</td>
                                 <td>{{ $t->slug }}</td>
                                 @if ($t->is_active == 1)

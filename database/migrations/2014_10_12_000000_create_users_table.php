@@ -22,12 +22,6 @@ return new class extends Migration
             $table->timestamp('last_logged_in', 0)->nullable();
             #$table->json('roles');
             $table->softDeletes();
-            $table->bigInteger('role_id')->unsigned();
-            $table->foreign('role_id')
-                    ->references('id')
-                    ->on('roles')
-                    ->onCascade('delete');
-            $table->index(['name', 'email']);
         });
     }
 

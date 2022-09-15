@@ -35,11 +35,6 @@ return new class extends Migration
                 ->references('uuid')
                 ->on('users')
                 ->onCascade('delete');
-
-            $table->foreign('created_by')
-                ->references('uuid')
-                ->on('users')
-                ->onCascade('delete');
         });
     }
 
