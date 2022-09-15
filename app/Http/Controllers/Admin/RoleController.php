@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest;
 use App\Models\Role;
 use Illuminate\Support\Facades\Redirect;
+use function MongoDB\BSON\toJSON;
 
 class RoleController extends Controller
 {
@@ -19,7 +20,7 @@ class RoleController extends Controller
 
     public function create()
     {
-
+        return view('admin.role.create');
     }
 
     public function store(RoleRequest $request)
@@ -30,7 +31,7 @@ class RoleController extends Controller
         ]);
         try {
             $role->save();
-            return Redirect::back()->with('status', 'SUCCESS');
+            return \redirect('role')->with('status', 'Successfully Add New Role');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
@@ -45,7 +46,8 @@ class RoleController extends Controller
 
     public function edit($id)
     {
-
+        $role = Role::where('id', $id)->first();
+        return view('admin.role.update')->with('role', $role);
     }
 
     public function update(RoleRequest $request, $id)
@@ -53,7 +55,7 @@ class RoleController extends Controller
         $data = $request->input();
         try {
             Role::where('id', $id)->update(['role' => strtoupper($data['role'])]);
-            return Redirect::back()->with('status', 'SUCCESS');
+            return redirect("role")->with("status", "Successfully to Update Role ");
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
@@ -63,7 +65,7 @@ class RoleController extends Controller
     {
         try {
             Role::destroy($id);
-            return Redirect::back()->with('status', 'SUCCESS');
+            return Redirect::back()->with('status', 'Successfully to Delete Role');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
