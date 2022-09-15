@@ -29,12 +29,8 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-<<<<<<< HEAD:app/Http/Controllers/Admin/UsersController.php
-        $roles = Role::all();
-        return view('admin.users.create', compact('roles'));
-=======
-        return view('admin.categories.create');
->>>>>>> de8d8739d6f810befd2540c81a97bd5e5b034594:app/Http/Controllers/Admin/CategoriesController.php
+        $categories = Category::all();
+        return view('admin.categories.create', compact('categories'));
     }
 
     /**
@@ -43,20 +39,9 @@ class CategoriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CategoryRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->input();
-        $category = new Category([
-            'category' => $data['category'],
-            'slug' => $data['slug'],
-            'type' => $data['type'],
-        ]);
-        try {
-            $user->save();
-            return redirect('users')->with('status', 'SUCCESS');
-        } catch (\Throwable $e) {
-            return redirect('users')->withErrors($e->getMessage());
-        }
+        //
     }
 
     /**
@@ -78,14 +63,7 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-<<<<<<< HEAD:app/Http/Controllers/Admin/UsersController.php
-        $post   = User::where('uuid', $id)->with(['roles'])->first();
-        $roles = Role::all();
-        return view('admin.users.update', compact('roles'))->with('post', $post);
-=======
-        $post   = Post::whereId($id)->first();
-        return view('admin.categories.update')->with('post', $post);
->>>>>>> de8d8739d6f810befd2540c81a97bd5e5b034594:app/Http/Controllers/Admin/CategoriesController.php
+        //
     }
 
     /**
@@ -97,34 +75,7 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = $request->input();
-<<<<<<< HEAD:app/Http/Controllers/Admin/UsersController.php
-        
-            try {
-                User::where('uuid',$id)->update([
-                    'name' => $data['name'],
-                    'email' => $data['email'],
-                    'role_id' => $data['role'],
-                    'is_active' => $data['is_active'],
-=======
-        $validator = Validator::make($data, [
-            'category' => 'required|unique:categories'
-        ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            return Redirect::back()->withErrors($errors);
-        } else {
-            try {
-                Categories::where('id',$id)->update([
-                    'category' => $data['category'],
-                    'slug' => $data['slug'],
-                    'type' => $data['type'],
->>>>>>> de8d8739d6f810befd2540c81a97bd5e5b034594:app/Http/Controllers/Admin/CategoriesController.php
-                ]);
-                return redirect('users')->with('status', 'SUCCESS');
-            } catch (\Throwable $e) {
-                return Redirect::back()->withErrors($e);
-            }
+        //
     }
 
     /**
@@ -135,11 +86,6 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            User::destroy($id);
-            return Redirect::back()->with('status', 'SUCCESS');
-        } catch (\Throwable $e) {
-            return Redirect::back()->withErrors($e->getMessage());
-        }
+        //
     }
 }
