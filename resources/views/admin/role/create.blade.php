@@ -15,11 +15,11 @@
                         <div class="form-group">
                             <label for="basicInput" class="mb-2">Role</label>
                             <input type="text" class="form-control" id="basicInput" name="role"
-                                   placeholder="Enter menu url" />
+                                   placeholder="Role's name here" />
                         </div>
                         <div class="d-flex justify-content-end gap-3 mt-3">
-                            <button class="btn btn-primary" type="submit">Save New Role</button>
-                            <button type="reset" class="btn btn-light border border-1">Reset</button>
+                            <a href="{{route('role.index')}}" class="btn btn-secondary">Back</a>
+                            <button class="btn btn-primary" type="submit">Save</button>
                         </div>
                     </div>
                 </form>

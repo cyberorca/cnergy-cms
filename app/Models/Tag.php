@@ -16,7 +16,7 @@ class Tag extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['tags', 'slug', 'is_active', 'created_by', 'deleted_by'];
+    protected $fillable = ['tags', 'slug', 'is_active', 'created_at', 'created_by', 'deleted_by'];
 
     // 
 }

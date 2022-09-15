@@ -47,8 +47,9 @@ class TagsController extends Controller
         $tags = new Tag([
             'tags' => $data['tag'],
             'slug' => $data['slug'],
-            'created_by' => 'c3bb9e82-5d9a-4263-a2bf-9ae6c6c2ed75',
-            // 'deleted_by' => $uuid,
+            'created_at' => now(),
+            // ganti uuid user login nanti
+            'created_by' => '53ca775a-49f4-476e-8a30-cc1e6a5ac306',
         ]);
         try {
             $tags->save();
@@ -97,6 +98,8 @@ class TagsController extends Controller
             $tag->tags = $data["tag"];
             $tag->slug = $data["slug"];
             $tag->is_active = $data["is_active"];
+            $tag->updated_at = now();
+            $tag->updated_by = '53ca775a-49f4-476e-8a30-cc1e6a5ac306';
             $tag->save();
             return redirect('tags')->with('status', 'SUCCESS');
         } catch (\Throwable $exception) {

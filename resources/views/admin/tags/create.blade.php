@@ -22,8 +22,8 @@
                         </div>
 
                         <div class="d-flex justify-content-end gap-3 mt-3">
-                            <button class="btn btn-primary" type="submit">Save</button>
                             <a href="{{route('tags.index')}}" class="btn btn-secondary">Back</a>
+                            <button class="btn btn-primary" type="submit">Save</button>
                         </div>
 
                     </div>

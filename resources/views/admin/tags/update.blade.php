@@ -48,12 +48,13 @@
                                     
                                 </div>
                             </div>
+                        </div>
 
-                        </div>
-                        <div class="form-group">
+                        <div class="d-flex justify-content-end gap-3 mt-3">
                             <a href="{{route('tags.index')}}" class="btn btn-secondary">Back</a>
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button class="btn btn-primary" type="submit">Save</button>
                         </div>
+
                     </div>
                 </div>
             </form>

@@ -48,7 +48,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group my-2">
+                        <div class="d-flex justify-content-end gap-3 mt-3">
                             <a href="{{route('categories.index')}}" class="btn btn-secondary">Back</a>
                             <button type="submit" class="btn btn-primary">Save</button>
                         </div>

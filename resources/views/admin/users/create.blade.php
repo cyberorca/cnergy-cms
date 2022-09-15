@@ -34,8 +34,8 @@
                             </select>
                         </div>
                         <div class="d-flex justify-content-end gap-3 mt-3">
-                            <button class="btn btn-primary" type="submit">Save New User</button>
                             <a href="{{route('users.index')}}" class="btn btn-secondary">Back</a>
+                            <button class="btn btn-primary" type="submit">Save</button>
                         </div>
                     </div>
                 </form>

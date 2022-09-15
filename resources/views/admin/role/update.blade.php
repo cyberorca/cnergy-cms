@@ -19,8 +19,8 @@
                                    placeholder="Enter menu url" value="{{$role->role}}" />
                         </div>
                         <div class="d-flex justify-content-end gap-3 mt-3">
-                            <button class="btn btn-primary" type="submit">Save Edit Role</button>
-                            <button class="btn btn-light border border-1" type="reset">Reset</button>
+                            <a href="{{route('role.index')}}" class="btn btn-secondary">Back</a>
+                            <button class="btn btn-primary" type="submit">Update</button>
                         </div>
                     </div>
                 </form>
