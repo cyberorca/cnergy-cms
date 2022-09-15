@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->enum('is_active', [0, 1]);
+            $table->enum('is_active', [0, 1])->default(1);
             $table->string('category', 100)->unique();
             $table->string('common', 100);
             $table->unsignedBigInteger('parent_id')->nullable();

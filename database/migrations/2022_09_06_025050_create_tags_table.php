@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
-            $table->enum('is_active', [1, 0]);
+            $table->enum('is_active', [1, 0])->default(1);
             $table->string('tags', 100);
             $table->string('slug', 100);
             $table->timestamp('created_at', 0)->nullable();

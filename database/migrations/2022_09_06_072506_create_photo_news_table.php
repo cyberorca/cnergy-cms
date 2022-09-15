@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('photo_news', function (Blueprint $table) {
             $table->id();
-            $table->enum('is_active', [0, 1]);
+            $table->enum('is_active', [0, 1])->default(1);
             $table->string('title', 255);
             $table->string('url', 255);
             $table->string('image', 255);
