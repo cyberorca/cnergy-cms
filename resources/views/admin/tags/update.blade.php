@@ -1,61 +1,32 @@
-
 @extends('layout.app')
 
 @section('body')
-@if (session('status'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>{{ session('status') }}</strong>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @endif
 
-    @foreach ($errors->all() as $error)
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>{{ $error }}</strong>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @endforeach
     <section class="section">
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Update User</h4>
             </div>
-            <form action="{{route('users.update',$post->uuid)}}" method="post">
+            <form action="{{route('tags.update',$tag->id)}}" method="post">
             @csrf
             @method('PUT')
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="basicInput">Name</label>
-                                <input type="text" class="form-control" id="name" required="" value="{{$post->name}}" name="name">
+                                <label for="basicInput">Tag</label>
+                                <input type="text" class="form-control" id="tags" required="" value="{{$tag->tags}}" name="tag">
                             </div>
                             <div class="form-group">
-                                <label for="basicInput">Email</label>
-                                <input type="email" class="form-control" id="email" required="" value="{{$post->email}}" name="email" >
+                                <label for="basicInput">Slug</label>
+                                <input type="text" class="form-control" id="slug" required="" value="{{$tag->slug}}" name="slug" >
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="basicInput">Role</label>
-                                <select class="form-control" id="input-select" name="role" required>
-                                    @foreach ($roles as $role)
-                                    @if ($role->role == $post->roles->role)
-                                    <option  selected="selected" value="{{ $role->id }}">{{ $role->role }}</option>
-                                    @else
-                                    <option value="{{ $role->id }}">{{ $role->role }}</option>
-                                    @endif
-                                    @endforeach
-                                </select>
-                            </div>
+                        
                             <div class="form-group">
                                 <label for="basicInput">Status</label>
                                 <div class="form-group">
-                                    @if ($post->is_active == 1)
+                                    @if ($tag->is_active == 1)
                                     <input class="form-check-input" type="radio" name="is_active" value="1" id="flexRadioDefault1" checked>
                                     <label class="form-check-label" for="flexRadioDefault1">
                                         On 
@@ -80,7 +51,7 @@
 
                         </div>
                         <div class="form-group">
-                            <a href="{{route('users.index')}}" class="btn btn-secondary">Back</a>
+                            <a href="{{route('tags.index')}}" class="btn btn-secondary">Back</a>
                             <button type="submit" class="btn btn-primary">Save</button>
                         </div>
                     </div>
