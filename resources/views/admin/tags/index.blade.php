@@ -34,6 +34,7 @@
                             <th>Tags</th>
                             <th>Slug</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,10 +44,14 @@
                                 <td>{{ $t->tags }}</td>
                                 <td>{{ $t->slug }}</td>
                                 @if ($t->is_active == 1)
-                                    <td> <span class="badge bg-success">Active</span> </td>
+                                <td> <span class="badge bg-success">Active</span> </td>
                                 @else
-                                    <td> <span class="badge bg-danger">Inactive</span> </td>
+                                <td> <span class="badge bg-danger">Inactive</span> </td>
                                 @endif
+                                <td>
+                                    <a href="#" class="btn icon btn-primary"><i class="bi bi-pencil"></i></a>
+                                <a href="users" class="btn icon btn-danger"><i class="bi bi-trash"></i></a>
+                                </td>
                             </tr>
                             <div class="modal fade" id="deleteModal{{ $t->uuid }}" tabindex="-1"
                                 aria-labelledby="deleteModalLabel" aria-hidden="true">
