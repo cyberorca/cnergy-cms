@@ -2,7 +2,7 @@
 
 @section('body')
     <section class="section">
-        <div class="card">
+        <div class="card col-md-7">
             <div class="card-header">
                 <h4 class="card-title">Add Tags</h4>
             </div>
@@ -10,10 +10,10 @@
                 @csrf <!-- {{ csrf_field() }} -->
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12"> 
                         <div class="form-group">
                             <label for="basicInput">Tags</label>
-                            <input type="text" class="form-control" id="tags" placeholder="Tags" name="tags">
+                            <input type="text" class="form-control" id="tags" placeholder="Tags" name="tag">
                         </div>
 
                         <div class="form-group">
@@ -21,14 +21,9 @@
                             <input type="text" class="form-control" id="slug" placeholder="Slug" name="slug" >
                         </div>
 
-                        <div class="form-group">
-                            <input type="hidden" id="disabled" name="is_active" value="0">
-                            <input type="checkbox" id="is_active" name="is_active" value="1">
-                            <label for="is_active">Active</label><br>
-                        </div>
-
-                        <div class="form-group">
-                            <input type="submit" class="btn btn-primary" value="Save"> 
+                        <div class="d-flex justify-content-end gap-3 mt-3">
+                            <button class="btn btn-primary" type="submit">Save</button>
+                            <a href="{{route('tags.index')}}" class="btn btn-secondary">Back</a>
                         </div>
 
                     </div>
