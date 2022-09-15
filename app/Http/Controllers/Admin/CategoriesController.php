@@ -41,7 +41,23 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->input();
+        $category = new Category([
+            'is_active' => '1',
+            'category' => $data['category'],
+            'common' => $data['category'],
+            'parent_id' => '0',
+            'slug' => $data['slug'],
+            'types' => '["news", "video", "photonews"]',
+            'created_at' => now(),
+            'created_by' => '013ef5af-6f7b-4437-b9d2-51cd4e000aa7',
+        ]);
+        try {
+            $category->save();
+            return redirect('categories')->with('status', 'SUCCESS');
+        } catch (\Throwable $e) {
+            return redirect('categories')->withErrors($e->getMessage());
+        }
     }
 
     /**
@@ -63,7 +79,8 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Category::where('id', $id);
+        // return view('admin.categories.update', compact('post'));
     }
 
     /**
@@ -75,7 +92,23 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->input();
+        $types = json($request->input());
+        try {
+            Category::where('id',$id)->update([
+                'is_active' => $data['is_active'],
+                'category' => $data['category'],
+                'common' => $data['category'],
+                'parent_id' => '0',
+                'slug' => $data['slug'],
+                'types' => $types,
+                'updated_at' => now(),
+                'updated_by' => '013ef5af-6f7b-4437-b9d2-51cd4e000aa7',
+            ]);
+            return redirect('users')->with('status', 'SUCCESS');
+        } catch (\Throwable $e) {
+            return Redirect::back()->withErrors($e);
+        }
     }
 
     /**
@@ -86,6 +119,11 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            Category::destroy($id);
+            return Redirect::back()->with('status', 'SUCCESS');
+        } catch (\Throwable $e) {
+            return Redirect::back()->withErrors($e->getMessage());
+        }
     }
 }

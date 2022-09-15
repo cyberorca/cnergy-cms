@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vertical Navbar - Mazer Admin Dashboard</title>
+    <title>KLY - NewsHub</title>
 
     <link rel="stylesheet" href="{{ asset('assets/css/main/app.css') }}">
 
@@ -13,9 +13,22 @@
     @yield('css')
     <link rel="shortcut icon" href="assets/images/logo/favicon.svg" type="image/x-icon">
     <link rel="shortcut icon" href="assets/images/logo/favicon.png" type="image/png">
+    <script type="text/javascript"> 
+        function timeNow(){
+            // Refresh rate in milli seconds
+            var refresh=1000; 
+            mytime=setTimeout('displayTimeNow()',refresh)
+        }
+
+        function displayTimeNow() {
+            var x = new Date()
+            document.getElementById('footerTime').innerHTML = x;
+            timeNow();
+        }
+</script>
 </head>
 
-<body>
+<body onload=displayTimeNow();>
     <div id="app">
         <div id="sidebar" class="active">
             <div class="sidebar-wrapper active">
@@ -228,11 +241,10 @@
                 <footer>
                     <div class="footer clearfix mb-0 text-muted">
                         <div class="float-start">
-                            <p>2021 &copy; Mazer</p>
+                            <span id='footerTime'></span>
                         </div>
                         <div class="float-end">
-                            <p>Crafted with <span class="text-danger"><i class="bi bi-heart-fill icon-mid"></i></span>
-                                by <a href="https://ahmadsaugi.com">Saugi</a></p>
+                            <p>KapanLagi Youniverse</p>
                         </div>
                     </div>
                 </footer>

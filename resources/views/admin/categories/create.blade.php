@@ -6,39 +6,29 @@
             <div class="card-header">
                 <h4 class="card-title">Add Category</h4>
             </div>
+            <form action="{{ route('categories.store') }}" method="post" id="basicform" data-parsley-validate="">
+                <div class="card-body">
+                @csrf
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="basicInput">Category Name</label>
+                                <input type="text" class="form-control my-2" id="category" placeholder="Ex: Bandung Merdeka" name="category">
+                            </div>
 
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="basicInput">Category Name</label>
-                            <input type="text" class="form-control my-2" id="category" placeholder="Ex: Bandung Merdeka" name="category">
+                            <div class="form-group">
+                                <label for="basicInput" class="my-2">Slug</label>
+                                <input type="text" class="form-control my-2" id="slug" placeholder="http://example.com/about" name="slug" >
+                            </div>
                         </div>
-
-                        <div class="form-group">
-                            <label for="basicInput">Type</label>
-                            <br>
-                            <input type="checkbox" id="type" name="type" value="News" class="my-2">
-                            <label for="vehicle1">News</label><br>
-                            <input type="checkbox" id="type" name="type" value="Photo News">
-                            <label for="vehicle2">Photo News</label><br>
-                            <input type="checkbox" id="type" name="type" value="Video">
-                            <label for="vehicle3">Video</label><br>       
-                        </div>
-
-                        <div class="form-group">
-                            <label for="basicInput">Slug</label>
-                            <input type="email" class="form-control my-2" id="slug" placeholder="http://example.com/about" name="slug" >
-                        </div>
-
+                            
                         <div class="form-group my-2">
-                            <input type="submit" class="btn btn-primary" value="Save"> 
+                            <a href="{{route('users.index')}}" class="btn btn-secondary">Back</a>
+                            <button type="submit" class="btn btn-primary">Save</button>
                         </div>
-
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </section>
-    <!-- validations end -->
 @endsection
