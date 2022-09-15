@@ -23,7 +23,7 @@
                         </div>
                             
                         <div class="form-group my-2">
-                            <a href="{{route('users.index')}}" class="btn btn-secondary">Back</a>
+                            <a href="{{route('categories.index')}}" class="btn btn-secondary">Back</a>
                             <button type="submit" class="btn btn-primary">Save</button>
                         </div>
                     </div>

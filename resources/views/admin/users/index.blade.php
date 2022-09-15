@@ -1,30 +1,18 @@
 @extends('layout.app')
 
-@section('body')
-    @if (session('status'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>{{ session('status') }}</strong>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @endif
+@section('css')
+    <link rel="stylesheet" href="{{ asset('assets/extensions/simple-datatables/style.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/pages/simple-datatables.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/pages/menu.css') }}" />
+@endsection
 
-    @foreach ($errors->all() as $error)
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>{{ $error }}</strong>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @endforeach
-    <!-- Basic Tables start -->
+@section('body')
+<x-page-heading title="Table User" subtitle="View and Manage User Data" />
     <section class="section">
         <div class="card">
-            <div class="card-header">
-                <a href="{{route('users.create')}}" class="btn btn-primary">
-                    <i data-feather="plus"></i>Add User
-                </a>
+            <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">Users List</span>
+                <a href="{{ route('users.create') }}" class="btn btn-primary"><i class="bi bi-plus-circle-fill"></i>&nbsp;&nbsp;&nbsp;Add
+                    User</a>
             </div>
             <div class="card-body">
                 <table class="table" id="table1">
