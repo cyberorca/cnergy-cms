@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
 {
@@ -19,7 +20,8 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::with(['roles'])->get();
-        return view('admin.users.home', compact('users'));
+        $roles = Role::all();
+        return view('admin.users.home', compact('users', 'roles'));
     }
     
     /**
@@ -47,7 +49,7 @@ class UsersController extends Controller
             'email' => $data['email'],
             'password' => $data['password'],
             'role_id' => $data['role'],
-            'is_active' => 1,
+            'is_active' => '0',
         ]);
         try {
             $user->save();
@@ -76,7 +78,9 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post   = User::where('uuid', $id)->with(['roles'])->first();
+        $roles = Role::all();
+        return view('admin.users.update', compact('roles'))->with('post', $post);
     }
 
     /**
@@ -88,7 +92,19 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->input();
+        
+            try {
+                User::where('uuid',$id)->update([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'role_id' => $data['role'],
+                    'is_active' => $data['is_active'],
+                ]);
+                return redirect('users')->with('status', 'SUCCESS');
+            } catch (\Throwable $e) {
+                return Redirect::back()->withErrors($e);
+            }
     }
 
     /**
@@ -99,6 +115,11 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            User::destroy($id);
+            return Redirect::back()->with('status', 'SUCCESS');
+        } catch (\Throwable $e) {
+            return Redirect::back()->withErrors($e->getMessage());
+        }
     }
 }

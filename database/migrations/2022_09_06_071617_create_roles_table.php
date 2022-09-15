@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('role')->unique();
             $table->index(['role']);
+            $table->timestamp('deleted_at', 0)->nullable();
+
         });
     }
 

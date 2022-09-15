@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\CategoriesController;
+use App\Http\Controllers\Admin\TagsController;
+use App\Models\News;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UsersController;
-use App\Http\Controllers\Admin\RolesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,11 +20,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('auth');
-});
-Route::get('/home', function () {
     return view('welcome');
 });
-Route::resource('users', UsersController::class);
 
-Route::resource('roles', RolesController::class);
+Route::get("/menu/create/{id?}", [MenuController::class, 'create'])->name('menu.create');
+
+Route::resource('menu', MenuController::class)->only([
+    'index', 'show', 'store', 'update', 'destroy', 'edit'
+]);
+
+Route::resource('categories', CategoriesController::class);
+
+Route::resource('role', RoleController::class);
+
+Route::resource('tags', TagsController::class);
+
+Route::resource('users', UsersController::class);
