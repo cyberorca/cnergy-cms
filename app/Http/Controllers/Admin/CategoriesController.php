@@ -80,7 +80,7 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        $post = Category::where('id', $id);
+        $post = Category::where('id', $id)->first();
         return view('admin.categories.update', compact('post'));
     }
 
