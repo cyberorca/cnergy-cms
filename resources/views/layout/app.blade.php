@@ -78,7 +78,7 @@
                             </a>
                             <ul class="submenu">
                                 <li class="submenu-item ">
-                                    <a href="#">Menu Settings</a>
+                                    <a href="{{ route('menu.index') }}">Menu Settings</a>
                                 </li>
                                 <li class="submenu-item ">
                                     <a href="#">Users Settings</a>
@@ -207,6 +207,23 @@
             </header>
             <div id="main-content">
                 <div class="page-heading">
+                    @if (session('status'))
+                        <div class="alert alert-success alert-dismissible show fade">
+                            <strong>{{ session('status') }}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                        </div>
+                    @endif
+
+                    @foreach ($errors->all() as $error)
+                        <div class="alert alert-danger alert-dismissible show fade">
+                            <strong>
+                                {{ $error }}
+                            </strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                        </div>
+                    @endforeach
                     @yield('body')
                 </div>
 
