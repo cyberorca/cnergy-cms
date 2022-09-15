@@ -1,5 +1,6 @@
 @extends('layout.app')
 
+<<<<<<< HEAD:resources/views/admin/users/index.blade.php
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/extensions/simple-datatables/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/pages/simple-datatables.css') }}" />
@@ -8,6 +9,11 @@
 
 @section('body')
 <x-page-heading title="Table User" subtitle="View and Manage User Data" />
+=======
+@section('body')
+    
+    <!-- Basic Tables start -->
+>>>>>>> 0262376071b0053b70e6668a0daa376d81cb27ef:resources/views/admin/users/home.blade.php
     <section class="section">
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">Users List</span>

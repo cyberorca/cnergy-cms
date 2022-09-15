@@ -1,10 +1,15 @@
 @extends('layout.app')
 
+<<<<<<< HEAD
 @section('css')
 @endsection
 
 @section('body')
 <x-page-heading title="Menu Config" subtitle="Manage backend menu for user" />
+=======
+@section('body')
+
+>>>>>>> 0262376071b0053b70e6668a0daa376d81cb27ef
     <section class="section">
     <div class="card col-md-7">
             <div class="card-header"><span class="h4">Update User</span></div>
