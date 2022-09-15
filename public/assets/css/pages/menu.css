@@ -1,5 +1,14 @@
 .menu.accordion-button::after {
-    display:none;
-    transform: none !important;
-    transition: none !important;
+    /* display:none; */
+    order: -1 !important;
+    margin-left: 1px !important; 
+}
+
+
+.menu.accordion-header:hover{
+    background-color: #eceff9;
+}
+
+.menu.accordion-button .button-menu{
+    background-color: black;
 }

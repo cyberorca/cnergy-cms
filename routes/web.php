@@ -23,7 +23,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('menu', MenuController::class);
+Route::get("/menu/create/{id?}", [MenuController::class, 'create'])->name('menu.create');
+
+Route::resource('menu', MenuController::class)->only([
+    'index', 'show', 'store', 'update', 'destroy', 'edit'
+]);
 
 Route::resource('categories', CategoriesController::class);
 

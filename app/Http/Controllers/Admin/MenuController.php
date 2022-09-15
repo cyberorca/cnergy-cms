@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MenuRequest;
 use App\Models\Menu;
-use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class MenuController extends Controller
 {
@@ -15,7 +16,8 @@ class MenuController extends Controller
      */
     public function index()
     {
-        $menus = Menu::all();
+        $menus = Menu::whereNull('parent_id')->with("childMenus")->get();
+        // return response()->json($menus);
         return view('admin.menu.index', compact('menus'));
     }
 
@@ -24,9 +26,10 @@ class MenuController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id = null)
     {
-        //
+        $parent = Menu::find($id);
+        return view('admin.menu.create', compact('parent'));
     }
 
     /**
@@ -35,9 +38,17 @@ class MenuController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MenuRequest $request)
     {
-        //
+        try {
+            $data = $request->validated();
+            $data['slug'] = Str::slug($data['menu_name']);
+            Menu::create($data);
+            // return response()->json($data);
+            return redirect("menu")->with('status', 'Successfully add new menu');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
     }
 
     /**
@@ -59,7 +70,8 @@ class MenuController extends Controller
      */
     public function edit($id)
     {
-        //
+        $menu = Menu::find($id);
+        return view('admin.menu.update', compact('menu'));
     }
 
     /**
@@ -69,9 +81,18 @@ class MenuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(MenuRequest $request, $id)
     {
-        //
+        try {
+            $data = $request->validated();
+            $menu = Menu::find($id);
+            $menu->menu_name = $data["menu_name"];
+            $menu->save();
+
+            return redirect("menu")->with("status", "Successfully to edit menu");
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
     }
 
     /**
@@ -82,6 +103,11 @@ class MenuController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            Menu::destroy($id);
+            return redirect()->back()->with('status', 'Successfully to delete menu');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
     }
 }
