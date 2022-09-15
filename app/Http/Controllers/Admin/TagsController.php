@@ -21,8 +21,7 @@ class TagsController extends Controller
     {
         $tags = Tag::latest()->paginate(5);
       
-        return view('admin.tags.index',compact('tags'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('admin.tags.index',compact('tags'));
     }
 
     /**
