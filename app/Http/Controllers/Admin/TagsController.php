@@ -49,8 +49,8 @@ class TagsController extends Controller
             'tags' => $data['tags'],
             'slug' => $data['slug'],
             'is_active' => $data['is_active'],
-            'created_by' => $uuid,
-            'deleted_by' => $uuid,
+            // 'created_by' => $uuid,
+            // 'deleted_by' => $uuid,
         ]);
         try {
             $tags->save();
