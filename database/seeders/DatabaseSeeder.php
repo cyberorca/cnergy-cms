@@ -19,8 +19,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call([
+            RoleSeeder::class,
+        ]);
         User::factory(1000)->create();
-
         // $news = News::all();
         // foreach($news as $item){
             
