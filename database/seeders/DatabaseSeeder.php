@@ -19,10 +19,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Category::factory(50)->create();
-        Tag::factory(50)->create();
-        News::factory(50)->create();
-        User::factory(50)->create();
+        User::factory(1000)->create();
 
         // $news = News::all();
         // foreach($news as $item){
