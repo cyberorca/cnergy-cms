@@ -27,7 +27,7 @@ class RoleController extends Controller
     {
         $data = $request->input();
         $role = new Role([
-            'role' => strtoupper($data['role'])
+            'role' => ucwords($data['role'])
         ]);
         try {
             $role->save();
