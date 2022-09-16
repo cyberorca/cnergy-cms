@@ -45,7 +45,7 @@ class TagsController extends Controller
         
         $data = $request->input();
         $tags = new Tag([
-            'tags' => $data['tag'],
+            'tags' => ucwords($data['tag']),
             'slug' => $data['slug'],
             'created_at' => now(),
             // ganti uuid user login nanti
@@ -53,7 +53,7 @@ class TagsController extends Controller
         ]);
         try {
             $tags->save();
-            return redirect("tags")->with('status', 'SUCCESS');
+            return redirect("tags")->with('status', 'Successfully Add New Tag');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -87,7 +87,7 @@ class TagsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Tag  $tag
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response 
      */
     public function update(TagsRequest $request, $tags)
     {
@@ -95,13 +95,13 @@ class TagsController extends Controller
         
         try {
             $tag = Tag::find($tags);
-            $tag->tags = $data["tag"];
+            $tag->tags = ucwords($data['tag']);
             $tag->slug = $data["slug"];
             $tag->is_active = $data["is_active"];
             $tag->updated_at = now();
             $tag->updated_by = '53ca775a-49f4-476e-8a30-cc1e6a5ac306';
             $tag->save();
-            return redirect('tags')->with('status', 'SUCCESS');
+            return redirect('tags')->with('status', 'Successfully to Update Tag');
         } catch (\Throwable $exception) {
             return redirect()->back()->withErrors($exception->getMessage());
         }
@@ -117,7 +117,7 @@ class TagsController extends Controller
     {
         try {
             Tag::destroy($tag);
-            return Redirect::back()->with('status', 'SUCCESS');
+            return Redirect::back()->with('status', 'Successfully to Delete Tag');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }

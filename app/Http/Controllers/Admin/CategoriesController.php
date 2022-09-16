@@ -44,7 +44,7 @@ class CategoriesController extends Controller
         $data = $request->input();
         $category = new Category([
             'is_active' => '1',
-            'category' => $data['category'],
+            'category' => ucwords($data['category']),
             'common' => $data['category'],
             'parent_id' => '0',
             'slug' => $data['slug'],
@@ -55,9 +55,9 @@ class CategoriesController extends Controller
         ]);
         try {
             $category->save();
-            return redirect('categories')->with('status', 'SUCCESS');
+            return redirect('categories')->with('status', 'Successfully Add New Category');
         } catch (\Throwable $e) {
-            return redirect('categories')->withErrors($e->getMessage());
+            return redirect()->back()->withErrors($e->getMessage());
         }
     }
 
@@ -97,7 +97,7 @@ class CategoriesController extends Controller
         try {
             Category::where('id',$id)->update([
                 'is_active' => $data['is_active'],
-                'category' => $data['category'],
+                'category' => ucwords($data['category']),
                 'common' => $data['category'],
                 'parent_id' => '0',
                 'slug' => $data['slug'],
@@ -106,9 +106,9 @@ class CategoriesController extends Controller
                 // ganti uuid user login nanti
                 'updated_by' => '53ca775a-49f4-476e-8a30-cc1e6a5ac306',
             ]);
-            return redirect('categories')->with('status', 'SUCCESS');
+            return redirect('categories')->with('status', 'Successfully to Update Category');
         } catch (\Throwable $e) {
-            return Redirect::back()->withErrors($e);
+            return redirect()->back()->withErrors($e->getMessage());
         }
     }
 
@@ -122,7 +122,7 @@ class CategoriesController extends Controller
     {
         try {
             Category::destroy($id);
-            return Redirect::back()->with('status', 'SUCCESS');
+            return Redirect::back()->with('status', 'Successfully to Delete Category');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }

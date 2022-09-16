@@ -14,19 +14,19 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="basicInput">Name</label>
-                            <input type="text" class="form-control" id="name" required="" placeholder="Enter Name" name="name">
+                            <input type="text" class="form-control" id="name" placeholder="Enter Name" name="name">
                         </div>
                         <div class="form-group">
                             <label for="basicInput">Email</label>
-                            <input type="email" class="form-control" id="email" required="" placeholder="Enter Email" name="email" >
+                            <input type="email" class="form-control" id="email" placeholder="Enter Email" name="email" >
                         </div>
                         <div class="form-group">
                             <label for="basicInput">Password</label>
-                            <input type="password" class="form-control" id="password" required="" placeholder="Enter Password" name="password" >
+                            <input type="password" class="form-control" id="password" placeholder="Enter Password" name="password" >
                         </div>
                         <div class="form-group">
                             <label for="basicInput">Role</label>
-                            <select class="form-control" id="input-select" name="role" required>
+                            <select class="form-control" id="input-select" name="role" >
                                 <option value="">Choose Role</option>
                                 @foreach ($roles as $role)
                                 <option value="{{ $role->id }}">{{ $role->role }}</option>
