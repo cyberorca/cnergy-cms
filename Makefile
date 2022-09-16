@@ -21,7 +21,7 @@ run:
 fresh:
 	$(phpArtisanRun) migrate:fresh
 
-seeder:
+seed:
 	$(phpArtisanRun) db:seed
 
 fresh-seed:
@@ -43,7 +43,7 @@ run:
 fresh:
 	$(phpArtisanRun) migrate:fresh
 
-seeder:
+seed:
 	$(phpArtisanRun) db:seed
 
 fresh-seed:
