@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Role extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     protected $table = 'roles';
 
     protected $primaryKey = 'id';
@@ -15,6 +16,8 @@ class Role extends Model
     protected $fillable = [
         'role'
     ];
+
+    protected $dates = ['deleted_at'];
 
     public $timestamps = false;
     public function permission()

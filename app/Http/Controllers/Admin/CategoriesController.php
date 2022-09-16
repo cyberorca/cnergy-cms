@@ -51,7 +51,7 @@ class CategoriesController extends Controller
             'types' => '["news", "video", "photonews"]',
             'created_at' => now(),
             // ganti uuid user login nanti
-            'created_by' => '013ef5af-6f7b-4437-b9d2-51cd4e000aa7',
+            'created_by' => '53ca775a-49f4-476e-8a30-cc1e6a5ac306',
         ]);
         try {
             $category->save();
@@ -104,7 +104,7 @@ class CategoriesController extends Controller
                 'types' => '["news", "video", "photonews"]',
                 'updated_at' => now(),
                 // ganti uuid user login nanti
-                'updated_by' => '013ef5af-6f7b-4437-b9d2-51cd4e000aa7',
+                'updated_by' => '53ca775a-49f4-476e-8a30-cc1e6a5ac306',
             ]);
             return redirect('categories')->with('status', 'SUCCESS');
         } catch (\Throwable $e) {
