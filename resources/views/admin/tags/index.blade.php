@@ -1,9 +1,9 @@
 @extends('layout.app')
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('assets/extensions/simple-datatables/style.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/pages/simple-datatables.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/pages/menu.css') }}" />
+    <link rel="stylesheet" href="{{asset("assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css")}}">
+    <link rel="stylesheet" href="{{asset("assets/css/pages/datatables.css")}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/pages/menu.css')}}">
 @endsection
 
 @section('body')
@@ -19,7 +19,7 @@
                 <table class="table" id="table1">
                     <thead>
                         <tr>
-                            <th>Id</th>
+                            <th>No</th>
                             <th>Tags</th>
                             <th>Slug</th>
                             <th>Status</th>

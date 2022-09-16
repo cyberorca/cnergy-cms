@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use App\Models\Tag;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +14,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
-            RoleSeeder::class,
-            MenuSeeder::class,
-        ]);
-        User::factory(1000)->create();
+        // $this->call([
+        //     RoleSeeder::class,
+        //     MenuSeeder::class,
+        // ]);
+        // User::factory(5)->create();
+        Tag::factory(5)->create();
         // $news = News::all();
         // foreach($news as $item){
             
