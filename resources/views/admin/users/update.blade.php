@@ -55,8 +55,8 @@
                                 </div>
                             </div>
                         <div class="d-flex justify-content-end gap-3 mt-3">
-                            <button class="btn btn-primary" type="submit">Save Update Menu</button>
                             <a href="{{route('users.index')}}" class="btn btn-secondary">Back</a>
+                            <button class="btn btn-primary" type="submit">Update</button>
                         </div>
                     </div>
                 </form>

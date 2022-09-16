@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Tag;
-use Illuminate\Http\Request;
+use App\Http\Requests\TagsRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
@@ -21,8 +21,7 @@ class TagsController extends Controller
     {
         $tags = Tag::latest()->paginate(5);
       
-        return view('admin.tags.index',compact('tags'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('admin.tags.index',compact('tags'));
     }
 
     /**
@@ -41,25 +40,22 @@ class TagsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TagsRequest $request)
     {
-        $uuid = Str::uuid();
+        
         $data = $request->input();
         $tags = new Tag([
-            'tags' => $data['tags'],
+            'tags' => $data['tag'],
             'slug' => $data['slug'],
-            'is_active' => $data['is_active'],
-            // 'created_by' => $uuid,
-            // 'deleted_by' => $uuid,
+            'created_at' => now(),
+            // ganti uuid user login nanti
+            'created_by' => '53ca775a-49f4-476e-8a30-cc1e6a5ac306',
         ]);
         try {
             $tags->save();
-            Log::info('Showing user profile for user: '.$tags);
-            return Redirect::back()->with('status', 'SUCCESS');
-        } catch (\Throwable $exception) {
-            Log::error($exception);
-
-            return Redirect::back()->withErrors($exception->getMessage());
+            return redirect("tags")->with('status', 'SUCCESS');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors($e->getMessage());
         }
     }
 
@@ -69,7 +65,7 @@ class TagsController extends Controller
      * @param  \App\Models\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function show(Tag $tag)
+    public function show($tag)
     {
         //
     }
@@ -80,9 +76,10 @@ class TagsController extends Controller
      * @param  \App\Models\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function edit(Tag $tag)
+    public function edit($tags)
     {
-        //
+        $tag = Tag::find($tags);
+        return view('admin.tags.update', compact('tag'));
     }
 
     /**
@@ -92,9 +89,22 @@ class TagsController extends Controller
      * @param  \App\Models\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tag $tag)
+    public function update(TagsRequest $request, $tags)
     {
-        //
+        $data = $request->validated();
+        
+        try {
+            $tag = Tag::find($tags);
+            $tag->tags = $data["tag"];
+            $tag->slug = $data["slug"];
+            $tag->is_active = $data["is_active"];
+            $tag->updated_at = now();
+            $tag->updated_by = '53ca775a-49f4-476e-8a30-cc1e6a5ac306';
+            $tag->save();
+            return redirect('tags')->with('status', 'SUCCESS');
+        } catch (\Throwable $exception) {
+            return redirect()->back()->withErrors($exception->getMessage());
+        }
     }
 
     /**
@@ -103,8 +113,13 @@ class TagsController extends Controller
      * @param  \App\Models\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tag $tag)
+    public function destroy($tag)
     {
-        //
+        try {
+            Tag::destroy($tag);
+            return Redirect::back()->with('status', 'SUCCESS');
+        } catch (\Throwable $e) {
+            return Redirect::back()->withErrors($e->getMessage());
+        }
     }
 }

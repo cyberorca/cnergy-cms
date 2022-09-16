@@ -79,7 +79,7 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $post   = User::where('uuid', $id)->with(['roles'])->first();
+        $post = User::where('uuid', $id)->with(['roles'])->first();
         $roles = Role::all();
         return view('admin.users.update', compact('roles'))->with('post', $post);
     }

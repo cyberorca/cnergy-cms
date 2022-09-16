@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Menu extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    protected $fillable = ['slug', 'menu_name', 'parent_id'];
+    protected $fillable = ['slug', 'menu_name', 'parent_id', 'created_at', 'updated_at', 'deleted_at'];
 
     public function child()
     {

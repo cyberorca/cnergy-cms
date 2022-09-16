@@ -43,6 +43,7 @@ class MenuController extends Controller
         try {
             $data = $request->validated();
             $data['slug'] = Str::slug($data['menu_name']);
+            $data['created_at'] = now();
             Menu::create($data);
             // return response()->json($data);
             return redirect("menu")->with('status', 'Successfully add new menu');
@@ -88,7 +89,7 @@ class MenuController extends Controller
             $menu = Menu::find($id);
             $menu->menu_name = $data["menu_name"];
             $menu->save();
-
+            $menu->updated_at = now();
             return redirect("menu")->with("status", "Successfully to edit menu");
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
