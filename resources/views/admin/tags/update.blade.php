@@ -3,7 +3,7 @@
 @section('body')
 
     <section class="section">
-        <div class="card">
+        <div class="card col-md-7">
             <div class="card-header">
                 <h4 class="card-title">Update User</h4>
             </div>
@@ -12,7 +12,7 @@
             @method('PUT')
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="basicInput">Tag</label>
                                 <input type="text" class="form-control" id="tags" required="" value="{{$tag->tags}}" name="tag">
