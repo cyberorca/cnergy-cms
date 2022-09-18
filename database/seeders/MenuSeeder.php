@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Menu;
+use App\Models\Role;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -47,11 +48,12 @@ class MenuSeeder extends Seeder
         );
 
         foreach($menus as $menu){
-            Menu::create([
+            $new_menu = Menu::create([
                 'slug' => $menu['slug'],
                 'menu_name' => $menu['menu_name'],
                 'parent_id' => $menu['parent_id'],
             ]);
+            $new_menu->roles()->attach(Role::all()->random(rand(1,4))->pluck('id'));
         }
     }
 }
