@@ -21,8 +21,11 @@ run:
 fresh:
 	$(phpArtisanRun) migrate:fresh
 
+seed:
+	$(phpArtisanRun) db:seed
+
 fresh-seed:
-	$(phpArtisanRun) mirgrate:fresh -seed
+	$(phpArtisanRun) migrate:fresh -seed
 
 clean:
 	$(phpArtisanRun) route:clear
@@ -40,8 +43,11 @@ run:
 fresh:
 	$(phpArtisanRun) migrate:fresh
 
+seed:
+	$(phpArtisanRun) db:seed
+
 fresh-seed:
-	$(phpArtisanRun) mirgrate:fresh -seed
+	$(phpArtisanRun) migrate:fresh -seed
 
 clean:
 	$(phpArtisanRun) route:clear

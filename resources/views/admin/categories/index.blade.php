@@ -1,7 +1,7 @@
 @extends('layout.app')
 
 @section('body')
-    <!-- Basic Tables start -->
+<x-page-heading title="Table Category" subtitle="View and Manage Category Data" />
     <section class="section">
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">Category List</span>
@@ -31,7 +31,7 @@
                             <td>{{ $c->types }}</td>
                             <td>{{ $c->slug }}</td>
                             <td>
-                                <a href="{{ route('categories.edit', $c->id) }}" class="btn icon btn-primary"><i class="bi bi-pencil"></i></a>
+                                <a href="{{ route('categories.edit', $c->id) }}" class="btn icon btn-warning"><i class="bi bi-pencil-square"></i></a>
                                 <button type="button" data-toggle="modal" data-target="#deleteModal{{ $c->id }}" class="btn icon btn-danger"><i class="bi bi-trash"></i></button>
                             </td>
                         </tr>
@@ -47,7 +47,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Delete Category {{ $c->category }} ?
+                                                    Delete Category "{{ $c->category }}" ?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <form action="{{ route('categories.destroy', $c->id) }}"
@@ -55,7 +55,7 @@
                                                         {{ method_field('delete') }}
                                                         @csrf
                                                         <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Close
+                                                            data-dismiss="modal">Cancel
                                                         </button>
                                                         <button type="submit" class="btn btn-primary">Delete</button>
                                                     </form>
@@ -70,7 +70,7 @@
             </div>
         </div>
     </section>
-    <!-- Basic Tables end -->
+    <!-- Basic Tables end --> 
     <script src="assets/extensions/jquery/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
     <script src="assets/js/pages/datatables.js"></script>

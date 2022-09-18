@@ -1,14 +1,13 @@
 @extends('layout.app')
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('assets/extensions/simple-datatables/style.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/pages/simple-datatables.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/pages/menu.css') }}" />
+    <link rel="stylesheet" href="{{asset("assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css")}}">
+    <link rel="stylesheet" href="{{asset("assets/css/pages/datatables.css")}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/pages/menu.css')}}">
 @endsection
 
 @section('body')
-
-    <!-- Basic Tables start -->
+<x-page-heading title="Table Tag" subtitle="View and Manage Tag Data" />
     <section class="section">
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">Tags List</span>
@@ -19,7 +18,6 @@
                 <table class="table" id="table1">
                     <thead>
                         <tr>
-                            <th>Id</th>
                             <th>Tags</th>
                             <th>Slug</th>
                             <th>Status</th>
@@ -29,7 +27,6 @@
                     <tbody>
                         @foreach ($tags as $t)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $t->tags }}</td>
                                 <td>{{ $t->slug }}</td>
                                 @if ($t->is_active == 1)
@@ -38,7 +35,7 @@
                                 <td> <span class="badge bg-danger">Inactive</span> </td>
                                 @endif
                                 <td>
-                                    <a href="{{ route('tags.edit', $t->id) }}" class="btn icon btn-primary"><i class="bi bi-pencil"></i></a>
+                                    <a href="{{ route('tags.edit', $t->id) }}" class="btn icon btn-warning"><i class="bi bi-pencil-square"></i></a>
                                     <button type="button" data-toggle="modal" data-target="#deleteModal{{ $t->uuid }}" class="btn icon btn-danger"><i class="bi bi-trash"></i></button>
                                 </td>
                             </tr>
@@ -53,13 +50,13 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            Yakin ingin menghapus Tag '{{ $t->tags }}' ?
+                                            Delete Tag "{{ $t->tags }}" ?
                                         </div>
                                         <div class="modal-footer">
                                             <form action="{{ route('tags.destroy', $t->id) }}" method="post">
                                                 {{ method_field('delete') }}
                                                 @csrf
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel
                                                 </button>
                                                 <button type="submit" class="btn btn-primary">Delete</button>
                                             </form>

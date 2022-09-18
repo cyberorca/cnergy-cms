@@ -3,8 +3,8 @@
 @section('css')
 @endsection
 
-@section('body')
-    <x-page-heading title="Role Config" subtitle="Manage backend role" />
+@section('body') 
+<x-page-heading title="Table Role" subtitle="View and Manage Role Data"/>
     <section class="section">
         <div class="card col-md-7">
             <div class="card-header"><span class="h4">Add Role</span></div>
@@ -13,9 +13,9 @@
                     @csrf
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="basicInput" class="mb-2">Role</label>
+                            <label for="basicInput" class="mb-2">Role Name</label>
                             <input type="text" class="form-control" id="basicInput" name="role"
-                                   placeholder="Role's name here" />
+                                   placeholder="Enter Role Name " />
                         </div>
                         <div class="d-flex justify-content-end gap-3 mt-3">
                             <a href="{{route('role.index')}}" class="btn btn-secondary">Back</a>
