@@ -14,9 +14,12 @@ class UsersPermissionRoles
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next,...$roles)
     {
-        
-        return $next($request);
+        if (in_array(auth()->user()->roles['role'],$roles)){
+            return $next($request);
+        }
+
+        return redirect()->intended('/login');
     }
 }
