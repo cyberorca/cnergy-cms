@@ -16,7 +16,10 @@ class UsersPermissionRoles
      */
     public function handle(Request $request, Closure $next,...$roles)
     {
-        if (in_array(auth()->user()->roles['role'],$roles)){
+//        if (in_array(auth()->user()->roles['role'],$roles)){
+//            return $next($request);
+//        }
+        if (auth()->user()->roles['role']!=null){
             return $next($request);
         }
 

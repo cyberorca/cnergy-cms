@@ -9,6 +9,13 @@ use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
+    public function index(){
+        if (\auth()->id()!=null){
+            return redirect('/');
+        }else{
+            return view('admin.login.index');
+        }
+    }
 
     public function redirectToProvider()
     {
@@ -25,16 +32,13 @@ class LoginController extends Controller
                 ])->first();
             if ($user != null){
                 \auth()->loginUsingId($user['uuid']);
-
                 return redirect()->intended('/');
 //            dd(\auth()->user()->roles['role']);
             }else{
                 return redirect('login');
             }
-
         } catch
         (\Exception $e) {
-
             return redirect('login');
         }
     }
