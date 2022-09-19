@@ -1,7 +1,7 @@
 @extends('layout.app')
 
 @section('body')
-
+<x-page-heading title="Table User" subtitle="View and Manage User Data" />
     <section class="section">
     <div class="card col-md-7">
             <div class="card-header"><span class="h4">Update User</span></div>
@@ -12,11 +12,11 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="basicInput">Name</label>
-                            <input type="text" class="form-control" id="name" required="" value="{{$post->name}}" name="name">
+                            <input type="text" class="form-control" id="name" required="" placeholder="Enter Name" value="{{$post->name}}" name="name">
                         </div>
                         <div class="form-group">
                             <label for="basicInput">Email</label>
-                            <input type="email" class="form-control" id="email" required="" value="{{$post->email}}" name="email" >
+                            <input type="email" class="form-control" id="email" required="" placeholder="Enter Email" value="{{$post->email}}" name="email" >
                         </div>
                         <div class="form-group">
                                 <label for="basicInput">Role</label>
@@ -63,6 +63,4 @@
             </div>
         </div>
     </section>
-    <!-- validations end -->
-
 @endsection

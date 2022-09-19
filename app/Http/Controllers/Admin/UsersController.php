@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -47,14 +48,15 @@ class UsersController extends Controller
         $data = $request->input();
         $hash= Hash::make($data['password']);
         $user = new User([
-            'name' => $data['name'],
+            'name' => ucwords($data['name']),
             'email' => $data['email'],
             'password' => $hash,
             'role_id' => $data['role'],
         ]);
         try {
             $user->save();
-            return redirect('users')->with('status', 'SUCCESS');
+            // event(new Registered($user));
+            return redirect('users')->with('status', 'Successfully to Add User');
         } catch (\Throwable $e) {
             return redirect('users')->withErrors($e->getMessage());
         }
@@ -97,12 +99,12 @@ class UsersController extends Controller
         
             try {
                 User::where('uuid',$id)->update([
-                    'name' => $data['name'],
+                    'name' => ucwords($data['name']),
                     'email' => $data['email'],
                     'role_id' => $data['role'],
                     'is_active' => $data['is_active'],
                 ]);
-                return redirect('users')->with('status', 'SUCCESS');
+                return redirect('users')->with('status', 'Successfully to Update User');
             } catch (\Throwable $e) {
                 return Redirect::back()->withErrors($e);
             }
@@ -118,7 +120,7 @@ class UsersController extends Controller
     {
         try {
             User::destroy($id);
-            return Redirect::back()->with('status', 'SUCCESS');
+            return Redirect::back()->with('status', 'Successfully to Delete User');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }

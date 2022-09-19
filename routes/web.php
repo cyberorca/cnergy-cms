@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\TagsController;
 use App\Models\News;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\Auth\EmailVerificationController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,3 +38,13 @@ Route::resource('role', RoleController::class);
 Route::resource('tags', TagsController::class);
 
 Route::resource('users', UsersController::class);
+
+// Route::post('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])
+//     ->middleware(['auth', 'signed']) // <-- don't remove "signed"
+//     ->name('verification.verify');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect('/home');
+})->middleware(['auth', 'signed'])->name('verification.verify');

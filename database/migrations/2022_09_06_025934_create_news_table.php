@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('news', function (Blueprint $table) {
             $table->id();
+            $table->enum('is_headline', [0, 1])->default(1);
             $table->string('title', 255);
             $table->string('slug', 255);
             $table->longText('content');

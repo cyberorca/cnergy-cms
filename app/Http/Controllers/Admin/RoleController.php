@@ -27,7 +27,7 @@ class RoleController extends Controller
     {
         $data = $request->input();
         $role = new Role([
-            'role' => strtoupper($data['role'])
+            'role' => ucwords($data['role'])
         ]);
         try {
             $role->save();
@@ -54,7 +54,7 @@ class RoleController extends Controller
     {
         $data = $request->input();
         try {
-            Role::where('id', $id)->update(['role' => strtoupper($data['role'])]);
+            Role::where('id', $id)->update(['role' => ucwords($data['role'])]);
             return redirect("role")->with("status", "Successfully to Update Role ");
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());

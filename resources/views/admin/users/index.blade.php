@@ -39,7 +39,7 @@
                             <td> <span class="badge bg-danger">Inactive</span> </td>
                             @endif
                             <td>
-                                <a href="{{ route('users.edit', $u->uuid) }}" class="btn icon btn-primary"><i class="bi bi-pencil"></i></a>
+                                <a href="{{ route('users.edit', $u->uuid) }}" class="btn icon btn-warning"><i class="bi bi-pencil-square"></i></a>
                                 <button type="button" data-toggle="modal" data-target="#deleteModal{{ $u->uuid }}" class="btn icon btn-danger"><i class="bi bi-trash"></i></button>
                             </td>
                         </tr>
@@ -55,7 +55,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Yakin ingin menghapus User {{ $u->name }} ?
+                                                    Delete User "{{ $u->name }}"?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <form action="{{ route('users.destroy', $u->uuid) }}"

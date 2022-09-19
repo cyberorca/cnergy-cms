@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('password');
             $table->timestamp('last_logged_in', 0)->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             #$table->json('roles');
             $table->softDeletes();
         });
