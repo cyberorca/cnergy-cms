@@ -64,10 +64,11 @@
                         @endif
                         <td>
                             <a href="{{ route('tags.edit', $t->id) }}" class="btn icon btn-warning"><i class="bi bi-pencil-square"></i></a>
-                            <button type="button" data-toggle="modal" data-target="#deleteModal{{ $t->uuid }}" class="btn icon btn-danger"><i class="bi bi-trash"></i></button>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#delete{{ $t->id }}" class="btn icon btn-danger"><i class="bi bi-trash"></i></button>
                         </td>
                     </tr>
-                    <div class="modal fade" id="deleteModal{{ $t->uuid }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="delete{{ $t->id }}" tabindex="-1" role="dialog"
+                        aria-labelledby="myModalLabel1" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
