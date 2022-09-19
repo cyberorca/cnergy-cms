@@ -20,7 +20,8 @@ class TagFactory extends Factory
             'tags' => $this->faker->userName(),
             'is_Active' => fake()->randomElement(['0', '1']),
             'slug' => fake()->slug(),
-            'created_by' => '23829098-ac78-430a-98fd-1887aa1b0eee',
+            'created_by' => '0a351387-e1c2-43fb-a563-4abedc3cd558',
+            'created_at' => now(),
         ];
     }
 }
