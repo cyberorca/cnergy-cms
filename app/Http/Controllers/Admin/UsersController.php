@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -54,6 +55,7 @@ class UsersController extends Controller
         ]);
         try {
             $user->save();
+            // event(new Registered($user));
             return redirect('users')->with('status', 'Successfully to Add User');
         } catch (\Throwable $e) {
             return redirect('users')->withErrors($e->getMessage());
