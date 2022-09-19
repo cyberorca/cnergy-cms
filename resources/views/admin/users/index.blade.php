@@ -8,13 +8,43 @@
 
 @section('body')
 <x-page-heading title="Table User" subtitle="View and Manage User Data" />
-    <section class="section">
+    <section class="section"> 
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">Users List</span>
                 <a href="{{ route('users.create') }}" class="btn btn-primary"><i class="bi bi-plus-circle-fill"></i>&nbsp;&nbsp;&nbsp;Add
                     User</a>
             </div>
+            <div class="card-body d-flex flex-column gap-2">
+            <div class="accordion border border-1" id="accordionExample">
+            </div>
+            </div>
             <div class="card-body">
+            <form class="row" method="GET">
+                        <div class="col-lg-4 mb-1">
+                            <div class="input-group mb-3">
+                                <select name="role" class="form-select">
+                                    <option value="" selected>Role</option>
+                                    @foreach ($roles as $role)
+                                    <option value="{{ $role->id }}">{{ $role->role }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-1">
+                            <div class="input-group mb-3">
+                                <select name="status" class="form-select">
+                                    <option value="" selected>Status</option>
+                                    <option value="1">Active</option>
+                                    <option value="2">In Active</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-1">
+                            <div class="input-group mb-3">
+                                <button type="submit" class="btn btn-primary">Filter</button>
+                            </div>
+                        </div>
+                    </form>
                 <table class="table" id="table1">
                     <thead>
                         <tr>

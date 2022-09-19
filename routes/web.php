@@ -38,6 +38,7 @@ Route::resource('role', RoleController::class);
 Route::resource('tags', TagsController::class);
 
 Route::resource('users', UsersController::class);
+Route::get('/users/cari','UsersController@cari');
 
 // Route::post('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])
 //     ->middleware(['auth', 'signed']) // <-- don't remove "signed"
