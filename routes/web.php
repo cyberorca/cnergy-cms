@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\CategoriesController;
+use App\Http\Controllers\Admin\MenuSettingsController;
 use App\Http\Controllers\Admin\TagsController;
 use App\Models\News;
 use App\Http\Controllers\Admin\RoleController;
@@ -27,6 +28,7 @@ Route::get('/', function () {
 
 Route::get("/menu/create/{id?}", [MenuController::class, 'create'])->name('menu.create');
 
+Route::resource('/menu/settings', MenuSettingsController::class);
 Route::resource('menu', MenuController::class)->only([
     'index', 'show', 'store', 'update', 'destroy', 'edit'
 ]);
