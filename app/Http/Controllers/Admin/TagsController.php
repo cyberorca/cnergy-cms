@@ -38,7 +38,6 @@ class TagsController extends Controller
             }else {
                 $tags ->where('is_active', "1");
             }
-
         }
 
         // return view('admin.tags.index',compact('tags'));
@@ -79,7 +78,7 @@ class TagsController extends Controller
         ]);
         try {
             $tags->save();
-            return redirect("tags")->with('status', 'Successfully Add New Tag');
+            return redirect("tags")->with('status', 'Successfully Create Tag');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -127,7 +126,7 @@ class TagsController extends Controller
             $tag->updated_at = now();
             $tag->updated_by = '53ca775a-49f4-476e-8a30-cc1e6a5ac306';
             $tag->save();
-            return redirect('tags')->with('status', 'Successfully to Update Tag');
+            return redirect('tags')->with('status', 'Successfully Update Tag');
         } catch (\Throwable $exception) {
             return redirect()->back()->withErrors($exception->getMessage());
         }
@@ -143,7 +142,7 @@ class TagsController extends Controller
     {
         try {
             Tag::destroy($tag);
-            return Redirect::back()->with('status', 'Successfully to Delete Tag');
+            return Redirect::back()->with('status', 'Successfully Delete Tag');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }

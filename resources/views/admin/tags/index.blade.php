@@ -6,6 +6,7 @@
 @endsection
 
 @section('body')
+<x-page-heading title="Table Tag" subtitle="View and Manage Tag Data" />
 
 <section class="section">
     <div class="card ">
@@ -33,7 +34,6 @@
                     <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i>&nbsp;&nbsp;&nbsp;Search</button>
                 </div>
             </form>
-
         </div>
     </div>
     <!-- Basic Tables start -->
@@ -46,7 +46,6 @@
             <table class="table" id="table1">
                 <thead>
                     <tr>
-                        <th>No</th>
                         <th>Tags</th>
                         <th>Slug</th>
                         <th>Status</th>
@@ -56,7 +55,6 @@
                 <tbody>
                     @foreach ($tags as $t)
                     <tr>
-                        <td>{{ $tags->firstItem() + $loop->index  }}</td>
                         <td>{{ $t->tags }}</td>
                         <td>{{ $t->slug }}</td>
                         @if ($t->is_active == 1)
