@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Tag;
+use App\Models\User;
 use App\Http\Requests\TagsRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
@@ -124,7 +125,7 @@ class TagsController extends Controller
             $tag->slug = $data["slug"];
             $tag->is_active = $data["is_active"];
             $tag->updated_at = now();
-            $tag->updated_by = '53ca775a-49f4-476e-8a30-cc1e6a5ac306';
+            $tag->updated_by = User::first()->uuid;
             $tag->save();
             return redirect('tags')->with('status', 'Successfully Update Tag');
         } catch (\Throwable $exception) {
