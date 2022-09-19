@@ -16,7 +16,7 @@ class MenuController extends Controller
      */
     public function index()
     {
-        $menus = Menu::whereNull('parent_id')->with("childMenus")->get();
+        $menus = Menu::whereNull('parent_id')->with(["childMenus", "roles"])->get();
         // return response()->json($menus);
         return view('admin.menu.index', compact('menus'));
     }

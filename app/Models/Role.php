@@ -20,9 +20,11 @@ class Role extends Model
     protected $dates = ['deleted_at'];
 
     public $timestamps = false;
-    public function permission()
+
+    
+    public function menus()
     {
-        return $this->belongsToMany(Permission::class, 'roles_permissions');
+        return $this->belongsToMany(Menu::class, 'roles_menus');
     }
 
     // public function users()
