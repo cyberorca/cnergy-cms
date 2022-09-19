@@ -19,12 +19,46 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::with(['roles'])->get();
-        $roles = Role::all();
-        return view('admin.users.index', compact('users', 'roles'));
+        $users = User::with(['roles']);
+
+        if ($request->get('role')) {
+            $role = $request->role;
+            $users ->where('role_id',$role);
+        }
+
+        if ($request->get('status')) {
+            $status = $request->status;
+            if($status == 2) {
+                $users ->where('is_active', "0");
+            }else {
+                $users ->where('is_active', "1");
+            }
+
+        }
+
+        return view('admin.users.index', [
+            'users' => $users->paginate()->withQueryString(),
+            'roles' => Role::all()
+        ]);
     }
+
+    public function cari(Request $request)
+	{
+		// menangkap data pencarian
+		$cari = $request->role;
+        $roles = Role::all();
+    		// mengambil data dari table pegawai sesuai pencarian data
+		$users = User::with(['roles'])
+		->where('role_id',$cari)
+		->get();
+ 
+        return view('admin.users.index', compact('users', 'roles'));
+ 
+	}
+
+
     
     /**
      * Show the form for creating a new resource.
