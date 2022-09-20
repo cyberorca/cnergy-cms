@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KLY - NewsHub</title>
-
     <link rel="stylesheet" href="{{ asset('assets/css/main/app.css') }}">
 
     <link rel="stylesheet" href="{{ asset('assets/css/main/app-dark.css') }}" />
@@ -13,11 +12,11 @@
     @yield('css')
     <link rel="shortcut icon" href="assets/images/logo/favicon.svg" type="image/x-icon">
     <link rel="shortcut icon" href="assets/images/logo/favicon.png" type="image/png">
-    <script type="text/javascript"> 
-        function timeNow(){
+    <script type="text/javascript">
+        function timeNow() {
             // Refresh rate in milli seconds
-            var refresh=1000; 
-            mytime=setTimeout('displayTimeNow()',refresh)
+            var refresh = 1000;
+            mytime = setTimeout('displayTimeNow()', refresh)
         }
 
         function displayTimeNow() {
@@ -25,7 +24,7 @@
             document.getElementById('footerTime').innerHTML = x;
             timeNow();
         }
-</script>
+    </script>
 </head>
 
 <body onload=displayTimeNow();>

@@ -3,11 +3,12 @@
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\CategoriesController;
+use App\Http\Controllers\Admin\FrontEndSettingsController;
 use App\Http\Controllers\Admin\TagsController;
-use App\Models\News;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Models\News;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 
@@ -33,9 +34,12 @@ Route::group(['middleware' => 'auth'], function () {
         'index', 'show', 'store', 'update', 'destroy', 'edit'
     ]);
 
+    Route::resource('/menu/settings', FrontEndSettingsController::class);
+
     Route::resource('categories', CategoriesController::class);
 
     Route::resource('role', RoleController::class);
+    
     Route::resource('tags', TagsController::class);
 
     Route::resource('users', UsersController::class);

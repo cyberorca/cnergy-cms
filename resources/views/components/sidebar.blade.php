@@ -54,7 +54,7 @@
                     </a>
                     <ul class="submenu">
                         <li class="submenu-item ">
-                            <a href="{{ route('menu.index') }}" class="sidebar-link">Menu Settings</a>
+                            <a href="{{ route('menu.index') }}">Menu Settings</a>
                         </li>
                         <li class="submenu-item ">
                             <a href="{{ route('users.index') }}">Users Settings</a>
