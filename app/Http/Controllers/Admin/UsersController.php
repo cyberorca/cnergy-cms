@@ -80,11 +80,9 @@ class UsersController extends Controller
     public function store(UserRequest $request)
     {
         $data = $request->input();
-        $hash= Hash::make($data['password']);
         $user = new User([
             'name' => ucwords($data['name']),
             'email' => $data['email'],
-            'password' => $hash,
             'role_id' => $data['role'],
         ]);
         try {
