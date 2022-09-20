@@ -64,7 +64,7 @@
                             <th>Role</th>
                             <th>Last Login</th>
                             <th>Status</th>
-                            <th>Action</th>
+                            <th style="width:15%">Action</th>
                         </tr>
                     </thead>
                     <tbody>
