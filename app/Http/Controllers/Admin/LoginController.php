@@ -35,11 +35,11 @@ class LoginController extends Controller
                 return redirect()->intended('/');
 //            dd(\auth()->user()->roles['role']);
             }else{
-                return redirect('login');
+                return redirect('login')->withErrors(["error"=>"Failed to Login"]);
             }
         } catch
         (\Exception $e) {
-            return redirect('login');
+            return redirect('login')->withErrors(["error"=>$e->getMessage()]);
         }
     }
 
