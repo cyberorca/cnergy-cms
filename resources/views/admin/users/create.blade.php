@@ -21,10 +21,6 @@
                             <input type="email" class="form-control" id="email" placeholder="Enter Email" name="email" >
                         </div>
                         <div class="form-group">
-                            <label for="basicInput">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Enter Password" name="password" >
-                        </div>
-                        <div class="form-group">
                             <label for="basicInput">Role</label>
                             <select class="form-control" id="input-select" name="role" >
                                 <option value="">Choose Role</option>

@@ -6,16 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest;
 use App\Models\Role;
 use Illuminate\Support\Facades\Redirect;
-use function MongoDB\BSON\toJSON;
+use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Role::all();
+        $roles = Role::query();
+
+        if ($request->get('inputRole')) {
+            $roles-> where('role', 'like', '%' . $request->inputRole . '%');
+        }
         return view('admin.role.index',
-            ['roles' => $roles]);
+            ['roles' => $roles->paginate(10)->withQueryString()]);
     }
 
     public function create()
@@ -69,6 +73,5 @@ class RoleController extends Controller
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
-
     }
 }
