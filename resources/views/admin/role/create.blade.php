@@ -18,8 +18,8 @@
                                    placeholder="Enter Role Name " />
                         </div>
                         <div class="d-flex justify-content-end gap-3 mt-3">
-                            <a href="{{route('role.index')}}" class="btn btn-secondary">Back</a>
-                            <button class="btn btn-primary" type="submit">Save</button>
+                            <a href="{{route('role.index')}}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Back to Table Rome">Back</a>
+                            <button class="btn btn-primary" type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Create Role">Save</button>
                         </div>
                     </div>
                 </form>
