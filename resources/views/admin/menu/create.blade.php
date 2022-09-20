@@ -7,7 +7,7 @@
     <x-page-heading title="Menu Config" subtitle="Manage backend menu for user" />
     <section class="section">
         <div class="card col-md-7">
-            <div class="card-header"><span class="h4">Add Menu</span></div>
+            <div class="card-header"><span class="h5">Add Menu</span></div>
             <div class="card-body d-flex flex-column gap-2">
                 <form action="{{ route('menu.store') }}" method="post">
                     @csrf  

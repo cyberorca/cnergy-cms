@@ -18,7 +18,6 @@ return new class extends Migration
             $table->enum('is_active', [0, 1])->default(1); 
             $table->string('email')->unique();
             $table->string('name');
-            $table->string('password');
             $table->timestamp('last_logged_in', 0)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             #$table->json('roles');

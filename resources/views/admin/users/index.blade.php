@@ -8,13 +8,43 @@
 
 @section('body')
 <x-page-heading title="Table User" subtitle="View and Manage User Data" />
-    <section class="section">
+    <section class="section"> 
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">Users List</span>
                 <a href="{{ route('users.create') }}" class="btn btn-primary"><i class="bi bi-plus-circle-fill"></i>&nbsp;&nbsp;&nbsp;Add
                     User</a>
             </div>
+            <div class="card-body d-flex flex-column gap-2">
+            <div class="accordion border border-1" id="accordionExample">
+            </div>
+            </div>
             <div class="card-body">
+            <form class="row" method="GET">
+                        <div class="col-lg-4 mb-1">
+                            <div class="input-group mb-3">
+                                <select name="role" class="form-select">
+                                    <option value="" selected>Role</option>
+                                    @foreach ($roles as $role)
+                                    <option value="{{ $role->id }}">{{ $role->role }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-1">
+                            <div class="input-group mb-3">
+                                <select name="status" class="form-select">
+                                    <option value="" selected>Status</option>
+                                    <option value="1">Active</option>
+                                    <option value="2">In Active</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-1">
+                            <div class="input-group mb-3">
+                                <button type="submit" class="btn btn-primary">Filter</button>
+                            </div>
+                        </div>
+                    </form>
                 <table class="table" id="table1">
                     <thead>
                         <tr>
@@ -81,7 +111,6 @@
     <!-- Basic Tables end -->
     <script src="assets/extensions/jquery/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
-    <script src="assets/js/pages/datatables.js"></script>
     <script src="assets/js/bootstrap.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

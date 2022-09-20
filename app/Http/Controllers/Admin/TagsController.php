@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Tag;
+use App\Models\User;
 use App\Http\Requests\TagsRequest;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+
 
 
 class TagsController extends Controller
@@ -17,11 +20,33 @@ class TagsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tags = Tag::latest()->paginate(5);
-      
-        return view('admin.tags.index',compact('tags'));
+        $tags = Tag::latest();
+
+        if ($request->get('inputTags')) {
+            $tags->where('tags', 'like', '%' . $request->inputTags . '%');
+        } 
+
+        if ($request->get('inputSlug')) {
+            $tags-> where('slug', 'like', '%' . $request->inputSlug . '%');
+        }
+        
+        if ($request->get('status')) {
+            $status = $request->status;
+            if($status == 2) {
+                $tags ->where('is_active', "0");
+            }else {
+                $tags ->where('is_active', "1");
+            }
+        }
+
+        // return view('admin.tags.index',compact('tags'));
+        return view('admin.tags.index',  [
+            'tags' => $tags->paginate(10)->withQueryString(),
+            // 'slug' => Tag::all()
+        ]);
+
     }
 
     /**
@@ -49,11 +74,12 @@ class TagsController extends Controller
             'slug' => $data['slug'],
             'created_at' => now(),
             // ganti uuid user login nanti
-            'created_by' => '53ca775a-49f4-476e-8a30-cc1e6a5ac306',
+            'created_by' => '0a351387-e1c2-43fb-a563-4abedc3cd558',
+            'updated_by' => '0a351387-e1c2-43fb-a563-4abedc3cd558',
         ]);
         try {
             $tags->save();
-            return redirect("tags")->with('status', 'Successfully Add New Tag');
+            return redirect("tags")->with('status', 'Successfully Create Tag');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -99,9 +125,9 @@ class TagsController extends Controller
             $tag->slug = $data["slug"];
             $tag->is_active = $data["is_active"];
             $tag->updated_at = now();
-            $tag->updated_by = '53ca775a-49f4-476e-8a30-cc1e6a5ac306';
+            $tag->updated_by = User::first()->uuid;
             $tag->save();
-            return redirect('tags')->with('status', 'Successfully to Update Tag');
+            return redirect('tags')->with('status', 'Successfully Update Tag');
         } catch (\Throwable $exception) {
             return redirect()->back()->withErrors($exception->getMessage());
         }
@@ -117,7 +143,7 @@ class TagsController extends Controller
     {
         try {
             Tag::destroy($tag);
-            return Redirect::back()->with('status', 'Successfully to Delete Tag');
+            return Redirect::back()->with('status', 'Successfully Delete Tag');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }

@@ -3,6 +3,32 @@
 @section('body')
 <x-page-heading title="Table Category" subtitle="View and Manage Category Data" />
     <section class="section">
+        <div class="card ">
+            <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">Category Search</span></div>
+            <div class="card-body">
+                <form class="row g-3" method="GET">
+                    <div class="col-md-4">
+                        <label for="inputCategory" class="form-label">Category</label>
+                        <input name="inputCategory" id="category" placeholder="Category" type="text" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputSlug" class="form-label">Slug</label>
+                        <input name="inputSlug" id="slug" placeholder="Slug" type="text" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputState" class="form-label">Status</label>
+                        <select name="status" id="inputState" class="form-select">
+                            <option value="" selected>All</option>
+                            <option value="1">Active</option>
+                            <option value="2">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i>&nbsp;&nbsp;&nbsp;Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">Category List</span>
                 <a href="{{ route('categories.create') }}" class="btn btn-primary"><i class="bi bi-plus-circle-fill"></i>&nbsp;&nbsp;&nbsp;Add
@@ -67,13 +93,15 @@
                         @endforeach
                     </tbody>
                 </table>
+                <div  class="d-flex">
+                    {{ $categories->links() }}
+                </div>
             </div>
         </div>
     </section>
     <!-- Basic Tables end --> 
     <script src="assets/extensions/jquery/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
-    <script src="assets/js/pages/datatables.js"></script>
     <script src="assets/js/bootstrap.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
