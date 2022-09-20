@@ -22,7 +22,7 @@
                     <label for="inputSlug" class="form-label">Slug</label>
                     <input name="inputSlug" id="slug" placeholder="Slug" type="text" class="form-control">
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <label for="inputState" class="form-label">Status</label>
                     <select name="status" id="inputState" class="form-select">
                         <option value="" selected>All</option>
@@ -30,16 +30,17 @@
                         <option value="2">Inactive</option>
                     </select>
                 </div>
-                <div class="col-4">
-                    <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i>&nbsp;&nbsp;&nbsp;Search</button>
-                </div>
+                <div class="d-flex justify-content-end gap-3 mt-3">
+                            <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Tag Search"><i class="bi bi-search"></i>&nbsp;&nbsp;&nbsp;Search</button>
+                            <a href="{{route('tags.index')}}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Show All Tags Data"><i class="bi bi-card-list"></i>&nbsp;&nbsp;&nbsp;Show All</a> 
+                    </div>
             </form>
         </div>
     </div>
     <!-- Basic Tables start -->
     <div class="card">
         <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">Tags List</span>
-            <a href="{{ route('tags.create') }}" class="btn btn-primary"><i class="bi bi-plus-circle-fill"></i>&nbsp;&nbsp;&nbsp;Add
+            <a href="{{ route('tags.create') }}" class="btn btn-primary"><i class="bi bi-plus-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Tag"></i>&nbsp;&nbsp;&nbsp;Add
                 Tag</a>
         </div>
         <div class="card-body">
@@ -63,8 +64,8 @@
                         <td> <span class="badge bg-danger">Inactive</span> </td>
                         @endif
                         <td>
-                            <a href="{{ route('tags.edit', $t->id) }}" class="btn icon btn-warning"><i class="bi bi-pencil-square"></i></a>
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#delete{{ $t->id }}" class="btn icon btn-danger"><i class="bi bi-trash"></i></button>
+                            <a href="{{ route('tags.edit', $t->id) }}" class="btn icon btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Tag Data"><i class="bi bi-pencil-square"></i></a>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#delete{{ $t->id }}" class="btn icon btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Tag Data"><i class="bi bi-trash"></i></button>
                         </td>
                     </tr>
                     <div class="modal fade" id="delete{{ $t->id }}" tabindex="-1" role="dialog"

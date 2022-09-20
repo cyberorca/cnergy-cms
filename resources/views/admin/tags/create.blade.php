@@ -22,8 +22,8 @@
                             <input type="text" class="form-control" id="slug" placeholder="http://example.com/about" name="slug" >
                         </div>
                         <div class="d-flex justify-content-end gap-3 mt-3">
-                            <a href="{{route('tags.index')}}" class="btn btn-secondary">Back</a>
-                            <button class="btn btn-primary" type="submit">Save</button>
+                            <a href="{{route('tags.index')}}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Back to Table Tag">Back</a>
+                            <button class="btn btn-primary" type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Create Tag Data">Save</button>
                         </div>
                     </div>
                 </form>

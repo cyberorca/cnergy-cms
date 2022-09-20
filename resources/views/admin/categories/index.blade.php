@@ -15,7 +15,7 @@
                         <label for="inputSlug" class="form-label">Slug</label>
                         <input name="inputSlug" id="slug" placeholder="Slug" type="text" class="form-control">
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <label for="inputState" class="form-label">Status</label>
                         <select name="status" id="inputState" class="form-select">
                             <option value="" selected>All</option>
@@ -23,15 +23,17 @@
                             <option value="2">Inactive</option>
                         </select>
                     </div>
-                    <div class="col-4">
-                        <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i>&nbsp;&nbsp;&nbsp;Search</button>
+                    <div class="d-flex justify-content-end gap-3 mt-3">
+                            <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Category Search"><i class="bi bi-search"></i>&nbsp;&nbsp;&nbsp;Search</button>
+                            <a href="{{route('categories.index')}}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Show All Category Data"><i class="bi bi-card-list"></i>&nbsp;&nbsp;&nbsp;Show All</a> 
                     </div>
+                    
                 </form>
             </div>
         </div>
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">Category List</span>
-                <a href="{{ route('categories.create') }}" class="btn btn-primary"><i class="bi bi-plus-circle-fill"></i>&nbsp;&nbsp;&nbsp;Add
+                <a href="{{ route('categories.create') }}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Category"><i class="bi bi-plus-circle-fill"></i>&nbsp;&nbsp;&nbsp;Add
                     Category</a>
             </div>
             <div class="card-body">

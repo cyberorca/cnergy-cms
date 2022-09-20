@@ -19,8 +19,8 @@
                                    placeholder="Enter Role Name" value="{{$role->role}}" />
                         </div>
                         <div class="d-flex justify-content-end gap-3 mt-3">
-                            <a href="{{route('role.index')}}" class="btn btn-secondary">Back</a>
-                            <button class="btn btn-primary" type="submit">Update</button>
+                            <a href="{{route('role.index')}}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Back to Table Role">Back</a>
+                            <button class="btn btn-primary" type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Role Data">Update</button>
                         </div>
                     </div>
                 </form>

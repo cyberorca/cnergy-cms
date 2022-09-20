@@ -175,7 +175,7 @@
                                 @enderror
                             </div>
                             <div class="d-flex justify-content-end gap-3 mt-3">
-                                <button class="btn btn-primary" type="submit">Save Settings</button>
+                                <button class="btn btn-primary" type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Save Setting Data">Save Settings</button>
                             </div>
                         </div>
                     </div>
