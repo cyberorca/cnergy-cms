@@ -2,12 +2,10 @@
 
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\CategoriesController;
-use App\Http\Controllers\Admin\MenuSettingsController;
+use App\Http\Controllers\Admin\FrontEndSettingsController;
 use App\Http\Controllers\Admin\TagsController;
-use App\Models\News;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UsersController;
-use App\Http\Controllers\Auth\EmailVerificationController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +26,7 @@ Route::get('/', function () {
 
 Route::get("/menu/create/{id?}", [MenuController::class, 'create'])->name('menu.create');
 
-Route::resource('/menu/settings', MenuSettingsController::class);
+Route::resource('/menu/settings', FrontEndSettingsController::class);
 Route::resource('menu', MenuController::class)->only([
     'index', 'show', 'store', 'update', 'destroy', 'edit'
 ]);
@@ -40,7 +38,7 @@ Route::resource('role', RoleController::class);
 Route::resource('tags', TagsController::class);
 
 Route::resource('users', UsersController::class);
-Route::get('/users/cari','UsersController@cari');
+Route::get('/users/cari', [UsersController::class, 'cari']);
 
 // Route::post('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])
 //     ->middleware(['auth', 'signed']) // <-- don't remove "signed"
