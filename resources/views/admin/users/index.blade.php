@@ -9,42 +9,53 @@
 @section('body')
 <x-page-heading title="Table User" subtitle="View and Manage User Data" />
     <section class="section"> 
-        <div class="card">
-            <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">Users List</span>
-                <a href="{{ route('users.create') }}" class="btn btn-primary"><i class="bi bi-plus-circle-fill"></i>&nbsp;&nbsp;&nbsp;Add
-                    User</a>
-            </div>
-            <div class="card-body d-flex flex-column gap-2">
-            <div class="accordion border border-1" id="accordionExample">
-            </div>
-            </div>
+    <div class="card ">
+            <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">User Search</span></div>
             <div class="card-body">
-            <form class="row" method="GET">
-                        <div class="col-lg-4 mb-1">
-                            <div class="input-group mb-3">
+                <form class="row g-3" method="GET">
+                    <div class="col-md-4">
+                        <label for="inputCategory" class="form-label">Email</label>
+                        <input name="inputCategory" id="category" placeholder="Email" type="text" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputSlug" class="form-label">Name</label>
+                        <input name="inputSlug" id="slug" placeholder="Name" type="text" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputState" class="form-label">Role</label>
                                 <select name="role" class="form-select">
                                     <option value="" selected>Role</option>
                                     @foreach ($roles as $role)
                                     <option value="{{ $role->id }}">{{ $role->role }}</option>
                                     @endforeach
                                 </select>
-                            </div>
                         </div>
-                        <div class="col-lg-4 mb-1">
-                            <div class="input-group mb-3">
-                                <select name="status" class="form-select">
-                                    <option value="" selected>Status</option>
-                                    <option value="1">Active</option>
-                                    <option value="2">In Active</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 mb-1">
-                            <div class="input-group mb-3">
-                                <button type="submit" class="btn btn-primary">Filter</button>
-                            </div>
-                        </div>
-                    </form>
+                    <div class="col-md-4">
+                        <label for="inputState" class="form-label">Status</label>
+                        <select name="status" id="inputState" class="form-select">
+                            <option value="" selected>All</option>
+                            <option value="1">Active</option>
+                            <option value="2">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="d-flex justify-content-end gap-3 mt-3">
+                            <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="User Search"><i class="bi bi-search"></i>&nbsp;&nbsp;&nbsp;Search</button>
+                            <a href="{{route('users.index')}}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Show All Users Data"><i class="bi bi-card-list"></i>&nbsp;&nbsp;&nbsp;Show All</a>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+
+
+
+
+        <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">Users List</span>
+                <a href="{{ route('users.create') }}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Add User"><i class="bi bi-plus-circle-fill"></i>&nbsp;&nbsp;&nbsp;Add
+                    User</a>
+            </div>
+            <div class="card-body">
                 <table class="table" id="table1">
                     <thead>
                         <tr>
@@ -69,8 +80,8 @@
                             <td> <span class="badge bg-danger">Inactive</span> </td>
                             @endif
                             <td>
-                                <a href="{{ route('users.edit', $u->uuid) }}" class="btn icon btn-warning"><i class="bi bi-pencil-square"></i></a>
-                                <button type="button" data-toggle="modal" data-target="#deleteModal{{ $u->uuid }}" class="btn icon btn-danger"><i class="bi bi-trash"></i></button>
+                                <a href="{{ route('users.edit', $u->uuid) }}" class="btn icon btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Update User Data"><i class="bi bi-pencil-square"></i></a>
+                                <button type="button" data-toggle="modal" data-target="#deleteModal{{ $u->uuid }}" class="btn icon btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete User Data"><i class="bi bi-trash"></i></button>
                             </td>
                         </tr>
                         <div class="modal fade" id="deleteModal{{ $u->uuid }}" tabindex="-1"
