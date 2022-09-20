@@ -23,6 +23,13 @@ class UsersController extends Controller
     {
         $users = User::with(['roles']);
 
+        if ($request->get('inputEmail')) {
+            $users->where('email', 'like', '%' . $request->inputEmail . '%');
+        } 
+
+        if ($request->get('inputName')) {
+            $users-> where('name', 'like', '%' . $request->inputName . '%');
+        }
         if ($request->get('role')) {
             $role = $request->role;
             $users ->where('role_id',$role);
@@ -39,7 +46,7 @@ class UsersController extends Controller
         }
 
         return view('admin.users.index', [
-            'users' => $users->paginate()->withQueryString(),
+            'users' => $users->paginate(10)->withQueryString(),
             'roles' => Role::all()
         ]);
     }
