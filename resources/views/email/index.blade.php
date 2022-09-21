@@ -12,6 +12,6 @@
     {{ $decrypt }}
     New Verification Email!!
     Click this button to verify your email .
-    <a href="{{ route('email.verify') }}">Verify Email</a>
+    <a href="{{ route('email.verify', $encrypt) }}">Verify Email</a>
 </body>
 </html>

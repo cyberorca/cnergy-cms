@@ -56,6 +56,6 @@ Route::get('/login',[LoginController::class,'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::get('/email/verify', function () {
+Route::get('/email/verify/{token}', function () {
     return "view('welcome')";
 })->name('email.verify');
