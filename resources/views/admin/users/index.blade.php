@@ -14,12 +14,12 @@
             <div class="card-body">
                 <form class="row g-3" method="GET">
                     <div class="col-md-4">
-                        <label for="inputCategory" class="form-label">Email</label>
-                        <input name="inputCategory" id="category" placeholder="Email" type="text" class="form-control">
+                        <label for="inputEmail" class="form-label">Email</label>
+                        <input name="inputEmail" id="email" placeholder="Email" type="text" class="form-control">
                     </div>
                     <div class="col-md-4">
-                        <label for="inputSlug" class="form-label">Name</label>
-                        <input name="inputSlug" id="slug" placeholder="Name" type="text" class="form-control">
+                        <label for="inputName" class="form-label">Name</label>
+                        <input name="inputName" id="name" placeholder="Name" type="text" class="form-control">
                     </div>
                     <div class="col-md-4">
                         <label for="inputState" class="form-label">Role</label>
@@ -116,6 +116,9 @@
                         @endforeach
                     </tbody>
                 </table>
+                <div  class="d-flex">
+                    {{ $users->links() }}
+                </div>
             </div>
         </div>
     </section>
