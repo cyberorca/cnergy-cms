@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\MenuController;
+use App\Http\Controllers\Api\CategoriesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,3 +23,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::resource('menu', MenuController::class)->only([
     'index', 'show', 'store', 'update', 'destroy', 'edit'
 ]);
+
+Route::resource('categories', CategoriesController::class);

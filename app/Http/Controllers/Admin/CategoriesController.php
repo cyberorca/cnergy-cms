@@ -7,6 +7,8 @@ use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 
 class CategoriesController extends Controller
@@ -49,8 +51,9 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-        return view('admin.categories.create', compact('categories'));
+        $method = explode('/', URL::current());
+        // $categories = Category::all();
+        return view('admin.categories.editable', ['method' => end($method)]);
     }
 
     /**
@@ -71,7 +74,7 @@ class CategoriesController extends Controller
             'types' => '["news", "video", "photonews"]',
             'created_at' => now(),
             // ganti uuid user login nanti
-            'created_by' => auth()->user()->uuid,
+            'created_by' => Auth::user()->uuid,
         ]);
         try {
             $category->save();
@@ -100,8 +103,9 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
+        $method = explode('/', URL::current());
         $post = Category::where('id', $id)->first();
-        return view('admin.categories.update', compact('post'));
+        return view('admin.categories.editable', ['method' => end($method)])->with('post', $post);
     }
 
     /**
@@ -123,8 +127,7 @@ class CategoriesController extends Controller
                 'slug' => $data['slug'],
                 'types' => '["news", "video", "photonews"]',
                 'updated_at' => now(),
-                // ganti uuid user login nanti
-                'updated_by' => auth()->user()->uuid,
+                'updated_by' => Auth::user()->uuid,
             ]);
             return redirect('categories')->with('status', 'Successfully to Update Category');
         } catch (\Throwable $e) {
