@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
+use App\Http\Utils\SendEmailToNewUsers;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
 
 class UsersController extends Controller
 {
@@ -84,10 +84,11 @@ class UsersController extends Controller
             'name' => ucwords($data['name']),
             'email' => $data['email'],
             'role_id' => $data['role'],
+            'remember_token' => Str::random(100),
         ]);
         try {
             $user->save();
-            // event(new Registered($user));
+            SendEmailToNewUsers::makeMail($user);
             return redirect('users')->with('status', 'Successfully to Add User');
         } catch (\Throwable $e) {
             return redirect('users')->withErrors($e->getMessage());
