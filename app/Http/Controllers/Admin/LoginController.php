@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -47,5 +48,9 @@ class LoginController extends Controller
         User::where('uuid', Auth::user()->getAuthIdentifier())->update(['last_logged_in' => now()]);
         \auth()->logout();
         return redirect('login');
+    }
+
+    public function verify(Request $request){
+
     }
 }

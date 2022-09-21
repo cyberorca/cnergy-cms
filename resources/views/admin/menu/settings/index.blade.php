@@ -3,7 +3,7 @@
 @section('css')
     <style>
         .image-preview {
-            width: 100%;
+            width: 300px;
             height: 200px;
             object-fit: cover;
         }
@@ -136,9 +136,10 @@
                             <div class="form-group">
                                 <label for="site_logo" class="mb-2">Site Logo (.png)</label>
                                 <div class="flex flex-column">
-                                    <img src="@if($menu_settings) {{ asset('storage/site_logo_image/' . $menu_settings->site_logo) }} @else {{ asset('assets/images/site_logo.png') }} @endif" class="mb-3 image-preview"
-                                        alt="Your Image" id="site_logo_preview">
-                                    <input type="file" class="form-control" name="site_logo" id="site_logo_input" accept="image/png"
+                                    <img src="@if ($menu_settings) {{ asset('storage/site_logo_image/' . $menu_settings->site_logo) }} @else {{ asset('assets/images/site_logo.png') }} @endif"
+                                        class="mb-3 image-preview" alt="Your Image" id="site_logo_preview">
+                                    <input type="file" class="form-control" name="site_logo" id="site_logo_input"
+                                        accept="image/png"
                                         value="@if ($menu_settings) {{ $menu_settings->site_logo }} @endif" />
                                     @error('site_logo')
                                         <div class="invalid-feedback">
@@ -150,21 +151,25 @@
                             </div>
                             <div class="form-group">
                                 <label for="favicon" class="mb-2">Favicon (.ico)</label>
-                                <img src="@if($menu_settings) {{ asset('storage/site_logo_image/' . $menu_settings->favicon) }} @else {{ asset('assets/images/site_logo.png') }} @endif" class="mb-3 image-preview"
-                                        alt="Your Image" id="favicon_preview" >
-                                <input type="file" class="form-control" name="favicon" id="favicon_input" accept="image/*"
-                                    value="@if ($menu_settings) {{ $menu_settings->favicon }} @endif" />
-                                @error('favicon')
-                                    <div class="invalid-feedback">
-                                        <i class="bx bx-radio-circle"></i>
-                                        {{ $message }}
-                                    </div>
-                                @enderror
+                                <div class="flex flex-column">
+                                    <img src="@if ($menu_settings) {{ asset('storage/site_logo_image/' . $menu_settings->favicon) }} @else {{ asset('assets/images/site_logo.png') }} @endif"
+                                        class="mb-3 image-preview" alt="Your Image" id="favicon_preview">
+                                    <input type="file" class="form-control" name="favicon" id="favicon_input"
+                                        accept="image/x-icon"
+                                        value="@if ($menu_settings) {{ $menu_settings->favicon }} @endif" />
+                                    @error('favicon')
+                                        <div class="invalid-feedback">
+                                            <i class="bx bx-radio-circle"></i>
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label for="accent_color" class="mb-2">Color 
+                                <label for="accent_color" class="mb-2">Color
                                 </label>
-                                <input type="hidden" id="accent_color_str" value="@if ($menu_settings) {{ $menu_settings->accent_color }} @endif">
+                                <input type="hidden" id="accent_color_str"
+                                    value="@if ($menu_settings) {{ $menu_settings->accent_color }} @endif">
                                 <input type="color" name="accent_color" class="form-control" id="accent_color_input"
                                     value="#ffffff" />
                                 @error('accent_color')
