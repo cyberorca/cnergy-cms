@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\URL;
 
 
 class UsersController extends Controller
@@ -74,8 +75,9 @@ class UsersController extends Controller
      */
     public function create()
     {
+        $method = explode('/', URL::current());
         $roles = Role::all();
-        return view('admin.users.create', compact('roles'));
+        return view('admin.users.editable', ['roles' => $roles, 'method' => end($method)]);
     }
 
     /**
@@ -121,9 +123,10 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
+        $method = explode('/', URL::current());
         $post = User::where('uuid', $id)->with(['roles'])->first();
         $roles = Role::all();
-        return view('admin.users.update', compact('roles'))->with('post', $post);
+        return view('admin.users.editable', ['roles' => $roles, 'method' => end($method)])->with('post', $post);
     }
 
     /**
