@@ -6,7 +6,7 @@
     <div class="card col-md-7">
             <div class="card-header"><span class="h4">Update User</span></div>
             <div class="card-body d-flex flex-column gap-2">
-                <form action="{{route('users.update',$post->uuid)}}" method="post">
+                <form action="{{route('users.update', $post->uuid)}}" method="post">
                     @method("PUT")
                     @csrf
                     <div class="col-md-12">
