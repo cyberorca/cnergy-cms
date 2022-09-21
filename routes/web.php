@@ -37,8 +37,10 @@ Route::group(['middleware' => 'auth'], function () {
         'index', 'show', 'store', 'update', 'destroy', 'edit'
     ]);
 
-
-    Route::resource('categories', CategoriesController::class);
+    Route::get("/categories/create/{id?}", [CategoriesController::class, 'create'])->name('categories.create');
+    Route::resource('categories', CategoriesController::class)->only([
+        'index', 'show', 'store', 'update', 'destroy', 'edit'
+    ]);
 
     Route::resource('role', RoleController::class);
     

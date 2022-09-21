@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class CategoriesController extends Controller
 {
@@ -20,12 +19,12 @@ class CategoriesController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = Category::latest();
-
+        $categories = Category::whereNull("parent_id");
+        
         if ($request->get('inputCategory')) {
             $categories->where('category', 'like', '%' . $request->inputCategory . '%');
         } 
-
+        
         if ($request->get('inputSlug')) {
             $categories-> where('slug', 'like', '%' . $request->inputSlug . '%');
         }
@@ -38,9 +37,9 @@ class CategoriesController extends Controller
                 $categories ->where('is_active', "1");
             }
         }
-
+        // return response()->json($categories->get());
         return view('admin.categories.index',  [
-            'categories' => $categories->paginate(10)->withQueryString(),
+            'categories' => $categories->with(["childCategory"])->get(),
         ]);
     }
 
@@ -49,11 +48,11 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id = null)
     {
         $method = explode('/', URL::current());
-        // $categories = Category::all();
-        return view('admin.categories.editable', ['method' => end($method)]);
+        $parent = Category::find($id);
+        return view('admin.categories.editable', ['method' => end($method), 'parent' => $parent]);
     }
 
     /**
@@ -69,8 +68,8 @@ class CategoriesController extends Controller
             'is_active' => '1',
             'category' => ucwords($data['category']),
             'common' => $data['category'],
-            'parent_id' => '0',
-            'slug' => $data['slug'],
+            'parent_id' => $data['parent_id'] ?? null,
+            'slug' => Str::slug($data['category']),
             'types' => '["news", "video", "photonews"]',
             'created_at' => now(),
             // ganti uuid user login nanti

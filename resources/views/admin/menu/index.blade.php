@@ -1,8 +1,6 @@
 @extends('layout.app')
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('assets/extensions/simple-datatables/style.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/pages/simple-datatables.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/pages/menu.css') }}" />
 @endsection
 

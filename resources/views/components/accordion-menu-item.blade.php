@@ -8,10 +8,10 @@
                     <p class="m-0 p-0 ms-3">{{ $item->menu_name() }}</p>
                 </div>
                 <div class="d-flex gap-2">
-                    <a class="btn btn-primary ms-3" href="{{ route('menu.create', $item->id) }}"
+                    <a class="btn btn-primary ms-3" href="{{ route($path . '.create', $item->id) }}"
                         data-bs-toggle="tooltip" data-bs-placement="top" title="Add New Child Menu"><i
                             class="bi bi-plus-circle-fill"></i></a>
-                    <a href="{{ route('menu.edit', $item->id) }}" class="btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Menu"><i
+                    <a href="{{ route($path . '.edit', $item->id) }}" class="btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Menu"><i
                             class="bi bi-pencil-square"></i></a>
                     <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ $item->id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Menu"><i class="bi bi-trash-fill"
                             ></i></a>
@@ -30,7 +30,7 @@
                                     <p class="" style="font-size: 15px"> Are you sure you want to delete role <strong class="text-danger">{{ $item->menu_name() }}</strong>?</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <form action="{{ route('menu.destroy', $item->id) }}" method="post">
+                                    <form action="{{ route($path . '.destroy', $item->id) }}" method="post">
                                         {{ method_field('delete') }}
                                         @csrf
                                         <button type="button" class="btn" data-bs-dismiss="modal">

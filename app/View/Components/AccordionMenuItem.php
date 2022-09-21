@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use Illuminate\Support\Facades\URL;
 use Illuminate\View\Component;
 
 class AccordionMenuItem extends Component
@@ -12,10 +13,12 @@ class AccordionMenuItem extends Component
      * @return void
      */
     public $item;
+    public $path;
     
     public function __construct($item)
     {
         $this->item = $item;
+        $this->path = explode('/', URL::current())[3];
     }
 
     /**

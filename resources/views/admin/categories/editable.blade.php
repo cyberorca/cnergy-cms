@@ -17,6 +17,12 @@
                 @endif
                 @csrf
                 <div class="col-md-12">
+                    @if ($method !== 'edit')
+                        @if ($parent)
+                            <input type="hidden" name="parent_id" value="{{ $parent->id }}">
+                            <label for="basicInput" class="mb-2 fw-bold">Parent Category : {{ $parent->category }}</label>
+                        @endif
+                    @endif
                     <div class="form-group">
                         <label for="basicInput">Category Name</label>
                         <input type="text" class="form-control" id="category" placeholder="Ex: Bandung Merdeka"
@@ -33,7 +39,7 @@
                             <label for="basicInput">Status</label>
                             <div class="form-group">
                                 <input class="form-check-input" type="radio" name="is_active"
-                                    @if ($post->is_active == 1) checked @endif  value="1">
+                                    @if ($post->is_active == 1) checked @endif value="1">
                                 <label class="form-check-label">
                                     On
                                 </label>

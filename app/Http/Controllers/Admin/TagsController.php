@@ -56,7 +56,7 @@ class TagsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
         $method = explode('/', URL::current());
         return view('admin.tags.editable', ['method' => end($method)]);
