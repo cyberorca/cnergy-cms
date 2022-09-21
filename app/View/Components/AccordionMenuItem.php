@@ -11,11 +11,11 @@ class AccordionMenuItem extends Component
      *
      * @return void
      */
-    public $menu;
+    public $item;
     
-    public function __construct($menu)
+    public function __construct($item)
     {
-        $this->menu = $menu;
+        $this->item = $item;
     }
 
     /**

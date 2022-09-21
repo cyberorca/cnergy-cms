@@ -15,7 +15,7 @@
                     Menu</a>
             </div>
             <div class="card-body d-flex flex-column gap-2">
-                <x-accordion-menu :menus="$menus"/>
+                <x-accordion-menu :accordion="$menus"/>
             </div>
         </div>
     </section>

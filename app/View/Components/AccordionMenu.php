@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\Component;
 
 class AccordionMenu extends Component
@@ -12,11 +13,11 @@ class AccordionMenu extends Component
      * @return void
      */
 
-    public $menus;
+    public $accordion;
     
-    public function __construct($menus)
+    public function __construct($accordion)
     {
-        $this->menus = $menus;
+        $this->accordion = $accordion;
     }
 
     /**
