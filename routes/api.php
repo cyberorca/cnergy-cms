@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\MenuController;
 use App\Http\Controllers\Api\CategoriesController;
+use App\Http\Controllers\Api\FrontEndSettingsController;
 use App\Http\Controllers\Api\TagsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,3 +29,5 @@ Route::resource('menu', MenuController::class)->only([
 Route::resource('category', CategoriesController::class);
 
 Route::resource('tag', TagsController::class);
+
+Route::resource('fe-setting', FrontEndSettingsController::class);
