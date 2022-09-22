@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FrontEndSettingsRequest;
+use App\Http\Requests\GenerateTokenRequest;
 use App\Models\FrontEndSetting;
 use App\Models\MenuSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class FrontEndSettingsController extends Controller
 {
@@ -65,6 +67,30 @@ class FrontEndSettingsController extends Controller
         //
     }
 
+    public function generateToken(GenerateTokenRequest $request)
+    {
+        // if ($input["token_name"]) {
+        //     $data["token"] = json_encode([
+        //         $input["token_name"] => sha1(Str::random(64))
+        //     ]);
+        // }
+
+        try {
+            $input = $request->validated();
+            $menu = FrontEndSetting::first(['token']);
+            $latest_token = json_decode($menu->token, true);
+            $latest_token[$input["token_name"]] = sha1(Str::random(64));
+            FrontEndSetting::updateOrCreate([
+                'id' => 1
+            ], [
+                'token' => json_encode($latest_token)
+            ]);
+            // return response()->json($menu); 
+            return redirect()->back()->with('status', 'Successfully generate token settings');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -87,7 +113,6 @@ class FrontEndSettingsController extends Controller
                 "twitter" => $input["twitter"],
                 "twitter_username" => $input["twitter_username"],
                 "accent_color" => $input["accent_color"],
-                "token" => sha1($input["token"]),
             ];
             $menu = FrontEndSetting::first(['site_logo', 'favicon']);
             if ($request->hasFile('site_logo')) {
