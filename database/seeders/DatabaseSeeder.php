@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
              RoleSeeder::class,
              MenuSeeder::class,
         ]);
-        User::factory(1000)->create();
+        User::factory(100)->create();
         Tag::factory(100)->create();
         // $news = News::all();
         // foreach($news as $item){

@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Models\News;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,14 +50,12 @@ Route::group(['middleware' => 'auth'], function () {
 //     ->middleware(['auth', 'signed']) // <-- don't remove "signed"
 //     ->name('verification.verify');
 
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-
-    return redirect('/home');
-})->middleware(['auth', 'signed'])->name('verification.verify');
-
 Route::get('/auth/redirect', [LoginController::class, 'redirectToProvider']);
 Route::get('/auth/callback', [LoginController::class, 'handleProviderCallback']);
 Route::get('/login',[LoginController::class,'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::get('/email/verify/{token}', function () {
+    return "view('welcome')";
+})->name('email.verify');
