@@ -35,6 +35,7 @@ class RoleController extends Controller
         $data = $request->input();
         $menusIdChild = $request->checkMenuChild; //[][]
         try {
+
             $role = $this->roleModel->saveRole($data['role']);
 
             if ($menusIdChild != null) {

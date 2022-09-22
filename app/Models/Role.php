@@ -36,7 +36,8 @@ class Role extends Model
         $role = new Role([
             'role' => ucwords($role)
         ]);
-        return $role->save();
+        $role->save();
+        return $role;
     }
 
     public function updateRole($id,$role){
