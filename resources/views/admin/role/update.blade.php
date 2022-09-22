@@ -66,20 +66,20 @@
                                                          id="multiCollapseExample{{$menu->id}}">
                                                         @if ($menu->childs() !== null)
                                                             @foreach ($menu->childs() as $item)
-                                                                @foreach($item->roles as $roleId)
-                                                                    @if($roleId->id == $role->id)
-                                                                        <div class="custom-control custom-checkbox">
-                                                                            <input type="checkbox"
-                                                                                   class="childCheckBox{{$item->id}} ms-1 form-check-input form-check-success"
-                                                                                   name="checkMenuChild[{{$menu->id}}][{{$item->id}}]"
-                                                                                   value="{{$item->id}}"
-                                                                                   checked
-                                                                                   id="customColorCheck2">
-                                                                            <label class="form-check-label"
-                                                                                   for="customColorCheck2">{{$item->menu_name()}}</label>
-                                                                        </div>
-                                                                    @endif
-                                                                @endforeach
+{{--                                                                @foreach($item->roles as $roleId)--}}
+{{--                                                                    @if($roleId->id == $role->id)--}}
+{{--                                                                        <div class="custom-control custom-checkbox">--}}
+{{--                                                                            <input type="checkbox"--}}
+{{--                                                                                   class="childCheckBox{{$item->id}} ms-1 form-check-input form-check-success"--}}
+{{--                                                                                   name="checkMenuChild[{{$menu->id}}][{{$item->id}}]"--}}
+{{--                                                                                   value="{{$item->id}}"--}}
+{{--                                                                                   checked--}}
+{{--                                                                                   id="customColorCheck2">--}}
+{{--                                                                            <label class="form-check-label"--}}
+{{--                                                                                   for="customColorCheck2">{{$item->menu_name()}}</label>--}}
+{{--                                                                        </div>--}}
+{{--                                                                    @endif--}}
+{{--                                                                @endforeach--}}
                                                                 <div class="custom-control custom-checkbox">
                                                                     <input type="checkbox"
                                                                            class="childCheckBox{{$item->id}} ms-1 form-check-input form-check-success"
