@@ -70,7 +70,7 @@ class CategoriesController extends Controller
             'common' => $data['category'],
             'parent_id' => $data['parent_id'] ?? null,
             'slug' => Str::slug($data['category']),
-            'types' => '["news", "video", "photonews"]',
+            'types' => $data['types'],
             'created_at' => now(),
             // ganti uuid user login nanti
             'created_by' => Auth::user()->uuid,
@@ -122,9 +122,9 @@ class CategoriesController extends Controller
                 'is_active' => $data['is_active'],
                 'category' => ucwords($data['category']),
                 'common' => $data['category'],
-                'parent_id' => '0',
-                'slug' => $data['slug'],
-                'types' => '["news", "video", "photonews"]',
+                'parent_id' => $data['parent_id'] ?? null,
+                'slug' => Str::slug($data['category']),
+                'types' => $data['types'],
                 'updated_at' => now(),
                 'updated_by' => Auth::user()->uuid,
             ]);
