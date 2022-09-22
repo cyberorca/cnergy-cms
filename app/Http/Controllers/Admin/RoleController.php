@@ -4,37 +4,52 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest;
+use App\Models\Menu;
 use App\Models\Role;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
+    private $roleModel ;
+    public function __construct(Role $roleModel)
+    {
+        $this->roleModel = $roleModel;
+    }
 
     public function index(Request $request)
     {
-        $roles = Role::query();
-
-        if ($request->get('inputRole')) {
-            $roles-> where('role', 'like', '%' . $request->inputRole . '%');
-        }
+        $roles = $this->roleModel->findRoleByRole($request->get('inputRole'));
         return view('admin.role.index',
             ['roles' => $roles->paginate(10)->withQueryString()]);
     }
 
     public function create()
     {
-        return view('admin.role.create');
+        $menus = Menu::whereNull('parent_id')->with(["childMenus", "roles"])->get();
+        return view('admin.role.create', compact('menus'));
     }
 
     public function store(RoleRequest $request)
     {
         $data = $request->input();
-        $role = new Role([
-            'role' => ucwords($data['role'])
-        ]);
+        $menusIdChild = $request->checkMenuChild; //[][]
         try {
-            $role->save();
+
+            $role = $this->roleModel->saveRole($data['role']);
+
+            if ($menusIdChild != null) {
+                foreach ($menusIdChild as $menuKeyParent => $menuChild) {
+                    if (sizeof($menuChild) == 1) {
+                        $role->menus()->attach($menuKeyParent);
+                    } else {
+                        foreach ($menuChild as $menuKey => $menuValue) {
+                            $role->menus()->attach((int)$menuValue);
+                        }
+                    }
+                }
+            }
+
             return \redirect('role')->with('status', 'Successfully Add New Role');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
@@ -47,18 +62,35 @@ class RoleController extends Controller
 
     }
 
-
     public function edit($id)
     {
-        $role = Role::where('id', $id)->first();
-        return view('admin.role.update')->with('role', $role);
+        $role = $this->roleModel->findRoleById($id);
+        $menus = Menu::whereNull('parent_id')->with(["childMenus", "roles"])->get();
+
+        return view('admin.role.update', compact(["role", "menus"]));
     }
 
-    public function update(RoleRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $data = $request->input();
+        $menusIdChild = $request->checkMenuChild; //[][]
         try {
-            Role::where('id', $id)->update(['role' => ucwords($data['role'])]);
+            if ($this->roleModel->isExistRole($data['role'])){
+                $roleById = $this->roleModel->updateRole($id,$data['role']);
+            }
+            $this->roleModel->deleteAccessRoleById($id);
+            if ($menusIdChild != null) {
+                foreach ($menusIdChild as $menuKeyParent => $menuChild) {
+                    if (sizeof($menuChild) == 1) {
+                        $roleById->menus()->attach($menuKeyParent);
+                    } else {
+                        foreach ($menuChild as $menuKey => $menuValue) {
+                            $roleById->menus()->attach((int)$menuValue);
+                        }
+                    }
+                }
+            }
+
             return redirect("role")->with("status", "Successfully to Update Role ");
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
@@ -68,7 +100,7 @@ class RoleController extends Controller
     public function destroy($id)
     {
         try {
-            Role::destroy($id);
+           $this->roleModel->deleteRole($id);
             return Redirect::back()->with('status', 'Successfully to Delete Role');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
