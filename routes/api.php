@@ -25,6 +25,6 @@ Route::resource('menu', MenuController::class)->only([
     'index', 'show', 'store', 'update', 'destroy', 'edit'
 ]);
 
-Route::resource('categories', CategoriesController::class);
+Route::resource('category', CategoriesController::class);
 
-Route::resource('tags', TagsController::class);
+Route::resource('tag', TagsController::class);
