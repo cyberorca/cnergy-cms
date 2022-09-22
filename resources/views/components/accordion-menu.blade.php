@@ -1,5 +1,5 @@
 <div class="accordion border border-1" id="accordionExample">
-    @foreach ($menus as $menu)
-        <x-accordion-menu-item :menu="$menu"/>
+    @foreach ($accordion as $item)
+        <x-accordion-menu-item :item="$item"/>
     @endforeach
 </div>

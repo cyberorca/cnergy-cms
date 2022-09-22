@@ -37,8 +37,10 @@ Route::group(['middleware' => 'auth'], function () {
         'index', 'show', 'store', 'update', 'destroy', 'edit'
     ]);
 
-
-    Route::resource('categories', CategoriesController::class);
+    Route::get("/categories/create/{id?}", [CategoriesController::class, 'create'])->name('categories.create');
+    Route::resource('categories', CategoriesController::class)->only([
+        'index', 'show', 'store', 'update', 'destroy', 'edit'
+    ]);
 
     Route::resource('role', RoleController::class);
     
@@ -56,6 +58,4 @@ Route::get('/login',[LoginController::class,'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::get('/email/verify/{token}', function () {
-    return "view('welcome')";
-})->name('email.verify');
+Route::get('/email/verify/{token}', [LoginController::class, 'verify'])->name('email.verify');

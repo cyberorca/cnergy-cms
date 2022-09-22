@@ -1,8 +1,6 @@
 @extends('layout.app')
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('assets/extensions/simple-datatables/style.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/pages/simple-datatables.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/pages/menu.css') }}" />
 @endsection
 
@@ -15,7 +13,7 @@
                     Menu</a>
             </div>
             <div class="card-body d-flex flex-column gap-2">
-                <x-accordion-menu :menus="$menus"/>
+                <x-accordion-menu :accordion="$menus"/>
             </div>
         </div>
     </section>
