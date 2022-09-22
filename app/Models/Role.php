@@ -47,8 +47,8 @@ class Role extends Model
 
     public function findRoleByRole($role){
         $roles = Role::query();
-        if (!isEmptyOrNullString($role)) {
-            $roles->where('role', 'like', '%' . $request->inputRole . '%');
+        if (!empty($role)) {
+            $roles->where('role', 'like', '%' . $role . '%');
         }
         return $roles;
     }

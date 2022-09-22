@@ -47,63 +47,80 @@
                                             <div class="col-lg-12">
                                                 <div class="accordion">
                                                     <p class="w-100 accordion-item">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox"
-                                                               class="parentCheckBox{{$menu->id}} form-check-input form-check-success"
-                                                               name="checkMenuChild[{{$menu->id}}][{{null}}]"
-                                                               value="{{$menu->id}}"
-                                                        >
-                                                        <label class="form-check-label"
-                                                               for="customColorCheck3"></label>
-                                                        <a data-bs-toggle="collapse" class="accordion-button"
-                                                           href="#multiCollapseExample{{$menu->id}}"
-                                                           aria-expanded="false">
-                                                            {{$menu->menu_name()}}
-                                                        </a>
-                                                    </div>
-                                                    </p>
-                                                    <div class=" collapse multi-collapse"
-                                                         id="multiCollapseExample{{$menu->id}}">
-                                                        @if ($menu->childs() !== null)
-                                                            @foreach ($menu->childs() as $item)
-{{--                                                                @foreach($item->roles as $roleId)--}}
-{{--                                                                    @if($roleId->id == $role->id)--}}
-{{--                                                                        <div class="custom-control custom-checkbox">--}}
-{{--                                                                            <input type="checkbox"--}}
-{{--                                                                                   class="childCheckBox{{$item->id}} ms-1 form-check-input form-check-success"--}}
-{{--                                                                                   name="checkMenuChild[{{$menu->id}}][{{$item->id}}]"--}}
-{{--                                                                                   value="{{$item->id}}"--}}
-{{--                                                                                   checked--}}
-{{--                                                                                   id="customColorCheck2">--}}
-{{--                                                                            <label class="form-check-label"--}}
-{{--                                                                                   for="customColorCheck2">{{$item->menu_name()}}</label>--}}
-{{--                                                                        </div>--}}
-{{--                                                                    @endif--}}
-{{--                                                                @endforeach--}}
-                                                                <div class="custom-control custom-checkbox">
-                                                                    <input type="checkbox"
-                                                                           class="childCheckBox{{$item->id}} ms-1 form-check-input form-check-success"
-                                                                           name="checkMenuChild[{{$menu->id}}][{{$item->id}}]"
-                                                                           value="{{$item->id}}"
-                                                                           id="customColorCheck2">
-                                                                    <label class="form-check-label"
-                                                                           for="customColorCheck2">{{$item->menu_name()}}</label>
-                                                                </div>
-
-                                                                <script> $(".parentCheckBox{{$menu->id}}").click(
-                                                                        function () {
-                                                                            let getParent = document.querySelector(".parentCheckBox{{$menu->id}}")
-                                                                            let getChild = document.querySelector(".childCheckBox{{$item->id}} ")
-                                                                            if (getParent.checked == true) {
-                                                                                getChild.checked = true
-                                                                            } else {
-                                                                                getChild.checked = false
-                                                                            }
-                                                                        }
-                                                                    ) </script>
-                                                            @endforeach
+                                                    @if ($menu->roles()->find($role->id))
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox"
+                                                                   class="parentCheckBox{{$menu->id}} form-check-input form-check-success"
+                                                                   name="checkMenuChild[{{$menu->id}}][{{null}}]"
+                                                                   value="{{$menu->id}}"
+                                                                   checked
+                                                            >
+                                                            <label class="form-check-label"
+                                                                   for="customColorCheck3"></label>
+                                                            <a data-bs-toggle="collapse" class="accordion-button"
+                                                               href="#multiCollapseExample{{$menu->id}}"
+                                                               aria-expanded="false">
+                                                                {{$menu->menu_name()}}
+                                                            </a>
+                                                        </div>
+                                                    @else
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox"
+                                                                   class="parentCheckBox{{$menu->id}} form-check-input form-check-success"
+                                                                   name="checkMenuChild[{{$menu->id}}][{{null}}]"
+                                                                   value="{{$menu->id}}"
+                                                            >
+                                                            <label class="form-check-label"
+                                                                   for="customColorCheck3"></label>
+                                                            <a data-bs-toggle="collapse" class="accordion-button"
+                                                               href="#multiCollapseExample{{$menu->id}}"
+                                                               aria-expanded="false">
+                                                                {{$menu->menu_name()}}
+                                                            </a>
+                                                        </div>
                                                         @endif
-                                                    </div>
+                                                        </p>
+                                                        <div class=" collapse multi-collapse"
+                                                             id="multiCollapseExample{{$menu->id}}">
+                                                            @if ($menu->childs() !== null)
+                                                                @foreach ($menu->childs() as $key )
+                                                                    @if($key->roles()->find($role->id))
+                                                                        <div class="custom-control custom-checkbox">
+                                                                            <input type="checkbox"
+                                                                                   class="childCheckBox{{$key->id}} ms-1 form-check-input form-check-success"
+                                                                                   name="checkMenuChild[{{$menu->id}}][{{$key->id}}]"
+                                                                                   value="{{$key->id}}"
+                                                                                   checked
+                                                                                   id="customColorCheck2">
+                                                                            <label class="form-check-label"
+                                                                                   for="customColorCheck2">{{$key->menu_name()}}</label>
+                                                                        </div>
+                                                                    @else
+                                                                        <div class="custom-control custom-checkbox">
+                                                                            <input type="checkbox"
+                                                                                   class="childCheckBox{{$key->id}} ms-1 form-check-input form-check-success"
+                                                                                   name="checkMenuChild[{{$menu->id}}][{{$key->id}}]"
+                                                                                   value="{{$key->id}}"
+                                                                                   id="customColorCheck2">
+                                                                            <label class="form-check-label"
+                                                                                   for="customColorCheck2">{{$key->menu_name()}}</label>
+                                                                        </div>
+                                                                    @endif
+
+                                                                    <script> $(".parentCheckBox{{$menu->id}}").click(
+                                                                            function () {
+                                                                                let getParent = document.querySelector(".parentCheckBox{{$menu->id}}")
+                                                                                let getChild = document.querySelector(".childCheckBox{{$key->id}} ")
+                                                                                if (getParent.checked == true) {
+                                                                                    getChild.checked = true
+                                                                                } else {
+                                                                                    getChild.checked = false
+                                                                                }
+                                                                            }
+                                                                        ) </script>
+                                                                @endforeach
+                                                            @endif
+                                                        </div>
                                                 </div>
                                             </div>
                                             <!-- list groups simple & disabled end -->
