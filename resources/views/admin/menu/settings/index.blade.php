@@ -23,6 +23,18 @@
                         @csrf
                         <div class="col-md-12">
                             <div class="form-group">
+                                <label for="basicInput" class="mb-2">Site Token</label>
+                                <input type="text" class="form-control @error('site_title') is-invalid @enderror"
+                                    id="basicInput" name="site_title" placeholder="Enter site token"
+                                    value="@if ($menu_settings) {{ $menu_settings->site_token }} @endif" />
+                                @error('site_title')
+                                    <div class="invalid-feedback">
+                                        <i class="bx bx-radio-circle"></i>
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
                                 <label for="basicInput" class="mb-2">Site Title</label>
                                 <input type="text" class="form-control @error('site_title') is-invalid @enderror"
                                     id="basicInput" name="site_title" placeholder="Enter site title"

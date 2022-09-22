@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('youtube_username', 255)->nullable();
             $table->string('site_logo', 255);
             $table->string('favicon', 255);
+            $table->json('token');
             $table->string('accent_color', 255);
             $table->timestamp('created_at', 0);
             $table->timestamp('updated_at', 0)->nullable();

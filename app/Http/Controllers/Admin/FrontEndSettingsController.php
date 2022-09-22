@@ -86,7 +86,8 @@ class FrontEndSettingsController extends Controller
                 "youtube" => $input["youtube"],
                 "twitter" => $input["twitter"],
                 "twitter_username" => $input["twitter_username"],
-                "accent_color" => $input["accent_color"]
+                "accent_color" => $input["accent_color"],
+                "token" => sha1($input["token"]),
             ];
             $menu = FrontEndSetting::first(['site_logo', 'favicon']);
             if ($request->hasFile('site_logo')) {

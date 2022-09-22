@@ -16,12 +16,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call([
-        //      RoleSeeder::class,
-        //      MenuSeeder::class,
-        // ]);
-        // User::factory(100)->create();
-        // Tag::factory(100)->create();
+        $this->call([
+             RoleSeeder::class,
+             MenuSeeder::class,
+        ]);
+        User::factory(100)->create();
+        Tag::factory(100)->create();
         Category::factory(100)->create();
         // $news = News::all();
         // foreach($news as $item){
