@@ -10,7 +10,7 @@ class FrontEndSettingsController extends Controller
 {
     public function index()
     {
-        $menu_settings = FrontEndSetting::first();
+        $menu_settings = FrontEndSetting::first()->makeHidden(['token']);
         return response()->json($menu_settings);
     }
 }
