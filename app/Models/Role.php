@@ -21,11 +21,13 @@ class Role extends Model
 
     public $timestamps = false;
 
-    
+
     public function menus()
     {
         return $this->belongsToMany(Menu::class, 'roles_menus');
     }
+
+
 
     // public function users()
     // {
