@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,10 +18,12 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name(),
+            'category' => $this->faker->name(),
             'common' => $this->faker->name(),
-            'url' => $this->faker->url(),
-            'type' => $this->faker->randomElement(['news', 'video', 'photonews']),
+            'parent_id' => $this->faker->randomElement([random_int(0, 50), null]),
+            'slug' => $this->faker->slug(),
+            'types' => '["news", "video", "photonews"]',
+            'created_by' => User::first()->uuid,
         ];
     }
 }

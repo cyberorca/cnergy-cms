@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Http\Requests\TagsRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 
@@ -54,9 +56,10 @@ class TagsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        return view('admin.tags.create');
+        $method = explode('/', URL::current());
+        return view('admin.tags.editable', ['method' => end($method)]);
     }
 
     /**
@@ -74,8 +77,8 @@ class TagsController extends Controller
             'slug' => $data['slug'],
             'created_at' => now(),
             // ganti uuid user login nanti
-            'created_by' => '0a351387-e1c2-43fb-a563-4abedc3cd558',
-            'updated_by' => '0a351387-e1c2-43fb-a563-4abedc3cd558',
+            'created_by' => Auth::user()->uuid,
+            'updated_by' => Auth::user()->uuid,
         ]);
         try {
             $tags->save();
@@ -104,8 +107,9 @@ class TagsController extends Controller
      */
     public function edit($tags)
     {
+        $method = explode('/', URL::current());
         $tag = Tag::find($tags);
-        return view('admin.tags.update', compact('tag'));
+        return view('admin.tags.editable', ['method' => end($method)])->with('tag', $tag);
     }
 
     /**
@@ -125,7 +129,7 @@ class TagsController extends Controller
             $tag->slug = $data["slug"];
             $tag->is_active = $data["is_active"];
             $tag->updated_at = now();
-            $tag->updated_by = User::first()->uuid;
+            $tag->updated_by = Auth::user()->uuid;
             $tag->save();
             return redirect('tags')->with('status', 'Successfully Update Tag');
         } catch (\Throwable $exception) {
