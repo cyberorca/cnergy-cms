@@ -36,4 +36,30 @@ class Category extends Model
         return $this->belongsToMany(News::class, 'news_category');
     }
 
+    public function child()
+    {
+        return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
+    }
+
+    public function childCategory()
+    {
+        return $this->hasMany(Category::class, 'parent_id')->with('child.parent.child.parent');
+    }
+
+    public function slug(){
+        return $this->slug;
+    }
+    public function menu_name(){
+        return $this->category;
+    }
+
+    public function childs(){
+        return $this->child;
+    }
+
 }

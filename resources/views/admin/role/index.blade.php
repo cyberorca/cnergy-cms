@@ -13,19 +13,20 @@
             </div>
             <div class="card-body">
                 <form class="row g-3" method="GET">
-                    <div class="col-4">
-                        <input name="inputRole" id="role" placeholder="Input Role" type="text" class="form-control">
+                    <div class="col-md-4">
+                        <label for="inputTag" class="form-label">Role</label>
+                        <input name="inputRole" id="role" placeholder="Role" type="text" class="form-control">
                     </div>
-                    <div class="col-4">
-                        <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i>&nbsp;&nbsp;&nbsp;Search
-                        </button>
+                    <div class="d-flex justify-content-end gap-3 mt-3">
+                            <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Role Search"><i class="bi bi-search"></i>&nbsp;&nbsp;&nbsp;Search</button>
+                            <a href="{{route('role.index')}}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Show All Role Data"><i class="bi bi-card-list"></i>&nbsp;&nbsp;&nbsp;Show All</a> 
                     </div>
                 </form>
             </div>
         </div>
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">Role List</span>
-                <a href="{{ route('role.create') }}" class="btn btn-primary"><i class="bi bi-plus-circle-fill"></i>&nbsp;&nbsp;&nbsp;Add
+                <a href="{{ route('role.create') }}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Role"><i class="bi bi-plus-circle-fill"></i>&nbsp;&nbsp;&nbsp;Add
                     Role</a>
 
             </div>
@@ -45,9 +46,9 @@
                             <td>
                                 <div class="d-flex gap-2">
                                     <a href="{{ route('role.edit', $role->id) }}" class="btn icon btn-warning"><i
-                                            class="bi bi-pencil-square"></i></a>
+                                            class="bi bi-pencil-square" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Role Data"></i></a>
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#delete{{ $role->id }}">
+                                            data-bs-target="#delete{{ $role->id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Role Data">
                                         <i class="bi bi-trash-fill"></i>
                                     </button>
                                 </div>

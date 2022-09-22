@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Utils\SendEmailToNewUsers;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -47,5 +49,25 @@ class LoginController extends Controller
         User::where('uuid', Auth::user()->getAuthIdentifier())->update(['last_logged_in' => now()]);
         \auth()->logout();
         return redirect('login');
+    }
+
+    public function verify(Request $request, $token){
+        // return response()->json([
+        //     'a' => $request->all(),
+        //     'token' => $token,
+        //     'signature' => $request->get('signature')
+        // ]);
+        
+        $signature = SendEmailToNewUsers::tokendecrypt($request->get('signature'));
+        $user_signature = json_decode($signature, true);
+        $user = User::where('email', $user_signature['email'])->first();
+        if($token == $user['remember_token']){
+            User::where('email', $user_signature['email'])->update([
+                'is_active' => '1',
+            ]);
+        }
+
+
+        return redirect('login')->with('status', 'Successfully verify email');
     }
 }

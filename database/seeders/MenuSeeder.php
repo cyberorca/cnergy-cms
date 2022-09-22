@@ -36,15 +36,15 @@ class MenuSeeder extends Seeder
             array('slug' => 'static-page', 'menu_name' => 'Static Page', 'parent_id' => '3'),
             array('slug' => 'anouncement', 'menu_name' => 'Anouncement', 'parent_id' => '3'),
             array('slug' => 'update', 'menu_name' => 'Update', 'parent_id' => NULL),
-            array('slug' => 'news', 'menu_name' => 'News', 'parent_id' => '26'),
-            array('slug' => 'tags', 'menu_name' => 'Tags', 'parent_id' => '26'),
-            array('slug' => 'breaking-news', 'menu_name' => 'Breaking News', 'parent_id' => '26'),
-            array('slug' => 'news', 'menu_name' => 'News', 'parent_id' => '27'),
-            array('slug' => 'photo', 'menu_name' => 'Photo', 'parent_id' => '27'),
-            array('slug' => 'video', 'menu_name' => 'Video', 'parent_id' => '27'),
-            array('slug' => 'tag-management', 'menu_name' => 'Tag Management', 'parent_id' => '28'),
-            array('slug' => 'news-tagging', 'menu_name' => 'News Tagging', 'parent_id' => '28'),
-            array('slug' => 'today-tag', 'menu_name' => 'Today Tag', 'parent_id' => '28')
+            array('slug' => 'news', 'menu_name' => 'News', 'parent_id' => '19'),
+            array('slug' => 'tags', 'menu_name' => 'Tags', 'parent_id' => '19'),
+            array('slug' => 'breaking-news', 'menu_name' => 'Breaking News', 'parent_id' => '19'),
+            array('slug' => 'news', 'menu_name' => 'News', 'parent_id' => '20'),
+            array('slug' => 'photo', 'menu_name' => 'Photo', 'parent_id' => '20'),
+            array('slug' => 'video', 'menu_name' => 'Video', 'parent_id' => '20'),
+            array('slug' => 'tag-management', 'menu_name' => 'Tag Management', 'parent_id' => '21'),
+            array('slug' => 'news-tagging', 'menu_name' => 'News Tagging', 'parent_id' => '21'),
+            array('slug' => 'today-tag', 'menu_name' => 'Today Tag', 'parent_id' => '21')
         );
 
         foreach($menus as $menu){

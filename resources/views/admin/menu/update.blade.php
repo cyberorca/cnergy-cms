@@ -36,8 +36,8 @@
                                 placeholder="Enter menu icon" />
                         </div> --}}
                         <div class="d-flex justify-content-end gap-3 mt-3">
-                            <a href="{{route('menu.index')}}" class="btn btn-secondary">Back</a>
-                            <button class="btn btn-primary" type="submit">Update</button>
+                            <a href="{{route('menu.index')}}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Back to Table Menu">Back</a>
+                            <button class="btn btn-primary" type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Menu Data">Update</button>
                         </div>
                     </div>
                 </form>
