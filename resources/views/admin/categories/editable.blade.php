@@ -28,13 +28,31 @@
                         <input type="text" class="form-control" id="category" placeholder="Ex: Bandung Merdeka"
                             name="category" @if ($method === 'edit') value="{{ $post->category }}" @endif>
                     </div>
-
+                    
                     <div class="form-group">
-                        <label for="basicInput">Slug</label>
-                        <input type="text" class="form-control" id="slug" placeholder="http://example.com/about"
-                            name="slug" @if ($method === 'edit') value="{{ $post->slug }}" @endif>
+                        <label for="basicInput">Type Category</label>
+                        <div class="form-group">
+                        <li class="d-inline-block me-2 mb-1">
+                            <div class="form-check">
+                                <div class="checkbox">
+                                    <input type="checkbox" name="types[]" value="news" class="form-check-input" @if ($method === 'edit') @if(in_array("news", $post->types)) checked @endif @endif>
+                                    <label for="checkbox1">News</label>
+                                </div>
+                                <div class="checkbox">
+                                    <input type="checkbox" name="types[]" value="photonews" class="form-check-input" @if ($method === 'edit') @if(in_array("photonews", $post->types)) checked @endif @endif>
+                                    <label for="checkbox1">Photo News</label>
+                                </div>
+                                <div class="checkbox">
+                                    <input type="checkbox" name="types[]" value="video" class="form-check-input" @if ($method === 'edit') @if(in_array("video", $post->types)) checked @endif @endif>
+                                    <label for="checkbox1">Video</label>
+                                </div>
+                            </div>
+                        </li>
+                        </div>
                     </div>
+
                     @if ($method === 'edit')
+                    <input type="hidden" name="parent_id" value="{{ $post->parent_id }}">
                         <div class="form-group">
                             <label for="basicInput">Status</label>
                             <div class="form-group">
