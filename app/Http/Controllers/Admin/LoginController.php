@@ -57,17 +57,21 @@ class LoginController extends Controller
         //     'token' => $token,
         //     'signature' => $request->get('signature')
         // ]);
-        
-        $signature = SendEmailToNewUsers::tokendecrypt($request->get('signature'));
-        $user_signature = json_decode($signature, true);
-        $user = User::where('email', $user_signature['email'])->first();
-        if($token == $user['remember_token']){
-            User::where('email', $user_signature['email'])->update([
-                'is_active' => '1',
-            ]);
+        try{
+            $signature = SendEmailToNewUsers::tokendecrypt($request->get('signature'));
+            $user_signature = json_decode($signature, true);
+            $user = User::where('email', $user_signature['email'])->first();
+            if($token == $user['remember_token']){
+                User::where('email', $user_signature['email'])->update([
+                    'is_active' => '1',
+                ]);
+            }
+            return redirect('login')->with('status', 'Successfully verify email');
+        }catch(\Exception $e){
+            return abort(401, 'Error to verify email token');
         }
+        
 
 
-        return redirect('login')->with('status', 'Successfully verify email');
     }
 }

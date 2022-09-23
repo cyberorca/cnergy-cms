@@ -30,6 +30,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     
+    Route::post("/generate/token", [FrontEndSettingsController::class, 'generateToken'])->name('generate.token');
     Route::resource('/menu/settings', FrontEndSettingsController::class);
     Route::get("/menu/create/{id?}", [MenuController::class, 'create'])->name('menu.create');
 

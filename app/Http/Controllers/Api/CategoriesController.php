@@ -10,7 +10,7 @@ class CategoriesController extends Controller
 {
     public function index(Request $request)
     {
-        $categories = Category::all();
+        $categories = Category::whereNull("parent_id");
 
         if ($request->get('inputCategory')) {
             $categories->where('category', 'like', '%' . $request->inputCategory . '%');
@@ -29,6 +29,6 @@ class CategoriesController extends Controller
             }
         }
 
-        return response()->json($categories);
+        return response()->json($categories->with(["childCategoryApi"])->get());
     }
 }

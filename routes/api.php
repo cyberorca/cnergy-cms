@@ -21,13 +21,14 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::resource('menu', MenuController::class)->only([
-    'index', 'show', 'store', 'update', 'destroy', 'edit'
-]);
-
-Route::resource('category', CategoriesController::class);
-
-Route::resource('tag', TagsController::class);
-
-Route::resource('fe-setting', FrontEndSettingsController::class);
+Route::middleware(['verifyTokenApi'])->group(function(){
+    
+    Route::resource('menu', MenuController::class)->only([
+        'index', 'show', 'store', 'update', 'destroy', 'edit'
+    ]);
+    Route::resource('category', CategoriesController::class);
+    
+    Route::resource('tag', TagsController::class);
+    
+    Route::resource('fe-setting', FrontEndSettingsController::class);
+});

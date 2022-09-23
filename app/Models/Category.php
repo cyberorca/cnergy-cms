@@ -51,6 +51,11 @@ class Category extends Model
         return $this->hasMany(Category::class, 'parent_id')->with('child.parent.child.parent');
     }
 
+    public function childCategoryApi()
+    {
+        return $this->hasMany(Category::class, 'parent_id')->with('child.child');
+    }
+
     public function slug(){
         return $this->slug;
     }
