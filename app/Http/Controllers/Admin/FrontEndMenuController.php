@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\FrontEndMenuRequest;
 use App\Models\FrontEndMenu;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
 class FrontEndMenuController extends Controller
@@ -29,7 +30,9 @@ class FrontEndMenuController extends Controller
     public function create($id = null)
     {
         $parent = FrontEndMenu::find($id);
-        return view('admin.menu.front-end.editable', compact('parent'));
+        $url = explode('/', URL::current());
+        $method = end($url);
+        return view('admin.menu.front-end.editable', compact('parent', 'method'));
     }
 
     /**
@@ -84,7 +87,10 @@ class FrontEndMenuController extends Controller
      */
     public function edit($id)
     {
-        //
+        $url = explode('/', URL::current());
+        $method = end($url);
+        $fe_menu = FrontEndMenu::find($id);
+        return view('admin.menu.front-end.editable', compact('fe_menu', 'method'));
     }
 
     /**
@@ -94,9 +100,23 @@ class FrontEndMenuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(FrontEndMenuRequest $request, $id)
     {
-        //
+        try {
+            $input = $request->validated();
+            $input['slug'] = Str::slug($input['title']);
+            $input['position'] = json_encode($input['position']);
+
+            $fe_menu = FrontEndMenu::find($id);
+            $fe_menu->title = $input['title'];
+            $fe_menu->slug = $input['slug'];
+            $fe_menu->position = $input['position'];
+            $fe_menu->save();
+            
+            return redirect('front-end-menu')->with('status', 'Successfully to edit frontend menu');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
     }
 
     /**
