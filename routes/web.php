@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\CategoriesController;
+use App\Http\Controllers\Admin\FrontEndMenuController;
 use App\Http\Controllers\Admin\FrontEndSettingsController;
 use App\Http\Controllers\Admin\TagsController;
 use App\Http\Controllers\Admin\RoleController;
@@ -28,7 +29,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/', function () {
         return view('welcome');
     });
-
+    
+    Route::get("/front-end-menu/create/{id?}", [FrontEndMenuController::class, 'create'])->name('front-end-menu.create');
+    Route::resource('front-end-menu', FrontEndMenuController::class)->except(['create']);
     
     Route::post("/generate/token", [FrontEndSettingsController::class, 'generateToken'])->name('generate.token');
     Route::resource('/menu/settings', FrontEndSettingsController::class);
@@ -42,11 +45,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('categories', CategoriesController::class)->only([
         'index', 'show', 'store', 'update', 'destroy', 'edit'
     ]);
-
+    
     Route::resource('role', RoleController::class);
     
     Route::resource('tags', TagsController::class);
-
+    
     Route::resource('users', UsersController::class);
 });
 // Route::post('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])

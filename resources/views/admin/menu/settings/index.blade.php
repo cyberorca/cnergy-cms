@@ -13,33 +13,7 @@
 @section('body')
     <x-page-heading title="Menu Settings Config" subtitle="Manage frontend settings" />
     <section class="section">
-        <div class="card col-md-7">
-            <div class="card-header"><span class="h5">Add Menu</span></div>
-            <div class="card-body d-flex flex-column gap-2">
-                <form action="{{ route('generate.token') }}" method="post">
-                    @csrf
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="basicInput" class="mb-2">Token Name</label>
-                            <input type="text" class="form-control @error('token_name') is-invalid @enderror"
-                                id="basicInput" name="token_name" placeholder="Enter token name" value="" />
-                            @error('token_name')
-                                <div class="invalid-feedback">
-                                    <i class="bx bx-radio-circle"></i>
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="d-flex justify-content-end gap-3 mt-3">
-                            <a href="{{ route('menu.index') }}" class="btn btn-light" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="Back to Table Menu">Back</a>
-                            <button class="btn btn-primary" type="submit" data-bs-toggle="tooltip" data-bs-placement="top"
-                                title="Create Menu">Save</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+       
         <form action="{{ route('settings.update', 1) }}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PUT')
@@ -215,6 +189,33 @@
                 </div>
             </div>
         </form>
+        <div class="card col-md-12">
+            <div class="card-header"><span class="h5">Generate Token</span></div>
+            <div class="card-body d-flex flex-column gap-2">
+                <form action="{{ route('generate.token') }}" method="post">
+                    @csrf
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="basicInput" class="mb-2">Token Name</label>
+                            <input type="text" class="form-control @error('token_name') is-invalid @enderror"
+                                id="basicInput" name="token_name" placeholder="Enter token name" value="" />
+                            @error('token_name')
+                                <div class="invalid-feedback">
+                                    <i class="bx bx-radio-circle"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="d-flex justify-content-end gap-3 mt-3">
+                            <a href="{{ route('menu.index') }}" class="btn btn-light" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Back to Table Menu">Back</a>
+                            <button class="btn btn-primary" type="submit" data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="Create Menu">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </section>
 @endsection
 

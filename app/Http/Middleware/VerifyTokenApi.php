@@ -30,7 +30,7 @@ class VerifyTokenApi
         if(!in_array($request->get('token'), $arr_token)){
             return response()->json([
                 "message" => "The security token is invalid"
-            ], 400);
+            ], 401);
         }
         
         return $next($request);
