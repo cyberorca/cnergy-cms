@@ -78,8 +78,13 @@ class FrontEndSettingsController extends Controller
         try {
             $input = $request->validated();
             $menu = FrontEndSetting::first(['token']);
-            $latest_token = json_decode($menu->token, true);
-            $latest_token[$input["token_name"]] = sha1(Str::random(64));
+            if(!$menu){
+                $latest_token[$input["token_name"]] = sha1(Str::random(64));
+            } else {
+                $latest_token = json_decode($menu->token, true);
+                $latest_token[$input["token_name"]] = sha1(Str::random(64));
+            }
+            
             FrontEndSetting::updateOrCreate([
                 'id' => 1
             ], [
