@@ -16,7 +16,7 @@ class FrontEndMenuController extends Controller
     }
 
     private function convertDataToResponse($dataRaw){
-        $data= $dataRaw->transform(function ($item, $key) {
+        return $dataRaw->transform(function ($item, $key) {
             return [
                 'id' => $item->id,
                 'parent' => $item->parent_id,
@@ -29,6 +29,5 @@ class FrontEndMenuController extends Controller
                 'children'=>$this->convertDataToResponse($item->childMenus)
             ];
         });
-        return $data;
     }
 }
