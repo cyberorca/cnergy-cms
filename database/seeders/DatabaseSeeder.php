@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
              RoleSeeder::class,
              MenuSeeder::class,
-             FrontEndMenu::class,
+            //  FrontEndMenu::class,
         ]);
         User::factory(100)->create();
         Tag::factory(100)->create();
