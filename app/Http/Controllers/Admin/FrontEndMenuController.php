@@ -127,6 +127,11 @@ class FrontEndMenuController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            FrontEndMenu::destroy($id);
+            return redirect()->back()->with('status', 'Successfully to delete frontend menu');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
     }
 }
