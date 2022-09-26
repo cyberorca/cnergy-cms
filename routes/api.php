@@ -30,5 +30,5 @@ Route::middleware(['verifyTokenApi'])->group(function(){
     
     Route::resource('tag', TagsController::class);
     
-    
+    Route::resource('fe-setting', FrontEndSettingsController::class);
 });
