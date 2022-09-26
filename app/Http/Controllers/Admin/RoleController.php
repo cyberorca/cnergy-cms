@@ -76,8 +76,9 @@ class RoleController extends Controller
     {
         $data = $request->input();
         $menusIdChild = $request->checkMenuChild; //[][]
+
         try {
-            if ($this->roleModel->isExistRole($data['role'])){
+            if (($this->roleModel->isExistRole($data['role'])) == false){
                 $roleById = $this->roleModel->updateRole($id,$data['role']);
             }
             $this->roleModel->deleteAccessRoleById($id);

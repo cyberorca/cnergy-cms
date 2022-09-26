@@ -67,4 +67,14 @@ class Category extends Model
         return $this->child;
     }
 
+    public function setTypesAttribute($value)
+    {
+        $this->attributes['types'] = json_encode($value);
+    }
+
+    public function getTypesAttribute($value)
+    {
+        return json_decode($value, true);
+    }
+
 }

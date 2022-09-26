@@ -54,13 +54,14 @@
                                         <div class="col-lg-12">
                                             <div class="accordion">
                                                 <p class="w-100 accordion-item">
-                                                <div class="custom-control custom-checkbox">
+                                                <div class="custom-control custom-checkbox d-flex align-items-center">
                                                     <input type="checkbox"
                                                         class="parentCheckBox{{ $menu->id }} form-check-input form-check-success"
                                                         name="checkMenuChild[{{ $menu->id }}][{{ null }}]"
                                                         value="{{ $menu->id }}"
                                                         @if ($method === 'edit') @if ($menu->roles()->find($role->id)) checked @endif
                                                         @endif>
+                                                    &nbsp;
                                                     <label class="form-check-label" for="customColorCheck3"></label>
                                                     <a data-bs-toggle="collapse" class="accordion-button"
                                                         href="#multiCollapseExample{{ $menu->id }}"
@@ -78,7 +79,7 @@
                                                                     class="childCheckBox{{ $item->id }} ms-1 form-check-input form-check-success"
                                                                     name="checkMenuChild[{{ $menu->id }}][{{ $item->id }}]"
                                                                     value="{{ $item->id }}"
-                                                                    @if ($method === 'edit') 
+                                                                    @if ($method === 'edit')
                                                                         @if ($item->roles()->find($role->id)) checked @endif
                                                                     @endif
                                                                 id="customColorCheck2">
