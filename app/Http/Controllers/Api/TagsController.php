@@ -8,28 +8,83 @@ use App\Models\Tag;
 
 class TagsController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $tags = Tag::all();
+        $data = Tag::all();
 
-        if ($request->get('inputTags')) {
-            $tags->where('tags', 'like', '%' . $request->inputTags . '%');
-        } 
+        foreach ($data as $tags) {
+            $res["data"][] = [
+                "id" => $tags->id,
+                "name" => $tags->tags,
+                "description" => "",
+                "content" => null,
+                "meta_title"=> "",
+                "meta_keyword"=> "",
+                "meta_description"=> "",
+                "is_headline" => 0,
+                "is_recommended" => 0,
+                "is_smart_tag" => 0,
+                "slug" => $tags->slug,
+                "status" => $tags->is_active,
+                "display_tag"=> null,
+                "smart_tag_type"=> null,
+                "smart_tag_url"=> null,
 
-        if ($request->get('inputSlug')) {
-            $tags-> where('slug', 'like', '%' . $request->inputSlug . '%');
+                "smart_tag" => [
+                    "id" => null,
+                    "name" => null,
+                    "url" => null,
+                ],
+
+                "related_creator" => [],
+                "related_tag" => [],
+
+                "image" => [
+                    "real" => "",
+                ],
+
+                "date_entry" => $tags->created_at,
+                "last_update" => $tags->updated_at,
+            ];
         }
-        
-        if ($request->get('status')) {
-            $status = $request->status;
-            if($status == 2) {
-                $tags ->where('is_active', "0");
-            }else {
-                $tags ->where('is_active', "1");
-            }
-        }
 
-        return response()->json($tags);
+        /*$data = [ "data" =>
+            ([
+                "id" => $tags["id"],
+                "name" => $tags["tags"],
+                "description" => "",
+                "content" => null,
+                "meta_title"=> "",
+                "meta_keyword"=> "",
+                "meta_description"=> "",
+                "is_headline" => 0,
+                "is_recommended" => 0,
+                "is_smart_tag" => 0,
+                "slug" => $tags["slug"],
+                "status" => $tags["is_active"],
+                "display_tag"=> null,
+                "smart_tag_type"=> null,
+                "smart_tag_url"=> null,
+
+                "smart_tag" => [
+                    "id" => null,
+                    "name" => null,
+                    "url" => null,
+                ],
+
+                "related_creator" => [],
+                "related_tag" => [],
+
+                "image" => [
+                    "real" => "",
+                ],
+
+                "date_entry" => $tags["created_at"],
+                "last_update" => $tags["updated_at"],
+            ])
+        ];*/
+
+        return response()->json($res);
 
     }
 }
