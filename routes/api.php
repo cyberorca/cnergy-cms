@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\FrontEndMenuController;
 use App\Http\Controllers\Api\MenuController;
 use App\Http\Controllers\Api\CategoriesController;
 use App\Http\Controllers\Api\FrontEndSettingsController;
@@ -21,13 +22,18 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::middleware(['verifyTokenApi'])->group(function(){
 
-Route::resource('menu', MenuController::class)->only([
-    'index', 'show', 'store', 'update', 'destroy', 'edit'
-]);
+    Route::resource('menu', MenuController::class)->only([
+        'index', 'show', 'store', 'update', 'destroy', 'edit'
+    ]);
+    Route::resource('category', CategoriesController::class);
 
-Route::resource('category', CategoriesController::class);
+    Route::resource('tag', TagsController::class);
 
-Route::resource('tag', TagsController::class);
+    Route::resource('fe-setting', FrontEndSettingsController::class);
 
-Route::resource('fe-setting', FrontEndSettingsController::class);
+    Route::resource('setting-fe-menu', FrontEndMenuController::class);
+});
+
+

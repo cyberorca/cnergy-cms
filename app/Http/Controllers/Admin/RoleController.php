@@ -8,6 +8,7 @@ use App\Models\Menu;
 use App\Models\Role;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 
 class RoleController extends Controller
 {
@@ -26,8 +27,9 @@ class RoleController extends Controller
 
     public function create()
     {
+        $method = explode('/', URL::current());
         $menus = Menu::whereNull('parent_id')->with(["childMenus", "roles"])->get();
-        return view('admin.role.create', compact('menus'));
+        return view('admin.role.editable', ['method' => end($method)])->with('menus', $menus);
     }
 
     public function store(RoleRequest $request)
@@ -64,18 +66,19 @@ class RoleController extends Controller
 
     public function edit($id)
     {
+        $method = explode('/', URL::current());
         $role = $this->roleModel->findRoleById($id);
         $menus = Menu::whereNull('parent_id')->with(["childMenus", "roles"])->get();
-
-        return view('admin.role.update', compact(["role", "menus"]));
+        return view('admin.role.editable', ['method' => end($method)])->with('menus', $menus)->with('role',$role);
     }
 
     public function update(Request $request, $id)
     {
         $data = $request->input();
         $menusIdChild = $request->checkMenuChild; //[][]
+
         try {
-            if ($this->roleModel->isExistRole($data['role'])){
+            if (($this->roleModel->isExistRole($data['role'])) == false){
                 $roleById = $this->roleModel->updateRole($id,$data['role']);
             }
             $this->roleModel->deleteAccessRoleById($id);

@@ -31,6 +31,10 @@ class Category extends Model
         'deleted_by',
     ];
 
+    protected $casts = [
+        'types' => 'array',
+    ];
+
     public function news()
     {
         return $this->belongsToMany(News::class, 'news_category');
@@ -38,7 +42,7 @@ class Category extends Model
 
     public function child()
     {
-        return $this->hasMany(Category::class, 'parent_id');
+        return $this->hasMany(Category::class, 'parent_id')->select('parent_id', 'id','category','types');
     }
 
     public function parent()
@@ -51,6 +55,11 @@ class Category extends Model
         return $this->hasMany(Category::class, 'parent_id')->with('child.parent.child.parent');
     }
 
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'parent_id')->with('child.child')->select('id','parent_id', 'category as name','category as name', 'slug as url', 'types');
+    }
+
     public function slug(){
         return $this->slug;
     }
@@ -60,6 +69,16 @@ class Category extends Model
 
     public function childs(){
         return $this->child;
+    }
+
+    public function setTypesAttribute($value)
+    {
+        $this->attributes['types'] = json_encode($value);
+    }
+
+    public function getTypesAttribute($value)
+    {
+        return json_decode($value, true);
     }
 
 }

@@ -10,7 +10,21 @@ class FrontEndSettingsController extends Controller
 {
     public function index()
     {
-        $menu_settings = FrontEndSetting::first();
-        return response()->json($menu_settings);
+        $menu_settings = FrontEndSetting::first()->makeHidden(['token', 'created_at', 'updated_at', 'deleted_at', 'id']);
+        $data = [
+            "title" => $menu_settings["title"],
+            "site_description" => $menu_settings["site_description"],
+            "address" => $menu_settings["address"],
+            "sosmed" => json_encode([
+                "facebook" => $menu_settings["facebook"],
+                "fb_app_id" => $menu_settings["facebook_app_id"],
+                "instagram" => $menu_settings["instagram"],
+                "youtube" => $menu_settings["youtube"],
+                "twitter" => $menu_settings["twitter"],
+                "twitter_username" => $menu_settings["twitter_username"],
+            ]),
+            "color" => $menu_settings["color"],
+        ];
+        return response()->json($data);
     }
 }

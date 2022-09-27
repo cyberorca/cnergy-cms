@@ -71,21 +71,7 @@
                     </ul>
                 </li>
                 @foreach ($menu_sidebar as $sidebar)
-                    <li class="sidebar-item @if ($sidebar->childs()) has-sub @endif">
-                        <a href="#" class='sidebar-link'>
-                            <i class="bi bi-grid-fill"></i>
-                            <span>{{ $sidebar->menu_name }}</span>
-                        </a>
-                        @if ($sidebar->childs())
-                            <ul class="submenu">
-                                @foreach ($sidebar->childs() as $sidebar_child)
-                                    <li class="submenu-item ">
-                                        <a href="#">{{ $sidebar_child->menu_name }}</a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        @endif
-                    </li>
+                    <x-sidebar-item :item="$sidebar" />
                 @endforeach
             </ul>
         </div>
