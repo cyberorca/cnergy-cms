@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\FrontEndSettingsController;
 use App\Http\Controllers\Admin\TagsController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Models\News;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -51,6 +52,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('tags', TagsController::class);
     
     Route::resource('users', UsersController::class);
+
+    Route::resource('news', NewsController::class);
 });
 // Route::post('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])
 //     ->middleware(['auth', 'signed']) // <-- don't remove "signed"
