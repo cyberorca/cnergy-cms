@@ -8,14 +8,40 @@ use App\Models\Tag;
 
 class TagsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = Tag::all();
 
-        foreach ($data as $tags) {
-            $res["data"][] = [
-                "id" => $tags->id,
-                "name" => $tags->tags,
+        $tags = Tag::latest();
+
+        if ($request->get('inputTags')) {
+            $tags->where('tags', 'like', '%' . $request->inputTags . '%');
+        } 
+
+        if ($request->get('inputSlug')) {
+            $tags-> where('slug', 'like', '%' . $request->inputSlug . '%');
+        }
+        
+        if ($request->get('status')) {
+            $status = $request->status;
+            if($status == 2) {
+                $tags ->where('is_active', "0");
+            }else {
+                $tags ->where('is_active', "1");
+            }
+        }
+
+        $tag = Tag::get();
+
+        $data["data"] = $this->convertDataToResponse($tag);
+        return response()->json($data);
+
+    }
+
+    private function convertDataToResponse($dataRaw){
+        return $dataRaw->transform(function ($item, $key) {
+            return [
+                "id" => $item->id,
+                "name" => $item->tags,
                 "description" => "",
                 "content" => null,
                 "meta_title"=> "",
@@ -24,8 +50,8 @@ class TagsController extends Controller
                 "is_headline" => 0,
                 "is_recommended" => 0,
                 "is_smart_tag" => 0,
-                "slug" => $tags->slug,
-                "status" => $tags->is_active,
+                "slug" => $item->slug,
+                "status" => $item->is_active,
                 "display_tag"=> null,
                 "smart_tag_type"=> null,
                 "smart_tag_url"=> null,
@@ -43,11 +69,9 @@ class TagsController extends Controller
                     "real" => "",
                 ],
 
-                "date_entry" => $tags->created_at,
-                "last_update" => $tags->updated_at,
+                "date_entry" => $item->created_at,
+                "last_update" => $item->updated_at,
             ];
-        }
-        return response()->json($res);
-
+        });
     }
 }

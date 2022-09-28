@@ -57,7 +57,7 @@ class Category extends Model
 
     public function children()
     {
-        return $this->hasMany(Category::class, 'parent_id')->with('child.child')->select('id','parent_id', 'category as name','category as name', 'slug as url', 'types');
+        return $this->hasMany(Category::class, 'parent_id')->with('child.child');
     }
 
     public function slug(){
