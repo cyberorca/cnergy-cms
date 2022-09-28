@@ -17,7 +17,7 @@
                 @endif
                 @csrf
                 <div class="col-md-12">
-                    @if (!$method === 'edit')
+                    @if ($method !== 'edit')
                         @if ($parent)
                             <input type="hidden" name="parent_id" value="{{ $parent->id }}">
                             <label for="basicInput" class="mb-2 fw-bold">Parent Menu : {{ $parent->title }}</label>

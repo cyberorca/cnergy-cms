@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\FrontEndMenu;
 use App\Models\User;
+use App\Models\News;
 use Illuminate\Database\Seeder;
 use App\Models\Tag;
 
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
         User::factory(100)->create();
         Tag::factory(100)->create();
         Category::factory(100)->create();
+        News::factory(10)->create();
         // $news = News::all();
         // foreach($news as $item){
             

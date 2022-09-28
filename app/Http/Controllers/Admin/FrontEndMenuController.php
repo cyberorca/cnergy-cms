@@ -31,7 +31,8 @@ class FrontEndMenuController extends Controller
     {
         $parent = FrontEndMenu::find($id);
         $url = explode('/', URL::current());
-        $method = end($url);
+        $url_count = count($url);
+        $method = $url[$url_count - 2];
         return view('admin.menu.front-end.editable', compact('parent', 'method'));
     }
 
@@ -59,7 +60,7 @@ class FrontEndMenuController extends Controller
                 $order = FrontEndMenu::select('order')->orderBy('order', 'desc')->first();
                 $input['order'] = $order->order + 1;
             }
-
+            // return response()->json($input);
             FrontEndMenu::create($input);
 
             return redirect('front-end-menu')->with('status', 'Successfully save frontend menu');
