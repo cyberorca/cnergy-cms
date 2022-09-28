@@ -30,22 +30,27 @@ class CategoriesController extends Controller
             }
         }
 
-        $empty = "";
-        $result = $categories->with(["children"])->get()->makeHidden(['is_active', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'deleted_by']);
-        foreach ($result as $data) {
-            $res["data"][] = [
-                "id" => $data["id"],
-                "parent" => $data["parent_id"],
-                "name" => $data["category"],
-                "common" => strtolower($data["category"]),
-                "url" => $data["slug"],
-                "type" => json_decode($data["types"]),
-                "meta_name" => $empty,
-                "meta_description" => $empty,
-                "children" => $data["children"],
-            ];
-        }
-
-        return response()->json($res);
+        $category = Category::whereNull('parent_id')->with(["children"])->get();
+        $data = $this->convertDataToResponse($category);
+        return response()->json($data);
+       
     }
+
+    private function convertDataToResponse($dataRaw){
+        
+        return $dataRaw->transform(function ($data, $key) {
+            return [
+                "id" => $data->id,
+                "parent" => $data->parent_id,
+                "name" => $data->category,
+                "common" => strtolower($data->category),
+                "url" => $data->slug,
+                "type" => json_decode($data->types),
+                "meta_name" => "",
+                "meta_description" => "",
+                "children" => $this->convertDataToResponse($data->children),
+            ];
+        });
+    }
+
 }
