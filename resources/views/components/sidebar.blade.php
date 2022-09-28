@@ -60,7 +60,7 @@
                             <a href="{{ route('users.index') }}">Users Settings</a>
                         </li>
                         <li class="submenu-item ">
-                            <a href="{{ route('role.index') }}">Roles Settings</a>
+                            <a href="{{ url('role') }}">Roles Settings</a>
                         </li>
                         <li class="submenu-item ">
                             <a href="{{ route('tags.index') }}">Tags Settings</a>

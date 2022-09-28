@@ -14,7 +14,7 @@
     <x-page-heading title="Menu Settings Config" subtitle="Manage frontend settings" />
     <section class="section">
        
-        <form action="{{ route('settings.update', 1) }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('front-end-setting.update', 1) }}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="d-flex justify-content-between gap-2">
