@@ -37,6 +37,7 @@ class CategoriesController extends Controller
                 $categories ->where('is_active', "1");
             }
         }
+        // return response()->json($categories->with(["childCategory"])->get());
         return view('admin.categories.index',  [
             'categories' => $categories->with(["childCategory"])->get(),
         ]);
