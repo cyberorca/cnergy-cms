@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\News;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\News;
 
 class NewsController extends Controller
 {
@@ -14,21 +16,13 @@ class NewsController extends Controller
      */
     public function index()
     {
-        //$news = News::latest();
+        $news = News::with(['categories']);
+        // $news = News::latest();
 
-        // if ($request->get('headline')) {
-        //     $headline = $request->headline;
-        //     if($headline == 2) {
-        //         $news ->where('is_headline', "0");
-        //     }else {
-        //         $news ->where('is_headline', "1");
-        //     }
-        // }
-
-        return view('news.index');
-        // return view('news.index',  [
-        //     'news' => $news->paginate(10)->withQueryString(),
-        // ]);
+        return view('news.index',  [
+            'news' => $news->paginate(5)->withQueryString(),
+            'categories' => Category::whereNull("parent_id")
+        ]);
     }
 
     /**

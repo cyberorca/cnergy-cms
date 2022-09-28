@@ -11,8 +11,27 @@ class News extends Model
 
     protected $guard = [];
 
-    public function category()
+    protected $table = 'news';
+
+    protected $primaryKey = 'id';
+
+    protected $fillable = [
+        'is_headline',
+        'title',
+        'slug',
+        'types',
+        'image',
+        'video ',
+        'synopsis',
+        'content'
+    ];
+
+    public function categories()
     {
-        return $this->belongsToMany(Category::class, 'news_category');
+        return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
+
+    public function tags(){
+        return $this->belongsToMany(Tag::class, 'news_tag'); 
     }
 }
