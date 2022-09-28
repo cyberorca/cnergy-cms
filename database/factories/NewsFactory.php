@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,17 +19,23 @@ class NewsFactory extends Factory
     public function definition()
     {
         return [
+            'is_headline' => fake()->randomElement(['0', '1']),
             'title' => $this->faker->sentence(20),
-            'url' => $this->faker->url(),
+            'slug' => $this->faker->sentence(20),
             'content' => $this->faker->text(),
             'synopsis' => $this->faker->text(),
-            'image' => $this->faker->image(),
-            'video' => 'video.mp4',
+            'types' => fake()->randomElement(["news", "video", "photonews"]),
+            'image' => null,
+            'video' => null,
             'published_at' => now(),
-            'published_by' => $this->faker->name(),
-            'created_by' => $this->faker->name(),
-            'updated_by' => $this->faker->name(),
-            'deleted_by' => $this->faker->name(),
+            'published_by' => User::first()->uuid,
+            'created_at' => now(),
+            'created_by' => User::first()->uuid,
+            'updated_at' => now(),
+            'updated_by' => null,
+            'deleted_at' => now(),
+            'deleted_by' => null,
+            'category_id' => Category::first()->id,
         ];
     }
 }
