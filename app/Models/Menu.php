@@ -34,6 +34,10 @@ class Menu extends Model
         return $this->child;
     }
 
+    public function count_childs(){
+        return count($this->child);
+    }
+
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'roles_menus');

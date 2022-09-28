@@ -34,7 +34,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('front-end-menu', FrontEndMenuController::class)->except(['create']);
     
     Route::post("/generate/token", [FrontEndSettingsController::class, 'generateToken'])->name('generate.token');
-    Route::resource('/menu/settings', FrontEndSettingsController::class);
+    Route::resource('/front-end-setting', FrontEndSettingsController::class);
     Route::get("/menu/create/{id?}", [MenuController::class, 'create'])->name('menu.create');
 
     Route::resource('menu', MenuController::class)->only([

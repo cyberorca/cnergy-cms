@@ -33,11 +33,26 @@ class FrontEndMenu extends Model
 
     public function menu_name()
     {
-        return $this->title;
+        $position = '';
+        $arr = json_decode($this->position);
+        foreach($arr as $item){
+            $position .= "<span>". $item . "</span>";
+        }
+        return $this->title . "<i>" . $position  . "</i>";
     }
 
     public function childs()
     {
         return $this->child;
+    }
+
+    public function order()
+    {
+        return $this->order;
+    }
+
+    public function parent()
+    {
+        return $this->parent_id;
     }
 }
