@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class News extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $guard = [];
 
@@ -23,7 +24,13 @@ class News extends Model
         'image',
         'video ',
         'synopsis',
-        'content'
+        'content',
+        'published_at',
+        'published_by',
+        'created_by',
+        'updated_by',
+        'deleted_by',
+        'category_id'
     ];
 
     public function categories()
@@ -32,6 +39,6 @@ class News extends Model
     }
 
     public function tags(){
-        return $this->belongsToMany(Tag::class, 'news_tags'); 
+        return $this->belongsToMany(Tag::class, 'news_tags');
     }
 }

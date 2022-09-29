@@ -14,6 +14,7 @@ use App\Models\News;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
+use UniSharp\LaravelFilemanager\Lfm;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,13 +28,16 @@ use Illuminate\Support\Str;
 */
 
 Route::group(['middleware' => 'auth'], function () {
+    Route::group(['prefix' => 'laravel-filemanager'], function () {
+        Lfm::routes();
+    });
     Route::get('/', function () {
         return view('welcome');
     });
-    
+
     Route::get("/front-end-menu/create/{id?}", [FrontEndMenuController::class, 'create'])->name('front-end-menu.create');
     Route::resource('front-end-menu', FrontEndMenuController::class)->except(['create']);
-    
+
     Route::post("/generate/token", [FrontEndSettingsController::class, 'generateToken'])->name('generate.token');
     Route::resource('/front-end-setting', FrontEndSettingsController::class);
     Route::get("/menu/create/{id?}", [MenuController::class, 'create'])->name('menu.create');
@@ -46,11 +50,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('categories', CategoriesController::class)->only([
         'index', 'show', 'store', 'update', 'destroy', 'edit'
     ]);
-    
+
     Route::resource('role', RoleController::class);
-    
+
     Route::resource('tags', TagsController::class);
-    
+
     Route::resource('users', UsersController::class);
 
     Route::resource('news', NewsController::class);
