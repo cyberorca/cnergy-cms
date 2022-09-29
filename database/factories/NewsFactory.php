@@ -20,8 +20,8 @@ class NewsFactory extends Factory
     {
         return [
             'is_headline' => fake()->randomElement(['0', '1']),
-            'title' => $this->faker->sentence(20),
-            'slug' => $this->faker->sentence(20),
+            'title' => $this->faker->sentence(5),
+            'slug' => $this->faker->slug(),
             'content' => $this->faker->text(),
             'synopsis' => $this->faker->text(),
             'types' => fake()->randomElement(["news", "video", "photonews"]),
