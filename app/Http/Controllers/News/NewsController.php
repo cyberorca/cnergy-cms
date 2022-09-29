@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\News;
+use App\Models\Tag;
 
 class NewsController extends Controller
 {
@@ -16,7 +17,8 @@ class NewsController extends Controller
      */
     public function index(Request $request)
     {
-        $news = News::with(['categories']);
+        $news = News::with(['categories', 'tags']);
+        // $tag_news = Tag::get();
         // $news = News::latest();
 
         if ($request->get('inputCategory')) {
@@ -40,9 +42,11 @@ class NewsController extends Controller
             }
         }
 
+               
+        // return response()->json($news->paginate(10));
         return view('news.index',  [
-            'news' => $news->paginate(5)->withQueryString(),
-            'categories' => Category::whereNull("parent_id")
+            'news' => $news->paginate(10)->withQueryString(),
+            // 'categories' => Category::whereNull("parent_id"),
         ]);
     }
 

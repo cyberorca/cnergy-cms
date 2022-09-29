@@ -50,7 +50,7 @@
                         data-bs-placement="top" title="Add Tag"></i>&nbsp;&nbsp;&nbsp;Add
                     News</a>
             </div>
-            <div class="card-body">
+            <div class="card-body" >
                 <table class="table" id="table1">
                     <thead>
                         <tr>
@@ -69,11 +69,13 @@
                             <tr>
                                 <td>{{ $n->id }}</td>
                                 <td>{{ $n->title }}</td>
-                                <td>{{ $n->slug }}</td>
+                                <td>{{ substr($n->slug, 0, 50).'...'}}</td>
                                 <td>{{ $n->synopsis }}</td>
                                 <td>{{ $n->types }}</td>
-                                <td>{{ $n->categories->category_id}}</td>
-                                <td>{{ $n->news_tag}}</td>
+                                <td>{{ $n->categories->category}}</td>
+                                <td class="d-flex flex-wrap gap-2 rounded"> @foreach ($n->tags as $item)
+                                    <span class="badge badge-pill bg-light-warning me-1">{{$item->tags}}</span>
+                                @endforeach</td>
                                 <td>
                                     <a href="" class="btn icon btn-warning"
                                         data-bs-toggle="tooltip" data-bs-placement="top" title="Update User Data"><i
@@ -92,4 +94,7 @@
             </div>
         </div>
     </section>
+@endsection
+@section('javascript')
+    <script></script>
 @endsection

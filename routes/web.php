@@ -66,3 +66,4 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/email/verify/{token}', [LoginController::class, 'verify'])->name('email.verify');
+// Route::post('/news', [NewsController::class, 'index']);
