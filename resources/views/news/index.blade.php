@@ -22,8 +22,7 @@
                         <tr>
                             <th>Id</th>
                             <th>Title</th>
-                            <th>Slug</th>
-                            <th>Synopsis</th>
+                            <th>Headline</th>
                             <th>Type</th>
                             <th>Category</th>
                             <th>Tags News</th>
@@ -35,12 +34,15 @@
                             <tr>
                                 <td>{{ $n->id }}</td>
                                 <td>{{ $n->title }}</td>
-                                <td>{{ substr($n->slug, 0, 50).'...'}}</td>
-                                <td>{{ $n->synopsis }}</td>
-                                <td>{{ $n->types }}</td>
+                                @if ($n->is_headline  == 1)
+                                <td align="center"> <span class="badge bg-success"><i class="bi bi-check-square"></i></span> </td>
+                                @else
+                                <td></td>
+                                @endif
+                                <td>{{ ucwords($n->types) }}</td>
                                 <td>{{ $n->categories->category}}</td>
                                 <td class="d-flex flex-wrap gap-2 rounded"> @foreach ($n->tags as $item)
-                                    <span class="badge badge-pill bg-light-warning me-1">{{$item->tags}}</span>
+                                    <span class="badge badge-pill bg-light-success me-1">{{$item->tags}}</span>
                                 @endforeach</td>
                                 <td>
                                     <a href="" class="btn icon btn-warning"
