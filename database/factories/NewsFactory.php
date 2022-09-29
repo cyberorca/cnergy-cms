@@ -35,7 +35,7 @@ class NewsFactory extends Factory
             'updated_by' => null,
             'deleted_at' => now(),
             'deleted_by' => null,
-            'category_id' => Category::first()->id,
+            'category_id' => random_int(1, 50),
         ];
     }
 }

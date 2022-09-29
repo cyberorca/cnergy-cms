@@ -6,33 +6,7 @@
 
 @section('body')
     <x-page-heading title="Table News" subtitle="View and Manage News Data" />
-    <div class="card ">
-        <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">News Search</span></div>
-        <div class="card-body">
-            <form class="row g-3" method="GET">
-                <div class="col-md-4">
-                    <label for="inputTitle" class="form-label">Title</label>
-                    <input name="inputTitle" id="title" placeholder="Title" type="text" class="form-control">
-                </div>
-                <div class="col-md-4">
-                    <label for="inputCategory" class="form-label">Category</label>
-                    <input name="inputCategory" id="category" placeholder="Category" type="text" class="form-control">
-                </div>
-                <div class="col-md-4">
-                    <label for="inputState" class="form-label">Headline</label>
-                    <select name="status" id="inputState" class="form-select">
-                        <option value="" selected>All</option>
-                        <option value="1">Headline</option>
-                        <option value="2">Not Headline</option>
-                    </select>
-                </div>
-                <div class="d-flex justify-content-end gap-3 mt-3">
-                        <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Category Search"><i class="bi bi-search"></i>&nbsp;&nbsp;&nbsp;Search</button>
-                        <a href="{{route('categories.index')}}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Show All Category Data"><i class="bi bi-card-list"></i>&nbsp;&nbsp;&nbsp;Show All</a> 
-                </div>
-            </form>
-        </div>
-    </div>
+
     <section class="section">
 
         <!-- Basic Tables start -->
@@ -42,7 +16,7 @@
                         data-bs-placement="top" title="Add Tag"></i>&nbsp;&nbsp;&nbsp;Add
                     News</a>
             </div>
-            <div class="card-body">
+            <div class="card-body" >
                 <table class="table" id="table1">
                     <thead>
                         <tr>
@@ -61,11 +35,13 @@
                             <tr>
                                 <td>{{ $n->id }}</td>
                                 <td>{{ $n->title }}</td>
-                                <td>{{ $n->slug }}</td>
+                                <td>{{ substr($n->slug, 0, 50).'...'}}</td>
                                 <td>{{ $n->synopsis }}</td>
                                 <td>{{ $n->types }}</td>
-                                <td>{{ $n->categories->category_id}}</td>
-                                <td>{{ $n->news_tag}}</td>
+                                <td>{{ $n->categories->category}}</td>
+                                <td class="d-flex flex-wrap gap-2 rounded"> @foreach ($n->tags as $item)
+                                    <span class="badge badge-pill bg-light-warning me-1">{{$item->tags}}</span>
+                                @endforeach</td>
                                 <td>
                                     <a href="" class="btn icon btn-warning"
                                         data-bs-toggle="tooltip" data-bs-placement="top" title="Update User Data"><i
@@ -84,4 +60,7 @@
             </div>
         </div>
     </section>
+@endsection
+@section('javascript')
+    <script></script>
 @endsection
