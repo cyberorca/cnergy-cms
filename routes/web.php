@@ -52,6 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('tags', TagsController::class);
     
     Route::resource('users', UsersController::class);
+
     Route::resource('news', NewsController::class);
 });
 // Route::post('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])
