@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\FrontEndMenuController;
 use App\Http\Controllers\Admin\FrontEndSettingsController;
+use App\Http\Controllers\Admin\ImageBankController;
 use App\Http\Controllers\Admin\TagsController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UsersController;
@@ -51,6 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('tags', TagsController::class);
     
     Route::resource('users', UsersController::class);
+    Route::resource('image-bank', ImageBankController::class);
 });
 // Route::post('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])
 //     ->middleware(['auth', 'signed']) // <-- don't remove "signed"
@@ -63,3 +65,4 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/email/verify/{token}', [LoginController::class, 'verify'])->name('email.verify');
+Route::post('/front-end-menu/order/update',[FrontEndMenuController::class,'changeOrderMenu'])->name('front-end-menu.order');

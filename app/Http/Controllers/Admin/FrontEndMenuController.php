@@ -135,4 +135,8 @@ class FrontEndMenuController extends Controller
             return redirect()->back()->withErrors($e->getMessage());
         }
     }
+
+    public function changeOrderMenu(Request $request){
+        return response()->json($request->get("data"));
+    }
 }

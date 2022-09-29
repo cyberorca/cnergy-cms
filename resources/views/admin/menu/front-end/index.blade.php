@@ -35,6 +35,7 @@
                     Menu Front End</a>
             </div>
             <div class="card-body d-flex flex-column gap-2">
+                <button class="btn btn-success col-2 d-none" id="button-save-order"><i class="bi bi-save"></i> &nbsp;&nbsp; Save Change</button>
                 <x-accordion-menu :accordion="$fe_menus" />
             </div>
         </div>
