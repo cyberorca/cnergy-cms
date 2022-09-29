@@ -10,7 +10,11 @@ class FrontEndMenuController extends Controller
 {
     public function index()
     {
-        $fe_menus = FrontEndMenu::whereNull('parent_id')->with(["childMenus"])->get();
+        $fe_menus = FrontEndMenu::orderBy('order','asc')
+            ->whereNull('parent_id')
+            ->with(["childMenus" => function($query){
+                $query->orderBy('order','asc');
+            }])->get();
         $data = $this->convertDataToResponse($fe_menus);
         return response()->json($data);
     }
