@@ -14,10 +14,31 @@ class NewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $news = News::with(['categories']);
         // $news = News::latest();
+
+        if ($request->get('inputCategory')) {
+            $news->where('category', 'like', '%' . $request->inputCategory . '%');
+        } 
+        
+        if ($request->get('inputTitle')) {
+            $news-> where('title', 'like', '%' . $request->inputTitle . '%');
+        }
+        
+        if ($request->get('startDate') && $request->get('endDate')) {
+            $news-> whereBetween('created_at',[$request->get('startDate'), $request->get('endDate')]);
+        }
+
+        if ($request->get('headline')) {
+            $headline = $request->headline;
+            if($headline == 2) {
+                $news ->where('is_headline', "0");
+            }else {
+                $news ->where('is_headline', "1");
+            }
+        }
 
         return view('news.index',  [
             'news' => $news->paginate(5)->withQueryString(),
@@ -88,6 +109,11 @@ class NewsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            Category::destroy($id);
+            return Redirect::back()->with('status', 'Successfully to Delete Category');
+        } catch (\Throwable $e) {
+            return Redirect::back()->withErrors($e->getMessage());
+        }
     }
 }

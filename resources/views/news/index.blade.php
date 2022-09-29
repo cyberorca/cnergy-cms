@@ -19,12 +19,20 @@
                     <input name="inputCategory" id="category" placeholder="Category" type="text" class="form-control">
                 </div>
                 <div class="col-md-4">
-                    <label for="inputState" class="form-label">Headline</label>
-                    <select name="status" id="inputState" class="form-select">
+                    <label for="inputHeadline" class="form-label">Headline</label>
+                    <select name="headline" id="inputHeadline" class="form-select">
                         <option value="" selected>All</option>
                         <option value="1">Headline</option>
                         <option value="2">Not Headline</option>
                     </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="inputState" class="form-label">Created Date</label>
+                    <div class="input-group">
+                        <input type="date" class="form-control" name="startDate">
+                        &nbsp;&nbsp;&nbsp;<p>To</p>&nbsp;&nbsp;&nbsp;
+                        <input type="date" class="form-control" name="endDate">
+                    </div>
                 </div>
                 <div class="d-flex justify-content-end gap-3 mt-3">
                         <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Category Search"><i class="bi bi-search"></i>&nbsp;&nbsp;&nbsp;Search</button>
