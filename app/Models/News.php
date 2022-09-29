@@ -23,7 +23,13 @@ class News extends Model
         'image',
         'video ',
         'synopsis',
-        'content'
+        'content',
+        'published_at',
+        'published_by',
+        'created_by',
+        'updated_by',
+        'deleted_by',
+        'category_id'
     ];
 
     public function categories()
@@ -32,6 +38,6 @@ class News extends Model
     }
 
     public function tags(){
-        return $this->belongsToMany(Tag::class, 'news_tags'); 
+        return $this->belongsToMany(Tag::class, 'news_tags');
     }
 }

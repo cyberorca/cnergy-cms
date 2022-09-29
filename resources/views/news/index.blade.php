@@ -12,7 +12,7 @@
         <!-- Basic Tables start -->
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">News List</span>
-                <a href="" class="btn btn-primary"><i class="bi bi-plus-circle-fill" data-bs-toggle="tooltip"
+                <a href="{{route('news.create')}}" class="btn btn-primary"><i class="bi bi-plus-circle-fill" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Add Tag"></i>&nbsp;&nbsp;&nbsp;Add
                     News</a>
             </div>
@@ -43,7 +43,7 @@
                                     <span class="badge badge-pill bg-light-warning me-1">{{$item->tags}}</span>
                                 @endforeach</td>
                                 <td>
-                                    <a href="" class="btn icon btn-warning"
+                                    <a href="{{route('news.edit', $n->id) }}" class="btn icon btn-warning"
                                         data-bs-toggle="tooltip" data-bs-placement="top" title="Update User Data"><i
                                             class="bi bi-pencil-square"></i></a>
                                     <button type="button" data-toggle="modal" data-target=""
