@@ -23,6 +23,7 @@ return new class extends Migration
             $table->enum('types', ['news', 'photonews', 'video']);
             $table->string('image', 255)->unique()->nullable();
             $table->string('video', 255)->unique()->nullable();
+            $table->enum('is_published', [0, 1])->default(1);
             $table->timestamp('published_at')->nullable();
             $table->uuid('published_by')->nullable();
             $table->timestamp('created_at', 0)->nullable();
