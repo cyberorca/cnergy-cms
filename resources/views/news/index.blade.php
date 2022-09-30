@@ -54,31 +54,44 @@
                 <table class="table" id="table1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Id</th>
                             <th>Title</th>
-                            <th>Headline</th>
-                            <th>Type</th>
+                            <th>Level</th>
                             <th>Category</th>
+                            <th>Schedule</th>
+                            <th>Headline</th>
                             <th>Tags News</th>
-                            <th style="width:15%">Action</th>
+                            <th style="width:20%">Action</th>
                         </tr>
                     </thead>
                     <tbody>
+                    @php $no = 1; @endphp
                         @foreach ($news as $n)
                             <tr>
+                                <td>{{ $no++ }}</td> 
                                 <td>{{ $n->id }}</td>
                                 <td>{{ $n->title }}</td>
+                                @if ($n->is_published  == 1)
+                                <td align="center"> <span class="badge bg-success"><i class="bi bi-check fs-5"></i></span> </td>
+                                @else
+                                <td align="center"> <span class="badge bg-danger"><i class="bi bi-x fs-5"></i></span> </td>
+                                @endif
+                                <td>{{ $n->categories->category}}</td>
+                                <td>{{ $n->created_at->format('d M Y H:i');}}</td>
                                 @if ($n->is_headline  == 1)
-                                <td align="center"> <span class="badge bg-success"><i class="bi bi-check-square"></i></span> </td>
+                                <td align="center">
+                                    <i class="bi bi-check text-primary fs-2"></i>
+                                </td>
                                 @else
                                 <td></td>
                                 @endif
-                                <td>{{ ucwords($n->types) }}</td>
-                                <td>{{ $n->categories->category}}</td>
-                                <td class="d-flex flex-wrap gap-2 rounded"> @foreach ($n->tags as $item)
-                                    <span class="badge badge-pill bg-light-success me-1">{{$item->tags}}</span>
+                                <td> @foreach ($n->tags as $item)
+                                    <span class="badge badge-pill bg-light-secondary me-1">{{$item->tags}}</span>
                                 @endforeach</td>
                                 <td>
+                                    <a href="#" class="btn icon btn-primary"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="#"><i class="bi bi-save"></i></a>
                                     <a href="{{route('news.edit', $n->id) }}" class="btn icon btn-warning"
                                         data-bs-toggle="tooltip" data-bs-placement="top" title="Update User Data"><i
                                             class="bi bi-pencil-square"></i></a>
