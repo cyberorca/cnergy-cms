@@ -26,7 +26,7 @@
         </div>
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">Role List</span>
-                <a href="{{ route('role.create') }}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Role"><i class="bi bi-plus-circle-fill"></i>&nbsp;&nbsp;&nbsp;Add
+                <a href="{{ route('role.create') }}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Role"><i class="bi bi-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add
                     Role</a>
 
             </div>

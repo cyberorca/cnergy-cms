@@ -56,7 +56,7 @@ class TagsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create()
     {
         $method = explode('/', URL::current());
         return view('admin.tags.editable', ['method' => end($method)]);
@@ -74,7 +74,7 @@ class TagsController extends Controller
         $data = $request->input();
         $tags = new Tag([
             'tags' => ucwords($data['tag']),
-            'slug' => $data['slug'],
+            'slug' => Str::slug($data['tag']),
             'created_at' => now(),
             // ganti uuid user login nanti
             'created_by' => Auth::user()->uuid,

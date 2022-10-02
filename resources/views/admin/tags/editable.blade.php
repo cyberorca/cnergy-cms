@@ -22,11 +22,6 @@
                         <input type="text" class="form-control" id="tags" placeholder="Enter Tag Name"
                             name="tag" @if ($method === 'edit') value="{{ $tag->tags }}" @endif>
                     </div>
-                    <div class="form-group">
-                        <label for="basicInput">Slug</label>
-                        <input type="text" class="form-control" id="slug" placeholder="http://example.com/about"
-                            name="slug" @if ($method === 'edit') value="{{ $tag->slug }}" @endif>
-                    </div>
                     @if ($method === 'edit')
                         <div class="form-group">
                             <label for="basicInput">Status</label>

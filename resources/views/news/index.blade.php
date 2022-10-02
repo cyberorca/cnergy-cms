@@ -27,6 +27,18 @@
                     </select>
                 </div>
                 <div class="col-md-4">
+                    <label for="inputPublished" class="form-label">Published</label>
+                    <select name="published" id="inputPublished" class="form-select">
+                        <option value="" selected>All</option>
+                        <option value="1">Published</option>
+                        <option value="2">Not Published</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="inputTag" class="form-label">Tag</label>
+                    <input name="inputTag" id="tag" placeholder="Tag" type="text" class="form-control">
+                </div>
+                <div class="col-md-4">
                     <label for="inputState" class="form-label">Created Date</label>
                     <div class="input-group">
                         <input type="date" class="form-control" name="startDate">
@@ -36,7 +48,7 @@
                 </div>
                 <div class="d-flex justify-content-end gap-3 mt-3">
                         <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Category Search"><i class="bi bi-search"></i>&nbsp;&nbsp;&nbsp;Search</button>
-                        <a href="{{route('categories.index')}}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Show All Category Data"><i class="bi bi-card-list"></i>&nbsp;&nbsp;&nbsp;Show All</a> 
+                        <a href="{{ route('news.index') }}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Show All Category Data"><i class="bi bi-card-list"></i>&nbsp;&nbsp;&nbsp;Show All</a> 
                 </div>
             </form>
         </div>
@@ -46,7 +58,7 @@
         <!-- Basic Tables start -->
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">News List</span>
-                <a href="{{route('news.create')}}" class="btn btn-primary"><i class="bi bi-plus-circle-fill" data-bs-toggle="tooltip"
+                <a href="{{route('news.create')}}" class="btn btn-primary"><i class="bi bi-plus-circle" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Add Tag"></i>&nbsp;&nbsp;&nbsp;Add
                     News</a>
             </div>
@@ -57,7 +69,7 @@
                             <th>No</th>
                             <th>Id</th>
                             <th>Title</th>
-                            <th>Level</th>
+                            <th>Published</th>
                             <th>Category</th>
                             <th>Schedule</th>
                             <th>Headline</th>
