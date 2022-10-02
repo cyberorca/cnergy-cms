@@ -31,6 +31,7 @@ class ImageBankRequest extends FormRequest
             'photographer' => 'required',
             'copyright' => 'required',
             'caption' => 'required',
+            'keywords' => 'required',
         ];
     }
 }

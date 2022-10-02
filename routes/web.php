@@ -29,7 +29,8 @@ use Illuminate\Support\Str;
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', function () {
-        return view('welcome');
+        $modal = true;
+        return view('welcome', compact('modal'));
     });
     
     Route::get("/front-end-menu/create/{id?}", [FrontEndMenuController::class, 'create'])->name('front-end-menu.create');

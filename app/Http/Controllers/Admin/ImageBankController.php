@@ -44,12 +44,15 @@ class ImageBankController extends Controller
             $input = $request->validated();
             $data = [
                 "title" => $input["title"],
+                "photographer" => $input["photographer"],
+                "copyright" => $input["copyright"],
+                "caption" => $input["caption"],
+                "keywords" => $input["keywords"],
                 "created_by" => Auth::user()->uuid
             ];
             if ($request->hasFile('image_input')) {
                 $file = $request->file('image_input');
                 $image_input = time() . "." . $file->getClientOriginalExtension();
-                // Storage::delete('public/image_input_image/' . $menu->image_input);
                 $file->storeAs('public/image_bank/', $image_input);
                 $data['slug'] = $image_input;
             }
@@ -105,7 +108,9 @@ class ImageBankController extends Controller
     {
         try {
             $image = ImageBank::find($id);
+            Storage::delete('public/image_bank/' . $image->slug);
             $image->delete();
+            
             return redirect()->back()->with('status', 'Successfully Delete Image');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());

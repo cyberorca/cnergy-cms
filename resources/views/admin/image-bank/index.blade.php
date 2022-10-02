@@ -98,7 +98,7 @@
                             </div>
                         </div>
                     @endforeach
-                    {{-- @for ($i = 0; $i < 10; $i++)
+                    @for ($i = 0; $i < 10; $i++)
                         <div class="image-card border p-0">
                             <img @if ($i % 2 == 0) src="{{ asset('assets/images/example_image.jpg') }}" 
                             @else     
@@ -114,7 +114,7 @@
                                 </div>
                             </div>
                         </div>
-                    @endfor --}}
+                    @endfor
                 </div>
             </div>
         </div>
