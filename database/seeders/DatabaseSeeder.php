@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
         //        'created_at' => now(),
         //        'updated_at' => now(),
         //    ]);
-        //      $news_tag->tags()->attach(Tag::all()->random(rand(1,100))->pluck('id'));
+        //      $news_tag->tags()->attach(Tag::all()->random(rand(1,100))->pluck('id')); 
         // }
 
         $tags = Tag::all();
@@ -44,7 +44,7 @@ class DatabaseSeeder extends Seeder
         // Populate the pivot table
         News::all()->each(function ($news) use ($tags) { 
             $news->tags()->attach(
-                $tags->random(rand(1, 100))->pluck('id')->toArray()
+                $tags->random(rand(1, 5))->pluck('id')->toArray()
             ); 
         });
     }

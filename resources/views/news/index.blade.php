@@ -19,12 +19,20 @@
                     <input name="inputCategory" id="category" placeholder="Category" type="text" class="form-control">
                 </div>
                 <div class="col-md-4">
-                    <label for="inputState" class="form-label">Headline</label>
-                    <select name="status" id="inputState" class="form-select">
+                    <label for="inputHeadline" class="form-label">Headline</label>
+                    <select name="headline" id="inputHeadline" class="form-select">
                         <option value="" selected>All</option>
                         <option value="1">Headline</option>
                         <option value="2">Not Headline</option>
                     </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="inputState" class="form-label">Created Date</label>
+                    <div class="input-group">
+                        <input type="date" class="form-control" name="startDate">
+                        &nbsp;&nbsp;&nbsp;<p>To</p>&nbsp;&nbsp;&nbsp;
+                        <input type="date" class="form-control" name="endDate">
+                    </div>
                 </div>
                 <div class="d-flex justify-content-end gap-3 mt-3">
                         <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Category Search"><i class="bi bi-search"></i>&nbsp;&nbsp;&nbsp;Search</button>
@@ -38,18 +46,17 @@
         <!-- Basic Tables start -->
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">News List</span>
-                <a href="" class="btn btn-primary"><i class="bi bi-plus-circle-fill" data-bs-toggle="tooltip"
+                <a href="{{route('news.create')}}" class="btn btn-primary"><i class="bi bi-plus-circle-fill" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Add Tag"></i>&nbsp;&nbsp;&nbsp;Add
                     News</a>
             </div>
-            <div class="card-body">
+            <div class="card-body" >
                 <table class="table" id="table1">
                     <thead>
                         <tr>
                             <th>Id</th>
                             <th>Title</th>
-                            <th>Slug</th>
-                            <th>Synopsis</th>
+                            <th>Headline</th>
                             <th>Type</th>
                             <th>Category</th>
                             <th>Tags News</th>
@@ -61,13 +68,18 @@
                             <tr>
                                 <td>{{ $n->id }}</td>
                                 <td>{{ $n->title }}</td>
-                                <td>{{ $n->slug }}</td>
-                                <td>{{ $n->synopsis }}</td>
-                                <td>{{ $n->types }}</td>
-                                <td>{{ $n->categories->category_id}}</td>
-                                <td>{{ $n->news_tag}}</td>
+                                @if ($n->is_headline  == 1)
+                                <td align="center"> <span class="badge bg-success"><i class="bi bi-check-square"></i></span> </td>
+                                @else
+                                <td></td>
+                                @endif
+                                <td>{{ ucwords($n->types) }}</td>
+                                <td>{{ $n->categories->category}}</td>
+                                <td class="d-flex flex-wrap gap-2 rounded"> @foreach ($n->tags as $item)
+                                    <span class="badge badge-pill bg-light-success me-1">{{$item->tags}}</span>
+                                @endforeach</td>
                                 <td>
-                                    <a href="" class="btn icon btn-warning"
+                                    <a href="{{route('news.edit', $n->id) }}" class="btn icon btn-warning"
                                         data-bs-toggle="tooltip" data-bs-placement="top" title="Update User Data"><i
                                             class="bi bi-pencil-square"></i></a>
                                     <button type="button" data-toggle="modal" data-target=""
@@ -84,4 +96,7 @@
             </div>
         </div>
     </section>
+@endsection
+@section('javascript')
+    <script></script>
 @endsection

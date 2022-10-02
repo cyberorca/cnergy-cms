@@ -20,8 +20,8 @@ class NewsFactory extends Factory
     {
         return [
             'is_headline' => fake()->randomElement(['0', '1']),
-            'title' => $this->faker->sentence(20),
-            'slug' => $this->faker->sentence(20),
+            'title' => $this->faker->sentence(5),
+            'slug' => $this->faker->slug(),
             'content' => $this->faker->text(),
             'synopsis' => $this->faker->text(),
             'types' => fake()->randomElement(["news", "video", "photonews"]),
@@ -35,7 +35,7 @@ class NewsFactory extends Factory
             'updated_by' => null,
             'deleted_at' => now(),
             'deleted_by' => null,
-            'category_id' => Category::first()->id,
+            'category_id' => random_int(1, 50),
         ];
     }
 }
