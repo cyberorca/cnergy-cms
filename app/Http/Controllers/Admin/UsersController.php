@@ -45,8 +45,7 @@ class UsersController extends Controller
         }
 
         return view('admin.users.index', [
-            'users' => $users->paginate(10)->
-            g(),
+            'users' => $users->paginate(10)->withQueryString(),
             'roles' => Role::all()
         ]);
     }

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TagsRequest extends FormRequest
+class NewsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class TagsRequest extends FormRequest
     {
         return [
             'tag' => 'required|max:255',
-            'is_published' => 'nullable'
+            'is_active' => 'nullable'
         ];
     }
 }

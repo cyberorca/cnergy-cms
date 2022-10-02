@@ -30,7 +30,8 @@ class News extends Model
         'created_by',
         'updated_by',
         'deleted_by',
-        'category_id'
+        'category_id',
+        'is_published'
     ];
 
     public function categories()

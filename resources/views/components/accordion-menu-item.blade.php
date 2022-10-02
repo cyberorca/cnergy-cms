@@ -11,7 +11,7 @@
                  <div class="d-flex gap-2">
                      <a class="btn btn-primary ms-3" href="{{ route($path . '.create', $item->id) }}"
                          data-bs-toggle="tooltip" data-bs-placement="top" title="Add New Child Menu"><i
-                             class="bi bi-plus-circle-fill"></i></a>
+                             class="bi bi-plus-circle"></i></a>
                      <a href="{{ route($path . '.edit', $item->id) }}" class="btn btn-warning" data-bs-toggle="tooltip"
                          data-bs-placement="top" title="Edit Menu"><i class="bi bi-pencil-square"></i></a>
                      <a href="#" class="btn btn-danger" data-bs-toggle="modal"
