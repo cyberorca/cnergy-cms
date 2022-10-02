@@ -14,7 +14,7 @@
                             class="bi bi-file-earmark-x-fill"></i></h4>
                 </div>
                 <div class="card-body">
-                    <x-image-uploader :modal="$modal"/>
+                    <x-image-uploader :modal="$modal" :item="$image_bank" />
                 </div>
             </div>
         </div>
@@ -22,26 +22,5 @@
 @endsection
 
 @section('javascript')
-    <script>
-        // var image_preview = document.getElementById("image_preview")
-        // var image_input = document.getElementById("image_input")
-
-        var image_preview_result = document.getElementById("image_preview_result")
-        var upload_image_button = document.getElementById("upload_image_button")
-
-        // image_input.onchange = evt => {
-        //     const [file] = image_input.files
-        //     if (file) {
-        //         image_preview.src = URL.createObjectURL(file)
-        //     }
-        // }
-
-        upload_image_button.onchange = evt => {
-            console.log("onchange");
-            const [file] = upload_image_button.files
-            if (file) {
-                image_preview_result.src = URL.createObjectURL(file)
-            }
-        }
-    </script>
+    <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
 @endsection

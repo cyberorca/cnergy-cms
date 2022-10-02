@@ -13,7 +13,7 @@
         <img src="{{ asset('assets/images/site_logo.png') }}" alt="" srcset="" id="image_preview_result">
     </div>
     <div class="p-2 px-3 border mt-2">
-        <p class="m-0">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab officiis non architecto odit.</p>
+        <p class="m-0" id="image_title">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab officiis non architecto odit.</p>
     </div>
     <div class="modal fade text-left " id="image-bank" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
         aria-hidden="true">
@@ -131,7 +131,7 @@
                             </div>
                         </div> --}}
                         <div class="tab-pane fade p-2 py-3 show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                            <x-image-bank />
+                            <x-image-bank :item="$item"/>
                         </div>
                         {{-- <div class="tab-pane fade p-2 py-3" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                             <div class="form-group">

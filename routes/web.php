@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Models\ImageBank;
 use App\Models\News;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
@@ -34,7 +35,8 @@ Route::group(['middleware' => 'auth'], function () {
     });
     Route::get('/', function () {
         $modal = true;
-        return view('welcome', compact('modal'));
+        $image_bank = ImageBank::all();
+        return view('welcome', compact('modal', 'image_bank'));
     });
 
     Route::get("/front-end-menu/create/{id?}", [FrontEndMenuController::class, 'create'])->name('front-end-menu.create');

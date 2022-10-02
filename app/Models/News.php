@@ -10,28 +10,28 @@ class News extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $guard = [];
+    protected $guarded = [];
 
-    protected $table = 'news';
+    // protected $table = 'news';
 
     protected $primaryKey = 'id';
 
-    protected $fillable = [
-        'is_headline',
-        'title',
-        'slug',
-        'types',
-        'image',
-        'video ',
-        'synopsis',
-        'content',
-        'published_at',
-        'published_by',
-        'created_by',
-        'updated_by',
-        'deleted_by',
-        'category_id'
-    ];
+    // protected $fillable = [
+    //     'is_headline',
+    //     'title',
+    //     'slug',
+    //     'types',
+    //     'image',
+    //     'video ',
+    //     'synopsis',
+    //     'content',
+    //     'published_at',
+    //     'published_by',
+    //     'created_by',
+    //     'updated_by',
+    //     'deleted_by',
+    //     'category_id'
+    // ];
 
     public function categories()
     {
@@ -39,10 +39,6 @@ class News extends Model
     }
 
     public function tags(){
-<<<<<<< HEAD
         return $this->belongsToMany(Tag::class, 'news_tags'); 
-=======
-        return $this->belongsToMany(Tag::class, 'news_tags');
->>>>>>> 0743e326bdc11493240cc37ea8543816df066099
     }
 }

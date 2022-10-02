@@ -13,9 +13,11 @@ class ImageUploader extends Component
      */
 
     public $modal;
-    public function __construct($modal)
+    public $item;
+    public function __construct($modal, $item)
     {
         $this->modal = $modal;
+        $this->item = $item;
     }
 
     /**
