@@ -33,7 +33,7 @@ class LoginController extends Controller
                 'is_active'=>'1'
                 ])->first();
             if ($user != null){
-                \auth()->loginUsingId($user['uuid']);
+                \auth()->loginUsingId($user['uuid'],true);
                 return redirect()->intended('/');
 //            dd(\auth()->user()->roles['role']);
             }else{
@@ -70,7 +70,7 @@ class LoginController extends Controller
         }catch(\Exception $e){
             return abort(401, 'Error to verify email token');
         }
-        
+
 
 
     }
