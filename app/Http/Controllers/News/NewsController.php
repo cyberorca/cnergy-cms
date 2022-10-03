@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use App\Http\Requests\NewsRequest;
+use Illuminate\Support\Facades\DB;
 
 class NewsController extends Controller
 {
@@ -19,13 +21,26 @@ class NewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $news = News::with(['categories', 'tags']);
-        // $tag_news = Tag::get();
-        // $news = News::latest();
+        
+        if ($request->get('published')) {
+            $published = $request->get('published');
+            if($published == 2) {
+                $news ->where('is_published', "0");
+            }else {
+                $news ->where('is_published', "1");
+            }
+        }
 
-        // return response()->json($news->paginate(10));
+        if ($request->get('inputTag')) {
+            $news->whereHas('tags', function($query) use ($request){
+                $query->where('tags', 'like', "%{$request->get('inputTag')}%");
+            });
+        }
+
+        // return response()->json($news);
         return view('news.index',  [
             'news' => $news->paginate(10)->withQueryString(),
             // 'categories' => Category::whereNull("parent_id"),

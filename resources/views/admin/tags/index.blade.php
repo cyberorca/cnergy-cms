@@ -40,7 +40,7 @@
     <!-- Basic Tables start -->
     <div class="card">
         <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">Tags List</span>
-            <a href="{{ route('tags.create') }}" class="btn btn-primary"><i class="bi bi-plus-circle-fill" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Tag"></i>&nbsp;&nbsp;&nbsp;Add
+            <a href="{{ route('tags.create') }}" class="btn btn-primary"><i class="bi bi-plus-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Tag"></i>&nbsp;&nbsp;&nbsp;Add
                 Tag</a>
         </div>
         <div class="card-body">

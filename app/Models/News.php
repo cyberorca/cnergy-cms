@@ -16,22 +16,23 @@ class News extends Model
 
     protected $primaryKey = 'id';
 
-    // protected $fillable = [
-    //     'is_headline',
-    //     'title',
-    //     'slug',
-    //     'types',
-    //     'image',
-    //     'video ',
-    //     'synopsis',
-    //     'content',
-    //     'published_at',
-    //     'published_by',
-    //     'created_by',
-    //     'updated_by',
-    //     'deleted_by',
-    //     'category_id'
-    // ];
+    protected $fillable = [
+        'is_headline',
+        'title',
+        'slug',
+        'types',
+        'image',
+        'video ',
+        'synopsis',
+        'content',
+        'published_at',
+        'published_by',
+        'created_by',
+        'updated_by',
+        'deleted_by',
+        'category_id',
+        'is_published'
+    ];
 
     public function categories()
     {
