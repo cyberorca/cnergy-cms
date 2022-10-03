@@ -5,6 +5,8 @@ namespace App\Http\Controllers\News;
 use App\Http\Controllers\Controller;
 use App\Models\News;
 use App\Models\Tag;
+use App\Models\Role;
+use App\Models\User;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -23,6 +25,10 @@ class NewsController extends Controller
     public function index(Request $request)
     {
         $news = News::with(['categories', 'tags']);
+        $editors = User::join('roles', 'users.role_id', '=', 'roles.id')
+                    ->where('roles.role', "Editor");
+        $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')
+                    ->where('roles.role', "Reporter");
         
         if ($request->get('published')) {
             $published = $request->get('published');
@@ -39,9 +45,21 @@ class NewsController extends Controller
             });
         }
 
+        if ($request->get('editor')) {
+            $editor = $request->editor;
+            $news->where('updated_by', $editor);
+        }
+
+        if ($request->get('reporter')) {
+            $reporter = $request->reporter;
+            $news->where('created_by', $reporter);
+        }
+
         // return response()->json($news);
         return view('news.index',  [
             'news' => $news->paginate(10)->withQueryString(),
+            'editors' => $editors->get(),
+            'reporters' => $reporters->get(),
             // 'categories' => Category::whereNull("parent_id"),
         ]);
     }
