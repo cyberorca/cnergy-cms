@@ -46,6 +46,24 @@
                         <input type="date" class="form-control" name="endDate">
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <label for="inputHeadline" class="form-label">Reporter</label>
+                    <select name="reporter" id="inputHeadline" class="form-select">
+                        <option value="" selected>All</option>
+                        @foreach ($reporters as $r)
+                        <option value="{{ $r->uuid }}">{{ $r->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="inputHeadline" class="form-label">Editor</label>
+                    <select name="editor" id="inputHeadline" class="form-select">
+                        <option value="" selected>All</option>
+                        @foreach ($editors as $e)
+                        <option value="{{ $e->uuid }}">{{ $e->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="d-flex justify-content-end gap-3 mt-3">
                         <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Category Search"><i class="bi bi-search"></i>&nbsp;&nbsp;&nbsp;Search</button>
                         <a href="{{ route('news.index') }}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Show All Category Data"><i class="bi bi-card-list"></i>&nbsp;&nbsp;&nbsp;Show All</a> 
