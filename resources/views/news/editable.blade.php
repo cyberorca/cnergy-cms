@@ -2,6 +2,7 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/pages/image-uploader.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/extensions/choices.js/public/assets/styles/choices.css') }}">
 @endsection
 
 @push('head')
@@ -24,7 +25,6 @@
                     <div class="card-body d-flex flex-column gap-2">
                         @if ($method === 'edit')
                             @method('PUT')
-                            @csrf
                         @endif
 
                         <div class="form-group">
@@ -44,27 +44,14 @@
                                 data-bs-placement="top" title="Back to Table Rome">Back</a>
 
                             <button class="btn btn-primary" name="save" type="submit" data-bs-toggle="tooltip"
-                                value="draft" data-bs-placement="top" title="Create Role">Save to Draft
-                            </button>
-
-                            <button class="btn btn-primary" name="save" type="submit" data-bs-toggle="tooltip"
-                                value="publish" data-bs-placement="top" title="Create Role">Save to Publish
+                                value="publish" data-bs-placement="top" title="Create Role">Save
                             </button>
                         </div>
 
                     </div>
                 </div>
             </div>
-            <div class="col-6">
-                <div class="card">
-                    <div class="card-header">
-                        <span class="h4">News Image</span>
-                    </div>
-                    <div class="card-body">
-                        <x-image-uploader />
-                    </div>
-                </div>
-            </div>
+
             <div class="col-6">
                 <div class="card">
                     <div class="card-header">
@@ -76,10 +63,10 @@
                             <label for="synopsis" class="form-label mb-2">Synopsis</label>
                             <textarea name="synopsis" class="form-control" id="synopsis" cols="30" rows="3"
                                 placeholder="Enter Synopsis">
-                                @if ($method === 'edit')
+@if ($method === 'edit')
 {{ $news->synopsis }}
 @endif
-                            </textarea>
+</textarea>
 
 
                             <label for="category" class="form-label mb-2">Category</label>
@@ -106,11 +93,96 @@
                             <label class="form-check-label" for="isHeadline">Headline</label>
                             <input name="isHeadline" class="form-check-input" type="checkbox" id="isHeadline"
                                 @if ($method === 'edit' and $news->is_headline == '1') checked @endif>
-                        </div>
+                            <label class="form-check-label" for="isPublish">Status Publish</label>
+                            <input name="isPublish" class="form-check-input" type="checkbox" id="isPublish"
+                                @if ($method === 'edit' and $news->is_published == '1') checked @endif>
 
+                        </div>
+                        <div class="form-group">
+                            <label for="publishedAt" class="mb-2">Published At</label>
+                            <input type="date" class="form-control" id="publishedAt" name="publishedAt"
+                                placeholder="Pick Date "
+                                @if ($method === 'edit') value="{{ $news->published_at }}" @endif />
+                        </div>
+                        <div class="form-group">
+                            <label for="tags" class="form-label mb-2">Tags</label>
+                            <select name="tags[]" class="choices form-select multiple-remove" multiple="multiple"
+                                id="tags">
+                                <optgroup label="Tags">
+                                    @foreach ($tags as $id => $tag)
+                                        <option id="{{ $id }}" value="{{ $id }}"
+                                            @if ($method === 'edit' and $tag->news()->find($news->id)) selected @endif>{{ $tag->tags }}</option>
+                                    @endforeach
+                                </optgroup>
+                            </select>
+                        </div>
                     </div>
                 </div>
+
             </div>
+
+        </div>
+        </div>
+
+        </div>
+        </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    <span class="h4">News Image</span>
+                </div>
+                <div class="card-body">
+                    <x-image-uploader />
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    <span class="h4">Others</span>
+                </div>
+                <div class="card-body d-flex flex-column gap-2">
+
+                    <div class="form-group">
+                        <label for="synopsis" class="form-label mb-2">Synopsis</label>
+                        <textarea name="synopsis" class="form-control" id="synopsis" cols="30" rows="3"
+                            placeholder="Enter Synopsis">
+                                @if ($method === 'edit')
+{{ $news->synopsis }}
+@endif
+                            </textarea>
+
+
+                        <label for="category" class="form-label mb-2">Category</label>
+                        <fieldset class="form-group">
+                            <select name="category" class="form-select" id="category">
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}"
+                                        @if ($method === 'edit' and $category->id === $news->category) selected @endif>{{ $category->category }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </fieldset>
+
+                        <label for="type" class="form-label mb-2">Type</label>
+                        <fieldset class="form-group">
+                            <select name="type" class="form-select" id="type">
+                                @foreach ($types as $type)
+                                    <option value="{{ $type }}"
+                                        @if ($method === 'edit' and $type === $news->type) selected @endif>{{ $type }}</option>
+                                @endforeach
+                            </select>
+                        </fieldset>
+
+                        <label class="form-check-label" for="isHeadline">Headline</label>
+                        <input name="isHeadline" class="form-check-input" type="checkbox" id="isHeadline"
+                            @if ($method === 'edit' and $news->is_headline == '1') checked @endif>
+                    </div>
+
+                </div>
+            </div>
+        </div>
         </div>
 
     </section>
@@ -161,4 +233,6 @@
 
         tinymce.init(editor_config);
     </script>
+    <script src="{{ asset('assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/form-element-select.js') }}"></script>
 @endsection

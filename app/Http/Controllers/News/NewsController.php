@@ -30,7 +30,7 @@ class NewsController extends Controller
                     ->where('roles.role', "Editor");
         $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')
                     ->where('roles.role', "Reporter");
-        
+
         if ($request->get('published')) {
             $published = $request->get('published');
             if($published == 2) {
@@ -74,10 +74,12 @@ class NewsController extends Controller
     {
         $method = explode('/', URL::current());
         $categories = Category::all();
+        $tags =Tag::all();
         $types = ['news', 'photonews', 'video'];
         return view('news.editable', ['method' => end($method),
             'categories' => $categories,
-            'types' => $types
+            'types' => $types,
+            'tags'=>$tags
         ]);
     }
 
@@ -89,7 +91,6 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-
         $data = $request->input();
         try {
             $news = new News([
@@ -99,12 +100,17 @@ class NewsController extends Controller
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
                 'type' => $data['type'],
-                'published_at' => $data['save'] == 'publish' ? now() :null,
-                'published_by' => $data['save'] == 'publish' ? auth()->id():null,
+                'is_published'=>$request->has('isPublished')==false ? '0' : '1',
+                'published_at' =>$request->has('isPublished')==false ?  null : $data['publishedAt'],
+                'published_by' =>$request->has('isPublished')==false ?  null : auth()->id(),
                 'created_by' => auth()->id(),
                 'category_id' => $data['category']
             ]);
             $news->save();
+            foreach ($data['tags'] as $t){
+                $news->tags()->sync($t);
+            }
+
             return \redirect('news')->with('status', 'Successfully Add New News');
         }catch (\Throwable $e){
             return Redirect::back()->withErrors($e->getMessage());
@@ -133,11 +139,14 @@ class NewsController extends Controller
         $method = explode('/', URL::current());
         $news = News::where('id', $id)->first();
         $categories = Category::all();
+        $tags =Tag::all();
         $types = ['news', 'photonews', 'video'];
+
         return view('news.editable', ['method' => end($method),
             'categories' => $categories,
             'types' => $types,
-            'news' => $news
+            'news' => $news,
+            'tags'=> $tags
         ]);
     }
 
@@ -160,11 +169,15 @@ class NewsController extends Controller
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
                 'type' => $data['type'],
-                'published_at' => $data['save'] == 'publish' ? now() :null,
-                'published_by' => $data['save'] == 'publish' ? auth()->id():null,
+                'is_published'=>$request->has('isPublished')==false ? '0' : '1',
+                'published_at' =>$request->has('isPublished')==false ?  null : $data['publishedAt'],
+                'published_by' =>$request->has('isPublished')==false ?  null : auth()->id(),
                 'updated_by' => auth()->id(),
                 'category_id' => $data['category']
             ]);
+            foreach ($data['tags'] as $t){
+                $newsById->tags()->sync($t);
+            }
             return \redirect('news')->with('status', 'Successfully Update News');
         }catch (\Throwable $e){
             return Redirect::back()->withErrors($e->getMessage());

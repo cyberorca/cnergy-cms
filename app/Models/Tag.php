@@ -18,7 +18,11 @@ class Tag extends Model
 
     protected $fillable = ['tags', 'slug', 'is_active', 'created_at', 'created_by', 'deleted_by'];
 
+    public function tags(){
+        return $this->belongsToMany(News::class, 'news_tags');
+    }
+
     public function news(){
-        return $this->belongsToMany(News::class, 'news_tags'); 
+        return $this->belongsToMany(News::class, 'news_tags');
     }
 }
