@@ -25,22 +25,39 @@ class NewsController extends Controller
     public function index(Request $request)
     {
         $news = News::with(['categories', 'tags']);
-        $editors = User::join('roles', 'users.role_id', '=', 'roles.id')
-                    ->where('roles.role', "Editor");
-        $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')
-                    ->where('roles.role', "Reporter");
+        $editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
+        $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Reporter");
 
         if ($request->get('published')) {
             $published = $request->get('published');
-            if($published == 2) {
-                $news ->where('is_published', "0");
-            }else {
-                $news ->where('is_published', "1");
+            if ($published == 2) {
+                $news->where('is_published', "0");
+            } else {
+                $news->where('is_published', "1");
+            }
+        }
+
+        if ($request->get('inputTitle')) {
+            $news-> where('title', 'like', '%' . $request->inputTitle . '%');
+        }
+
+        if ($request->get('inputCategory')) {
+            $news->whereHas('categories', function ($query) use ($request) {
+                $query->where('category', 'like', "%{$request->get('inputCategory')}%");
+            });
+        }
+
+        if ($request->get('headline')) {
+            $headline = $request->get('headline');
+            if ($headline == 2) {
+                $news->where('is_headline', "0");
+            } else {
+                $news->where('is_headline', "1");
             }
         }
 
         if ($request->get('inputTag')) {
-            $news->whereHas('tags', function($query) use ($request){
+            $news->whereHas('tags', function ($query) use ($request) {
                 $query->where('tags', 'like', "%{$request->get('inputTag')}%");
             });
         }
@@ -75,7 +92,8 @@ class NewsController extends Controller
         $categories = Category::all();
         $tags =Tag::all();
         $types = ['news', 'photonews', 'video'];
-        return view('news.editable', ['method' => end($method),
+        return view('news.editable', [
+            'method' => end($method),
             'categories' => $categories,
             'types' => $types,
             'tags'=>$tags
@@ -93,7 +111,7 @@ class NewsController extends Controller
         $data = $request->input();
         try {
             $news = new News([
-                'is_headline' => $request->has('isHeadline')==false ? '0' : '1',
+                'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'title' => $data['title'],
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
@@ -111,7 +129,7 @@ class NewsController extends Controller
             }
 
             return \redirect('news')->with('status', 'Successfully Add New News');
-        }catch (\Throwable $e){
+        } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
     }
@@ -140,8 +158,8 @@ class NewsController extends Controller
         $categories = Category::all();
         $tags =Tag::all();
         $types = ['news', 'photonews', 'video'];
-
-        return view('news.editable', ['method' => end($method),
+        return view('news.editable', [
+            'method' => end($method),
             'categories' => $categories,
             'types' => $types,
             'news' => $news,
@@ -162,7 +180,7 @@ class NewsController extends Controller
         $newsById = News::find($id);
         try {
             $newsById->update([
-                'is_headline' => $request->has('isHeadline')==false ? '0' : '1',
+                'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'title' => $data['title'],
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
@@ -178,7 +196,7 @@ class NewsController extends Controller
                 $newsById->tags()->sync($t);
             }
             return \redirect('news')->with('status', 'Successfully Update News');
-        }catch (\Throwable $e){
+        } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
     }
