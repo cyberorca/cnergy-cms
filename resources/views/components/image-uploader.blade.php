@@ -1,8 +1,8 @@
 <div>
     <div class="d-flex input-file-uploader">
-        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#image-bank" data-bs-toggle="tooltip"
-            data-bs-placement="top" title="Add Image"><i class="bi bi-list-check"></i>&nbsp;
-            Show List</button>
+        <span class="btn btn-secondary d-flex justify-content-center align-items-center" data-bs-toggle="modal" data-bs-target="#image-bank" data-bs-toggle="tooltip"
+            data-bs-placement="top" title="Add Image"><i class="bi bi-list-check mb-2"></i>&nbsp;
+            Show List</span>
         <span class="border">OR</span>
         <div class="input-upload-file">
             <input type="file" name="image" id="upload_image_button" />
@@ -131,7 +131,7 @@
                             </div>
                         </div> --}}
                         <div class="tab-pane fade p-2 py-3 show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                            <x-image-bank :item="$item"/>
+                            <x-image-bank />
                         </div>
                         {{-- <div class="tab-pane fade p-2 py-3" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                             <div class="form-group">
@@ -154,10 +154,6 @@
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         <i class="bx bx-x d-block d-sm-none"></i>
                         <span class="d-none d-sm-block">Cancel</span>
-                    </button>
-                    <button type="submit" class="btn btn-primary ml-1" data-bs-dismiss="modal">
-                        <i class="bx bx-check d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Save</span>
                     </button>
                 </div>
 

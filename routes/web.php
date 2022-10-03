@@ -61,6 +61,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('users', UsersController::class);
     
+    Route::get('/image-bank/api/list/', [ImageBankController::class, 'apiList'])->name('image_bank.api');
     Route::resource('image-bank', ImageBankController::class);
 
     Route::resource('news', NewsController::class);

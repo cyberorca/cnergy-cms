@@ -116,4 +116,14 @@ class ImageBankController extends Controller
             return redirect()->back()->withErrors($e->getMessage());
         }
     }
+
+    public function apiList(Request $request){
+        $image_bank = ImageBank::all();
+        if($request->get('title')){
+            // $image_bank->where('title', 'like', '%' . $request->title . '%');
+            $image_bank = ImageBank::where('title', 'like', '%' . $request->title . '%')->get();
+            return response()->json($image_bank);
+        }
+        return response()->json($image_bank);
+    }
 }

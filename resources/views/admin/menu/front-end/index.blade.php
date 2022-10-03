@@ -6,17 +6,19 @@
         .card-body * {
             transition: all 0.2s;
         }
-        
+
         .accordion-item.draggable.over .accordion-button {
             background-color: rgba(71, 71, 71, 0.233) !important;
         }
+        
 
-        .space-element{
+        .space-element {
             height: 52px;
             background-color: rgba(77, 77, 77, 0.245);
+            transition: all 1s;
         }
 
-        .front-end-name span{
+        .front-end-name span {
             background-color: rgb(154, 220, 255);
             border-radius: 10px;
             padding: 0 10px;
@@ -38,8 +40,24 @@
                 {{-- <div class="spinner-border text-light" role="status">
                     <span class="visually-hidden">Loading...</span>
                   </div> --}}
-                <button class="btn btn-success col-2 d-none" id="button-save-order"><i class="bi bi-save"></i> &nbsp;&nbsp; Save Change </button>
+                <button class="btn btn-success col-2 d-none" type="button" disabled id="button-loading">
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Loading...
+                </button>
+                <button class="btn btn-success col-2 d-none" id="button-save-order"><i class="bi bi-save"></i> &nbsp;&nbsp;
+                    Save Change </button>
                 <x-accordion-menu :accordion="$fe_menus" />
+            </div>
+        </div>
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">Message</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body bg-success text-light">
+                    <p class="text-light">Hello, world! This is a toast message.</p>
+                </div>
             </div>
         </div>
     </section>

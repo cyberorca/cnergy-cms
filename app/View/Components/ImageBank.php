@@ -11,10 +11,9 @@ class ImageBank extends Component
      *
      * @return void
      */
-    public $item;
-    public function __construct($item)
+    
+    public function __construct()
     {
-        $this->item = $item;
     }
 
     /**

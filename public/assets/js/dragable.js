@@ -1,16 +1,30 @@
 const accordion_list = document.getElementById('accordion-list');
 const button_save = document.getElementById('button-save-order');
+const button_loading = document.getElementById('button-loading');
 
 let dragStartIndex;
 const listItems = [];
 const orderedMenu = [];
+const toastLiveExample = document.getElementById("liveToast")
+const toast = new bootstrap.Toast(toastLiveExample)
 
 const spaceElement = document.createElement("div");
-spaceElement.classList.add("space-element");
+spaceElement.classList.add("space-element", 'd-flex');
+const changeOrderBox = document.createElement("div");
+changeOrderBox.classList.add("col-6", "text-danger", 'd-flex', 'justify-content-center', 'align-items-center', 'fw-bold')
+changeOrderBox.innerHTML = "Change Order Box"
+const addOrderBox = document.createElement("div");
+addOrderBox.classList.add("col-6", "text-danger", 'd-flex', 'justify-content-center', 'align-items-center', 'fw-bold')
+addOrderBox.innerHTML = "Change as child of X"
 
+spaceElement.appendChild(changeOrderBox)
+spaceElement.appendChild(addOrderBox)
+
+let idDragStart;
 function dragStart(e) {
     e.dataTransfer.setData("from_element", this.getAttribute("data-id"));
     dragStartIndex = +getIndexChildren(this);
+    idDragStart = this.getAttribute("data-id");
 }
 
 function dragEnter() {
@@ -57,7 +71,7 @@ function swapItems(fromIndex, toIndex, el, event) {
     const element_id = event.dataTransfer.getData("from_element");
     const orderedItem = document.querySelector(`[data-id="${element_id}"]`);
 
-    button_save.classList.remove("d-none")
+    el.getAttribute("data-id") != idDragStart ? button_save.classList.remove("d-none") : () => {};
     parent.insertBefore(orderedItem, itemTwoSibling);
     if (parent_id = orderedItem.parentElement.children[0].getAttribute("data-parent")) {
         orderedItem.setAttribute("data-parent", parent_id);
@@ -74,16 +88,31 @@ let parentChoosen = [];
 let count = 0;
 let indexParent = 0;
 
+function loading(check) {
+    if (check) {
+        button_loading.classList.remove('d-none');
+        button_save.classList.add('d-none');
+    } else {
+        button_loading.classList.add('d-none');
+        button_save.classList.add('d-none');
+    }
+}
+
 async function onSaveOrderMenu(e) {
     e.preventDefault();
     const draggables = document.querySelectorAll('.draggable');
     draggables.forEach((item, index) => {
         const id = item.getAttribute("data-id");
         const parent_id = item.getAttribute("data-parent");
+        const name = item.getAttribute("data-name");
+        const position = item.getAttribute("data-position");
         orderedMenu.push({
             'id': +id,
             // 'el': item,
             'order': checkHasParent(+parent_id, index),
+            'title': name,
+            'position': position,
+            'slug': name.split(' ').join('-').toLocaleLowerCase(),
             'parent_id': parent_id === '' ? null : +parent_id,
         })
 
@@ -98,6 +127,7 @@ async function onSaveOrderMenu(e) {
 async function updateOrderedMenu(ordered_menu) {
     const url = '/front-end-menu/order/update/';
     let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    loading(true)
     const data = await fetch(url, {
             headers: {
                 "Content-Type": "application/json",
@@ -112,10 +142,14 @@ async function updateOrderedMenu(ordered_menu) {
             })
         })
         .then((data) => {
+            loading(false)
+            toast.show()
+            toastLiveExample.children[1].innerHTML = "Success to update frontend menu order"
             return data.json()
             // window.location.href = redirect;
         })
         .catch(function (error) {
+            loading(false)
             console.log(error);
         });
 
