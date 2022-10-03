@@ -52,7 +52,7 @@
 
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">Users List</span>
-                <a href="{{ route('users.create') }}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Add User"><i class="bi bi-plus-circle-fill"></i>&nbsp;&nbsp;&nbsp;Add
+                <a href="{{ route('users.create') }}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Add User"><i class="bi bi-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add
                     User</a>
             </div>
             <div class="card-body">

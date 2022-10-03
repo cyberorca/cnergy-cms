@@ -33,9 +33,10 @@ class NewsFactory extends Factory
             'created_by' => User::first()->uuid,
             'updated_at' => now(),
             'updated_by' => null,
-            'deleted_at' => now(),
+            'deleted_at' => null,
             'deleted_by' => null,
             'category_id' => random_int(1, 50),
+            'is_published' => fake()->randomElement(['0', '1']),
         ];
     }
 }
