@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use App\Http\Requests\NewsRequest;
-use Illuminate\Support\Facades\DB;
 
 class NewsController extends Controller
 {
