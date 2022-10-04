@@ -31,7 +31,7 @@ class NewsFactory extends Factory
             'published_by' => User::first()->uuid,
             'created_at' => now(),
             'created_by' => User::first()->uuid,
-            'updated_at' => now(),
+            'updated_at' => null,
             'updated_by' => null,
             'deleted_at' => null,
             'deleted_by' => null,

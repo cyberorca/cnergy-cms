@@ -5,11 +5,13 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\FrontEndMenuController;
 use App\Http\Controllers\Admin\FrontEndSettingsController;
+use App\Http\Controllers\Admin\ImageBankController;
 use App\Http\Controllers\Admin\TagsController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Models\ImageBank;
 use App\Models\News;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +34,9 @@ Route::group(['middleware' => 'auth'], function () {
         Lfm::routes();
     });
     Route::get('/', function () {
-        return view('welcome');
+        $modal = true;
+        $image_bank = ImageBank::all();
+        return view('welcome', compact('modal', 'image_bank'));
     });
 
     Route::get("/front-end-menu/create/{id?}", [FrontEndMenuController::class, 'create'])->name('front-end-menu.create');
@@ -56,6 +60,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('tags', TagsController::class);
 
     Route::resource('users', UsersController::class);
+    
+    Route::get('/image-bank/api/list/', [ImageBankController::class, 'apiList'])->name('image_bank.api');
+    Route::resource('image-bank', ImageBankController::class);
 
     Route::resource('news', NewsController::class);
 });
@@ -70,4 +77,6 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/email/verify/{token}', [LoginController::class, 'verify'])->name('email.verify');
+Route::post('/front-end-menu/order/update',[FrontEndMenuController::class,'changeOrderMenu'])->name('front-end-menu.order');
+
 // Route::post('/news', [NewsController::class, 'index']);
