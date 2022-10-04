@@ -9,11 +9,13 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use App\Http\Requests\NewsRequest;
-use Illuminate\Support\Facades\DB;
+use App\Models\ImageBank;
+use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
@@ -110,6 +112,19 @@ class NewsController extends Controller
     {
         $data = $request->input();
         try {
+            if($request->file('upload_image') && !$data['upload_image_selected']){
+                $file = $request->file('upload_image');
+                // path_name_file = /news/2022/10/04/23423-zico-artonang.jpg
+                $news_image = time() . "." . $file->getClientOriginalExtension();
+                $file->storeAs('public/news_image', $news_image);
+                $data['image'] = url('') . '/storage/news_image/' . $news_image;
+            }
+            
+            if($data['upload_image_selected'] && !$request->file('upload_image')){
+               $data['image'] = $data['upload_image_selected'];
+            }
+
+            // return response()->json($data);
             $news = new News([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'title' => $data['title'],
@@ -117,6 +132,7 @@ class NewsController extends Controller
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
                 'type' => $data['type'],
+                'image' => $data['image'],
                 'is_published'=>$request->has('isPublished')==false ? '0' : '1',
                 'published_at' =>$request->has('isPublished')==false ?  null : $data['publishedAt'],
                 'published_by' =>$request->has('isPublished')==false ?  null : auth()->id(),

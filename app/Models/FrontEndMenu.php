@@ -31,6 +31,11 @@ class FrontEndMenu extends Model
         return $this->slug;
     }
 
+    public function title()
+    {
+        return $this->title;
+    }
+
     public function menu_name()
     {
         $position = '';
@@ -54,5 +59,9 @@ class FrontEndMenu extends Model
     public function parent()
     {
         return $this->parent_id;
+    }
+    public function position()
+    {
+        return $this->position;
     }
 }

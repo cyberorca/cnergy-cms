@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
              RoleSeeder::class,
              MenuSeeder::class,
-            //  FrontEndMenu::class,
+             FrontEndMenuSeeder::class,
         ]);
         User::factory(100)->create();
         Tag::factory(100)->create();
@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
         //        'created_at' => now(),
         //        'updated_at' => now(),
         //    ]);
-        //      $news_tag->tags()->attach(Tag::all()->random(rand(1,100))->pluck('id'));    
+        //      $news_tag->tags()->attach(Tag::all()->random(rand(1,100))->pluck('id')); 
         // }
 
         $tags = Tag::all();

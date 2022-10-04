@@ -18,7 +18,7 @@ class FrontEndMenuController extends Controller
      */
     public function index()
     {
-        $fe_menus = FrontEndMenu::whereNull('parent_id')->with(["childMenus"])->get();
+        $fe_menus = FrontEndMenu::whereNull('parent_id')->with(["childMenus"])->orderBy('order', 'ASC')->get();
         return view('admin.menu.front-end.index', compact('fe_menus'));
     }
 
@@ -50,11 +50,11 @@ class FrontEndMenuController extends Controller
             $input['position'] = json_encode($input['position']);
             if (array_key_exists("parent_id", $input)) {
                 $order = FrontEndMenu::select('id')->where('id', $input['parent_id'])
-                ->with(['child_desc' => function ($query) {
-                    return $query
-                    ->select('order', 'parent_id')
-                    ->first();
-                }])->first();
+                    ->with(['child_desc' => function ($query) {
+                        return $query
+                            ->select('order', 'parent_id')
+                            ->first();
+                    }])->first();
                 $input['order'] = count($order->child_desc) === 0 ? 0 : $order->child_desc[0]->order + 1;
             } else {
                 $order = FrontEndMenu::select('order')->orderBy('order', 'desc')->first();
@@ -113,7 +113,7 @@ class FrontEndMenuController extends Controller
             $fe_menu->slug = $input['slug'];
             $fe_menu->position = $input['position'];
             $fe_menu->save();
-            
+
             return redirect('front-end-menu')->with('status', 'Successfully to edit frontend menu');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
@@ -133,6 +133,22 @@ class FrontEndMenuController extends Controller
             return redirect()->back()->with('status', 'Successfully to delete frontend menu');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
+        }
+    }
+
+    public function changeOrderMenu(Request $request)
+    {
+        try {
+            // return json_decode(json_encode($request->get('data')),true) ;
+            FrontEndMenu::upsert($request->get('data'), ['id', 'title', 'slug'], ['order', 'parent_id']);
+            return [
+                'message' => 'success'
+            ];
+            // return response()->json($request->get("data"));
+        } catch (\Throwable $e) {
+            return [
+                'message' => $e->getMessage()
+            ];
         }
     }
 }

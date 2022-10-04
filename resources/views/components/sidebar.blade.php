@@ -41,35 +41,6 @@
         </div>
         <div class="sidebar-menu">
             <ul class="menu">
-                <li class="sidebar-item  ">
-                    <a href="index.html" class='sidebar-link'>
-                        <i class="bi bi-grid-fill"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="sidebar-item  has-sub">
-                    <a href="#" class='sidebar-link'>
-                        <i class="bi bi-stack"></i>
-                        <span>Master</span>
-                    </a>
-                    <ul class="submenu">
-                        <li class="submenu-item ">
-                            <a href="{{ route('menu.index') }}">Menu Settings</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="{{ route('users.index') }}">Users Settings</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="{{ url('role') }}">Roles Settings</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="{{ route('tags.index') }}">Tags Settings</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="{{ route('categories.index') }}">Categories Settings</a>
-                        </li>
-                    </ul>
-                </li>
                 @foreach ($menu_sidebar as $sidebar)
                     <x-sidebar-item :item="$sidebar" />
                 @endforeach
