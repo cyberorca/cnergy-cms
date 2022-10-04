@@ -92,7 +92,7 @@
 
                             <label for="type" class="form-label mb-2">Type</label>
                             <fieldset class="form-group">
-                                <select name="type" class="form-select" id="type">
+                                <select name="types" class="form-select" id="type">
                                     @foreach ($types as $type)
                                         <option value="{{ $type }}"
                                             @if ($method === 'edit' and $type === $news->type) selected @endif>{{ $type }}</option>

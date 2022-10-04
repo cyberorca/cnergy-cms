@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use App\Http\Requests\NewsRequest;
+use App\Http\Utils\FileFormatPath;
 use App\Models\ImageBank;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
@@ -28,21 +30,21 @@ class NewsController extends Controller
     {
         $news = News::with(['categories', 'tags']);
         $editors = User::join('roles', 'users.role_id', '=', 'roles.id')
-                    ->where('roles.role', "Editor");
+            ->where('roles.role', "Editor");
         $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')
-                    ->where('roles.role', "Reporter");
+            ->where('roles.role', "Reporter");
 
         if ($request->get('published')) {
             $published = $request->get('published');
-            if($published == 2) {
-                $news ->where('is_published', "0");
-            }else {
-                $news ->where('is_published', "1");
+            if ($published == 2) {
+                $news->where('is_published', "0");
+            } else {
+                $news->where('is_published', "1");
             }
         }
 
         if ($request->get('inputTag')) {
-            $news->whereHas('tags', function($query) use ($request){
+            $news->whereHas('tags', function ($query) use ($request) {
                 $query->where('tags', 'like', "%{$request->get('inputTag')}%");
             });
         }
@@ -75,12 +77,13 @@ class NewsController extends Controller
     {
         $method = explode('/', URL::current());
         $categories = Category::all();
-        $tags =Tag::all();
+        $tags = Tag::all();
         $types = ['news', 'photonews', 'video'];
-        return view('news.editable', ['method' => end($method),
+        return view('news.editable', [
+            'method' => end($method),
             'categories' => $categories,
             'types' => $types,
-            'tags'=>$tags
+            'tags' => $tags
         ]);
     }
 
@@ -94,40 +97,37 @@ class NewsController extends Controller
     {
         $data = $request->input();
         try {
-            if($request->file('upload_image') && !$data['upload_image_selected']){
+            if ($request->file('upload_image') && !$data['upload_image_selected']) {
                 $file = $request->file('upload_image');
-                // path_name_file = /news/2022/10/04/23423-zico-artonang.jpg
-                $news_image = time() . "." . $file->getClientOriginalExtension();
-                $file->storeAs('public/news_image', $news_image);
-                $data['image'] = url('') . '/storage/news_image/' . $news_image;
-            }
-            
-            if($data['upload_image_selected'] && !$request->file('upload_image')){
-               $data['image'] = $data['upload_image_selected'];
+                $fileFormatPath = new FileFormatPath($data['types'], $file);
+                $data['image'] = $fileFormatPath->storeFile();
             }
 
-            // return response()->json($data);
+            if ($data['upload_image_selected'] && !$request->file('upload_image')) {
+                $data['image'] = explode('http://127.0.0.1:8000/storage', $data['upload_image_selected'])[1];
+            }
+
             $news = new News([
-                'is_headline' => $request->has('isHeadline')==false ? '0' : '1',
+                'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'title' => $data['title'],
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
-                'type' => $data['type'],
+                'types' => $data['types'],
                 'image' => $data['image'],
-                'is_published'=>$request->has('isPublished')==false ? '0' : '1',
-                'published_at' =>$request->has('isPublished')==false ?  null : $data['publishedAt'],
-                'published_by' =>$request->has('isPublished')==false ?  null : auth()->id(),
+                'is_published' => $request->has('isPublished') == false ? '0' : '1',
+                'published_at' => $request->has('isPublished') == false ?  null : $data['publishedAt'],
+                'published_by' => $request->has('isPublished') == false ?  null : auth()->id(),
                 'created_by' => auth()->id(),
                 'category_id' => $data['category']
             ]);
             $news->save();
-            foreach ($data['tags'] as $t){
+            foreach ($data['tags'] as $t) {
                 $news->tags()->sync($t);
             }
 
             return \redirect('news')->with('status', 'Successfully Add New News');
-        }catch (\Throwable $e){
+        } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
     }
@@ -154,14 +154,15 @@ class NewsController extends Controller
         $method = explode('/', URL::current());
         $news = News::where('id', $id)->first();
         $categories = Category::all();
-        $tags =Tag::all();
+        $tags = Tag::all();
         $types = ['news', 'photonews', 'video'];
 
-        return view('news.editable', ['method' => end($method),
+        return view('news.editable', [
+            'method' => end($method),
             'categories' => $categories,
             'types' => $types,
             'news' => $news,
-            'tags'=> $tags
+            'tags' => $tags
         ]);
     }
 
@@ -178,23 +179,23 @@ class NewsController extends Controller
         $newsById = News::find($id);
         try {
             $newsById->update([
-                'is_headline' => $request->has('isHeadline')==false ? '0' : '1',
+                'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'title' => $data['title'],
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
                 'type' => $data['type'],
-                'is_published'=>$request->has('isPublished')==false ? '0' : '1',
-                'published_at' =>$request->has('isPublished')==false ?  null : $data['publishedAt'],
-                'published_by' =>$request->has('isPublished')==false ?  null : auth()->id(),
+                'is_published' => $request->has('isPublished') == false ? '0' : '1',
+                'published_at' => $request->has('isPublished') == false ?  null : $data['publishedAt'],
+                'published_by' => $request->has('isPublished') == false ?  null : auth()->id(),
                 'updated_by' => auth()->id(),
                 'category_id' => $data['category']
             ]);
-            foreach ($data['tags'] as $t){
+            foreach ($data['tags'] as $t) {
                 $newsById->tags()->sync($t);
             }
             return \redirect('news')->with('status', 'Successfully Update News');
-        }catch (\Throwable $e){
+        } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
     }
@@ -207,6 +208,13 @@ class NewsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $newsById = News::find($id);
+            $newsById->deleted_by = Auth::user()->uuid;
+            $newsById->delete();
+            return \redirect('news')->with('status', 'Successfully deleted News');
+        } catch (\Throwable $e) {
+            return Redirect::back()->withErrors($e->getMessage());
+        }
     }
 }
