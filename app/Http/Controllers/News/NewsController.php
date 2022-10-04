@@ -119,7 +119,7 @@ class NewsController extends Controller
                 $file->storeAs('public/news_image', $news_image);
                 $data['image'] = url('') . '/storage/news_image/' . $news_image;
             }
-            
+
             if($data['upload_image_selected'] && !$request->file('upload_image')){
                $data['image'] = $data['upload_image_selected'];
             }
@@ -141,7 +141,7 @@ class NewsController extends Controller
             ]);
             $news->save();
             foreach ($data['tags'] as $t){
-                $news->tags()->sync($t);
+                $news->tags()->attach($t);
             }
 
             return \redirect('news')->with('status', 'Successfully Add New News');
@@ -208,8 +208,9 @@ class NewsController extends Controller
                 'updated_by' => auth()->id(),
                 'category_id' => $data['category']
             ]);
+            $newsById::find($id)->tags()->detach();
             foreach ($data['tags'] as $t){
-                $newsById->tags()->sync($t);
+                $newsById->tags()->attach($t);
             }
             return \redirect('news')->with('status', 'Successfully Update News');
         } catch (\Throwable $e) {
