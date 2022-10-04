@@ -127,6 +127,7 @@ class NewsController extends Controller
             // return response()->json($data);
             $news = new News([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
+                'editor_pick' => $request->has('editorPick') == false ? '0' : '1',
                 'title' => $data['title'],
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
@@ -198,6 +199,7 @@ class NewsController extends Controller
         try {
             $newsById->update([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
+                'editor_pick' => $request->has('editorPick') == false ? '0' : '1',
                 'title' => $data['title'],
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],

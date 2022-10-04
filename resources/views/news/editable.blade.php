@@ -119,9 +119,13 @@
                                             <input name="isHeadline" class="form-check-input" type="checkbox"
                                                    id="isHeadline"
                                                    @if ($method === 'edit' and $news->is_headline == '1') checked @endif>
-                                            <label class="form-check-label" for="isPublish">Status Publish</label>
-                                            <input name="isPublish" class="form-check-input" type="checkbox"
-                                                   id="isPublish"
+                                            <label class="form-check-label" for="editorPick">Editor Pick</label>
+                                            <input name="editorPick" class="form-check-input" type="checkbox"
+                                                   id="editorPick"
+                                                   @if ($method === 'edit' and $news->editor_pick == '1') checked @endif>
+                                            <label class="form-check-label" for="isPublished">Status Publish</label>
+                                            <input name="isPublished" class="form-check-input" type="checkbox"
+                                                   id="isPublished"
                                                    @if ($method === 'edit' and $news->is_published == '1') checked @endif>
 
                                         </div>
@@ -212,30 +216,31 @@
                 </script>
                 <script src="{{ asset('assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
                 <script src="{{ asset('assets/js/pages/form-element-select.js') }}"></script>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
-                    <script>
-                        $(function () {
-                            $('input')
-                                .on('change', function (event) {
-                                    var $element = $(event.target);
-                                    var $container = $element.closest('.example');
+                <script
+                    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+                <script>
+                    $(function () {
+                        $('input')
+                            .on('change', function (event) {
+                                var $element = $(event.target);
+                                var $container = $element.closest('.example');
 
-                                    if (!$element.data('tagsinput')) return;
+                                if (!$element.data('tagsinput')) return;
 
-                                    var val = $element.val();
-                                    if (val === null) val = 'null';
-                                    var items = $element.tagsinput('items');
+                                var val = $element.val();
+                                if (val === null) val = 'null';
+                                var items = $element.tagsinput('items');
 
-                                    $('code', $('pre.val', $container)).html(
-                                        $.isArray(val)
-                                            ? JSON.stringify(val)
-                                            : '"' + val.replace('"', '\\"') + '"'
-                                    );
-                                    $('code', $('pre.items', $container)).html(
-                                        JSON.stringify($element.tagsinput('items'))
-                                    );
-                                })
-                                .trigger('change');
-                        });
-                    </script>
+                                $('code', $('pre.val', $container)).html(
+                                    $.isArray(val)
+                                        ? JSON.stringify(val)
+                                        : '"' + val.replace('"', '\\"') + '"'
+                                );
+                                $('code', $('pre.items', $container)).html(
+                                    JSON.stringify($element.tagsinput('items'))
+                                );
+                            })
+                            .trigger('change');
+                    });
+                </script>
 @endsection

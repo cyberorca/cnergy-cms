@@ -18,6 +18,7 @@ class News extends Model
 
     protected $fillable = [
         'is_headline',
+        'editor_pick',
         'title',
         'slug',
         'types',
