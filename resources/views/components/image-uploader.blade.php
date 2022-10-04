@@ -5,7 +5,8 @@
             Show List</span>
         <span class="border">OR</span>
         <div class="input-upload-file">
-            <input type="file" name="image" id="upload_image_button" />
+            <input type="file" name="upload_image" id="upload_image_button" />
+            <input type="hidden" name="upload_image_selected" id="upload_image_selected" />
             <span><i class="bi bi-upload mb-2"></i>&nbsp; Upload File</span>
         </div>
     </div>

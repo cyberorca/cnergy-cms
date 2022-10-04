@@ -8,12 +8,14 @@
  var search_image_bank_input = document.getElementById("search_image_bank_input")
  var search_image_bank_button = document.getElementById("search_image_bank_button")
  let list = []
+ var upload_image_selected = document.getElementById("upload_image_selected")
 
  let path = document.getElementById('path_image').value;
 
  upload_image_button.onchange = evt => {
      const [file] = upload_image_button.files
      if (file) {
+          upload_image_selected.value = null;
          image_preview_result.src = URL.createObjectURL(file)
      }
  }
@@ -23,6 +25,8 @@
      const imageTitle = this.parentElement.children[1].innerHTML;
      image_title.innerHTML = imageTitle;
      image_preview_result.src = imageSrc;
+     upload_image_selected.value = imageSrc;
+     upload_image_button.value = null;
  }
 
  async function search() {

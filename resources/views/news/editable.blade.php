@@ -11,9 +11,9 @@
 @section('body')
     <x-page-heading title="Table News" subtitle="View and Manage News Data" />
     @if ($method === 'edit')
-        <form action="{{ route('news.update', $news->id) }}" method="post">
+        <form action="{{ route('news.update', $news->id) }}" method="post" enctype="multipart/form-data">
         @else
-            <form action="{{ route('news.store') }}" method="post">
+            <form action="{{ route('news.store') }}" method="post" enctype="multipart/form-data">
     @endif
     <section id="basic-vertical-layouts">
         @csrf
@@ -34,10 +34,10 @@
                                 @if ($method === 'edit') value="{{ $news->title }}" @endif />
                             <label for="content" class="form-label">Content</label>
                             <textarea name="content" class="my-editor form-control" id="content" cols="30" rows="10">
-                                                @if ($method === 'edit')
+                                    @if ($method === 'edit')
 {{ $news->content }}
 @endif
-                                            </textarea>
+                            </textarea>
                         </div>
                         <div class="d-flex justify-content-end gap-3 mt-3">
                             <a href="{{ route('news.index') }}" class="btn btn-light" data-bs-toggle="tooltip"
@@ -55,6 +55,16 @@
             <div class="col-6">
                 <div class="card">
                     <div class="card-header">
+                        <span class="h4">News Image</span>
+                    </div>
+                    <div class="card-body">
+                        <x-image-uploader />
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
                         <span class="h4">Others</span>
                     </div>
                     <div class="card-body d-flex flex-column gap-2">
@@ -63,10 +73,10 @@
                             <label for="synopsis" class="form-label mb-2">Synopsis</label>
                             <textarea name="synopsis" class="form-control" id="synopsis" cols="30" rows="3"
                                 placeholder="Enter Synopsis">
-@if ($method === 'edit')
-{{ $news->synopsis }}
-@endif
-</textarea>
+                                    @if ($method === 'edit')
+                                        {{ $news->synopsis }}
+                                    @endif
+                            </textarea>
 
 
                             <label for="category" class="form-label mb-2">Category</label>
@@ -118,73 +128,8 @@
                         </div>
                     </div>
                 </div>
-
-            </div>
-
-        </div>
-        </div>
-
-        </div>
-        </div>
-        </div>
-        <div class="col-6">
-            <div class="card">
-                <div class="card-header">
-                    <span class="h4">News Image</span>
-                </div>
-                <div class="card-body">
-                    <x-image-uploader />
-                </div>
             </div>
         </div>
-        <div class="col-6">
-            <div class="card">
-                <div class="card-header">
-                    <span class="h4">Others</span>
-                </div>
-                <div class="card-body d-flex flex-column gap-2">
-
-                    <div class="form-group">
-                        <label for="synopsis" class="form-label mb-2">Synopsis</label>
-                        <textarea name="synopsis" class="form-control" id="synopsis" cols="30" rows="3"
-                            placeholder="Enter Synopsis">
-                                @if ($method === 'edit')
-{{ $news->synopsis }}
-@endif
-                            </textarea>
-
-
-                        <label for="category" class="form-label mb-2">Category</label>
-                        <fieldset class="form-group">
-                            <select name="category" class="form-select" id="category">
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}"
-                                        @if ($method === 'edit' and $category->id === $news->category) selected @endif>{{ $category->category }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </fieldset>
-
-                        <label for="type" class="form-label mb-2">Type</label>
-                        <fieldset class="form-group">
-                            <select name="type" class="form-select" id="type">
-                                @foreach ($types as $type)
-                                    <option value="{{ $type }}"
-                                        @if ($method === 'edit' and $type === $news->type) selected @endif>{{ $type }}</option>
-                                @endforeach
-                            </select>
-                        </fieldset>
-
-                        <label class="form-check-label" for="isHeadline">Headline</label>
-                        <input name="isHeadline" class="form-check-input" type="checkbox" id="isHeadline"
-                            @if ($method === 'edit' and $news->is_headline == '1') checked @endif>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        </div>
-
     </section>
     </form>
 @endsection
