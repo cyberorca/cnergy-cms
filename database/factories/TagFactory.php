@@ -19,7 +19,7 @@ class TagFactory extends Factory
     {
         return [
             'tags' => $this->faker->userName(),
-            'is_Active' => fake()->randomElement(['0', '1']),
+            'is_active' => fake()->randomElement(['0', '1']),
             'slug' => fake()->slug(),
             'created_by' => User::first()->uuid,
             'created_at' => now(),

@@ -63,6 +63,7 @@ class Category extends Model
     public function slug(){
         return $this->slug;
     }
+    
     public function menu_name(){
         return $this->category;
     }

@@ -10,9 +10,9 @@ class News extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $guard = [];
+    protected $guarded = [];
 
-    protected $table = 'news';
+    // protected $table = 'news';
 
     protected $primaryKey = 'id';
 
@@ -40,6 +40,6 @@ class News extends Model
     }
 
     public function tags(){
-        return $this->belongsToMany(Tag::class, 'news_tags');
+        return $this->belongsToMany(Tag::class, 'news_tags'); 
     }
 }
