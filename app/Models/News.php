@@ -14,7 +14,9 @@ class News extends Model
 
     // protected $table = 'news';
 
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id'; 
+
+    protected $deletedAt = ['deleted_at'];
 
     protected $fillable = [
         'is_headline',

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
@@ -141,9 +142,16 @@ class CategoriesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
+    { 
         try {
+            Category::where('id',$id)->update([
+                'deleted_by' => Auth::user()->uuid,
+            ]);
             Category::destroy($id);
+            News::where('category_id',$id)->update([
+                'deleted_by' => Auth::user()->uuid,
+            ]);
+            News::where('category_id',$id)->delete();
             return Redirect::back()->with('status', 'Successfully to Delete Category');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
