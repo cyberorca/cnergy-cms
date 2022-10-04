@@ -29,10 +29,8 @@ class NewsController extends Controller
     public function index(Request $request)
     {
         $news = News::with(['categories', 'tags']);
-        $editors = User::join('roles', 'users.role_id', '=', 'roles.id')
-            ->where('roles.role', "Editor");
-        $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')
-            ->where('roles.role', "Reporter");
+        $editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
+        $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Reporter");
 
         if ($request->get('published')) {
             $published = $request->get('published');
@@ -40,6 +38,25 @@ class NewsController extends Controller
                 $news->where('is_published', "0");
             } else {
                 $news->where('is_published', "1");
+            }
+        }
+
+        if ($request->get('inputTitle')) {
+            $news-> where('title', 'like', '%' . $request->inputTitle . '%');
+        }
+
+        if ($request->get('inputCategory')) {
+            $news->whereHas('categories', function ($query) use ($request) {
+                $query->where('category', 'like', "%{$request->get('inputCategory')}%");
+            });
+        }
+
+        if ($request->get('headline')) {
+            $headline = $request->get('headline');
+            if ($headline == 2) {
+                $news->where('is_headline', "0");
+            } else {
+                $news->where('is_headline', "1");
             }
         }
 
