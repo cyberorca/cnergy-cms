@@ -46,11 +46,11 @@
                                         <div class="form-group">
                                             <label for="title" class="mb-2">Title</label>
                                             <input type="text" class="form-control" id="title" name="title"
-                                                   placeholder="Enter Title "
+                                                   placeholder="Enter Title " required
                                                    @if ($method === 'edit') value="{{ $news->title }}" @endif />
                                             <label for="content" class="form-label">Content</label>
                                             <textarea name="content" class="my-editor form-control" id="content"
-                                                      cols="30" rows="10">
+                                                      cols="30" rows="10" required>
                                     @if ($method === 'edit')
                                                     {{ $news->content }}
                                                 @endif
@@ -91,7 +91,7 @@
                                         <div class="form-group">
                                             <label for="synopsis" class="form-label mb-2">Synopsis</label>
                                             <textarea name="synopsis" class="form-control" id="synopsis" cols="30"
-                                                      rows="3"
+                                                      rows="3" required
                                                       placeholder="Enter Synopsis">@if ($method === 'edit'){{ $news->synopsis }}@endif</textarea>
 
                                             <label for="category" class="form-label mb-2">Category</label>
@@ -135,7 +135,7 @@
                                             <label for="tags" class="form-label mb-2">Tags</label>
                                             <select name="tags[]" class="choices form-select multiple-remove"
                                                     multiple="multiple"
-                                                    id="tags">
+                                                    id="tags" required>
                                                 <optgroup label="Tags">
                                                     @foreach ($tags as $id => $tag)
                                                         <option id="{{ $id }}" value="{{ $id }}"
@@ -151,7 +151,7 @@
                                                 name="keywords"
                                                 id="keywords"
                                                 type="text"
-
+                                                required
                                                 placeholder="enter the keyword seperate with a comma"
                                                 class="form-control p-4"
                                                 data-role="tagsinput"
