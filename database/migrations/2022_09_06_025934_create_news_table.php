@@ -16,11 +16,13 @@ return new class extends Migration
         Schema::create('news', function (Blueprint $table) {
             $table->id();
             $table->enum('is_headline', [0, 1])->default(1);
+            $table->enum('editor_pick', [0, 1])->default(1);
             $table->string('title', 255);
             $table->string('slug', 255);
             $table->longText('content');
             $table->longText('synopsis');
             $table->enum('types', ['news', 'photonews', 'video']);
+            $table->longText('keywords');
             $table->string('image', 255)->unique()->nullable();
             $table->string('video', 255)->unique()->nullable();
             $table->enum('is_published', [0, 1])->default(1);
