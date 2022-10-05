@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ImageBankRequest;
+use App\Http\Utils\FileFormatPath;
 use App\Models\ImageBank;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -52,9 +53,8 @@ class ImageBankController extends Controller
             ];
             if ($request->hasFile('image_input')) {
                 $file = $request->file('image_input');
-                $image_input = time() . "." . $file->getClientOriginalExtension();
-                $file->storeAs('public/image_bank/', $image_input);
-                $data['slug'] = $image_input;
+                $fileFormatPath = new FileFormatPath('image-bank', $file);
+                $data['slug'] = $fileFormatPath->storeFile();
             }
 
             ImageBank::create($data);
@@ -108,7 +108,8 @@ class ImageBankController extends Controller
     {
         try {
             $image = ImageBank::find($id);
-            Storage::delete('public/image_bank/' . $image->slug);
+            $image->deleted_by = Auth::user()->uuid;
+            // Storage::delete('public/image_bank/' . $image->slug);
             $image->delete();
             
             return redirect()->back()->with('status', 'Successfully Delete Image');

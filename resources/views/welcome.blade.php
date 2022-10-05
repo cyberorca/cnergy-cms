@@ -14,7 +14,7 @@
                             class="bi bi-file-earmark-x-fill"></i></h4>
                 </div>
                 <div class="card-body">
-                    <x-image-uploader :modal="$modal" :item="$image_bank" />
+                    {{-- <x-image-uploader :modal="$modal" :item="$image_bank" /> --}}
                 </div>
             </div>
         </div>

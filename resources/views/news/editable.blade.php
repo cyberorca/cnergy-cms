@@ -165,9 +165,50 @@
                                 </div>
                             </div>
                         </div>
-                    </section>
-                </form>
-                @endsection
+                        <div class="d-flex justify-content-end gap-3 mt-3">
+                            <a href="{{ route('news.index') }}" class="btn btn-light" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Back to Table Rome">Back</a>
+
+                            <button class="btn btn-primary" name="save" type="submit" data-bs-toggle="tooltip"
+                                value="publish" data-bs-placement="top" title="Create Role">Save
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="h4">
+                            News Image
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        @if (isset($news))
+                            <x-image-uploader :item="$news" />
+                        @else
+                            <x-image-uploader />
+                        @endif
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="h4">Others</span>
+                    </div>
+                    <div class="card-body d-flex flex-column gap-2">
+
+                        <div class="form-group">
+                            <label for="synopsis" class="form-label mb-2">Synopsis</label>
+                            <textarea name="synopsis" class="form-control" id="synopsis" cols="30" rows="3"
+                                placeholder="Enter Synopsis">
+                                    @if ($method === 'edit')
+{{ $news->synopsis }}
+@endif
+                            </textarea>
 
 
             @section('javascript')
