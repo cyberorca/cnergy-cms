@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\NewsRequest;
 use App\Http\Utils\FileFormatPath;
 use App\Models\ImageBank;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
