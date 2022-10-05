@@ -14,13 +14,17 @@ class News extends Model
 
     // protected $table = 'news';
 
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id'; 
+
+    protected $deletedAt = ['deleted_at'];
 
     protected $fillable = [
         'is_headline',
+        'editor_pick',
         'title',
         'slug',
         'types',
+        'keywords',
         'image',
         'video ',
         'synopsis',
@@ -40,6 +44,6 @@ class News extends Model
     }
 
     public function tags(){
-        return $this->belongsToMany(Tag::class, 'news_tags'); 
+        return $this->belongsToMany(Tag::class, 'news_tags');
     }
 }

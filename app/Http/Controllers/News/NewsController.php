@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\NewsRequest;
 use App\Models\ImageBank;
 use Illuminate\Support\Facades\Storage;
@@ -40,7 +41,7 @@ class NewsController extends Controller
         }
 
         if ($request->get('inputTitle')) {
-            $news-> where('title', 'like', '%' . $request->inputTitle . '%');
+            $news->where('title', 'like', '%' . $request->inputTitle . '%');
         }
 
         if ($request->get('inputCategory')) {
@@ -92,13 +93,13 @@ class NewsController extends Controller
     {
         $method = explode('/', URL::current());
         $categories = Category::all();
-        $tags =Tag::all();
+        $tags = Tag::all();
         $types = ['news', 'photonews', 'video'];
         return view('news.editable', [
             'method' => end($method),
             'categories' => $categories,
             'types' => $types,
-            'tags'=>$tags
+            'tags' => $tags
         ]);
     }
 
@@ -112,36 +113,38 @@ class NewsController extends Controller
     {
         $data = $request->input();
         try {
-            if($request->file('upload_image') && !$data['upload_image_selected']){
+            if ($request->file('upload_image') && !$data['upload_image_selected']) {
                 $file = $request->file('upload_image');
                 // path_name_file = /news/2022/10/04/23423-zico-artonang.jpg
                 $news_image = time() . "." . $file->getClientOriginalExtension();
                 $file->storeAs('public/news_image', $news_image);
                 $data['image'] = url('') . '/storage/news_image/' . $news_image;
             }
-            
-            if($data['upload_image_selected'] && !$request->file('upload_image')){
-               $data['image'] = $data['upload_image_selected'];
+
+            if ($data['upload_image_selected'] && !$request->file('upload_image')) {
+                $data['image'] = $data['upload_image_selected'];
             }
 
             // return response()->json($data);
             $news = new News([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
+                'editor_pick' => $request->has('editorPick') == false ? '0' : '1',
                 'title' => $data['title'],
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
                 'type' => $data['type'],
+                'keywords'=> $data['keywords'],
                 'image' => $data['image'],
-                'is_published'=>$request->has('isPublished')==false ? '0' : '1',
-                'published_at' =>$request->has('isPublished')==false ?  null : $data['publishedAt'],
-                'published_by' =>$request->has('isPublished')==false ?  null : auth()->id(),
+                'is_published' => $request->has('isPublished') == false ? '0' : '1',
+                'published_at' => $request->has('isPublished') == false ?  null : $data['publishedAt'],
+                'published_by' => $request->has('isPublished') == false ?  null : auth()->id(),
                 'created_by' => auth()->id(),
                 'category_id' => $data['category']
             ]);
             $news->save();
             foreach ($data['tags'] as $t){
-                $news->tags()->sync($t);
+                $news->tags()->attach($t);
             }
 
             return \redirect('news')->with('status', 'Successfully Add New News');
@@ -172,14 +175,14 @@ class NewsController extends Controller
         $method = explode('/', URL::current());
         $news = News::where('id', $id)->first();
         $categories = Category::all();
-        $tags =Tag::all();
+        $tags = Tag::all();
         $types = ['news', 'photonews', 'video'];
         return view('news.editable', [
             'method' => end($method),
             'categories' => $categories,
             'types' => $types,
             'news' => $news,
-            'tags'=> $tags
+            'tags' => $tags
         ]);
     }
 
@@ -197,19 +200,22 @@ class NewsController extends Controller
         try {
             $newsById->update([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
+                'editor_pick' => $request->has('editorPick') == false ? '0' : '1',
                 'title' => $data['title'],
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
                 'type' => $data['type'],
+                'keywords'=> $data['keywords'],
                 'is_published'=>$request->has('isPublished')==false ? '0' : '1',
                 'published_at' =>$request->has('isPublished')==false ?  null : $data['publishedAt'],
                 'published_by' =>$request->has('isPublished')==false ?  null : auth()->id(),
                 'updated_by' => auth()->id(),
                 'category_id' => $data['category']
             ]);
+            $newsById::find($id)->tags()->detach();
             foreach ($data['tags'] as $t){
-                $newsById->tags()->sync($t);
+                $newsById->tags()->attach($t);
             }
             return \redirect('news')->with('status', 'Successfully Update News');
         } catch (\Throwable $e) {
@@ -225,6 +231,14 @@ class NewsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            News::where('id', $id)->update([
+                'deleted_by' => Auth::user()->uuid,
+            ]);
+            News::destroy($id);
+            return Redirect::back()->with('status', 'Successfully to Delete User');
+        } catch (\Throwable $e) {
+            return Redirect::back()->withErrors($e->getMessage());
+        }
     }
 }
