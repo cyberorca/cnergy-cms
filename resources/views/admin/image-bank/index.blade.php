@@ -49,12 +49,12 @@
                 <div class="d-flex flex-wrap gap-2 justify-content-center align-items-center" id="masonry">
                     @foreach ($image_bank as $item)
                         <div class="image-card border p-0">
-                            <img src="{{ asset('storage/image_bank/' . $item->slug) }}" alt="" class="w-100">
+                            <img src="{{ url('') . '/storage' . $item->slug }}" alt="" class="w-100">
                             <div class="d-flex flex-column gap-2 p-2">
                                 <p class="m-0 font-14">{{ $item->title }}</p>
                                 <div class="d-flex">
-                                    <button class="btn-warning font-14 w-50 button-action"><i
-                                            class="bi bi-pencil-square"></i>&nbsp;&nbsp;Edit</button>
+                                    {{-- <button class="btn-warning font-14 w-50 button-action"><i
+                                            class="bi bi-pencil-square"></i>&nbsp;&nbsp;Edit</button> --}}
                                     <button class="btn btn-danger font-14 w-50 button-action"
                                     type="button"
                                     data-bs-toggle="modal"
@@ -98,7 +98,7 @@
                             </div>
                         </div>
                     @endforeach
-                    @for ($i = 0; $i < 10; $i++)
+                    {{-- @for ($i = 0; $i < 10; $i++)
                         <div class="image-card border p-0">
                             <img @if ($i % 2 == 0) src="{{ asset('assets/images/example_image.jpg') }}" 
                             @else     
@@ -114,7 +114,7 @@
                                 </div>
                             </div>
                         </div>
-                    @endfor
+                    @endfor --}}
                 </div>
             </div>
         </div>

@@ -100,7 +100,7 @@ class NewsController extends Controller
             'method' => end($method),
             'categories' => $categories,
             'types' => $types,
-            'tags' => $tags
+            'tags' => $tags,
         ]);
     }
 
@@ -195,7 +195,7 @@ class NewsController extends Controller
         $data = $request->input();
         $newsById = News::find($id);
         try {
-            $newsById->update([
+            $input = [
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'title' => $data['title'],
                 'slug' => Str::slug($data['title']),
@@ -207,7 +207,19 @@ class NewsController extends Controller
                 'published_by' => $request->has('isPublished') == false ?  null : auth()->id(),
                 'updated_by' => auth()->id(),
                 'category_id' => $data['category']
-            ]);
+            ];
+
+            if ($request->file('upload_image') && !$data['upload_image_selected']) {
+                $file = $request->file('upload_image');
+                $fileFormatPath = new FileFormatPath($data['types'], $file);
+                $input['image'] = $fileFormatPath->storeFile();
+            }
+
+            if ($data['upload_image_selected'] && !$request->file('upload_image')) {
+                $input['image'] = explode('http://127.0.0.1:8000/storage', $data['upload_image_selected'])[1];
+            }
+            
+            $newsById->update($input);
             foreach ($data['tags'] as $t) {
                 $newsById->tags()->sync($t);
             }

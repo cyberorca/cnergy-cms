@@ -55,10 +55,16 @@
             <div class="col-6">
                 <div class="card">
                     <div class="card-header">
-                        <span class="h4">News Image</span>
+                        <span class="h4">
+                            News Image
+                        </span>
                     </div>
                     <div class="card-body">
-                        <x-image-uploader />
+                        @if (isset($news))
+                            <x-image-uploader :item="$news" />
+                        @else
+                            <x-image-uploader />
+                        @endif
                     </div>
                 </div>
             </div>
@@ -74,8 +80,8 @@
                             <textarea name="synopsis" class="form-control" id="synopsis" cols="30" rows="3"
                                 placeholder="Enter Synopsis">
                                     @if ($method === 'edit')
-                                        {{ $news->synopsis }}
-                                    @endif
+{{ $news->synopsis }}
+@endif
                             </textarea>
 
 
