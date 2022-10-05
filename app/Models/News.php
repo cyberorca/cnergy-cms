@@ -20,9 +20,11 @@ class News extends Model
 
     protected $fillable = [
         'is_headline',
+        'editor_pick',
         'title',
         'slug',
         'types',
+        'keywords',
         'image',
         'video ',
         'synopsis',
@@ -42,6 +44,6 @@ class News extends Model
     }
 
     public function tags(){
-        return $this->belongsToMany(Tag::class, 'news_tags'); 
+        return $this->belongsToMany(Tag::class, 'news_tags');
     }
 }

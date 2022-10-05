@@ -128,11 +128,13 @@ class NewsController extends Controller
             // return response()->json($data);
             $news = new News([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
+                'editor_pick' => $request->has('editorPick') == false ? '0' : '1',
                 'title' => $data['title'],
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
                 'type' => $data['type'],
+                'keywords'=> $data['keywords'],
                 'image' => $data['image'],
                 'is_published' => $request->has('isPublished') == false ? '0' : '1',
                 'published_at' => $request->has('isPublished') == false ?  null : $data['publishedAt'],
@@ -141,8 +143,8 @@ class NewsController extends Controller
                 'category_id' => $data['category']
             ]);
             $news->save();
-            foreach ($data['tags'] as $t) {
-                $news->tags()->sync($t);
+            foreach ($data['tags'] as $t){
+                $news->tags()->attach($t);
             }
 
             return \redirect('news')->with('status', 'Successfully Add New News');
@@ -198,19 +200,22 @@ class NewsController extends Controller
         try {
             $newsById->update([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
+                'editor_pick' => $request->has('editorPick') == false ? '0' : '1',
                 'title' => $data['title'],
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
                 'type' => $data['type'],
-                'is_published' => $request->has('isPublished') == false ? '0' : '1',
-                'published_at' => $request->has('isPublished') == false ?  null : $data['publishedAt'],
-                'published_by' => $request->has('isPublished') == false ?  null : auth()->id(),
+                'keywords'=> $data['keywords'],
+                'is_published'=>$request->has('isPublished')==false ? '0' : '1',
+                'published_at' =>$request->has('isPublished')==false ?  null : $data['publishedAt'],
+                'published_by' =>$request->has('isPublished')==false ?  null : auth()->id(),
                 'updated_by' => auth()->id(),
                 'category_id' => $data['category']
             ]);
-            foreach ($data['tags'] as $t) {
-                $newsById->tags()->sync($t);
+            $newsById::find($id)->tags()->detach();
+            foreach ($data['tags'] as $t){
+                $newsById->tags()->attach($t);
             }
             return \redirect('news')->with('status', 'Successfully Update News');
         } catch (\Throwable $e) {
