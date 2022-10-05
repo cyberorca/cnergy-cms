@@ -132,22 +132,25 @@
                                     <a href="{{ route('news.edit', $n->id) }}" class="btn icon btn-warning"
                                         data-bs-toggle="tooltip" data-bs-placement="top" title="Update User Data"><i
                                             class="bi bi-pencil-square"></i></a>
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $n->id }}"><i
+                                    <button type="button" data-toggle="modal"
+                                        data-target="#deleteModal{{ $n->id }}" class="btn icon btn-danger"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Delete User Data"><i
                                             class="bi bi-trash"></i></button>
                                 </td>
                             </tr>
-                            <div class="modal fade" id="deleteModal{{$n->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="deleteModal{{ $n->id }}" tabindex="-1"
+                                aria-labelledby="deleteModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="deleteModalLabel">Delete User</h5>
+                                            <h5 class="modal-title" id="deleteModalLabel">Delete News</h5>
                                             <button type="button" class="close" data-dismiss="modal"
                                                 aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            Delete User "{{ $n->title }}"?
+                                            Delete News "{{ $n->title }}"?
                                         </div>
                                         <div class="modal-footer">
                                             <form action="{{ route('news.destroy', $n->id) }}" method="post">
@@ -174,5 +177,16 @@
     </section>
 @endsection
 @section('javascript')
-    <script></script>
+    <script src="assets/extensions/jquery/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
+    <script src="assets/js/bootstrap.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+    </script>
 @endsection

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\NewsRequest;
 use App\Http\Utils\FileFormatPath;
 use App\Models\ImageBank;
@@ -42,7 +43,7 @@ class NewsController extends Controller
         }
 
         if ($request->get('inputTitle')) {
-            $news-> where('title', 'like', '%' . $request->inputTitle . '%');
+            $news->where('title', 'like', '%' . $request->inputTitle . '%');
         }
 
         if ($request->get('inputCategory')) {
@@ -100,7 +101,7 @@ class NewsController extends Controller
             'method' => end($method),
             'categories' => $categories,
             'types' => $types,
-            'tags' => $tags,
+            'tags' => $tags
         ]);
     }
 
@@ -126,11 +127,13 @@ class NewsController extends Controller
 
             $news = new News([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
+                'editor_pick' => $request->has('editorPick') == false ? '0' : '1',
                 'title' => $data['title'],
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
                 'types' => $data['types'],
+                'keywords'=> $data['keywords'],
                 'image' => $data['image'],
                 'is_published' => $request->has('isPublished') == false ? '0' : '1',
                 'published_at' => $request->has('isPublished') == false ?  null : $data['publishedAt'],
@@ -139,8 +142,8 @@ class NewsController extends Controller
                 'category_id' => $data['category']
             ]);
             $news->save();
-            foreach ($data['tags'] as $t) {
-                $news->tags()->sync($t);
+            foreach ($data['tags'] as $t){
+                $news->tags()->attach($t);
             }
 
             return \redirect('news')->with('status', 'Successfully Add New News');
@@ -197,11 +200,13 @@ class NewsController extends Controller
         try {
             $input = [
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
+                'editor_pick' => $request->has('editorPick') == false ? '0' : '1',
                 'title' => $data['title'],
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
                 'type' => $data['type'],
+                'keywords'=> $data['keywords'],
                 'is_published' => $request->has('isPublished') == false ? '0' : '1',
                 'published_at' => $request->has('isPublished') == false ?  null : $data['publishedAt'],
                 'published_by' => $request->has('isPublished') == false ?  null : auth()->id(),
@@ -220,8 +225,9 @@ class NewsController extends Controller
             }
             
             $newsById->update($input);
-            foreach ($data['tags'] as $t) {
-                $newsById->tags()->sync($t);
+            $newsById::find($id)->tags()->detach();
+            foreach ($data['tags'] as $t){
+                $newsById->tags()->attach($t);
             }
             return \redirect('news')->with('status', 'Successfully Update News');
         } catch (\Throwable $e) {
@@ -238,10 +244,11 @@ class NewsController extends Controller
     public function destroy($id)
     {
         try {
-            $newsById = News::find($id);
-            $newsById->deleted_by = Auth::user()->uuid;
-            $newsById->delete();
-            return \redirect('news')->with('status', 'Successfully deleted News');
+            News::where('id', $id)->update([
+                'deleted_by' => Auth::user()->uuid,
+            ]);
+            News::destroy($id);
+            return Redirect::back()->with('status', 'Successfully to Delete User');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
