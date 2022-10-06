@@ -10,10 +10,10 @@
             <div class="card-header"><span class="h4 text-capitalize">{{ $method }} User</span></div>
             <div class="card-body d-flex flex-column gap-2">
                 @if ($method === 'edit')
-                    <form action="{{ route('users.update', $post->uuid) }}" method="post">
+                    <form action="{{ route('user-setting.update', $post->uuid) }}" method="post">
                         @method('PUT')
                     @else
-                        <form action="{{ route('users.store') }}" method="post" id="basicform" data-parsley-validate="">
+                        <form action="{{ route('user-setting.store') }}" method="post" id="basicform" data-parsley-validate="">
                 @endif
                 @csrf
                 <div class="col-md-12">
@@ -58,7 +58,7 @@
                         </div>
                     @endif
                     <div class="d-flex justify-content-end gap-3 mt-3">
-                        <a href="{{ route('users.index') }}" class="btn btn-light" data-bs-toggle="tooltip"
+                        <a href="{{ route('user-setting.index') }}" class="btn btn-light" data-bs-toggle="tooltip"
                             data-bs-placement="top" title="Back to Table User">Back</a>
                         <button class="btn btn-primary" type="submit" data-bs-toggle="tooltip" data-bs-placement="top"
                             title="Create User Data">Save</button>

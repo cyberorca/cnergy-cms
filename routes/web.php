@@ -59,7 +59,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('tags', TagsController::class);
 
-    Route::resource('users', UsersController::class);
+    Route::resource('user-setting', UsersController::class);
     
     Route::get('/image-bank/api/list/', [ImageBankController::class, 'apiList'])->name('image_bank.api');
     Route::resource('image-bank', ImageBankController::class);
