@@ -95,6 +95,7 @@
                             <th>Category</th>
                             <th>Schedule</th>
                             <th>Headline</th>
+                            <th>Editor Pick</th>
                             <th>Tags News</th>
                             <th style="width:20%">Action</th>
                         </tr>
@@ -115,6 +116,13 @@
                                 <td>{{ $n->categories->category }}</td>
                                 <td>{{ $n->created_at->format('d M Y H:i') }}</td>
                                 @if ($n->is_headline == 1)
+                                    <td align="center">
+                                        <i class="bi bi-check text-primary fs-2"></i>
+                                    </td>
+                                @else
+                                    <td></td>
+                                @endif
+                                @if ($n->editor_pick == 1)
                                     <td align="center">
                                         <i class="bi bi-check text-primary fs-2"></i>
                                     </td>

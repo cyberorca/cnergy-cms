@@ -31,8 +31,8 @@
                     @endif
                     <section id="basic-vertical-layouts">
                         @csrf
-                        <div class="row match-height">
-                            <div class="col-6 ">
+                        <div class="d-flex justify-content-between gap-2">
+                            <div class="col-7 ">
                                 <div class="card">
                                     <div class="card-header"><span class="h4 text-capitalize">{{ $method }} News</span>
                                     </div>
@@ -74,127 +74,205 @@
                                 </div>
                             </div>
 
-                            <div class="col-6">
+                            <div class="col-5">
                                 <div class="card">
-                                    <div class="card-header">
-                                        <span class="h4">Others</span>
-                                    </div>
                                     <div class="card-body">
-                                        <input name="isPublished" class="form-check-input" type="checkbox"
-                                               id="isPublished"
-                                               @if ($method === 'edit' and $news->is_published == '1') checked @endif/>
-                                        <label class="form-check-label" for="isPublished">Published</label>
-                                        <br>
+                                        <a data-bs-toggle="collapse"  href="#satu">
+                                            <i class="bi bi-chevron-down fs-5"></i>
+                                            <span class="h6">Status & Visibility</span>
+                                        </a>
+                                        <hr />
+                                        <div class="collapse" id="satu">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        <label for="basicInput">Publish Status</label>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                            <input class="form-check-input" type="radio" value="1" name="isPublished" @if ($method === 'edit' and $news->is_published == '1') checked @endif/>
+                                                            <label class="form-check-label">
+                                                                On
+                                                            </label>
+                                                            <input class="form-check-input" type="radio" value="0" name="isPublished" @if ($method === 'edit' and $news->is_published == '0') checked @endif/>
+                                                            <label class="form-check-label">
+                                                                Off
+                                                            </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        <label for="publishedAt" class="mb-2">Schedule</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <input type="date" class="form-control" id="publishedAt" name="publishedAt"
+                                                        placeholder="dd-mm-yyyy"
+                                                        @if ($method === 'edit') value="{{date('Y-m-d',strtotime($news->published_at))}}" @endif />
+                                                
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                        <label for="publishedAt" class="mb-2">Published At</label>
-                                        <input type="date" class="form-control" id="publishedAt" name="publishedAt"
-                                               placeholder="dd-mm-yyyy"
-                                               @if ($method === 'edit') value="{{date('Y-m-d',strtotime($news->published_at))}}" @endif />
-
-
-                                        @if (isset($news))
-                                            <x-image-uploader :item="$news"/>
-                                        @else
-                                            <x-image-uploader/>
-                                        @endif
-
-
-                                        <label for="category" class="form-label mb-2">Category</label>
-                                        <fieldset class="form-group">
-                                            <select name="category" class="form-select" id="category">
-                                                @foreach ($categories as $category)
-                                                    <option value="{{ $category->id }}"
-                                                            @if ($method === 'edit' and $category->id === $news->category) selected @endif>{{ $category->category }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </fieldset>
-
-                                        <label for="tags" class="form-label mb-2">Tags</label>
-                                        <select name="tags[]" class="choices form-select multiple-remove"
-                                                multiple="multiple"
-                                                id="tags" required>
-                                            <optgroup label="Tags">
-                                                @foreach ($tags as $id => $tag)
-                                                    <option id="{{ $id }}" value="{{ $id }}"
-                                                            @if ($method === 'edit' and $tag->news()->find($news->id)) selected @endif>{{ $tag->tags }}</option>
-                                                @endforeach
-                                            </optgroup>
-                                        </select>
-
-                                        <label for="keywords" class="mb-2">Keywords</label>
-                                        <input name="keywords" id="keywords" type="text" required
-                                               placeholder="enter the keyword seperate with a comma"
-                                               class="form-control "
-                                               data-role="tagsinput"
-                                               @if ($method === 'edit') value="{{ $news->keywords }}" @endif />
-                                        <br>
-                                        <label for="type" class="form-label mb-2">Type</label>
-                                        <fieldset class="form-group">
-                                            <select name="types" class="form-select" id="type">
-                                                @foreach ($types as $type)
-                                                    <option value="{{ $type }}"
-                                                            @if ($method === 'edit' and $type === $news->type) selected @endif>{{ $type }}</option>
-                                                @endforeach
-                                            </select>
-                                        </fieldset>
-
-                                        <input name="isHeadline" class="form-check-input" type="checkbox"
-                                               id="isHeadline"
-                                               @if ($method === 'edit' and $news->is_headline == '1') checked @endif/>
-                                        <label class="form-check-label" for="isHeadline">Headline</label>
-                                        <br>
-                                        <input name="editorPick" class="form-check-input" type="checkbox"
-                                               id="editorPick"
-                                               @if ($method === 'edit' and $news->editor_pick == '1') checked @endif/>
-                                        <label class="form-check-label" for="editorPick">Editor Pick</label>
-                                        <br>
-                                        <input name="isHomeHeadline" class="form-check-input" type="checkbox"
-                                               id="isHomeHeadline"
-                                               @if ($method === 'edit' and $news->is_home_headline == '1') checked @endif/>
-                                        <label class="form-check-label" for="isHomeHeadline">Home Headline</label>
-                                        <br>
-                                        <input name="isCategoryHeadline" class="form-check-input" type="checkbox"
-                                               id="isCategoryHeadline"
-                                               @if ($method === 'edit' and $news->is_category_headline == '1') checked @endif/>
-                                        <label class="form-check-label" for="isCategoryHeadline">Category
-                                            Headline</label>
-                                        <br>
-                                        <input name="isCurated" class="form-check-input" type="checkbox" id="isCurated"
-                                               @if ($method === 'edit' and $news->is_curated == '1') checked @endif/>
-                                        <label class="form-check-label" for="isCurated">Curated/Feed</label>
-                                        <br>
-                                        <input name="isAdultContent" class="form-check-input" type="checkbox"
-                                               id="isAdultContent"
-                                               @if ($method === 'edit' and $news->is_adult_content == '1') checked @endif/>
-                                        <label class="form-check-label" for="isAdultContent">Adult Content(18+)</label>
-                                        <br>
-                                        <input name="isVerifyAge" class="form-check-input" type="checkbox"
-                                               id="isVerifyAge"
-                                               @if ($method === 'edit' and $news->is_verify_age == '1') checked @endif/>
-                                        <label class="form-check-label" for="isVerifyAge">Verify Age(18+)</label>
-                                        <br>
-                                        <input name="isAdvertorial" class="form-check-input" type="checkbox"
-                                               id="isAdvertorial"
-                                               @if ($method === 'edit' and $news->is_advertorial == '1') checked @endif/>
-                                        <label class="form-check-label" for="isAdvertorial">Advertorial</label>
-                                        <br>
-                                        <input name="isSeo" class="form-check-input" type="checkbox" id="isSeo"
-                                               @if ($method === 'edit' and $news->is_seo == '1') checked @endif/>
-                                        <label class="form-check-label" for="isSeo">SEO</label>
-                                        <br>
-                                        <input name="isDisableInteractions" class="form-check-input" type="checkbox"
-                                               id="isDisableInteractions"
-                                               @if ($method === 'edit' and $news->is_disable_interactions == '1') checked @endif/>
-                                        <label class="form-check-label" for="isDisableInteractions">Disable
-                                            Interactions</label>
-                                        <br>
-                                        <input name="isBrandedContent" class="form-check-input" type="checkbox"
-                                               id="isBrandedContent"
-                                               @if ($method === 'edit' and $news->is_branded_content == '1') checked @endif/>
-                                        <label class="form-check-label" for="isBrandedContent">Branded Content</label>
-
-
+                                        <a data-bs-toggle="collapse"  href="#dua">
+                                            <i class="bi bi-chevron-down fs-5"></i>
+                                            <span class="h6">Picture</span>
+                                        </a>
+                                        <hr />
+                                        <div class="collapse" id="dua">
+                                            <div class="form-group">
+                                                @if (isset($news))
+                                                    <x-image-uploader :item="$news"/>
+                                                @else
+                                                    <x-image-uploader/>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <fieldset class="form-group">
+                                                    <select name="category" class="form-select" id="category">
+                                                    @if ($method === 'create')
+                                                    <option value="">Category</option>
+                                                    @endif
+                                                        @foreach ($categories as $category)
+                                                                <option value="{{ $category->id }}"
+                                                                        @if ($method === 'edit' and $category->id === $news->category_id) selected @endif>{{ $category->category }}
+                                                                </option>
+                                                            @endforeach
+                                                    </select>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                        <a data-bs-toggle="collapse"  href="#tiga">
+                                            <i class="bi bi-chevron-down fs-5"></i>
+                                            <span class="h6">Tags</span>
+                                        </a>
+                                        <hr />
+                                        <div class="collapse" id="tiga">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <select name="tags[]" class="choices form-select multiple-remove"
+                                                    multiple="multiple"
+                                                    id="tags" required>
+                                                        <optgroup label="Tags">
+                                                            @foreach ($tags as $id => $tag)
+                                                                <option id="{{ $id }}" value="{{ $id }}"
+                                                                        @if ($method === 'edit' and $tag->news()->find($news->id)) selected @endif>{{ $tag->tags }}</option>
+                                                            @endforeach
+                                                        </optgroup>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a data-bs-toggle="collapse"  href="#empat">
+                                            <i class="bi bi-chevron-down fs-5"></i>
+                                            <span class="h6">Other Settings</span>
+                                        </a>
+                                        <hr />
+                                        <div class="collapse" id="empat">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <label for="basicInput">Keyword</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                        <input name="keywords" id="keywords" type="text" required
+                                                    placeholder="enter the keyword seperate with a comma"
+                                                    class="form-control "
+                                                    data-role="tagsinput"
+                                                    @if ($method === 'edit') value="{{ $news->keywords }}" @endif />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <label for="publishedAt" class="mb-2">Type</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <fieldset class="form-group">
+                                                        <select name="types" class="form-select" id="type">
+                                                            @foreach ($types as $type)
+                                                                <option value="{{ $type }}"
+                                                                        @if ($method === 'edit' and $type === $news->type) selected @endif>{{ $type }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <a data-bs-toggle="collapse"  href="#lima">
+                                            <i class="bi bi-chevron-down fs-5"></i>
+                                            <span class="h6">Content Type</span>
+                                        </a>
+                                        <hr />
+                                        <div class="collapse" id="lima">
+                                            <div class="form-group">
+                                                <input name="isPublished" class="form-check-input" type="checkbox"
+                                                id="isPublished"
+                                                @if ($method === 'edit' and $news->is_published == '1') checked @endif/>
+                                                <label class="form-check-label" for="isPublished">Published</label>
+                                                <br>
+                                                <input name="isCurated" class="form-check-input" type="checkbox" id="isCurated"
+                                                    @if ($method === 'edit' and $news->is_curated == '1') checked @endif/>
+                                                <label class="form-check-label" for="isCurated">Curated/Feed</label>
+                                                <br>
+                                                <input name="isAdultContent" class="form-check-input" type="checkbox"
+                                                    id="isAdultContent"
+                                                    @if ($method === 'edit' and $news->is_adult_content == '1') checked @endif/>
+                                                <label class="form-check-label" for="isAdultContent">Adult Content(18+)</label>
+                                                <br>
+                                                <input name="isVerifyAge" class="form-check-input" type="checkbox"
+                                                    id="isVerifyAge"
+                                                    @if ($method === 'edit' and $news->is_verify_age == '1') checked @endif/>
+                                                <label class="form-check-label" for="isVerifyAge">Verify Age(18+)</label>
+                                                <br>
+                                                <input name="isHomeHeadline" class="form-check-input" type="checkbox"
+                                                    id="isHomeHeadline"
+                                                    @if ($method === 'edit' and $news->is_home_headline == '1') checked @endif/>
+                                                <label class="form-check-label" for="isHomeHeadline">Home Headline</label>
+                                                <br>
+                                                <input name="isCategoryHeadline" class="form-check-input" type="checkbox"
+                                                    id="isCategoryHeadline"
+                                                    @if ($method === 'edit' and $news->is_category_headline == '1') checked @endif/>
+                                                <label class="form-check-label" for="isCategoryHeadline">Category
+                                                    Headline</label>
+                                                <br>
+                                                <input name="isAdvertorial" class="form-check-input" type="checkbox"
+                                                    id="isAdvertorial"
+                                                    @if ($method === 'edit' and $news->is_advertorial == '1') checked @endif/>
+                                                <label class="form-check-label" for="isAdvertorial">Advertorial</label>
+                                                <br>
+                                                <input name="isSeo" class="form-check-input" type="checkbox" id="isSeo"
+                                                    @if ($method === 'edit' and $news->is_seo == '1') checked @endif/>
+                                                <label class="form-check-label" for="isSeo">SEO</label>
+                                                <br>
+                                                <input name="isDisableInteractions" class="form-check-input" type="checkbox"
+                                                    id="isDisableInteractions"
+                                                    @if ($method === 'edit' and $news->is_disable_interactions == '1') checked @endif/>
+                                                <label class="form-check-label" for="isDisableInteractions">Disable
+                                                    Interactions</label>
+                                                <br>
+                                                <input name="isBrandedContent" class="form-check-input" type="checkbox"
+                                                    id="isBrandedContent"
+                                                    @if ($method === 'edit' and $news->is_branded_content == '1') checked @endif/>
+                                                <label class="form-check-label" for="isBrandedContent">Branded Content</label>
+                                                <br>
+                                                <input name="isHeadline" class="form-check-input" type="checkbox"
+                                                id="isHeadline"
+                                                @if ($method === 'edit' and $news->is_headline == '1') checked @endif/>
+                                                <label class="form-check-label" for="isHeadline">Headline</label>
+                                                <br>
+                                                <input name="editorPick" class="form-check-input" type="checkbox"
+                                                    id="editorPick"
+                                                    @if ($method === 'edit' and $news->editor_pick == '1') checked @endif/>
+                                                <label class="form-check-label" for="editorPick">Editor Pick</label>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
