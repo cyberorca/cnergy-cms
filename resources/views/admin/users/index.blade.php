@@ -40,7 +40,7 @@
                     </div>
                     <div class="d-flex justify-content-end gap-3 mt-3">
                             <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="User Search"><i class="bi bi-search"></i>&nbsp;&nbsp;&nbsp;Search</button>
-                            <a href="{{route('users.index')}}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Show All Users Data"><i class="bi bi-card-list"></i>&nbsp;&nbsp;&nbsp;Show All</a>
+                            <a href="{{route('user-setting.index')}}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Show All Users Data"><i class="bi bi-card-list"></i>&nbsp;&nbsp;&nbsp;Show All</a>
                     </div>
                     
                 </form>
@@ -52,7 +52,7 @@
 
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">Users List</span>
-                <a href="{{ route('users.create') }}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Add User"><i class="bi bi-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add
+                <a href="{{ route('user-setting.create') }}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Add User"><i class="bi bi-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add
                     User</a>
             </div>
             <div class="card-body">
@@ -80,7 +80,7 @@
                             <td> <span class="badge bg-danger">Inactive</span> </td>
                             @endif
                             <td>
-                                <a href="{{ route('users.edit', $u->uuid) }}" class="btn icon btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Update User Data"><i class="bi bi-pencil-square"></i></a>
+                                <a href="{{ route('user-setting.edit', $u->uuid) }}" class="btn icon btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Update User Data"><i class="bi bi-pencil-square"></i></a>
                                 <button type="button" data-toggle="modal" data-target="#deleteModal{{ $u->uuid }}" class="btn icon btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete User Data"><i class="bi bi-trash"></i></button>
                             </td>
                         </tr>
@@ -99,7 +99,7 @@
                                                     Delete User "{{ $u->name }}"?
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <form action="{{ route('users.destroy', $u->uuid) }}"
+                                                    <form action="{{ route('user-setting.destroy', $u->uuid) }}"
                                                         method="post">
                                                         {{ method_field('delete') }}
                                                         @csrf

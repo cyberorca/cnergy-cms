@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\NewsRequest;
+use App\Http\Utils\FileFormatPath;
 use App\Models\ImageBank;
 use Illuminate\Support\Facades\Storage;
 
@@ -115,25 +116,31 @@ class NewsController extends Controller
         try {
             if ($request->file('upload_image') && !$data['upload_image_selected']) {
                 $file = $request->file('upload_image');
-                // path_name_file = /news/2022/10/04/23423-zico-artonang.jpg
-                $news_image = time() . "." . $file->getClientOriginalExtension();
-                $file->storeAs('public/news_image', $news_image);
-                $data['image'] = url('') . '/storage/news_image/' . $news_image;
+                $fileFormatPath = new FileFormatPath($data['types'], $file);
+                $data['image'] = $fileFormatPath->storeFile();
             }
 
             if ($data['upload_image_selected'] && !$request->file('upload_image')) {
-                $data['image'] = $data['upload_image_selected'];
+                $data['image'] = explode('http://127.0.0.1:8000/storage', $data['upload_image_selected'])[1];
             }
 
-            // return response()->json($data);
             $news = new News([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
+                'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
+                'is_category_headline' => $request->has('isCategoryHeadline') == false ? '0' : '1',
                 'editor_pick' => $request->has('editorPick') == false ? '0' : '1',
+                'is_curated' => $request->has('isCurated') == false ? '0' : '1',
+                'is_adult_content' => $request->has('isAdultContent') == false ? '0' : '1',
+                'is_verify_age' => $request->has('isVerifyAge') == false ? '0' : '1',
+                'is_advertorial' => $request->has('isAdvertorial') == false ? '0' : '1',
+                'is_seo' => $request->has('isSeo') == false ? '0' : '1',
+                'is_disable_interactions' => $request->has('isDisableInteractions') == false ? '0' : '1',
+                'is_branded_content' => $request->has('isBrandedContent') == false ? '0' : '1',
                 'title' => $data['title'],
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
-                'type' => $data['type'],
+                'types' => $data['types'],
                 'keywords'=> $data['keywords'],
                 'image' => $data['image'],
                 'is_published' => $request->has('isPublished') == false ? '0' : '1',
@@ -177,6 +184,7 @@ class NewsController extends Controller
         $categories = Category::all();
         $tags = Tag::all();
         $types = ['news', 'photonews', 'video'];
+
         return view('news.editable', [
             'method' => end($method),
             'categories' => $categories,
@@ -198,21 +206,42 @@ class NewsController extends Controller
         $data = $request->input();
         $newsById = News::find($id);
         try {
-            $newsById->update([
+            $input = [
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
+                'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
+                'is_category_headline' => $request->has('isCategoryHeadline') == false ? '0' : '1',
                 'editor_pick' => $request->has('editorPick') == false ? '0' : '1',
+                'is_curated' => $request->has('isCurated') == false ? '0' : '1',
+                'is_adult_content' => $request->has('isAdultContent') == false ? '0' : '1',
+                'is_verify_age' => $request->has('isVerifyAge') == false ? '0' : '1',
+                'is_advertorial' => $request->has('isAdvertorial') == false ? '0' : '1',
+                'is_seo' => $request->has('isSeo') == false ? '0' : '1',
+                'is_disable_interactions' => $request->has('isDisableInteractions') == false ? '0' : '1',
+                'is_branded_content' => $request->has('isBrandedContent') == false ? '0' : '1',
                 'title' => $data['title'],
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
-                'type' => $data['type'],
+                'types' => $data['types'],
                 'keywords'=> $data['keywords'],
-                'is_published'=>$request->has('isPublished')==false ? '0' : '1',
-                'published_at' =>$request->has('isPublished')==false ?  null : $data['publishedAt'],
-                'published_by' =>$request->has('isPublished')==false ?  null : auth()->id(),
+                'is_published' => $request->has('isPublished') == false ? '0' : '1',
+                'published_at' => $request->has('isPublished') == false ?  null : $data['publishedAt'],
+                'published_by' => $request->has('isPublished') == false ?  null : auth()->id(),
                 'updated_by' => auth()->id(),
                 'category_id' => $data['category']
-            ]);
+            ];
+
+            if ($request->file('upload_image') && !$data['upload_image_selected']) {
+                $file = $request->file('upload_image');
+                $fileFormatPath = new FileFormatPath($data['types'], $file);
+                $input['image'] = $fileFormatPath->storeFile();
+            }
+
+            if ($data['upload_image_selected'] && !$request->file('upload_image')) {
+                $input['image'] = explode('http://127.0.0.1:8000/storage', $data['upload_image_selected'])[1];
+            }
+
+            $newsById->update($input);
             $newsById::find($id)->tags()->detach();
             foreach ($data['tags'] as $t){
                 $newsById->tags()->attach($t);

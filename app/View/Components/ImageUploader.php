@@ -11,8 +11,10 @@ class ImageUploader extends Component
      *
      * @return void
      */
-    public function __construct()
+    public $item;
+    public function __construct($item = null)
     {
+        $this->item = $item;
     }
 
     /**

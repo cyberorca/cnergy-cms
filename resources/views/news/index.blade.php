@@ -89,7 +89,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Id</th>
+                            {{-- <th>Id</th> --}}
                             <th>Title</th>
                             <th>Published</th>
                             <th>Category</th>
@@ -100,11 +100,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php $no = 1; @endphp
                         @foreach ($news as $n)
                             <tr>
-                                <td>{{ $no++ }}</td>
-                                <td>{{ $n->id }}</td>
+                                <td>{{ $news->firstItem() + $loop->index }}</td>
+                                {{-- <td>{{ $n->id }}</td> --}}
                                 <td>{{ $n->title }}</td>
                                 @if ($n->is_published == 1)
                                     <td align="center"> <span class="badge bg-success"><i
@@ -162,6 +161,7 @@
                                                 </button>
                                                 <button type="submit" class="btn btn-primary">Delete</button>
                                             </form>
+
                                         </div>
                                     </div>
                                 </div>
