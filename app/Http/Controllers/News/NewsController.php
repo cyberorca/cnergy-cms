@@ -93,6 +93,7 @@ class NewsController extends Controller
     public function create()
     {
         $method = explode('/', URL::current());
+        $users = User::all();
         $categories = Category::all();
         $tags = Tag::all();
         $types = ['news', 'photonews', 'video'];
@@ -100,6 +101,7 @@ class NewsController extends Controller
             'method' => end($method),
             'categories' => $categories,
             'types' => $types,
+            'users' => $users,
             'tags' => $tags
         ]);
     }
@@ -143,7 +145,7 @@ class NewsController extends Controller
                 'types' => $data['types'],
                 'keywords'=> $data['keywords'],
                 'image' => $data['image'],
-                'is_published' => $request->has('isPublished') == false ? '0' : '1',
+                'is_published' => $data['isPublished'],
                 'published_at' => $request->has('isPublished') == false ?  null : $data['publishedAt'],
                 'published_by' => $request->has('isPublished') == false ?  null : auth()->id(),
                 'created_by' => auth()->id(),
@@ -224,7 +226,7 @@ class NewsController extends Controller
                 'synopsis' => $data['synopsis'],
                 'types' => $data['types'],
                 'keywords'=> $data['keywords'],
-                'is_published' => $request->has('isPublished') == false ? '0' : '1',
+                'is_published' =>$data['isPublished'],
                 'published_at' => $request->has('isPublished') == false ?  null : $data['publishedAt'],
                 'published_by' => $request->has('isPublished') == false ?  null : auth()->id(),
                 'updated_by' => auth()->id(),
