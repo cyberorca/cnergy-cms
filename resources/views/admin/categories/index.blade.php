@@ -37,7 +37,7 @@
     <section class="section">
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">Category List</span>
-                <a href="{{ route('categories.create') }}" class="btn btn-primary"><i class="bi bi-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add
+                <a href="{{ route('category.create') }}" class="btn btn-primary"><i class="bi bi-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add
                     Category</a>
             </div>
             <div class="card-body d-flex flex-column gap-2">
