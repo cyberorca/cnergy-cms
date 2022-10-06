@@ -57,7 +57,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('role', RoleController::class);
 
-    Route::resource('tags', TagsController::class);
+    Route::resource('tag-management', TagsController::class);
 
     Route::resource('user-setting', UsersController::class);
     
