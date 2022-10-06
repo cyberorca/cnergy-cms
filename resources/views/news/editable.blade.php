@@ -54,10 +54,10 @@
                                             <label for="content" class="form-label">Content</label>
                                             <textarea name="content" class="my-editor form-control" id="content"
                                                       cols="30" rows="10" required>
-                                    @if ($method === 'edit')
+                                                @if ($method === 'edit')
                                                     {{ $news->content }}
                                                 @endif
-                            </textarea>
+                                             </textarea>
                                         </div>
                                         <div class="d-flex justify-content-end gap-3 mt-3">
                                             <a href="{{ route('news.index') }}" class="btn btn-light"
@@ -78,8 +78,9 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <a data-bs-toggle="collapse"  href="#satu">
-                                            <i class="bi bi-chevron-down fs-5"></i>
                                             <span class="h6">Status & Visibility</span>
+                                                <i class="bi bi-chevron-down fs-6" style="float:right"></i>
+
                                         </a>
                                         <hr />
                                         <div class="collapse" id="satu">
@@ -116,7 +117,7 @@
                                         </div>
 
                                         <a data-bs-toggle="collapse"  href="#dua">
-                                            <i class="bi bi-chevron-down fs-5"></i>
+                                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
                                             <span class="h6">Picture</span>
                                         </a>
                                         <hr />
@@ -146,7 +147,7 @@
                                             </div>
                                         </div>
                                         <a data-bs-toggle="collapse"  href="#tiga">
-                                            <i class="bi bi-chevron-down fs-5"></i>
+                                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
                                             <span class="h6">Tags</span>
                                         </a>
                                         <hr />
@@ -166,32 +167,100 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <a data-bs-toggle="collapse"  href="#enam">
+                                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
+                                            <span class="h6">Permalink</span>
+                                        </a>
+                                        <hr />
+                                        <div class="collapse" id="enam">
+                                            <div class="form-group">
+                                                        <label class="mb-2">Slug</label>
+                                                        <input type="text" class="form-control" id="slug" name="slug"
+                                                        placeholder="slug">
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                        <label class="mb-2">URL News</label>
+                                                        <a href="#" class="mb-2">https://www.domain.com/slug @</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <a data-bs-toggle="collapse"  href="#tujuh">
+                                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
+                                            <span class="h6">Description</span>
+                                        </a>
+                                        <hr />
+                                        <div class="collapse" id="tujuh">
+                                            <div class="form-group">
+                                                        <textarea name="deskripsi" class="form-control" id="deskripsi"></textarea>
+
+                                            </div>
+                                        </div>
+
+                                        <a data-bs-toggle="collapse"  href="#delapan">
+                                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
+                                            <span class="h6">Author</span>
+                                        </a>
+                                        <hr />
+                                        <div class="collapse" id="delapan">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <select name="author[]" class="choices form-select multiple-remove"
+                                                    multiple="multiple"
+                                                    id="author">
+                                                        <optgroup label="Author">
+                                                            @foreach ($users as $uuid => $user)
+                                                                <option id="{{ $uuid }}" value="{{ $uuid }}">{{ $user->name }}</option>
+                                                            @endforeach
+                                                        </optgroup>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <a data-bs-toggle="collapse"  href="#empat">
-                                            <i class="bi bi-chevron-down fs-5"></i>
+                                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
                                             <span class="h6">Other Settings</span>
                                         </a>
                                         <hr />
                                         <div class="collapse" id="empat">
                                         <div class="form-group">
-                                            <div class="row">
-                                                <div class="col-md-5">
-                                                    <label for="basicInput">Keyword</label>
-                                                </div>
-                                                <div class="col-md-7">
+                                                    <label class="mb-2">Keyword</label><br>
                                                         <input name="keywords" id="keywords" type="text" required
-                                                    placeholder="enter the keyword seperate with a comma"
-                                                    class="form-control "
+                                                    placeholder="Keyword"
+                                                    class="form-control"
                                                     data-role="tagsinput"
                                                     @if ($method === 'edit') value="{{ $news->keywords }}" @endif />
-                                                </div>
-                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                                    <label class="mb-2">Photographer</label><br>
+                                                    <select name="photographer[]" class="choices form-select multiple-remove"
+                                                    multiple="multiple"
+                                                    id="photographer">
+                                                        <optgroup label="photographer">
+                                                            @foreach ($users as $uuid => $user)
+                                                                <option id="{{ $uuid }}" value="{{ $uuid }}">{{ $user->name }}</option>
+                                                            @endforeach
+                                                        </optgroup>
+                                                    </select>
+                                        </div>
+                                        <div class="form-group">
+                                                    <label class="mb-2">Contributor</label><br>
+                                                    <select name="contributor[]" class="choices form-select multiple-remove"
+                                                    multiple="multiple"
+                                                    id="contributor">
+                                                        <optgroup label="contributor">
+                                                            @foreach ($users as $uuid => $user)
+                                                                <option id="{{ $uuid }}" value="{{ $uuid }}">{{ $user->name }}</option>
+                                                            @endforeach
+                                                        </optgroup>
+                                                    </select>
+
                                         </div>
                                         <div class="form-group">
                                             <div class="row">
-                                                <div class="col-md-5">
                                                     <label for="publishedAt" class="mb-2">Type</label>
-                                                </div>
-                                                <div class="col-md-7">
                                                     <fieldset class="form-group">
                                                         <select name="types" class="form-select" id="type">
                                                             @foreach ($types as $type)
@@ -200,12 +269,11 @@
                                                             @endforeach
                                                         </select>
                                                     </fieldset>
-                                                </div>
                                             </div>
                                         </div>
                                         </div>
                                         <a data-bs-toggle="collapse"  href="#lima">
-                                            <i class="bi bi-chevron-down fs-5"></i>
+                                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
                                             <span class="h6">Content Type</span>
                                         </a>
                                         <hr />

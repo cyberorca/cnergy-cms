@@ -93,6 +93,7 @@ class NewsController extends Controller
     public function create()
     {
         $method = explode('/', URL::current());
+        $users = User::all();
         $categories = Category::all();
         $tags = Tag::all();
         $types = ['news', 'photonews', 'video'];
@@ -100,6 +101,7 @@ class NewsController extends Controller
             'method' => end($method),
             'categories' => $categories,
             'types' => $types,
+            'users' => $users,
             'tags' => $tags
         ]);
     }
