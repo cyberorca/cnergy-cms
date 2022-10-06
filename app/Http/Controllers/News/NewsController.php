@@ -126,7 +126,16 @@ class NewsController extends Controller
 
             $news = new News([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
+                'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
+                'is_category_headline' => $request->has('isCategoryHeadline') == false ? '0' : '1',
                 'editor_pick' => $request->has('editorPick') == false ? '0' : '1',
+                'is_curated' => $request->has('isCurated') == false ? '0' : '1',
+                'is_adult_content' => $request->has('isAdultContent') == false ? '0' : '1',
+                'is_verify_age' => $request->has('isVerifyAge') == false ? '0' : '1',
+                'is_advertorial' => $request->has('isAdvertorial') == false ? '0' : '1',
+                'is_seo' => $request->has('isSeo') == false ? '0' : '1',
+                'is_disable_interactions' => $request->has('isDisableInteractions') == false ? '0' : '1',
+                'is_branded_content' => $request->has('isBrandedContent') == false ? '0' : '1',
                 'title' => $data['title'],
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
@@ -199,12 +208,21 @@ class NewsController extends Controller
         try {
             $input = [
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
+                'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
+                'is_category_headline' => $request->has('isCategoryHeadline') == false ? '0' : '1',
                 'editor_pick' => $request->has('editorPick') == false ? '0' : '1',
+                'is_curated' => $request->has('isCurated') == false ? '0' : '1',
+                'is_adult_content' => $request->has('isAdultContent') == false ? '0' : '1',
+                'is_verify_age' => $request->has('isVerifyAge') == false ? '0' : '1',
+                'is_advertorial' => $request->has('isAdvertorial') == false ? '0' : '1',
+                'is_seo' => $request->has('isSeo') == false ? '0' : '1',
+                'is_disable_interactions' => $request->has('isDisableInteractions') == false ? '0' : '1',
+                'is_branded_content' => $request->has('isBrandedContent') == false ? '0' : '1',
                 'title' => $data['title'],
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
-                'type' => $data['type'],
+                'types' => $data['types'],
                 'keywords'=> $data['keywords'],
                 'is_published' => $request->has('isPublished') == false ? '0' : '1',
                 'published_at' => $request->has('isPublished') == false ?  null : $data['publishedAt'],
@@ -222,7 +240,7 @@ class NewsController extends Controller
             if ($data['upload_image_selected'] && !$request->file('upload_image')) {
                 $input['image'] = explode('http://127.0.0.1:8000/storage', $data['upload_image_selected'])[1];
             }
-            
+
             $newsById->update($input);
             $newsById::find($id)->tags()->detach();
             foreach ($data['tags'] as $t){
