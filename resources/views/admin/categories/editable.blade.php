@@ -10,10 +10,10 @@
             <div class="card-header"><span class="h4 text-capitalize">{{ $method }} Category</span></div>
             <div class="card-body d-flex flex-column gap-2">
                 @if ($method === 'edit')
-                    <form action="{{ route('categories.update', $post->id) }}" method="post">
+                    <form action="{{ route('category.update', $post->id) }}" method="post">
                         @method('PUT')
                     @else
-                        <form action="{{ route('categories.store') }}" method="post" id="basicform" data-parsley-validate="">
+                        <form action="{{ route('category.store') }}" method="post" id="basicform" data-parsley-validate="">
                 @endif
                 @csrf
                 <div class="col-md-12">
@@ -35,15 +35,15 @@
                         <li class="d-inline-block me-2 mb-1">
                             <div class="form-check">
                                 <div class="checkbox">
-                                    <input type="checkbox" name="types[]" value="news" class="form-check-input" @if ($method === 'edit') @if(in_array("news", $post->types)) checked @endif @endif>
+                                    <input type="checkbox" name="types[]" value="news" class="form-check-input" @if ($method === 'edit') @if(in_array("news", json_decode($post->types))) checked @endif @endif>
                                     <label for="checkbox1">News</label>
                                 </div>
                                 <div class="checkbox">
-                                    <input type="checkbox" name="types[]" value="photonews" class="form-check-input" @if ($method === 'edit') @if(in_array("photonews", $post->types)) checked @endif @endif>
+                                    <input type="checkbox" name="types[]" value="photonews" class="form-check-input" @if ($method === 'edit') @if(in_array("photonews", json_decode($post->types))) checked @endif @endif>
                                     <label for="checkbox1">Photo News</label>
                                 </div>
                                 <div class="checkbox">
-                                    <input type="checkbox" name="types[]" value="video" class="form-check-input" @if ($method === 'edit') @if(in_array("video", $post->types)) checked @endif @endif>
+                                    <input type="checkbox" name="types[]" value="video" class="form-check-input" @if ($method === 'edit') @if(in_array("video", json_decode($post->types))) checked @endif @endif>
                                     <label for="checkbox1">Video</label>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@
                         </div>
                     @endif
                     <div class="d-flex justify-content-end gap-3 mt-3">
-                        <a href="{{ route('categories.index') }}" class="btn btn-light" data-bs-toggle="tooltip"
+                        <a href="{{ route('category.index') }}" class="btn btn-light" data-bs-toggle="tooltip"
                             data-bs-placement="top" title="Back to Table Category">Back</a>
                         <button class="btn btn-primary" type="submit" data-bs-toggle="tooltip" data-bs-placement="top"
                             title="Create Category">Save</button>
