@@ -31,9 +31,10 @@ class FrontEndMenuController extends Controller
     {
         $parent = FrontEndMenu::find($id);
         $url = explode('/', URL::current());
+        $method = end($url);
         $url_count = count($url);
-        $method = $url[$url_count - 2];
-        return view('admin.menu.front-end.editable', compact('parent', 'method'));
+        $methode = $url[$url_count - 2];
+        return view('admin.menu.front-end.editable', compact('parent', 'methode', 'method'));
     }
 
     /**
