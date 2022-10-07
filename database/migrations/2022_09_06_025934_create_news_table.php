@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('slug', 255);
             $table->longText('content');
             $table->longText('synopsis');
+            $table->longText('description');
             $table->enum('types', ['news', 'photonews', 'video']);
             $table->longText('keywords');
             $table->string('image', 255)->unique()->nullable();
