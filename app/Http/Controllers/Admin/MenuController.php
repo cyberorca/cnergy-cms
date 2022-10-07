@@ -88,6 +88,7 @@ class MenuController extends Controller
             $data = $request->validated();
             $menu = Menu::find($id);
             $menu->menu_name = $data["menu_name"];
+            $menu->slug = Str::slug($data["menu_name"]);
             $menu->save();
             $menu->updated_at = now();
             return redirect("menu")->with("status", "Successfully to edit menu");

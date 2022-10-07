@@ -1,12 +1,20 @@
-<li class="submenu-item @if ($item->count_childs() !== 0) sidebar-item has-sub @endif">
-    <a
-        @if ($item->childs()) class="sidebar-link"
-        href="{{ url($item->slug()) }}" 
+<li
+    class="submenu-item 
+    @if (count($item['children'])) sidebar-item has-sub subs-child @endif
+    " data-parent-sidebar="{{ $item['parent_id'] }}" data-id-sidebar="{{ $item['id'] }}" 
+    @if (request()->is($item['slug']) && count($item['children']) == 0) data-status-sidebar="true" @endif>
+    <a @if (count($item['children'])) class="sidebar-link"
+        href="{{ url($item['slug']) }}" 
     @else
-        href="{{ url($item->slug()) }}" @endif>{{ $item->menu_name() }}</a>
-    @if ($item->childs())
+        href="{{ url($item['slug']) }}" 
+        @if (request()->is($item['slug'])) style="background-color: #f0f1f5 !important; border-radius: 7px" @endif
+    @endif
+        >
+        {{ $item['menu_name'] }}
+    </a>
+    @if (count($item['children']))
         <ul class="submenu">
-            @foreach ($item->childs() as $sidebar_child)
+            @foreach ($item['children'] as $sidebar_child)
                 <x-sidebar-sub-menu :item="$sidebar_child" />
             @endforeach
         </ul>

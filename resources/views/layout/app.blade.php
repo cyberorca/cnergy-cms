@@ -8,8 +8,8 @@
     <title>KLY - NewsHub</title>
     <link rel="stylesheet" href="{{ asset('assets/css/main/app.css') }}">
 
-    <link rel="stylesheet" href="{{ asset('assets/css/main/app-dark.css') }}"/>
-
+    <link rel="stylesheet" href="{{ asset('assets/css/main/app-dark.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/pages/menu.css') }}" />
     @yield('css')
     <link rel="shortcut icon" href="assets/images/logo/favicon.svg" type="image/x-icon">
     <link rel="shortcut icon" href="assets/images/logo/favicon.png" type="image/png">
@@ -27,51 +27,52 @@
         }
     </script>
 </head>
-
 <body onload=displayTimeNow();>
-<div id="app">
-    <x-sidebar/>
-    <div id="main" class='layout-navbar'>
-        <x-navbar/>
-        <div id="main-content">
-            <div class="page-heading">
-                @if (session('status'))
-                    <div class="alert alert-success alert-dismissible show fade">
-                        <strong>{{ session('status') }}</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                aria-label="Close"></button>
-                    </div>
-                @endif
+    <div id="app">
 
-                @foreach ($errors->all() as $error)
-                    <div class="alert alert-danger alert-dismissible show fade">
-                        <strong>
-                            {{ $error }}
-                        </strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+        <x-sidebar />
+        <div id="main" class='layout-navbar'>
+            <x-navbar />
+            <div id="main-content">
+                <div class="page-heading">
+                    @if (session('status'))
+                        <div class="alert alert-success alert-dismissible show fade">
+                            <strong>{{ session('status') }}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
                                 aria-label="Close"></button>
-                    </div>
-                @endforeach
-                @yield('body')
-            </div>
+                        </div>
+                    @endif
 
-            <footer>
-                <div class="footer clearfix mb-0 text-muted">
-                    <div class="float-start">
-                        <span id='footerTime'></span>
-                    </div>
-                    <div class="float-end">
-                        <p>KapanLagi Youniverse</p>
-                    </div>
+                    @foreach ($errors->all() as $error)
+                        <div class="alert alert-danger alert-dismissible show fade">
+                            <strong>
+                                {{ $error }}
+                            </strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                        </div>
+                    @endforeach
+                    @yield('body')
                 </div>
-            </footer>
+
+                <footer>
+                    <div class="footer clearfix mb-0 text-muted">
+                        <div class="float-start">
+                            <span id='footerTime'></span>
+                        </div>
+                        <div class="float-end">
+                            <p>KapanLagi Youniverse</p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
         </div>
     </div>
-</div>
-<script src="{{ asset('assets/js/bootstrap.js') }}"></script>
-<script src="{{ asset('assets/js/app.js') }}"></script>
-<script src="{{asset('assets/extensions/jquery/jquery.min.js')}}"></script>
-@yield('javascript')
+    <script src="{{ asset('assets/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/js/app.js') }}"></script>
+    <script src="{{ asset('assets/js/menu.js') }}"></script>
+    <script src="{{ asset('assets/extensions/jquery/jquery.min.js') }}"></script>
+    @yield('javascript')
 </body>
 
 </html>
