@@ -7,20 +7,21 @@
         <div class="input-upload-file">
             <input type="file" name="upload_image" id="upload_image_button" />
             <input type="hidden" name="upload_image_selected" id="upload_image_selected" />
-            <span><i class="bi bi-upload mb-2"></i>&nbsp; Upload File</span>
+            <span class="btn btn-succsess d-flex justify-content-center align-items-center"><i class="bi bi-upload mb-2"></i>&nbsp;
+            Upload File</span>
         </div>
     </div>
     <div class="image-file-preview mt-3">
-        <img src="@if(!isset($item)) {{ asset('assets/images/site_logo.png') }} @else {{ url('') . '/storage' . $item->image }}  @endif" alt="" srcset="" id="image_preview_result">
+        <img src="@if(!isset($item)) {{ asset('assets/images/site_logo.png') }} @else {{ route('image.displayImage', ["filename" => $item->image]) }}  @endif" alt="" srcset="" id="image_preview_result">
     </div>
-    <div class="p-2 px-3 border mt-2">
+    <!--<div class="p-2 px-3 border mt-2">
         <p class="m-0" id="image_title">
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab officiis non architecto odit.               
             {{-- @if (!isset($item))
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab officiis non architecto odit.               
             @endif --}}
         </p>
-    </div>
+    </div>-->
     <div class="modal fade text-left " id="image-bank" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable d-flex justify-content-center modal-dialog-centered modal-lg"

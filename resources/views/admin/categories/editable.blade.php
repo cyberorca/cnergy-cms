@@ -7,7 +7,7 @@
     <x-page-heading title="Table Category" subtitle="View and Manage Category Data" />
     <section class="section">
         <div class="card col-md-7">
-            <div class="card-header"><span class="h4">Add Category</span></div>
+            <div class="card-header"><span class="h4 text-capitalize">{{ $method }} Category</span></div>
             <div class="card-body d-flex flex-column gap-2">
                 @if ($method === 'edit')
                     <form action="{{ route('category.update', $post->id) }}" method="post">

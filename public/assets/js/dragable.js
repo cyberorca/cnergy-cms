@@ -23,6 +23,7 @@ spaceElement.appendChild(addOrderBox)
 let idDragStart;
 function dragStart(e) {
     e.dataTransfer.setData("from_element", this.getAttribute("data-id"));
+    console.log(this);
     dragStartIndex = +getIndexChildren(this);
     idDragStart = this.getAttribute("data-id");
 }

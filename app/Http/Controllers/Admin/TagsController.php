@@ -82,7 +82,7 @@ class TagsController extends Controller
         ]);
         try {
             $tags->save();
-            return redirect("tags")->with('status', 'Successfully Create Tag');
+            return redirect("tag-management")->with('status', 'Successfully Create Tag');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -126,12 +126,12 @@ class TagsController extends Controller
         try {
             $tag = Tag::find($tags);
             $tag->tags = ucwords($data['tag']);
-            $tag->slug = $data["slug"];
+            $tag->slug = Str::slug($data['tag']);
             $tag->is_active = $data["is_active"];
             $tag->updated_at = now();
             $tag->updated_by = Auth::user()->uuid;
             $tag->save();
-            return redirect('tags')->with('status', 'Successfully Update Tag');
+            return redirect('tag-management')->with('status', 'Successfully Update Tag');
         } catch (\Throwable $exception) {
             return redirect()->back()->withErrors($exception->getMessage());
         }

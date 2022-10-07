@@ -23,6 +23,7 @@ class NewsFactory extends Factory
             'title' => $this->faker->sentence(5),
             'slug' => $this->faker->slug(),
             'content' => $this->faker->text(),
+            'description' => $this->faker->text(),
             'synopsis' => $this->faker->text(),
             'types' => fake()->randomElement(["news", "video", "photonews"]),
             'image' => null,
