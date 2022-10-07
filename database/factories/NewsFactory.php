@@ -36,7 +36,7 @@ class NewsFactory extends Factory
             'deleted_at' => null,
             'deleted_by' => null,
             'category_id' => random_int(1, 50),
-            'is_published' => fake()->randomElement(['0', '1']),
+            'is_published' => fake()->randomElement(['0', '1'])
         ];
     }
 }

@@ -22,5 +22,5 @@
 @endsection
 
 @section('javascript')
-    <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script> --}}
 @endsection

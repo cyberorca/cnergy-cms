@@ -27,7 +27,7 @@
                                 </div>
                             @enderror
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="basicInput" class="mb-2">Menu URL</label>
                             <input type="text" class="form-control" id="basicInput" name="url"
                                 placeholder="Enter menu url" />
@@ -36,7 +36,7 @@
                             <label for="basicInput" class="mb-2">Menu Icon</label>
                             <input type="text" class="form-control" id="basicInput" name="icon"
                                 placeholder="Enter menu icon" />
-                        </div>
+                        </div> --}}
                         <div class="d-flex justify-content-end gap-3 mt-3">
                             <a href="{{route('menu.index')}}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Back to Table Menu">Back</a>
                             <button class="btn btn-primary" type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Create Menu">Save</button>

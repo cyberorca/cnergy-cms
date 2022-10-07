@@ -10,12 +10,7 @@ use App\Http\Controllers\Admin\TagsController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\News\NewsController;
-use App\Http\Controllers\Auth\EmailVerificationController;
-use App\Models\ImageBank;
-use App\Models\News;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
 use UniSharp\LaravelFilemanager\Lfm;
 
 /*
@@ -34,9 +29,8 @@ Route::group(['middleware' => 'auth'], function () {
         Lfm::routes();
     });
     Route::get('/', function () {
-        $modal = true;
-        $image_bank = ImageBank::all();
-        return view('welcome', compact('modal', 'image_bank'));
+        // $data = Menu::whereNull('parent_id')->with("childMenus")->get();
+        return view('welcome');
     });
 
     Route::get("/front-end-menu/create/{id?}", [FrontEndMenuController::class, 'create'])->name('front-end-menu.create');
@@ -65,6 +59,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('image-bank', ImageBankController::class);
 
     Route::resource('news', NewsController::class);
+
+    Route::get('image/{filename}', [ImageBankController::class, 'displayImage'])->name('image.displayImage');
+
+
 });
 // Route::post('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])
 //     ->middleware(['auth', 'signed']) // <-- don't remove "signed"
