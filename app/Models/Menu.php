@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Support\Facades\Auth;
 
 class Menu extends Model
 {
@@ -54,10 +54,15 @@ class Menu extends Model
         return $this->belongsToMany(Role::class, 'roles_menus');
     }
 
+    public function roles_user()
+    {
+        return $this->belongsToMany(Role::class, 'roles_menus')->where('role_id', Auth::user()->role_id);
+    }
+
     public static function getAll()
     {
-        // return self::all()->toArray());
-        return self::convertMenuDataToResponse(self::all()->toArray());
+        // return self::with('roles_user')->get()->toArray();
+        return self::convertMenuDataToResponse(self::with('roles_user')->get()->toArray());
     }
 
     public static function convertMenuDataToResponse($dataRaw)
@@ -68,10 +73,12 @@ class Menu extends Model
         foreach ($dataRaw as $id => &$node) {
             $references[$node['id']] = &$node;
             $node['children'] = array();
-            if (is_null($node['parent_id'])) {
-                $tree[$node['id']] = &$node;
-            } else {
-                $references[$node['parent_id']]['children'][$node['id']] = &$node;
+            if(count($node['roles_user'])){
+                if (is_null($node['parent_id'])) {
+                    $tree[$node['id']] = &$node;
+                } else {
+                    $references[$node['parent_id']]['children'][$node['id']] = &$node;
+                }
             }
         }
 

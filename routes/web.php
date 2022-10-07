@@ -61,8 +61,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('news', NewsController::class);
 
     Route::get('image/{filename}', [ImageBankController::class, 'displayImage'])->name('image.displayImage');
-
-
 });
 // Route::post('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])
 //     ->middleware(['auth', 'signed']) // <-- don't remove "signed"
