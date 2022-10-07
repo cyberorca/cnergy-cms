@@ -25,7 +25,8 @@ class TagsRequest extends FormRequest
     {
         return [
             'tag' => 'required|max:255',
-            'is_published' => 'nullable'
+            'is_published' => 'nullable',
+            'is_active' => 'nullable'
         ];
     }
 }

@@ -4,10 +4,10 @@
 @endsection
 
 @section('body')
-    <x-page-heading title="{{ $method }} FrontEnd Menu Config" subtitle="Manage frontend menu for user" />
+    <x-page-heading title="FrontEnd Menu Config" subtitle="Manage frontend menu for user" />
     <section class="section">
         <div class="card col-md-7">
-            <div class="card-header"><span class="h5 text-capitalize">{{ $method }} Front End Menu</span></div>
+            <div class="card-header"><span class="h4 text-capitalize">{{ $method }} Front End Menu</span></div>
             <div class="card-body d-flex flex-column gap-2">
                 @if ($method === 'edit')
                     <form action="{{ route('front-end-menu.update', $fe_menu->id) }}" method="post">

@@ -44,16 +44,16 @@ Route::group(['middleware' => 'auth'], function () {
         'index', 'show', 'store', 'update', 'destroy', 'edit'
     ]);
 
-    Route::get("/categories/create/{id?}", [CategoriesController::class, 'create'])->name('categories.create');
-    Route::resource('categories', CategoriesController::class)->only([
+    Route::get("/category/create/{id?}", [CategoriesController::class, 'create'])->name('category.create');
+    Route::resource('category', CategoriesController::class)->only([
         'index', 'show', 'store', 'update', 'destroy', 'edit'
     ]);
 
     Route::resource('role', RoleController::class);
 
-    Route::resource('tags', TagsController::class);
+    Route::resource('tag-management', TagsController::class);
 
-    Route::resource('users', UsersController::class);
+    Route::resource('user-setting', UsersController::class);
     
     Route::get('/image-bank/api/list/', [ImageBankController::class, 'apiList'])->name('image_bank.api');
     Route::resource('image-bank', ImageBankController::class);
