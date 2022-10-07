@@ -22,7 +22,7 @@ class CategoryFactory extends Factory
             'common' => $this->faker->name(),
             'parent_id' => $this->faker->randomElement([random_int(1, 50), null]),
             'slug' => $this->faker->slug(),
-            'types' => '["news", "video", "photonews"]',
+            'types' => ["news", "video", "photonews"],
             'created_by' => User::first()->uuid,
         ];
     }

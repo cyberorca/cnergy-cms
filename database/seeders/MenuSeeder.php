@@ -53,7 +53,8 @@ class MenuSeeder extends Seeder
                 'menu_name' => $menu['menu_name'],
                 'parent_id' => $menu['parent_id'],
             ]);
-            $new_menu->roles()->attach(Role::all()->random(rand(1,4))->pluck('id'));
+            // $new_menu->roles()->attach(Role::all()->random(rand(1,4))->pluck('id'));
+            $new_menu->roles()->attach(Role::all()->pluck('id'));
         }
     }
 }

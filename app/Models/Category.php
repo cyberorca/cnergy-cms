@@ -31,9 +31,9 @@ class Category extends Model
         'deleted_by',
     ];
 
-    protected $casts = [
-        'types' => 'array',
-    ];
+    // protected $casts = [
+    //     'types' => 'array',
+    // ];
 
     public function news()
     {

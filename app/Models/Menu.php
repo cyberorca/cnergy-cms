@@ -62,7 +62,9 @@ class Menu extends Model
     public static function getAll()
     {
         // return self::with('roles_user')->get()->toArray();
-        return self::convertMenuDataToResponse(self::with('roles_user')->get()->toArray());
+        $menu_role_user = self::with('roles_user')->get()->toArray();
+        // $menu_role_user = self::all()->toArray();
+        return self::convertMenuDataToResponse($menu_role_user);
     }
 
     public static function convertMenuDataToResponse($dataRaw)
