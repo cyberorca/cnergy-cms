@@ -6,6 +6,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css"
           rel="stylesheet"/>
     <style type="text/css">
+        .bootstrap-tagsinput {
+            width:100%;
+        }
         .bootstrap-tagsinput .tag {
             margin-right: 2px;
             color: white !important;
@@ -16,7 +19,13 @@
             vertical-align: baseline;
             border-radius: .25em;
         }
+
+        .search_select_box select{
+        width:100%;;
+        }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
 @endsection
 
 @push('head')
@@ -130,22 +139,36 @@
                                                 @endif
                                             </div>
                                         </div>
+
+                                        <a data-bs-toggle="collapse"  href="#sembilan">
+                                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
+                                            <span class="h6">Category</span>
+                                        </a>
+                                        <hr />
+                                        <div class="collapse" id="sembilan">
                                         <div class="form-group">
                                             <div class="row">
                                                 <fieldset class="form-group">
-                                                    <select name="category" class="form-select" id="category">
+                                                    <select data-live-search="true" class="w-100 selectpicker"  name="category" id="category">
                                                     @if ($method === 'create')
-                                                    <option value="">Category</option>
+                                                    <option value="" disabled selected>Select Category</option>
                                                     @endif
                                                         @foreach ($categories as $category)
                                                                 <option value="{{ $category->id }}"
                                                                         @if ($method === 'edit' and $category->id === $news->category_id) selected @endif>{{ $category->category }}
                                                                 </option>
                                                             @endforeach
-                                                    </select>
+                                                    </select> 
+                                                    <br><a href="{{ route('category.create') }}" class="mb-2">Add Category</a>     
                                                 </fieldset>
                                             </div>
                                         </div>
+                                            <div class="form-group">
+                                                        
+                                            </div>
+                                        </div>
+
+                                        
                                         <a data-bs-toggle="collapse"  href="#tiga">
                                             <i class="bi bi-chevron-down fs-6" style="float:right"></i>
                                             <span class="h6">Tags</span>
@@ -159,7 +182,7 @@
                                                     id="tags" required>
                                                         <optgroup label="Tags">
                                                             @foreach ($tags as $id => $tag)
-                                                                <option id="{{ $id }}" value="{{ $id }}"
+                                                                <option id="{{ $id }}" value="{{ $tag->id }}"
                                                                         @if ($method === 'edit' and $tag->news()->find($news->id)) selected @endif>{{ $tag->tags }}</option>
                                                             @endforeach
                                                         </optgroup>
@@ -176,7 +199,7 @@
                                             <div class="form-group">
                                                         <label class="mb-2">Slug</label>
                                                         <input type="text" class="form-control" id="slug" name="slug"
-                                                        placeholder="slug">
+                                                        placeholder="Enter Slug">
                                             </div>
                                             <div class="form-group">
                                                 <div class="row">
@@ -193,12 +216,13 @@
                                         <hr />
                                         <div class="collapse" id="tujuh">
                                             <div class="form-group">
-                                                        <textarea name="deskripsi" class="form-control" id="deskripsi"></textarea>
+                                            <textarea name="description" class="form-control" id="description" cols="30"
+                                                      rows="3" required placeholder="Enter description">@if($method === 'edit'){{$news->description }}@endif</textarea>
 
                                             </div>
                                         </div>
 
-                                        <a data-bs-toggle="collapse"  href="#delapan">
+                                        <!--<a data-bs-toggle="collapse"  href="#delapan">
                                             <i class="bi bi-chevron-down fs-6" style="float:right"></i>
                                             <span class="h6">Author</span>
                                         </a>
@@ -210,14 +234,13 @@
                                                     multiple="multiple"
                                                     id="author">
                                                         <optgroup label="Author">
-                                                            @foreach ($users as $uuid => $user)
-                                                                <option id="{{ $uuid }}" value="{{ $uuid }}">{{ $user->name }}</option>
-                                                            @endforeach
+                                                            
+                                                        
                                                         </optgroup>
                                                     </select>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>-->
 
                                         <a data-bs-toggle="collapse"  href="#empat">
                                             <i class="bi bi-chevron-down fs-6" style="float:right"></i>
@@ -228,20 +251,18 @@
                                         <div class="form-group">
                                                     <label class="mb-2">Keyword</label><br>
                                                         <input name="keywords" id="keywords" type="text" required
-                                                    placeholder="Keyword"
-                                                    class="form-control"
+                                                    placeholder="Enter Keyword"
+                                                    class="w-100 form-control"
                                                     data-role="tagsinput"
                                                     @if ($method === 'edit') value="{{ $news->keywords }}" @endif />
                                         </div>
-                                        <div class="form-group">
+                                        <!--<div class="form-group">
                                                     <label class="mb-2">Photographer</label><br>
                                                     <select name="photographer[]" class="choices form-select multiple-remove"
                                                     multiple="multiple"
                                                     id="photographer">
                                                         <optgroup label="photographer">
-                                                            @foreach ($users as $uuid => $user)
-                                                                <option id="{{ $uuid }}" value="{{ $uuid }}">{{ $user->name }}</option>
-                                                            @endforeach
+                                                            
                                                         </optgroup>
                                                     </select>
                                         </div>
@@ -251,21 +272,22 @@
                                                     multiple="multiple"
                                                     id="contributor">
                                                         <optgroup label="contributor">
-                                                            @foreach ($users as $uuid => $user)
-                                                                <option id="{{ $uuid }}" value="{{ $uuid }}">{{ $user->name }}</option>
-                                                            @endforeach
+                                                           
                                                         </optgroup>
                                                     </select>
 
-                                        </div>
+                                        </div>-->
                                         <div class="form-group">
                                             <div class="row">
                                                     <label for="publishedAt" class="mb-2">Type</label>
                                                     <fieldset class="form-group">
                                                         <select name="types" class="form-select" id="type">
+                                                            @if ($method === 'create')
+                                                            <option value="" disabled selected>Select Type</option>
+                                                            @endif
                                                             @foreach ($types as $type)
                                                                 <option value="{{ $type }}"
-                                                                        @if ($method === 'edit' and $type === $news->type) selected @endif>{{ $type }}</option>
+                                                                        @if ($method === 'edit' and $type === $news->types) selected @endif>{{ ucwords($type) }}</option>
                                                             @endforeach
                                                         </select>
                                                     </fieldset>
@@ -357,6 +379,11 @@
                     referrerpolicy="origin"></script>
 
                 <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
+                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
                 <script>
                     var editor_config = {
                         path_absolute: "/",
@@ -424,4 +451,5 @@
                             .trigger('change');
                     });
                 </script>
+                
 @endsection
