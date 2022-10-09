@@ -144,12 +144,13 @@ class NewsController extends Controller
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
+                'description' => $data['description'],
                 'types' => $data['types'],
                 'keywords' => $data['keywords'],
                 'image' => $data['image'],
                 'is_published' => $data['isPublished'],
-                'published_at' => $request->has('isPublished') == false ?  null : $data['publishedAt'],
-                'published_by' => $request->has('isPublished') == false ?  null : auth()->id(),
+                'published_at' => $request->has('isPublished') == false ? null : $data['publishedAt'],
+                'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
                 'created_by' => auth()->id(),
                 'category_id' => $data['category']
             ]);
@@ -209,12 +210,6 @@ class NewsController extends Controller
     {
         $data = $request->input();
         $newsById = News::find($id);
-        $log = new Log([
-                'news_id' => $id,
-                'updated_by'=>\auth()->id()
-            ]
-        );
-        $log->save();
         try {
             $input = [
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
@@ -232,11 +227,12 @@ class NewsController extends Controller
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
+                'description' => $data['description'],
                 'types' => $data['types'],
-                'keywords'=> $data['keywords'],
-                'is_published' =>$data['isPublished'],
-                'published_at' => $request->has('isPublished') == false ?  null : $data['publishedAt'],
-                'published_by' => $request->has('isPublished') == false ?  null : auth()->id(),
+                'keywords' => $data['keywords'],
+                'is_published' => $data['isPublished'],
+                'published_at' => $request->has('isPublished') == false ? null : $data['publishedAt'],
+                'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
                 'updated_by' => auth()->id(),
                 'category_id' => $data['category']
             ];
@@ -250,7 +246,12 @@ class NewsController extends Controller
             if ($data['upload_image_selected'] && !$request->file('upload_image')) {
                 $input['image'] = explode('http://127.0.0.1:8000/storage', $data['upload_image_selected'])[1];
             }
-
+            $log = new Log([
+                    'news_id' => $id,
+                    'updated_by' => \auth()->id()
+                ]
+            );
+            $log->save();
 
             $newsById->update($input);
             $newsById::find($id)->tags()->detach();
