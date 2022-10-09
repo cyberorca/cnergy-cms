@@ -215,20 +215,20 @@
                                         </a>
                                         <hr/>
                                         <div class="collapse" id="delapan">
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <select name="author[]" class="choices form-select multiple-remove"
-                                                            multiple="multiple"
-                                                            id="author">
-                                                        <optgroup label="Author">
-                                                            @foreach ($users as $uuid => $user)
-                                                                <option id="{{ $uuid }}"
-                                                                        value="{{ $uuid }}">{{ $user->name }}</option>
-                                                            @endforeach
-                                                        </optgroup>
-                                                    </select>
-                                                </div>
-                                            </div>
+{{--                                            <div class="form-group">--}}
+{{--                                                <div class="row">--}}
+{{--                                                    <select name="author[]" class="choices form-select multiple-remove"--}}
+{{--                                                            multiple="multiple"--}}
+{{--                                                            id="author">--}}
+{{--                                                        <optgroup label="Author">--}}
+{{--                                                            @foreach ($users as $uuid => $user)--}}
+{{--                                                                <option id="{{ $uuid }}"--}}
+{{--                                                                        value="{{ $uuid }}">{{ $user->name }}</option>--}}
+{{--                                                            @endforeach--}}
+{{--                                                        </optgroup>--}}
+{{--                                                    </select>--}}
+{{--                                                </div>--}}
+{{--                                            </div>--}}
                                         </div>
 
                                         <a data-bs-toggle="collapse" href="#empat">
@@ -245,34 +245,34 @@
                                                        data-role="tagsinput"
                                                        @if ($method === 'edit') value="{{ $news->keywords }}" @endif />
                                             </div>
-                                            <div class="form-group">
-                                                <label class="mb-2">Photographer</label><br>
-                                                <select name="photographer[]"
-                                                        class="choices form-select multiple-remove"
-                                                        multiple="multiple"
-                                                        id="photographer">
-                                                    <optgroup label="photographer">
-                                                        @foreach ($users as $uuid => $user)
-                                                            <option id="{{ $uuid }}"
-                                                                    value="{{ $uuid }}">{{ $user->name }}</option>
-                                                        @endforeach
-                                                    </optgroup>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="mb-2">Contributor</label><br>
-                                                <select name="contributor[]" class="choices form-select multiple-remove"
-                                                        multiple="multiple"
-                                                        id="contributor">
-                                                    <optgroup label="contributor">
-                                                        @foreach ($users as $uuid => $user)
-                                                            <option id="{{ $uuid }}"
-                                                                    value="{{ $uuid }}">{{ $user->name }}</option>
-                                                        @endforeach
-                                                    </optgroup>
-                                                </select>
+{{--                                            <div class="form-group">--}}
+{{--                                                <label class="mb-2">Photographer</label><br>--}}
+{{--                                                <select name="photographer[]"--}}
+{{--                                                        class="choices form-select multiple-remove"--}}
+{{--                                                        multiple="multiple"--}}
+{{--                                                        id="photographer">--}}
+{{--                                                    <optgroup label="photographer">--}}
+{{--                                                        @foreach ($users as $uuid => $user)--}}
+{{--                                                            <option id="{{ $uuid }}"--}}
+{{--                                                                    value="{{ $uuid }}">{{ $user->name }}</option>--}}
+{{--                                                        @endforeach--}}
+{{--                                                    </optgroup>--}}
+{{--                                                </select>--}}
+{{--                                            </div>--}}
+{{--                                            <div class="form-group">--}}
+{{--                                                <label class="mb-2">Contributor</label><br>--}}
+{{--                                                <select name="contributor[]" class="choices form-select multiple-remove"--}}
+{{--                                                        multiple="multiple"--}}
+{{--                                                        id="contributor">--}}
+{{--                                                    <optgroup label="contributor">--}}
+{{--                                                        @foreach ($users as $uuid => $user)--}}
+{{--                                                            <option id="{{ $uuid }}"--}}
+{{--                                                                    value="{{ $uuid }}">{{ $user->name }}</option>--}}
+{{--                                                        @endforeach--}}
+{{--                                                    </optgroup>--}}
+{{--                                                </select>--}}
 
-                                            </div>
+{{--                                            </div>--}}
                                             <div class="form-group">
                                                 <div class="row">
                                                     <label for="publishedAt" class="mb-2">Type</label>
