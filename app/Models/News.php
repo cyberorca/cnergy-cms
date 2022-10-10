@@ -37,6 +37,7 @@ class News extends Model
         'image',
         'video ',
         'synopsis',
+        'description',
         'content',
         'published_at',
         'published_by',

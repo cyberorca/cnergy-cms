@@ -16,5 +16,6 @@ class Log extends Model
     protected $fillable = [
         'news_id',
         'updated_by',
+        'updated_content'
     ];
 }
