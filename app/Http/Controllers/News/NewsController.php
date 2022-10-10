@@ -154,7 +154,15 @@ class NewsController extends Controller
                 'created_by' => auth()->id(),
                 'category_id' => $data['category']
             ]);
-            $news->save();
+            if ($news->save()){
+                $log = new Log([
+                        'news_id' => $news->id,
+                        'updated_by' => \auth()->id(),
+                        'updated_content'=>json_encode($news->getOriginal())
+                    ]
+                );
+                $log->save();
+            }
             foreach ($data['tags'] as $t) {
                 $news->tags()->attach($t);
             }
