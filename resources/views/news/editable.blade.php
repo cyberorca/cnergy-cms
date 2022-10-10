@@ -6,6 +6,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css"
           rel="stylesheet"/>
     <style type="text/css">
+        .bootstrap-tagsinput {
+            width:100%;
+        }
         .bootstrap-tagsinput .tag {
             margin-right: 2px;
             color: white !important;
@@ -16,7 +19,13 @@
             vertical-align: baseline;
             border-radius: .25em;
         }
+
+        .search_select_box select{
+        width:100%;;
+        }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
 @endsection
 
 @push('head')
@@ -49,8 +58,7 @@
 
                                             <label for="synopsis" class="form-label mb-2">Synopsis</label>
                                             <textarea name="synopsis" class="form-control" id="synopsis" cols="30"
-                                                      rows="3" required
-                                                      placeholder="Enter Synopsis">@if($method === 'edit'){{$news->synopsis }}@endif</textarea>
+                                                      rows="3" required placeholder="Enter Synopsis">@if($method === 'edit'){{$news->synopsis }}@endif</textarea>
 
                                             <label for="content" class="form-label">Content</label>
                                             <textarea name="content" class="my-editor form-control" id="content"
@@ -78,12 +86,12 @@
                             <div class="col-5">
                                 <div class="card">
                                     <div class="card-body">
-                                        <a data-bs-toggle="collapse" href="#satu">
+                                        <a data-bs-toggle="collapse"  href="#satu">
                                             <span class="h6">Status & Visibility</span>
-                                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
+                                                <i class="bi bi-chevron-down fs-6" style="float:right"></i>
 
                                         </a>
-                                        <hr/>
+                                        <hr />
                                         <div class="collapse" id="satu">
                                             <div class="form-group">
                                                 <div class="row">
@@ -91,18 +99,14 @@
                                                         <label for="basicInput">Publish Status</label>
                                                     </div>
                                                     <div class="col-md-5">
-                                                        <input class="form-check-input" type="radio" value="1"
-                                                               name="isPublished"
-                                                               @if ($method === 'edit' and $news->is_published == '1') checked @endif/>
-                                                        <label class="form-check-label">
-                                                            On
-                                                        </label>
-                                                        <input class="form-check-input" type="radio" value="0"
-                                                               name="isPublished"
-                                                               @if ($method === 'edit' and $news->is_published == '0') checked @endif/>
-                                                        <label class="form-check-label">
-                                                            Off
-                                                        </label>
+                                                            <input class="form-check-input" type="radio" value="1" name="isPublished" @if ($method === 'edit' and $news->is_published == '1') checked @endif/>
+                                                            <label class="form-check-label">
+                                                                On
+                                                            </label>
+                                                            <input class="form-check-input" type="radio" value="0" name="isPublished" @if ($method === 'edit' and $news->is_published == '0') checked @endif/>
+                                                            <label class="form-check-label">
+                                                                Off
+                                                            </label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -112,21 +116,20 @@
                                                         <label for="publishedAt" class="mb-2">Schedule</label>
                                                     </div>
                                                     <div class="col-md-7">
-                                                        <input type="date" class="form-control" id="publishedAt"
-                                                               name="publishedAt"
-                                                               placeholder="dd-mm-yyyy"
-                                                               @if ($method === 'edit') value="{{date('Y-m-d',strtotime($news->published_at))}}" @endif />
-
+                                                        <input type="date" class="form-control" id="publishedAt" name="publishedAt"
+                                                        placeholder="dd-mm-yyyy"
+                                                        @if ($method === 'edit') value="{{date('Y-m-d',strtotime($news->published_at))}}" @endif />
+                                                
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <a data-bs-toggle="collapse" href="#dua">
+                                        <a data-bs-toggle="collapse"  href="#dua">
                                             <i class="bi bi-chevron-down fs-6" style="float:right"></i>
                                             <span class="h6">Picture</span>
                                         </a>
-                                        <hr/>
+                                        <hr />
                                         <div class="collapse" id="dua">
                                             <div class="form-group">
                                                 @if (isset($news))
@@ -136,36 +139,50 @@
                                                 @endif
                                             </div>
                                         </div>
+
+                                        <a data-bs-toggle="collapse"  href="#sembilan">
+                                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
+                                            <span class="h6">Category</span>
+                                        </a>
+                                        <hr />
+                                        <div class="collapse" id="sembilan">
                                         <div class="form-group">
                                             <div class="row">
                                                 <fieldset class="form-group">
-                                                    <select name="category" class="form-select" id="category">
-                                                        @if ($method === 'create')
-                                                            <option value="">Category</option>
-                                                        @endif
+                                                    <select data-live-search="true" class="w-100 selectpicker"  name="category" id="category">
+                                                    @if ($method === 'create')
+                                                    <option value="" disabled selected>Select Category</option>
+                                                    @endif
                                                         @foreach ($categories as $category)
-                                                            <option value="{{ $category->id }}"
-                                                                    @if ($method === 'edit' and $category->id === $news->category_id) selected @endif>{{ $category->category }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
+                                                                <option value="{{ $category->id }}"
+                                                                        @if ($method === 'edit' and $category->id === $news->category_id) selected @endif>{{ $category->category }}
+                                                                </option>
+                                                            @endforeach
+                                                    </select> 
+                                                    <br><a href="{{ route('category.create') }}" class="mb-2">Add Category</a>     
                                                 </fieldset>
                                             </div>
                                         </div>
-                                        <a data-bs-toggle="collapse" href="#tiga">
+                                            <div class="form-group">
+                                                        
+                                            </div>
+                                        </div>
+
+                                        
+                                        <a data-bs-toggle="collapse"  href="#tiga">
                                             <i class="bi bi-chevron-down fs-6" style="float:right"></i>
                                             <span class="h6">Tags</span>
                                         </a>
-                                        <hr/>
+                                        <hr />
                                         <div class="collapse" id="tiga">
                                             <div class="form-group">
                                                 <div class="row">
                                                     <select name="tags[]" class="choices form-select multiple-remove"
-                                                            multiple="multiple"
-                                                            id="tags" required>
+                                                    multiple="multiple"
+                                                    id="tags" required>
                                                         <optgroup label="Tags">
                                                             @foreach ($tags as $id => $tag)
-                                                                <option id="{{ $id }}" value="{{ $id }}"
+                                                                <option id="{{ $id }}" value="{{ $tag->id }}"
                                                                         @if ($method === 'edit' and $tag->news()->find($news->id)) selected @endif>{{ $tag->tags }}</option>
                                                             @endforeach
                                                         </optgroup>
@@ -173,195 +190,167 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <a data-bs-toggle="collapse" href="#enam">
-                                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
-                                            <span class="h6">Permalink</span>
-                                        </a>
-                                        <hr/>
-                                        <div class="collapse" id="enam">
-                                            <div class="form-group">
-                                                <label class="mb-2">Slug</label>
-                                                <input type="text" class="form-control" id="slug" name="slug" required
-                                                       placeholder="slug" @if ($method === 'edit') value="{{ $news->slug }}"@endif>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <label class="mb-2">URL News</label>
-                                                    @if($method === 'edit')
-                                                        <a href="#" class="mb-2">https://www.domain.com/{{$news->slug}}</a>
-                                                    @else
-                                                        <a href="#" class="mb-2">https://www.domain.com/slug @</a>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
 
-                                        <a data-bs-toggle="collapse" href="#tujuh">
+                                        <a data-bs-toggle="collapse"  href="#tujuh">
                                             <i class="bi bi-chevron-down fs-6" style="float:right"></i>
                                             <span class="h6">Description</span>
                                         </a>
-                                        <hr/>
+                                        <hr />
                                         <div class="collapse" id="tujuh">
                                             <div class="form-group">
-                                                <textarea name="description" required class="form-control"
-                                                          id="deskripsi">@if($method === 'edit'){{ $news->description }} @endif</textarea>
+                                            <textarea name="description" class="form-control" id="description" cols="30"
+                                                      rows="3" required placeholder="Enter description">@if($method === 'edit'){{$news->description }}@endif</textarea>
 
                                             </div>
                                         </div>
 
-                                        <a data-bs-toggle="collapse" href="#delapan">
+                                        <!--<a data-bs-toggle="collapse"  href="#delapan">
                                             <i class="bi bi-chevron-down fs-6" style="float:right"></i>
                                             <span class="h6">Author</span>
                                         </a>
-                                        <hr/>
+                                        <hr />
                                         <div class="collapse" id="delapan">
-{{--                                            <div class="form-group">--}}
-{{--                                                <div class="row">--}}
-{{--                                                    <select name="author[]" class="choices form-select multiple-remove"--}}
-{{--                                                            multiple="multiple"--}}
-{{--                                                            id="author">--}}
-{{--                                                        <optgroup label="Author">--}}
-{{--                                                            @foreach ($users as $uuid => $user)--}}
-{{--                                                                <option id="{{ $uuid }}"--}}
-{{--                                                                        value="{{ $uuid }}">{{ $user->name }}</option>--}}
-{{--                                                            @endforeach--}}
-{{--                                                        </optgroup>--}}
-{{--                                                    </select>--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
-                                        </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <select name="author[]" class="choices form-select multiple-remove"
+                                                    multiple="multiple"
+                                                    id="author">
+                                                        <optgroup label="Author">
+                                                            
+                                                        
+                                                        </optgroup>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>-->
 
-                                        <a data-bs-toggle="collapse" href="#empat">
+                                        <a data-bs-toggle="collapse"  href="#empat">
                                             <i class="bi bi-chevron-down fs-6" style="float:right"></i>
                                             <span class="h6">Other Settings</span>
                                         </a>
-                                        <hr/>
+                                        <hr />
                                         <div class="collapse" id="empat">
-                                            <div class="form-group">
-                                                <label class="mb-2">Keyword</label><br>
-                                                <input name="keywords" id="keywords" type="text" required
-                                                       placeholder="Keyword"
-                                                       class="form-control"
-                                                       data-role="tagsinput"
-                                                       @if ($method === 'edit') value="{{ $news->keywords }}" @endif />
-                                            </div>
-{{--                                            <div class="form-group">--}}
-{{--                                                <label class="mb-2">Photographer</label><br>--}}
-{{--                                                <select name="photographer[]"--}}
-{{--                                                        class="choices form-select multiple-remove"--}}
-{{--                                                        multiple="multiple"--}}
-{{--                                                        id="photographer">--}}
-{{--                                                    <optgroup label="photographer">--}}
-{{--                                                        @foreach ($users as $uuid => $user)--}}
-{{--                                                            <option id="{{ $uuid }}"--}}
-{{--                                                                    value="{{ $uuid }}">{{ $user->name }}</option>--}}
-{{--                                                        @endforeach--}}
-{{--                                                    </optgroup>--}}
-{{--                                                </select>--}}
-{{--                                            </div>--}}
-{{--                                            <div class="form-group">--}}
-{{--                                                <label class="mb-2">Contributor</label><br>--}}
-{{--                                                <select name="contributor[]" class="choices form-select multiple-remove"--}}
-{{--                                                        multiple="multiple"--}}
-{{--                                                        id="contributor">--}}
-{{--                                                    <optgroup label="contributor">--}}
-{{--                                                        @foreach ($users as $uuid => $user)--}}
-{{--                                                            <option id="{{ $uuid }}"--}}
-{{--                                                                    value="{{ $uuid }}">{{ $user->name }}</option>--}}
-{{--                                                        @endforeach--}}
-{{--                                                    </optgroup>--}}
-{{--                                                </select>--}}
+                                        <div class="form-group">
+                                                    <label class="mb-2">Keyword</label><br>
+                                                        <input name="keywords" id="keywords" type="text" required
+                                                    placeholder="Enter Keyword"
+                                                    class="w-100 form-control"
+                                                    data-role="tagsinput"
+                                                    @if ($method === 'edit') value="{{ $news->keywords }}" @endif />
+                                        </div>
+                                        <!--<div class="form-group">
+                                                    <label class="mb-2">Photographer</label><br>
+                                                    <select name="photographer[]" class="choices form-select multiple-remove"
+                                                    multiple="multiple"
+                                                    id="photographer">
+                                                        <optgroup label="photographer">
+                                                            
+                                                        </optgroup>
+                                                    </select>
+                                        </div>
+                                        <div class="form-group">
+                                                    <label class="mb-2">Contributor</label><br>
+                                                    <select name="contributor[]" class="choices form-select multiple-remove"
+                                                    multiple="multiple"
+                                                    id="contributor">
+                                                        <optgroup label="contributor">
+                                                           
+                                                        </optgroup>
+                                                    </select>
 
-{{--                                            </div>--}}
-                                            <div class="form-group">
-                                                <div class="row">
+                                        </div>-->
+                                        <div class="form-group">
+                                            <div class="row">
                                                     <label for="publishedAt" class="mb-2">Type</label>
                                                     <fieldset class="form-group">
                                                         <select name="types" class="form-select" id="type">
+                                                            @if ($method === 'create')
+                                                            <option value="" disabled selected>Select Type</option>
+                                                            @endif
                                                             @foreach ($types as $type)
                                                                 <option value="{{ $type }}"
-                                                                        @if ($method === 'edit' and $type === $news->type) selected @endif>{{ $type }}</option>
+                                                                        @if ($method === 'edit' and $type === $news->types) selected @endif>{{ ucwords($type) }}</option>
                                                             @endforeach
                                                         </select>
                                                     </fieldset>
-                                                </div>
                                             </div>
                                         </div>
-                                        <a data-bs-toggle="collapse" href="#lima">
+                                        </div>
+                                        <a data-bs-toggle="collapse"  href="#lima">
                                             <i class="bi bi-chevron-down fs-6" style="float:right"></i>
                                             <span class="h6">Content Type</span>
                                         </a>
-                                        <hr/>
+                                        <hr />
                                         <div class="collapse" id="lima">
                                             <div class="form-group">
-                                                <input name="isCurated" class="form-check-input" type="checkbox"
-                                                       id="isCurated"
-                                                       @if ($method === 'edit' and $news->is_curated == '1') checked @endif/>
+                                                <input name="isPublished" class="form-check-input" type="checkbox"
+                                                id="isPublished"
+                                                @if ($method === 'edit' and $news->is_published == '1') checked @endif/>
+                                                <label class="form-check-label" for="isPublished">Published</label>
+                                                <br>
+                                                <input name="isCurated" class="form-check-input" type="checkbox" id="isCurated"
+                                                    @if ($method === 'edit' and $news->is_curated == '1') checked @endif/>
                                                 <label class="form-check-label" for="isCurated">Curated/Feed</label>
                                                 <br>
                                                 <input name="isAdultContent" class="form-check-input" type="checkbox"
-                                                       id="isAdultContent"
-                                                       @if ($method === 'edit' and $news->is_adult_content == '1') checked @endif/>
-                                                <label class="form-check-label" for="isAdultContent">Adult
-                                                    Content(18+)</label>
+                                                    id="isAdultContent"
+                                                    @if ($method === 'edit' and $news->is_adult_content == '1') checked @endif/>
+                                                <label class="form-check-label" for="isAdultContent">Adult Content(18+)</label>
                                                 <br>
                                                 <input name="isVerifyAge" class="form-check-input" type="checkbox"
-                                                       id="isVerifyAge"
-                                                       @if ($method === 'edit' and $news->is_verify_age == '1') checked @endif/>
-                                                <label class="form-check-label" for="isVerifyAge">Verify
-                                                    Age(18+)</label>
+                                                    id="isVerifyAge"
+                                                    @if ($method === 'edit' and $news->is_verify_age == '1') checked @endif/>
+                                                <label class="form-check-label" for="isVerifyAge">Verify Age(18+)</label>
                                                 <br>
                                                 <input name="isHomeHeadline" class="form-check-input" type="checkbox"
-                                                       id="isHomeHeadline"
-                                                       @if ($method === 'edit' and $news->is_home_headline == '1') checked @endif/>
-                                                <label class="form-check-label" for="isHomeHeadline">Home
-                                                    Headline</label>
+                                                    id="isHomeHeadline"
+                                                    @if ($method === 'edit' and $news->is_home_headline == '1') checked @endif/>
+                                                <label class="form-check-label" for="isHomeHeadline">Home Headline</label>
                                                 <br>
-                                                <input name="isCategoryHeadline" class="form-check-input"
-                                                       type="checkbox"
-                                                       id="isCategoryHeadline"
-                                                       @if ($method === 'edit' and $news->is_category_headline == '1') checked @endif/>
+                                                <input name="isCategoryHeadline" class="form-check-input" type="checkbox"
+                                                    id="isCategoryHeadline"
+                                                    @if ($method === 'edit' and $news->is_category_headline == '1') checked @endif/>
                                                 <label class="form-check-label" for="isCategoryHeadline">Category
                                                     Headline</label>
                                                 <br>
                                                 <input name="isAdvertorial" class="form-check-input" type="checkbox"
-                                                       id="isAdvertorial"
-                                                       @if ($method === 'edit' and $news->is_advertorial == '1') checked @endif/>
+                                                    id="isAdvertorial"
+                                                    @if ($method === 'edit' and $news->is_advertorial == '1') checked @endif/>
                                                 <label class="form-check-label" for="isAdvertorial">Advertorial</label>
                                                 <br>
                                                 <input name="isSeo" class="form-check-input" type="checkbox" id="isSeo"
-                                                       @if ($method === 'edit' and $news->is_seo == '1') checked @endif/>
+                                                    @if ($method === 'edit' and $news->is_seo == '1') checked @endif/>
                                                 <label class="form-check-label" for="isSeo">SEO</label>
                                                 <br>
-                                                <input name="isDisableInteractions" class="form-check-input"
-                                                       type="checkbox"
-                                                       id="isDisableInteractions"
-                                                       @if ($method === 'edit' and $news->is_disable_interactions == '1') checked @endif/>
+                                                <input name="isDisableInteractions" class="form-check-input" type="checkbox"
+                                                    id="isDisableInteractions"
+                                                    @if ($method === 'edit' and $news->is_disable_interactions == '1') checked @endif/>
                                                 <label class="form-check-label" for="isDisableInteractions">Disable
                                                     Interactions</label>
                                                 <br>
                                                 <input name="isBrandedContent" class="form-check-input" type="checkbox"
-                                                       id="isBrandedContent"
-                                                       @if ($method === 'edit' and $news->is_branded_content == '1') checked @endif/>
-                                                <label class="form-check-label" for="isBrandedContent">Branded
-                                                    Content</label>
+                                                    id="isBrandedContent"
+                                                    @if ($method === 'edit' and $news->is_branded_content == '1') checked @endif/>
+                                                <label class="form-check-label" for="isBrandedContent">Branded Content</label>
                                                 <br>
                                                 <input name="isHeadline" class="form-check-input" type="checkbox"
-                                                       id="isHeadline"
-                                                       @if ($method === 'edit' and $news->is_headline == '1') checked @endif/>
+                                                id="isHeadline"
+                                                @if ($method === 'edit' and $news->is_headline == '1') checked @endif/>
                                                 <label class="form-check-label" for="isHeadline">Headline</label>
                                                 <br>
                                                 <input name="editorPick" class="form-check-input" type="checkbox"
-                                                       id="editorPick"
-                                                       @if ($method === 'edit' and $news->editor_pick == '1') checked @endif/>
+                                                    id="editorPick"
+                                                    @if ($method === 'edit' and $news->editor_pick == '1') checked @endif/>
                                                 <label class="form-check-label" for="editorPick">Editor Pick</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
                     </section>
                 </form>
                 @endsection
@@ -373,6 +362,11 @@
                     referrerpolicy="origin"></script>
 
                 <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
+                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
                 <script>
                     var editor_config = {
                         path_absolute: "/",
@@ -440,4 +434,5 @@
                             .trigger('change');
                     });
                 </script>
+                
 @endsection

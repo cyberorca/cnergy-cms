@@ -35,15 +35,15 @@
                         <li class="d-inline-block me-2 mb-1">
                             <div class="form-check">
                                 <div class="checkbox">
-                                    <input type="checkbox" name="types[]" value="news" class="form-check-input" @if ($method === 'edit') @if(in_array("news", json_decode($post->types))) checked @endif @endif>
+                                    <input type="checkbox" name="types[]" value="news" class="form-check-input" @if ($method === 'edit') @if(in_array("news", $post->types)) checked @endif @endif>
                                     <label for="checkbox1">News</label>
                                 </div>
                                 <div class="checkbox">
-                                    <input type="checkbox" name="types[]" value="photonews" class="form-check-input" @if ($method === 'edit') @if(in_array("photonews", json_decode($post->types))) checked @endif @endif>
+                                    <input type="checkbox" name="types[]" value="photonews" class="form-check-input" @if ($method === 'edit') @if(in_array("photonews", $post->types)) checked @endif @endif>
                                     <label for="checkbox1">Photo News</label>
                                 </div>
                                 <div class="checkbox">
-                                    <input type="checkbox" name="types[]" value="video" class="form-check-input" @if ($method === 'edit') @if(in_array("video", json_decode($post->types))) checked @endif @endif>
+                                    <input type="checkbox" name="types[]" value="video" class="form-check-input" @if ($method === 'edit') @if(in_array("video", $post->types)) checked @endif @endif>
                                     <label for="checkbox1">Video</label>
                                 </div>
                             </div>

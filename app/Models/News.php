@@ -45,6 +45,7 @@ class News extends Model
         'updated_by',
         'deleted_by',
         'category_id',
+        'description',
         'is_published'
     ];
 
