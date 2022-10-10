@@ -190,24 +190,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <a data-bs-toggle="collapse"  href="#enam">
-                                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
-                                            <span class="h6">Permalink</span>
-                                        </a>
-                                        <hr />
-                                        <div class="collapse" id="enam">
-                                            <div class="form-group">
-                                                        <label class="mb-2">Slug</label>
-                                                        <input type="text" class="form-control" id="slug" name="slug"
-                                                        placeholder="Enter Slug">
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="row">
-                                                        <label class="mb-2">URL News</label>
-                                                        <a href="#" class="mb-2">https://www.domain.com/slug @</a>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
 
                                         <a data-bs-toggle="collapse"  href="#tujuh">
                                             <i class="bi bi-chevron-down fs-6" style="float:right"></i>
