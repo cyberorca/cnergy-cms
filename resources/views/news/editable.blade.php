@@ -119,7 +119,7 @@
                                                         <input type="date" class="form-control" id="publishedAt" name="publishedAt"
                                                         placeholder="dd-mm-yyyy"
                                                         @if ($method === 'edit') value="{{date('Y-m-d',strtotime($news->published_at))}}" @endif />
-                                                
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -158,17 +158,17 @@
                                                                         @if ($method === 'edit' and $category->id === $news->category_id) selected @endif>{{ $category->category }}
                                                                 </option>
                                                             @endforeach
-                                                    </select> 
-                                                    <br><a href="{{ route('category.create') }}" class="mb-2">Add Category</a>     
+                                                    </select>
+                                                    <br><a href="{{ route('category.create') }}" class="mb-2">Add Category</a>
                                                 </fieldset>
                                             </div>
                                         </div>
                                             <div class="form-group">
-                                                        
+
                                             </div>
                                         </div>
 
-                                        
+
                                         <a data-bs-toggle="collapse"  href="#tiga">
                                             <i class="bi bi-chevron-down fs-6" style="float:right"></i>
                                             <span class="h6">Tags</span>
@@ -190,7 +190,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
 
                                         <a data-bs-toggle="collapse"  href="#tujuh">
                                             <i class="bi bi-chevron-down fs-6" style="float:right"></i>
@@ -217,8 +217,8 @@
                                                     multiple="multiple"
                                                     id="author">
                                                         <optgroup label="Author">
-                                                            
-                                                        
+
+
                                                         </optgroup>
                                                     </select>
                                                 </div>
@@ -245,7 +245,7 @@
                                                     multiple="multiple"
                                                     id="photographer">
                                                         <optgroup label="photographer">
-                                                            
+
                                                         </optgroup>
                                                     </select>
                                         </div>
@@ -255,7 +255,7 @@
                                                     multiple="multiple"
                                                     id="contributor">
                                                         <optgroup label="contributor">
-                                                           
+
                                                         </optgroup>
                                                     </select>
 
@@ -284,11 +284,7 @@
                                         <hr />
                                         <div class="collapse" id="lima">
                                             <div class="form-group">
-                                                <input name="isPublished" class="form-check-input" type="checkbox"
-                                                id="isPublished"
-                                                @if ($method === 'edit' and $news->is_published == '1') checked @endif/>
-                                                <label class="form-check-label" for="isPublished">Published</label>
-                                                <br>
+
                                                 <input name="isCurated" class="form-check-input" type="checkbox" id="isCurated"
                                                     @if ($method === 'edit' and $news->is_curated == '1') checked @endif/>
                                                 <label class="form-check-label" for="isCurated">Curated/Feed</label>
@@ -434,5 +430,5 @@
                             .trigger('change');
                     });
                 </script>
-                
+
 @endsection

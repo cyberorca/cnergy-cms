@@ -246,18 +246,19 @@ class NewsController extends Controller
             if ($data['upload_image_selected'] && !$request->file('upload_image')) {
                 $input['image'] = explode('http://127.0.0.1:8000/storage', $data['upload_image_selected'])[1];
             }
-            $log = new Log([
-                    'news_id' => $id,
-                    'updated_by' => \auth()->id()
-                ]
-            );
-            $log->save();
-
             $newsById->update($input);
             $newsById::find($id)->tags()->detach();
             foreach ($data['tags'] as $t) {
                 $newsById->tags()->attach($t);
             }
+
+            $log = new Log([
+                    'news_id' => $id,
+                    'updated_by' => \auth()->id(),
+                    'updated_content'=>json_encode($newsById->getChanges())
+                ]
+            );
+            $log->save();
 
             return \redirect('news')->with('status', 'Successfully Update News');
         } catch (\Throwable $e) {
