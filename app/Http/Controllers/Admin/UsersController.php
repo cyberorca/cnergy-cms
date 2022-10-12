@@ -95,7 +95,7 @@ class UsersController extends Controller
         try {
             $user->save();
             SendEmailToNewUsers::makeMail($user);
-            return redirect('user-setting')->with('status', 'Successfully to Add User');
+            return redirect()->route("user-setting.index")->with('status', 'Successfully to Add User');
         } catch (\Throwable $e) {
             return redirect('user-setting')->withErrors($e->getMessage());
         }
@@ -144,7 +144,7 @@ class UsersController extends Controller
                 'role_id' => $data['role'],
                 'is_active' => $data['is_active'],
             ]);
-            return redirect('user-setting')->with('status', 'Successfully to Update User');
+            return redirect()->route("user-setting.index")->with('status', 'Successfully to Update User');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e);
         }
