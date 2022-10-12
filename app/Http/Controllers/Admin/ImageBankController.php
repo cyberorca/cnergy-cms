@@ -60,7 +60,7 @@ class ImageBankController extends Controller
             }
 
             ImageBank::create($data);
-            return redirect('image-bank')->with('status', 'Successfully add image');
+            return redirect()->route('image-bank.index')->with('status', 'Successfully add image');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -133,14 +133,19 @@ class ImageBankController extends Controller
 
     public function displayImage($filename)
     {
-        $path = storage_path('images/' . $filename);
+        $path = storage_path('app/public/' . $filename);
+        // return $filename;
         if (!File::exists($path)) {
             abort(404);
         }
+
         $file = File::get($path);
         $type = File::mimeType($path);
+
         $response = Response::make($file, 200);
-        $response->header("Content-Type", $type);
+
+        // $response->header("Content-Type", $type);
+
         return $response;
     }
 }

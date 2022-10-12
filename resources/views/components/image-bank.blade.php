@@ -11,7 +11,7 @@
         </div>
     </div>
     <p class="fw-bold m-0 mt-2 mb-1">Image List</p>
-    <input type="hidden" id="path_image" value="{{ url('') . '/storage' }}">
+    <input type="hidden" id="path_image" value="{{ rtrim(Storage::url(""), "///") }}">
     <div class="d-flex flex-wrap" id="image_list_parent">
         {{-- @foreach ($item as $image)
             <div class="image-card border p-0 d-flex flex-column align-items-center">

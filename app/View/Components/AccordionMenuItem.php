@@ -18,7 +18,7 @@ class AccordionMenuItem extends Component
     public function __construct($item)
     {
         $this->item = $item;
-        $this->path = explode('/', URL::current())[3];
+        $this->path = explode('/', URL::current())[4];
     }
 
     /**
