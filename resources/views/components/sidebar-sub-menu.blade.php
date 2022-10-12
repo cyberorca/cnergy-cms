@@ -1,13 +1,13 @@
 <li
     class="submenu-item 
     @if (count($item['children'])) sidebar-item has-sub subs-child @endif
-    " data-parent-sidebar="{{ $item['parent_id'] }}" data-id-sidebar="{{ $item['id'] }}" 
-    @if (request()->is($item['slug']) && count($item['children']) == 0) data-status-sidebar="true" @endif>
+    " data-parent-sidebar="{{ $item['parent_id'] }}" data-id-sidebar="{{ $item['id'] }}" data-parents-sidebar="{{ json_encode($item['parents']) }}" 
+    @if (str_contains(request()->getRequestUri() . "/", $item['slug']) && count($item['children']) == 0) data-status-sidebar="true" @endif>
     <a @if (count($item['children'])) class="sidebar-link"
         href="{{ url($item['slug']) }}" 
     @else
         href="{{ url($item['slug']) }}" 
-        @if (request()->is($item['slug'])) style="background-color: #f0f1f5 !important; border-radius: 7px" @endif
+        @if (str_contains(request()->getRequestUri() . "/", $item['slug'])) style="background-color: #f0f1f5 !important; border-radius: 7px" @endif
     @endif
         >
         {{ $item['menu_name'] }}

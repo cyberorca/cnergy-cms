@@ -12,16 +12,17 @@
         </div>
     </div>
     <div class="image-file-preview mt-3">
-        <img src="@if(!isset($item)) {{ asset('assets/images/site_logo.png') }} @else {{ route('image.displayImage', ["filename" => $item->image]) }}  @endif" alt="" srcset="" id="image_preview_result">
+        <img src="@if(!isset($item)) {{ asset('assets/images/site_logo.png') }} @else {{ asset('storage/' . $item->slug) }}  @endif" alt="" srcset="" id="image_preview_result">
     </div>
-    <!--<div class="p-2 px-3 border mt-2">
+    <div class="p-2 px-3 border mt-2">
         <p class="m-0" id="image_title">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab officiis non architecto odit.               
-            {{-- @if (!isset($item))
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab officiis non architecto odit.
+            @if (!isset($item))
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab officiis non architecto odit.               
-            @endif --}}
+            @endif
         </p>
-    </div>-->
+    </div>
+    <hr>
     <div class="modal fade text-left " id="image-bank" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable d-flex justify-content-center modal-dialog-centered modal-lg"
