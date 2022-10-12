@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\News;
 
 use App\Http\Controllers\Controller;
+use App\Models\Log;
 use App\Models\News;
 use App\Models\Tag;
 use App\Models\Role;
@@ -18,6 +19,7 @@ use App\Http\Requests\NewsRequest;
 use App\Http\Utils\FileFormatPath;
 use App\Models\ImageBank;
 use Illuminate\Support\Facades\Storage;
+use ViKon\Diff\Diff;
 
 class NewsController extends Controller
 {
@@ -77,7 +79,7 @@ class NewsController extends Controller
         }
 
         // return response()->json($news);
-        return view('news.index',  [
+        return view('news.index', [
             'news' => $news->paginate(10)->withQueryString(),
             'editors' => $editors->get(),
             'reporters' => $reporters->get(),
@@ -109,7 +111,7 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -142,17 +144,26 @@ class NewsController extends Controller
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
+                'description' => $data['description'],
                 'types' => $data['types'],
-                'keywords'=> $data['keywords'],
+                'keywords' => $data['keywords'],
                 'image' => $data['image'],
                 'is_published' => $data['isPublished'],
-                'published_at' => $request->has('isPublished') == false ?  null : $data['publishedAt'],
-                'published_by' => $request->has('isPublished') == false ?  null : auth()->id(),
+                'published_at' => $request->has('isPublished') == false ? null : $data['publishedAt'],
+                'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
                 'created_by' => auth()->id(),
                 'category_id' => $data['category']
             ]);
-            $news->save();
-            foreach ($data['tags'] as $t){
+            if ($news->save()){
+                $log = new Log([
+                        'news_id' => $news->id,
+                        'updated_by' => \auth()->id(),
+                        'updated_content'=>json_encode($news->getOriginal())
+                    ]
+                );
+                $log->save();
+            }
+            foreach ($data['tags'] as $t) {
                 $news->tags()->attach($t);
             }
 
@@ -165,7 +176,7 @@ class NewsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -176,7 +187,7 @@ class NewsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -199,8 +210,8 @@ class NewsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -224,11 +235,12 @@ class NewsController extends Controller
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
+                'description' => $data['description'],
                 'types' => $data['types'],
-                'keywords'=> $data['keywords'],
-                'is_published' =>$data['isPublished'],
-                'published_at' => $request->has('isPublished') == false ?  null : $data['publishedAt'],
-                'published_by' => $request->has('isPublished') == false ?  null : auth()->id(),
+                'keywords' => $data['keywords'],
+                'is_published' => $data['isPublished'],
+                'published_at' => $request->has('isPublished') == false ? null : $data['publishedAt'],
+                'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
                 'updated_by' => auth()->id(),
                 'category_id' => $data['category']
             ];
@@ -242,12 +254,20 @@ class NewsController extends Controller
             if ($data['upload_image_selected'] && !$request->file('upload_image')) {
                 $input['image'] = explode('http://127.0.0.1:8000/storage', $data['upload_image_selected'])[1];
             }
-
             $newsById->update($input);
             $newsById::find($id)->tags()->detach();
-            foreach ($data['tags'] as $t){
+            foreach ($data['tags'] as $t) {
                 $newsById->tags()->attach($t);
             }
+
+            $log = new Log([
+                    'news_id' => $id,
+                    'updated_by' => \auth()->id(),
+                    'updated_content'=>json_encode($newsById->getChanges())
+                ]
+            );
+            $log->save();
+
             return \redirect('news')->with('status', 'Successfully Update News');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
@@ -257,7 +277,7 @@ class NewsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
