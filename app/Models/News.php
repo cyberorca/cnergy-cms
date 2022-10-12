@@ -37,6 +37,7 @@ class News extends Model
         'image',
         'video ',
         'synopsis',
+        'description',
         'content',
         'published_at',
         'published_by',
@@ -44,6 +45,7 @@ class News extends Model
         'updated_by',
         'deleted_by',
         'category_id',
+        'description',
         'is_published'
     ];
 

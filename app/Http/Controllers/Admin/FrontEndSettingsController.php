@@ -84,13 +84,15 @@ class FrontEndSettingsController extends Controller
                 $latest_token = json_decode($menu->token, true);
                 $latest_token[$input["token_name"]] = sha1(Str::random(64));
             }
+           // return response()->json($latest_token);
             FrontEndSetting::updateOrCreate([
                 'id' => 1
             ], [
                 'token' => json_encode($latest_token)
             ]);
-            // return response()->json($menu); 
-            return redirect()->back()->with('status', 'Successfully generate token settings');
+            $token = $input["token_name"];
+            $code = $latest_token[$input["token_name"]];
+            return redirect()->back()->with('status', 'Successfully generate token '.$token.' - '.$code.' ');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
