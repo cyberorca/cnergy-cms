@@ -315,7 +315,7 @@ class NewsController extends Controller
                 );
                 $log->save();
             }
-            return Redirect::back()->with('status', 'Successfully to Delete User');
+            return Redirect::back()->with('status', 'Successfully to Delete News');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
