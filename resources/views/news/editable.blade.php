@@ -273,29 +273,34 @@
                                                        @else placeholder="Enter Keyword" @endif />
                                             </div>
 
-                                            <!--<div class="form-group">
-                                                        <label class="mb-2">Photographer</label><br>
-                                                        <select name="photographer[]" class="choices form-select multiple-remove"
+                                            <div class="form-group">
+                                                <label class="mb-2">Photographer</label><br>
+                                                <select class="choices form-select multiple-remove"
                                                         multiple="multiple"
-                                                        id="photographer">
-                                                            <optgroup label="photographer">
-
-                                                            </optgroup>
-                                                        </select>
+                                                        id="photographer" disabled>
+                                                    <optgroup label="photographer">
+                                                        @foreach($contributors as $contributor)
+                                                            @if($contributor->roles->role === 'Photographer')
+                                                            <option value="{{$contributor->name}}"
+                                                                    selected>{{$contributor->name}}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </optgroup>
+                                                </select>
                                             </div>
-                                            -->
+
                                             <div class="form-group">
                                                 <label class="mb-2">Contributor</label><br>
-                                                <select  class="choices form-select multiple-remove"
+                                                <select class="choices form-select multiple-remove"
                                                         multiple="multiple"
                                                         id="contributor" disabled>
                                                     <optgroup label="contributor">
                                                         @foreach($contributors as $contributor)
-                                                            <option value="{{$contributor->name}}" selected>{{$contributor->name}}</option>
+                                                            <option value="{{$contributor->name}}"
+                                                                    selected>{{$contributor->name}}</option>
                                                         @endforeach
                                                     </optgroup>
                                                 </select>
-
                                             </div>
 
                                             <select name="types" class="form-select" id="type" hidden>
