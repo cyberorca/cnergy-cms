@@ -44,7 +44,7 @@ class RoleController extends Controller
                     $role->menus()->attach($menusId);
             }
 
-            return \redirect('role')->with('status', 'Successfully Add New Role');
+            return redirect()->route('role.index')->with('status', 'Successfully Add New Role');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
@@ -79,7 +79,7 @@ class RoleController extends Controller
             $this->roleModel->deleteAccessRoleById($id);
             $roleById->menus()->sync($menusId);
 
-            return redirect("role")->with("status", "Successfully to Update Role ");
+            return redirect()->route('role.index')->with("status", "Successfully to Update Role ");
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }

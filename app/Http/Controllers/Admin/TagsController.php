@@ -82,7 +82,7 @@ class TagsController extends Controller
         ]);
         try {
             $tags->save();
-            return redirect("tag-management")->with('status', 'Successfully Create Tag');
+            return redirect()->route("tag-management.index")->with('status', 'Successfully Create Tag');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -131,7 +131,7 @@ class TagsController extends Controller
             $tag->updated_at = now();
             $tag->updated_by = Auth::user()->uuid;
             $tag->save();
-            return redirect('tag-management')->with('status', 'Successfully Update Tag');
+            return redirect()->route("tag-management.index")->with('status', 'Successfully Update Tag');
         } catch (\Throwable $exception) {
             return redirect()->back()->withErrors($exception->getMessage());
         }

@@ -67,6 +67,19 @@ class Menu extends Model
         return self::convertMenuDataToResponse($menu_role_user);
     }
 
+    public static function getAllParents($ref, $parent_id, $res)
+    {
+        $current_parent = $ref[$parent_id];
+        if (!is_null($current_parent['parent_id'])) {
+            array_push($res, $current_parent['id']);
+            return self::getAllParents($ref, $current_parent['parent_id'], $res);
+        } else {
+            array_push($res, $current_parent['id']);
+        }
+
+        return $res;
+    }
+
     public static function convertMenuDataToResponse($dataRaw)
     {
         $tree = array();
@@ -79,7 +92,10 @@ class Menu extends Model
                 if (is_null($node['parent_id'])) {
                     $tree[$node['id']] = &$node;
                 } else {
+                    $res = array();
+                    $data = self::getAllParents($references, $node['parent_id'], $res);
                     $references[$node['parent_id']]['children'][$node['id']] = &$node;
+                    $references[$node['parent_id']]['children'][$node['id']]['parents'] = $data;
                 }
             // }
         }
