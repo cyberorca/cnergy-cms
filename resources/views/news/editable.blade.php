@@ -1,6 +1,7 @@
 @extends('layout.app')
 
 @section('css')
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/pages/image-uploader.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/extensions/choices.js/public/assets/styles/choices.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css"
@@ -23,6 +24,15 @@
         .search_select_box select{
         width:100%;;
         }
+
+        a[aria-expanded=true] .bi-chevron-down{
+            display:none;
+        }
+
+
+        a[aria-expanded=false] .bi-chevron-up{
+            display:none;
+        }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 
@@ -32,7 +42,6 @@
 @endpush
 
 @section('body')
-    <x-page-heading title="Table News" subtitle="View and Manage News Data"/>
     @if ($method === 'edit')
         <form action="{{ route('news.update', $news->id) }}" method="post" enctype="multipart/form-data">
             @else
@@ -41,7 +50,7 @@
                     <section id="basic-vertical-layouts">
                         @csrf
                         <div class="d-flex justify-content-between gap-2">
-                            <div class="col-7 ">
+                            <div class="col-8 ">
                                 <div class="card">
                                     <div class="card-header"><span class="h4 text-capitalize">{{ $method }} News</span>
                                     </div>
@@ -50,16 +59,19 @@
                                             @method('PUT')
                                         @endif
 
-                                        <div class="form-group">
+                                        <div class="form-group"> 
                                             <label for="title" class="mb-2">Title</label>
                                             <input type="text" class="form-control" id="title" name="title"
                                                    placeholder="Enter Title " required
                                                    @if ($method === 'edit') value="{{ $news->title }}" @endif />
+                                        </div>
+                                        <div class="form-group"> 
 
                                             <label for="synopsis" class="form-label mb-2">Synopsis</label>
                                             <textarea name="synopsis" class="form-control" id="synopsis" cols="30"
                                                       rows="3" required placeholder="Enter Synopsis">@if($method === 'edit'){{$news->synopsis }}@endif</textarea>
-
+                                        </div>
+                                        <div class="form-group"> 
                                             <label for="content" class="form-label">Content</label>
                                             <textarea name="content" class="my-editor form-control" id="content"
                                                       cols="30" rows="10" required>
@@ -83,22 +95,21 @@
                                 </div>
                             </div>
 
-                            <div class="col-5">
+                            <div class="col-4">
                                 <div class="card">
                                     <div class="card-body">
-                                        <a data-bs-toggle="collapse"  href="#satu">
-                                            <span class="h6">Status & Visibility</span>
-                                                <i class="bi bi-chevron-down fs-6" style="float:right"></i>
 
+                                    
+                                    
+                                        <a data-bs-toggle="collapse"  href="#satu" aria-expanded="false" aria-controls="collapseExample" >
+                                            <span class="h6">Status & Visibility</span>
+                                                <i class="bi bi-chevron-up pull-right fs-6"></i>
+                                                <i class="bi bi-chevron-down pull-right fs-6"></i>
                                         </a>
                                         <hr />
                                         <div class="collapse" id="satu">
                                             <div class="form-group">
-                                                <div class="row">
-                                                    <div class="col-md-5">
-                                                        <label for="basicInput">Publish Status</label>
-                                                    </div>
-                                                    <div class="col-md-5">
+                                                        <label for="basicInput">Publish Status&nbsp;&nbsp;</label>
                                                             <input class="form-check-input" type="radio" value="1" name="isPublished" @if ($method === 'edit' and $news->is_published == '1') checked @endif/>
                                                             <label class="form-check-label">
                                                                 On
@@ -107,8 +118,6 @@
                                                             <label class="form-check-label">
                                                                 Off
                                                             </label>
-                                                    </div>
-                                                </div>
                                             </div>
                                             <div class="form-group">
                                                 <div class="row">
@@ -125,9 +134,11 @@
                                             </div>
                                         </div>
 
-                                        <a data-bs-toggle="collapse"  href="#dua">
-                                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
-                                            <span class="h6">Picture</span>
+                                        
+                                        <a data-bs-toggle="collapse"  href="#dua" aria-expanded="false" aria-controls="collapseExample" >
+                                        <span class="h6">Picture</span>
+                                                <i class="bi bi-chevron-up pull-right fs-6"></i>
+                                                <i class="bi bi-chevron-down pull-right fs-6"></i>
                                         </a>
                                         <hr />
                                         <div class="collapse" id="dua">
@@ -140,9 +151,11 @@
                                             </div>
                                         </div>
 
-                                        <a data-bs-toggle="collapse"  href="#sembilan">
-                                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
-                                            <span class="h6">Category</span>
+                                        
+                                        <a data-bs-toggle="collapse"  href="#sembilan" aria-expanded="false" aria-controls="collapseExample" >
+                                        <span class="h6">Category</span>
+                                                <i class="bi bi-chevron-up pull-right fs-6"></i>
+                                                <i class="bi bi-chevron-down pull-right fs-6"></i>
                                         </a>
                                         <hr />
                                         <div class="collapse" id="sembilan">
@@ -159,7 +172,6 @@
                                                                 </option>
                                                             @endforeach
                                                     </select>
-                                                    <br><a href="{{ route('category.create') }}" class="mb-2">Add Category</a>
                                                 </fieldset>
                                             </div>
                                         </div>
@@ -169,9 +181,11 @@
                                         </div>
 
 
-                                        <a data-bs-toggle="collapse"  href="#tiga">
-                                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
-                                            <span class="h6">Tags</span>
+                                        
+                                        <a data-bs-toggle="collapse"  href="#tiga" aria-expanded="false" aria-controls="collapseExample" >
+                                        <span class="h6">Tags</span>
+                                                <i class="bi bi-chevron-up pull-right fs-6"></i>
+                                                <i class="bi bi-chevron-down pull-right fs-6"></i>
                                         </a>
                                         <hr />
                                         <div class="collapse" id="tiga">
@@ -192,9 +206,11 @@
                                         </div>
 
 
-                                        <a data-bs-toggle="collapse"  href="#tujuh">
-                                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
-                                            <span class="h6">Description</span>
+                                        
+                                        <a data-bs-toggle="collapse"  href="#tujuh" aria-expanded="false" aria-controls="collapseExample" >
+                                        <span class="h6">Description</span>
+                                                <i class="bi bi-chevron-up pull-right fs-6"></i>
+                                                <i class="bi bi-chevron-down pull-right fs-6"></i>
                                         </a>
                                         <hr />
                                         <div class="collapse" id="tujuh">
@@ -225,20 +241,23 @@
                                             </div>
                                         </div>-->
 
-                                        <a data-bs-toggle="collapse"  href="#empat">
-                                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
-                                            <span class="h6">Other Settings</span>
+                                        
+                                        <a data-bs-toggle="collapse"  href="#empat" aria-expanded="false" aria-controls="collapseExample" >
+                                        <span class="h6">Other Settings</span>
+                                                <i class="bi bi-chevron-up pull-right fs-6"></i>
+                                                <i class="bi bi-chevron-down pull-right fs-6"></i>
                                         </a>
                                         <hr />
                                         <div class="collapse" id="empat">
                                         <div class="form-group">
                                                     <label class="mb-2">Keyword</label><br>
                                                         <input name="keywords" id="keywords" type="text" required
-                                                    placeholder="Enter Keyword"
+                                                    
                                                     class="w-100 form-control"
                                                     data-role="tagsinput"
-                                                    @if ($method === 'edit') value="{{ $news->keywords }}" @endif />
+                                                    @if ($method === 'edit') value="{{ $news->keywords }}" @else placeholder="Enter Keyword" @endif />
                                         </div>
+                                        <br>
                                         <!--<div class="form-group">
                                                     <label class="mb-2">Photographer</label><br>
                                                     <select name="photographer[]" class="choices form-select multiple-remove"
@@ -260,26 +279,20 @@
                                                     </select>
 
                                         </div>-->
-                                        <div class="form-group">
-                                            <div class="row">
-                                                    <label for="publishedAt" class="mb-2">Type</label>
-                                                    <fieldset class="form-group">
-                                                        <select name="types" class="form-select" id="type">
-                                                            @if ($method === 'create')
-                                                            <option value="" disabled selected>Select Type</option>
-                                                            @endif
+                                        
+                                                        <select name="types" class="form-select" id="type" hidden>
                                                             @foreach ($types as $type)
                                                                 <option value="{{ $type }}"
-                                                                        @if ($method === 'edit' and $type === $news->types) selected @endif>{{ ucwords($type) }}</option>
+                                                                        @if ($type === "news") selected @endif>{{ ucwords($type) }}</option>
                                                             @endforeach
                                                         </select>
-                                                    </fieldset>
-                                            </div>
+                                                    
                                         </div>
-                                        </div>
-                                        <a data-bs-toggle="collapse"  href="#lima">
-                                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
-                                            <span class="h6">Content Type</span>
+                                        
+                                        <a data-bs-toggle="collapse"  href="#lima" aria-expanded="false" aria-controls="collapseExample" >
+                                        <span class="h6">Content Type</span>
+                                                <i class="bi bi-chevron-up pull-right fs-6"></i>
+                                                <i class="bi bi-chevron-down pull-right fs-6"></i>
                                         </a>
                                         <hr />
                                         <div class="collapse" id="lima">
