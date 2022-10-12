@@ -78,7 +78,7 @@ class CategoriesController extends Controller
         ]);
         try {
             $category->save();
-            return redirect('category')->with('status', 'Successfully Add New Category');
+            return redirect()->route('category.index')->with('status', 'Successfully Add New Category');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -129,7 +129,7 @@ class CategoriesController extends Controller
                 'updated_at' => now(),
                 'updated_by' => Auth::user()->uuid,
             ]);
-            return redirect('category')->with('status', 'Successfully to Update Category');
+            return redirect()->route('category.index')->with('status', 'Successfully to Update Category');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
