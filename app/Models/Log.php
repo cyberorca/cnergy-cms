@@ -18,4 +18,5 @@ class Log extends Model
         'updated_by',
         'updated_content'
     ];
+
 }

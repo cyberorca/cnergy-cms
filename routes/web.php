@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\TagsController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\News\NewsController;
+use App\Http\Controllers\News\VideoController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use UniSharp\LaravelFilemanager\Lfm;
@@ -98,6 +99,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::prefix('update')->group(function () {
         Route::prefix('news')->group(function () {
             Route::resource('news', NewsController::class);
+            Route::resource('video', VideoController::class);
         });
         Route::prefix('tags')->group(function () {
             Route::resource('tag-management', TagsController::class);
