@@ -193,16 +193,19 @@ class NewsController extends Controller
     public function edit($id)
     {
         $method = explode('/', URL::current());
-        $news = News::where('id', $id)->first();
+        $news = News::where('id', $id)->with(['users'])->first();
         $categories = Category::all();
         $tags = Tag::all();
         $types = ['news', 'photonews', 'video'];
+        $contributors = $news->users;
+
         return view('news.editable', [
             'method' => end($method),
             'categories' => $categories,
             'types' => $types,
             'news' => $news,
-            'tags' => $tags
+            'tags' => $tags,
+            'contributors'=>$contributors
         ]);
     }
 
@@ -285,7 +288,15 @@ class NewsController extends Controller
             News::where('id', $id)->update([
                 'deleted_by' => Auth::user()->uuid,
             ]);
-            News::destroy($id);
+            if (News::destroy($id)){
+                $log = new Log([
+                        'news_id' => $id,
+                        'updated_by' => \auth()->id(),
+                        'updated_content'=>json_encode('{}')
+                    ]
+                );
+                $log->save();
+            }
             return Redirect::back()->with('status', 'Successfully to Delete User');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
