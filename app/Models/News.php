@@ -35,7 +35,7 @@ class News extends Model
         'types',
         'keywords',
         'image',
-        'video ',
+        'video',
         'synopsis',
         'description',
         'content',

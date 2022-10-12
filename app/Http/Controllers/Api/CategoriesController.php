@@ -45,7 +45,7 @@ class CategoriesController extends Controller
                 "name" => $data->category,
                 "common" => strtolower($data->category),
                 "url" => $data->slug,
-                "type" => json_decode($data->types),
+                "type" => $data->types,
                 "meta_name" => "",
                 "meta_description" => "",
                 "children" => $this->convertDataToResponse($data->children),
