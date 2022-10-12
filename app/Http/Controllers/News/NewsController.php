@@ -197,7 +197,6 @@ class NewsController extends Controller
         $categories = Category::all();
         $tags = Tag::all();
         $types = ['news', 'photonews', 'video'];
-        return end($method);
         return view('news.editable', [
             'method' => end($method),
             'categories' => $categories,
