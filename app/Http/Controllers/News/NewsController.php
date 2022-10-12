@@ -167,7 +167,7 @@ class NewsController extends Controller
                 $news->tags()->attach($t);
             }
 
-            return \redirect('news')->with('status', 'Successfully Add New News');
+            return \redirect()->route('news.index')->with('status', 'Successfully Add New News');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
@@ -268,7 +268,7 @@ class NewsController extends Controller
             );
             $log->save();
 
-            return \redirect('news')->with('status', 'Successfully Update News');
+            return \redirect()->route('news.index')->with('status', 'Successfully Update News');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
