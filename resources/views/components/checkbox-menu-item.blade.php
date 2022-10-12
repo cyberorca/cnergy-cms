@@ -9,7 +9,9 @@
                        name="checkMenu[]"
                        value="{{ $item->id }}"
                        @if ($method === 'edit')
+
                            @if($item->roles()->find(request()->segment(4)))
+
                        checked
                        @endif
                     @endif
