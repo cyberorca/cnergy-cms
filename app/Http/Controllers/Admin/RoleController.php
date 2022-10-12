@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\URL;
 
 class RoleController extends Controller
 {
-    private $roleModel ;
+    private $roleModel;
+
     public function __construct(Role $roleModel)
     {
         $this->roleModel = $roleModel;
@@ -35,21 +36,12 @@ class RoleController extends Controller
     public function store(RoleRequest $request)
     {
         $data = $request->input();
-        $menusIdChild = $request->checkMenuChild; //[][]
+
+        $menusId = $request->checkMenu;
         try {
-
             $role = $this->roleModel->saveRole($data['role']);
-
-            if ($menusIdChild != null) {
-                foreach ($menusIdChild as $menuKeyParent => $menuChild) {
-                    if (sizeof($menuChild) == 1) {
-                        $role->menus()->attach($menuKeyParent);
-                    } else {
-                        foreach ($menuChild as $menuKey => $menuValue) {
-                            $role->menus()->attach((int)$menuValue);
-                        }
-                    }
-                }
+            if ($menusId != null) {
+                    $role->menus()->attach($menusId);
             }
 
             return \redirect('role')->with('status', 'Successfully Add New Role');
@@ -69,29 +61,23 @@ class RoleController extends Controller
         $method = explode('/', URL::current());
         $role = $this->roleModel->findRoleById($id);
         $menus = Menu::whereNull('parent_id')->with(["childMenus", "roles"])->get();
-        return view('admin.role.editable', ['method' => end($method)])->with('menus', $menus)->with('role',$role);
+        return view('admin.role.editable', ['method' => end($method)])->with('menus', $menus)->with('role', $role);
     }
 
     public function update(Request $request, $id)
     {
         $data = $request->input();
-        $menusIdChild = $request->checkMenuChild; //[][]
+        $menusId = $request->checkMenu;
+        $role = $this->roleModel->findRoleById($id);
         try {
-            if (($this->roleModel->isExistRole($data['role'])) == true){
-                $roleById = $this->roleModel->updateRole($id,$data['role']);
+            //check data not duplicate
+            if (($this->roleModel->isExistRole($data['role'])) == false) {
+                $roleById = $this->roleModel->updateRole($id, $data['role']);
+            } else {
+                $roleById = $role;
             }
             $this->roleModel->deleteAccessRoleById($id);
-            if ($menusIdChild != null) {
-                foreach ($menusIdChild as $menuKeyParent => $menuChild) {
-                    if (sizeof($menuChild) == 1) {
-                        $roleById->menus()->attach($menuKeyParent);
-                    } else {
-                        foreach ($menuChild as $menuKey => $menuValue) {
-                            $roleById->menus()->attach((int)$menuValue);
-                        }
-                    }
-                }
-            }
+            $roleById->menus()->sync($menusId);
 
             return redirect("role")->with("status", "Successfully to Update Role ");
         } catch (\Throwable $e) {
@@ -102,7 +88,7 @@ class RoleController extends Controller
     public function destroy($id)
     {
         try {
-           $this->roleModel->deleteRole($id);
+            $this->roleModel->deleteRole($id);
             return Redirect::back()->with('status', 'Successfully to Delete Role');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
