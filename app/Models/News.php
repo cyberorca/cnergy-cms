@@ -57,4 +57,16 @@ class News extends Model
     public function tags(){
         return $this->belongsToMany(Tag::class, 'news_tags');
     }
+
+    public function users()
+    {
+        return $this->hasManyThrough(
+            User::class,
+            Log::class,
+            'news_id',
+            'uuid',
+            'id',
+            'updated_by'
+        )->with('roles')->distinct();
+    }
 }

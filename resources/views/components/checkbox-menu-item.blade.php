@@ -9,12 +9,13 @@
                        name="checkMenu[]"
                        value="{{ $item->id }}"
                        @if ($method === 'edit')
-                           @if($item->roles()->find(request()->segment(2)))
+
+                           @if($item->roles()->find(request()->segment(4)))
+
                        checked
                        @endif
                     @endif
                 >
-
                 <label class="form-check-label" for="customColorCheck3"></label>
                 <a data-bs-toggle="collapse" class="accordion-button"
                    href="#multiCollapseExample{{ $item->id }}"
