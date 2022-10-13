@@ -34,6 +34,7 @@ class News extends Model
         'slug',
         'types',
         'keywords',
+        'photographers',
         'image',
         'video',
         'synopsis',

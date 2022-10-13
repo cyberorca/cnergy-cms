@@ -33,6 +33,7 @@ return new class extends Migration
             $table->longText('description');
             $table->enum('types', ['news', 'photonews', 'video']);
             $table->longText('keywords');
+            $table->longText('photographers')->nullable();
             $table->string('image', 255)->unique()->nullable();
             $table->text('video')->nullable();
             $table->enum('is_published', [0, 1])->default(1);
