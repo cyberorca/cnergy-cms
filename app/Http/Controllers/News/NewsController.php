@@ -117,6 +117,7 @@ class NewsController extends Controller
     public function store(Request $request)
     {
         $data = $request->input();
+        return response()->json($data);
         try {
             if ($request->file('upload_image') && !$data['upload_image_selected']) {
                 $file = $request->file('upload_image');
