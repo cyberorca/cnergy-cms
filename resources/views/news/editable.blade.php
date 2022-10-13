@@ -53,13 +53,17 @@
                                         <div class="form-group">
                                             <label for="title" class="mb-2">Title</label>
                                             <input type="text" class="form-control" id="title" name="title"
-                                                   placeholder="Enter Title " required
-                                                   @if ($method === 'edit') value="{{ $news->title }}" @endif />
-
+                                            placeholder="Enter Title " required
+                                            @if ($method === 'edit') value="{{ $news->title }}" @endif />
+                                        </div>
+                                            
+                                        <div class="form-group">
                                             <label for="synopsis" class="form-label mb-2">Synopsis</label>
                                             <textarea name="synopsis" class="form-control" id="synopsis" cols="30"
-                                                      rows="3" required placeholder="Enter Synopsis">@if($method === 'edit'){{$news->synopsis }}@endif</textarea>
+                                            rows="3" required placeholder="Enter Synopsis">@if($method === 'edit'){{$news->synopsis }}@endif</textarea>
+                                        </div>
 
+                                        <div class="form-group" id="content_box">
                                             <label for="content" class="form-label">Content</label>
                                             <textarea name="content" class="my-editor form-control" id="content"
                                                       cols="30" rows="10" required>
@@ -68,7 +72,9 @@
                                                 @endif
                                              </textarea>
                                         </div>
-                                        <div class="d-flex justify-content-end gap-3 mt-3">
+                                        <div id="other_page"></div>
+                                        <span class="btn btn-outline-secondary my-3 w-100" id="add_page_button"><i class="bi bi-plus-circle"></i>&nbsp; Add Page</span>
+                                        <div class="d-flex justify-content-end gap-3 mt-3 d-none">
                                             <a href="{{ route('news.index') }}" class="btn btn-light"
                                                data-bs-toggle="tooltip"
                                                data-bs-placement="top" title="Back to Table Rome">Back</a>

@@ -128,6 +128,7 @@ class NewsController extends Controller
                 $data['image'] = explode('http://127.0.0.1:8000/storage', $data['upload_image_selected'])[1];
             }
 
+
             $news = new News([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
