@@ -55,7 +55,7 @@ class Role extends Model
     }
 
     public function findRoleById($id){
-        $role = Role::where('id', $id)->first();
+        $role = Role::find($id);
         return $role;
     }
 

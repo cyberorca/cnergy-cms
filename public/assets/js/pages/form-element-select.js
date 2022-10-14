@@ -26,6 +26,8 @@ add_page_button.addEventListener('click', function () {
     child.classList.add("my-editor", "form-control", 'my-3', `editors${index}`)
     child.id = `#editor-${index}`
     const new_add_content = card_content.cloneNode(true);
+    new_add_content.querySelector("#synopsis").previousElementSibling.remove();
+    new_add_content.querySelector("#synopsis").remove();
     new_add_content.querySelector(".my-editor").remove();
     new_add_content.querySelector(".mce-tinymce").remove();
     new_add_content.querySelector(".card-header-text").innerHTML = `Page ${index + 1}`
@@ -70,3 +72,9 @@ add_page_button.addEventListener('click', function () {
     });
     index++;
 })
+
+
+if(document.body.contains(document.getElementById("news_paginations"))){
+    const news_paginations = document.getElementById("news_paginations").value;
+    console.log(JSON.parse(news_paginations));
+}

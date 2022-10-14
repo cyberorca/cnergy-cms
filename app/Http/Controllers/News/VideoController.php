@@ -2,25 +2,26 @@
 
 namespace App\Http\Controllers\News;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
 use App\Models\Log;
 use App\Models\News;
 use App\Models\Tag;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\NewsRequest;
 use App\Http\Utils\FileFormatPath;
-use App\Models\NewsPagination;
+use App\Models\ImageBank;
 use Illuminate\Support\Facades\Storage;
+use ViKon\Diff\Diff;
 
-class NewsController extends Controller
+class VideoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -29,7 +30,7 @@ class NewsController extends Controller
      */
     public function index(Request $request)
     {
-        $news = News::with(['categories', 'tags']);
+        $news = News::with(['categories', 'tags'])->whereNotNull('video');
         $editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
         $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Reporter");
 
@@ -67,17 +68,6 @@ class NewsController extends Controller
             });
         }
 
-        if ($request->get('startDate') && $request->get('endDate')) {
-            $startDate = Carbon::parse(($request->get('startDate')))
-                ->toDateTimeString();
-
-            $endDate = Carbon::parse($request->get('endDate'))
-                ->toDateTimeString();
-            $news->whereBetween('created_at', [
-                $startDate, $endDate
-            ]);
-        }
-
         if ($request->get('editor')) {
             $editor = $request->editor;
             $news->where('updated_by', $editor);
@@ -111,12 +101,12 @@ class NewsController extends Controller
         $categories = Category::all();
         $tags = Tag::all();
         $types = ['news', 'photonews', 'video'];
-        return view('news.editable', [
+        return view('news.video.editable', [
             'method' => end($method),
             'categories' => $categories,
             'types' => $types,
-            'contributors' => $users,
-            'tags' => $tags,
+            'users' => $users,
+            'tags' => $tags
         ]);
     }
 
@@ -129,30 +119,8 @@ class NewsController extends Controller
     public function store(Request $request)
     {
         $data = $request->input();
-
-        $news_paginations = array();
-        
+        // return response()->json($data);
         try {
-            for ($i = 0; $i < count($data['title']) - 1; $i++) {
-                $news_paginations[$i] = [
-                    'title' => $data['title'][$i + 1],
-                    // 'synopsis' => $data['synopsis'][$i + 1],
-                    'content' => $data['content'][$i + 1],
-                    'order_by_no' => $i
-                ];
-            }
-
-            if ($request->file('upload_image') && !$data['upload_image_selected']) {
-                $file = $request->file('upload_image');
-                $fileFormatPath = new FileFormatPath($data['types'], $file);
-                $data['image'] = $fileFormatPath->storeFile();
-            }
-
-            if ($data['upload_image_selected'] && !$request->file('upload_image')) {
-                $data['image'] = explode(Storage::get(""), $data['upload_image_selected'])[1];
-            }
-
-            // return $news_paginations;
 
             $news = new News([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
@@ -166,10 +134,10 @@ class NewsController extends Controller
                 'is_seo' => $request->has('isSeo') == false ? '0' : '1',
                 'is_disable_interactions' => $request->has('isDisableInteractions') == false ? '0' : '1',
                 'is_branded_content' => $request->has('isBrandedContent') == false ? '0' : '1',
-                'title' => $data['title'][0],
-                'slug' => Str::slug($data['title'][0]),
+                'title' => $data['title'],
+                'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
-                'synopsis' => $data['synopsis'][0],
+                'synopsis' => $data['synopsis'],
                 'description' => $data['description'],
                 'types' => $data['types'],
                 'keywords' => $data['keywords'],
@@ -179,14 +147,13 @@ class NewsController extends Controller
                 'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
                 'created_by' => auth()->id(),
                 'category_id' => $data['category'],
-                'video' => $data['video'] ?? null
+                'video' => $data['video'] 
             ]);
-            if ($news->save()) {
-                $log = new Log(
-                    [
+            if ($news->save()){
+                $log = new Log([
                         'news_id' => $news->id,
                         'updated_by' => \auth()->id(),
-                        'updated_content' => json_encode($news->getOriginal())
+                        'updated_content'=>json_encode($news->getOriginal())
                     ]
                 );
                 $log->save();
@@ -195,18 +162,7 @@ class NewsController extends Controller
                 $news->tags()->attach($t);
             }
 
-            if(count($news_paginations)){
-                foreach ($news_paginations as $news_page) {
-                    NewsPagination::create([
-                        'title' => $news_page['title'],
-                        'content' => $news_page['content'],
-                        'order_by_no' => $news_page['order_by_no'],
-                        'news_id' => $news->id,
-                    ]);
-                }
-            }
-
-            return \redirect()->route('news.index')->with('status', 'Successfully Add New News');
+            return \redirect()->route('video.index')->with('status', 'Successfully Add New News');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
@@ -232,27 +188,16 @@ class NewsController extends Controller
     public function edit($id)
     {
         $method = explode('/', URL::current());
-        $news = News::where('id', $id)->with(['users', 'news_paginations'])->first();
+        $news = News::where('id', $id)->first();
         $categories = Category::all();
         $tags = Tag::all();
         $types = ['news', 'photonews', 'video'];
-        $contributors = $news->users;
-
-        // return response()->json([
-        //     'method' => end($method),
-        //     'categories' => $categories,
-        //     'types' => $types,
-        //     'news' => $news,
-        //     'tags' => $tags,
-        //     'contributors' => $contributors
-        // ]);
-        return view('news.editable', [
+        return view('news.video.editable', [
             'method' => end($method),
             'categories' => $categories,
             'types' => $types,
             'news' => $news,
-            'tags' => $tags,
-            'contributors' => $contributors
+            'tags' => $tags
         ]);
     }
 
@@ -295,31 +240,21 @@ class NewsController extends Controller
                 'video' => $data['video'] ?? null
             ];
 
-            if ($request->file('upload_image') && !$data['upload_image_selected']) {
-                $file = $request->file('upload_image');
-                $fileFormatPath = new FileFormatPath($data['types'], $file);
-                $input['image'] = $fileFormatPath->storeFile();
-            }
-
-            if ($data['upload_image_selected'] && !$request->file('upload_image')) {
-                $input['image'] = explode(Storage::get(""), $data['upload_image_selected'])[1];
-            }
             $newsById->update($input);
             $newsById::find($id)->tags()->detach();
             foreach ($data['tags'] as $t) {
                 $newsById->tags()->attach($t);
             }
 
-            $log = new Log(
-                [
+            $log = new Log([
                     'news_id' => $id,
                     'updated_by' => \auth()->id(),
-                    'updated_content' => json_encode($newsById->getChanges())
+                    'updated_content'=>json_encode($newsById->getChanges())
                 ]
             );
             $log->save();
 
-            return \redirect()->route('news.index')->with('status', 'Successfully Update News');
+            return \redirect()->route('video.index')->with('status', 'Successfully Update News');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
@@ -337,17 +272,8 @@ class NewsController extends Controller
             News::where('id', $id)->update([
                 'deleted_by' => Auth::user()->uuid,
             ]);
-            if (News::destroy($id)) {
-                $log = new Log(
-                    [
-                        'news_id' => $id,
-                        'updated_by' => \auth()->id(),
-                        'updated_content' => json_encode('{}')
-                    ]
-                );
-                $log->save();
-            }
-            return Redirect::back()->with('status', 'Successfully to Delete News');
+            News::destroy($id);
+            return Redirect::back()->with('status', 'Successfully to Delete User');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }

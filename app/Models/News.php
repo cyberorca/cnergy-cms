@@ -35,7 +35,7 @@ class News extends Model
         'types',
         'keywords',
         'image',
-        'video ',
+        'video',
         'synopsis',
         'description',
         'content',
@@ -56,5 +56,21 @@ class News extends Model
 
     public function tags(){
         return $this->belongsToMany(Tag::class, 'news_tags');
+    }
+
+    public function news_paginations(){
+        return $this->hasMany(NewsPagination::class, 'news_id')->orderBy("order_by_no", "ASC");
+    }
+
+    public function users()
+    {
+        return $this->hasManyThrough(
+            User::class,
+            Log::class,
+            'news_id',
+            'uuid',
+            'id',
+            'updated_by'
+        )->with('roles')->distinct();
     }
 }

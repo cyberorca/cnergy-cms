@@ -80,7 +80,7 @@
         <!-- Basic Tables start -->
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">News List</span>
-                <a href="{{ route('news.create') }}" class="btn btn-primary"><i class="bi bi-plus-circle"
+                <a href="{{ route($type . '.create') }}" class="btn btn-primary"><i class="bi bi-plus-circle"
                         data-bs-toggle="tooltip" data-bs-placement="top" title="Add Tag"></i>&nbsp;&nbsp;&nbsp;Add
                     News</a>
             </div>
@@ -130,7 +130,7 @@
                                 <td>
                                     <a href="#" class="btn icon btn-primary" data-bs-toggle="tooltip"
                                         data-bs-placement="top" title="#"><i class="bi bi-save"></i></a>
-                                    <a href="{{ route('news.edit', $n->id) }}" class="btn icon btn-warning"
+                                    <a href="{{ route($type . '.edit', $n->id) }}" class="btn icon btn-warning"
                                         data-bs-toggle="tooltip" data-bs-placement="top" title="Update User Data"><i
                                             class="bi bi-pencil-square"></i></a>
                                     <button type="button" data-toggle="modal"
@@ -154,7 +154,7 @@
                                             Delete News "{{ $n->title }}"?
                                         </div>
                                         <div class="modal-footer">
-                                            <form action="{{ route('news.destroy', $n->id) }}" method="post">
+                                            <form action="{{ route($type . '.destroy', $n->id) }}" method="post">
                                                 {{ method_field('delete') }}
                                                 @csrf
                                                 <button type="button" class="btn btn-secondary"
