@@ -109,16 +109,18 @@ class NewsController extends Controller
     public function create()
     {
         $method = explode('/', URL::current());
-        $users = User::all();
+        $users = User::with(['roles'])->get();
         $categories = Category::all();
         $tags = Tag::all();
         $types = ['news', 'photonews', 'video'];
+//        return response()->json($users);
         return view('news.editable', [
             'method' => end($method),
             'categories' => $categories,
             'types' => $types,
             'users' => $users,
-            'tags' => $tags
+            'tags' => $tags,
+            'contributors'=>[]
         ]);
     }
 
@@ -161,6 +163,7 @@ class NewsController extends Controller
                 'description' => $data['description'],
                 'types' => $data['types'],
                 'keywords' => $data['keywords'],
+                'photographers'=>$request->has('photographers') == false ? '[]' :json_encode($data['photographers']),
                 'image' => $data['image'] ?? null,
                 'is_published' => $data['isPublished'],
                 'published_at' => $request->has('isPublished') == false ? null : $data['publishedAt'],
@@ -214,14 +217,15 @@ class NewsController extends Controller
         $tags = Tag::all();
         $types = ['news', 'photonews', 'video'];
         $contributors = $news->users;
-
+        $users = User::with(['roles'])->get();
         return view('news.editable', [
             'method' => end($method),
             'categories' => $categories,
             'types' => $types,
             'news' => $news,
             'tags' => $tags,
-            'contributors'=>$contributors
+            'contributors'=>$contributors,
+            'users'=>$users
         ]);
     }
 
@@ -256,6 +260,7 @@ class NewsController extends Controller
                 'description' => $data['description'],
                 'types' => $data['types'],
                 'keywords' => $data['keywords'],
+                'photographers'=>$request->has('photographers') == false ? null :json_encode($data['photographers']),
                 'is_published' => $data['isPublished'],
                 'published_at' => $request->has('isPublished') == false ? null : $data['publishedAt'],
                 'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
