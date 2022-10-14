@@ -151,7 +151,7 @@ class NewsController extends Controller
             }
 
             if ($data['upload_image_selected'] && !$request->file('upload_image')) {
-                $data['image'] = explode(Storage::get(""), $data['upload_image_selected'])[1];
+                $data['image'] = explode(Storage::url(""), $data['upload_image_selected'])[1];
             }
 
             // return $news_paginations;
@@ -299,7 +299,7 @@ class NewsController extends Controller
             }
 
             if ($data['upload_image_selected'] && !$request->file('upload_image')) {
-                $input['image'] = explode(Storage::get(""), $data['upload_image_selected'])[1];
+                $input['image'] = explode(Storage::url(""), $data['upload_image_selected'])[1];
             }
             $newsById->update($input);
             $newsById::find($id)->tags()->detach();
