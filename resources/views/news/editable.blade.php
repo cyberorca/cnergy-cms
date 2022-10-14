@@ -112,31 +112,35 @@
                                         <hr/>
                                         <div class="collapse" id="satu">
                                             <div class="form-group">
-                                                <label for="basicInput">Publish Status&nbsp;&nbsp;</label>
-                                                <input class="form-check-input" type="radio" value="1"
-                                                       name="isPublished"
-                                                       @if ($method === 'edit' and $news->is_published == '1') checked @endif/>
-                                                <label class="form-check-label">
-                                                    On
-                                                </label>
-                                                <input class="form-check-input" type="radio" value="0"
-                                                       name="isPublished"
-                                                       @if ($method === 'edit' and $news->is_published == '0') checked @endif/>
-                                                <label class="form-check-label">
-                                                    Off
-                                                </label>
-                                            </div>
-                                            <div class="form-group">
                                                 <div class="row">
-                                                    <div class="col-md-5">
-                                                        <label for="publishedAt" class="mb-2">Schedule</label>
+                                                    <div class="col-md-6">
+                                                        <label for="basicInput">Publish Status</label>
                                                     </div>
-                                                    <div class="col-md-7">
+                                                    <div class="col-md-6">
+                                                        <input class="form-check-input" type="radio" value="1"
+                                                        name="isPublished"
+                                                        @if ($method === 'edit' and $news->is_published == '1') checked @endif/>
+                                                        <label class="form-check-label">
+                                                            On
+                                                        </label>
+                                                        <input class="form-check-input" type="radio" value="0"
+                                                            name="isPublished"
+                                                            @if ($method === 'edit' and $news->is_published == '0') checked @endif/>
+                                                        <label class="form-check-label">
+                                                            Off
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label for="publishedAt">Schedule</label>
+                                                    </div>
+                                                    <div class="col-md-6">
                                                         <input type="date" class="form-control" id="publishedAt"
                                                                name="publishedAt"
                                                                placeholder="dd-mm-yyyy"
                                                                @if ($method === 'edit') value="{{date('Y-m-d',strtotime($news->published_at))}}" @endif />
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -272,26 +276,30 @@
                                                        @if ($method === 'edit') value="{{ $news->keywords }}"
                                                        @else placeholder="Enter Keyword" @endif />
                                             </div>
-
                                             <div class="form-group">
                                                 <label class="mb-2">Photographer</label><br>
-                                                <select class="choices form-select multiple-remove"
+                                                <select name="photographers[]"
+                                                        class="choices form-select multiple-remove"
                                                         multiple="multiple"
-                                                        id="photographer" disabled>
+                                                        id="photographer">
                                                     <optgroup label="photographer">
-                                                        @foreach($contributors as $contributor)
-                                                            @if($contributor->roles->role === 'Photographer')
-                                                            <option value="{{$contributor->name}}"
-                                                                    selected>{{$contributor->name}}</option>
+                                                        @foreach($users as $user)
+                                                            @if($user->roles->role === 'Photographer')
+                                                                <option
+                                                                    @if ($method === 'edit' and is_null(json_decode($news->photographers))==false)
+                                                                    @if(in_array($user->uuid,json_decode($news->photographers)))
+                                                                    selected
+                                                                    @endif
+                                                                    @endif
+                                                                    value="{{$user->uuid}}">{{$user->name}}</option>
                                                             @endif
                                                         @endforeach
                                                     </optgroup>
                                                 </select>
                                             </div>
-
                                             <div class="form-group">
                                                 <label class="mb-2">Contributor</label><br>
-                                                <select class="choices form-select multiple-remove"
+                                                <select name="contributor" class="choices form-select multiple-remove"
                                                         multiple="multiple"
                                                         id="contributor" disabled>
                                                     <optgroup label="contributor">
