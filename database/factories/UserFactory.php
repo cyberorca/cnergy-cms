@@ -21,7 +21,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'is_active' => fake()->randomElement(['0', '1']),
-            'role_id' => fake()->randomElement([1, 2, 3, 4]),
+            'role_id' => fake()->randomElement([1, 2, 3, 4,5]),
             'last_logged_in' => now(),
         ];
     }

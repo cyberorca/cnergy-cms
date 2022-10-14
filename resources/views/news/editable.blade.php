@@ -283,33 +283,40 @@
                                                                         </select>
 
                                                             </div>-->
-                            <div class="form-group">
-                                <label class="mb-2">Photographer</label><br>
-                                <select class="choices form-select multiple-remove" multiple="multiple" id="photographer"
-                                    >
-                                    <optgroup label="photographer">
-                                        @foreach ($contributors as $contributor)
-                                            {{-- @if ($contributor->roles->role === 'Photographer') --}}
-                                                <option value="{{ $contributor->name }}" >
-                                                    {{ $contributor->name }}</option>
-                                            {{-- @endif --}}
-                                        @endforeach
-                                    </optgroup>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="mb-2">Contributor</label><br>
-                                <select class="choices form-select multiple-remove" multiple="multiple" id="contributor"
-                                    >
-                                    <optgroup label="contributor">
-                                        @foreach ($contributors as $contributor)
-                                            <option value="{{ $contributor->name }}" >{{ $contributor->name }}
-                                            </option>
-                                        @endforeach
-                                    </optgroup>
-                                </select>
-                            </div>
+                                                            <div class="form-group">
+                                                                <label class="mb-2">Photographer</label><br>
+                                                                <select name="photographers[]"
+                                                                        class="choices form-select multiple-remove"
+                                                                        multiple="multiple"
+                                                                        id="photographer">
+                                                                    <optgroup label="photographer">
+                                                                        @foreach($users as $user)
+                                                                            @if($user->roles->role === 'Photographer')
+                                                                                <option
+                                                                                    @if ($method === 'edit' and is_null(json_decode($news->photographers))==false)
+                                                                                    @if(in_array($user->uuid,json_decode($news->photographers)))
+                                                                                    selected
+                                                                                    @endif
+                                                                                    @endif
+                                                                                    value="{{$user->uuid}}">{{$user->name}}</option>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </optgroup>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="mb-2">Contributor</label><br>
+                                                                <select name="contributor" class="choices form-select multiple-remove"
+                                                                        multiple="multiple"
+                                                                        id="contributor" disabled>
+                                                                    <optgroup label="contributor">
+                                                                        @foreach($contributors as $contributor)
+                                                                            <option value="{{$contributor->name}}"
+                                                                                    selected>{{$contributor->name}}</option>
+                                                                        @endforeach
+                                                                    </optgroup>
+                                                                </select>
+                                                            </div>
                             <div class="form-group">
                                 <div class="row">
                                     <label for="publishedAt" class="mb-2">Type</label>
