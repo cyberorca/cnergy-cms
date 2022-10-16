@@ -157,7 +157,7 @@ class NewsController extends Controller
             // return $news_paginations;
             $date = $data['date'];
             $time = $data['time'];
-            $margeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
+            $mergeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
 
             $news = new News([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
@@ -181,7 +181,7 @@ class NewsController extends Controller
                 'photographers' => $request->has('photographers') == false ? '[]' : json_encode($data['photographers']),
                 'image' => $data['image'] ?? null,
                 'is_published' => $data['isPublished'],
-                'published_at' => $margeDate,
+                'published_at' => $mergeDate,
                 'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
                 'created_by' => auth()->id(),
                 'category_id' => $data['category'],

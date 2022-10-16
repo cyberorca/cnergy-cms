@@ -123,7 +123,7 @@ class VideoController extends Controller
         $data = $request->input();
         $date = $data['date'];
             $time = $data['time'];
-            $margeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
+            $mergeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
         // return response()->json($data);
         try {
 
@@ -148,7 +148,7 @@ class VideoController extends Controller
                 'keywords' => $data['keywords'],
                 'image' => $data['image'] ?? null,
                 'is_published' => $data['isPublished'],
-                'published_at' => $margeDate,
+                'published_at' => $mergeDate,
                 'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
                 'created_by' => auth()->id(),
                 'category_id' => $data['category'],
