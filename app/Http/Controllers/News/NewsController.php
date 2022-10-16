@@ -111,14 +111,14 @@ class NewsController extends Controller
         $categories = Category::all();
         $tags = Tag::all();
         $types = ['news', 'photonews', 'video'];
-//        return response()->json($users);
+        //        return response()->json($users);
         return view('news.editable', [
             'method' => end($method),
             'categories' => $categories,
             'types' => $types,
             'users' => $users,
             'tags' => $tags,
-            'contributors'=>[]
+            'contributors' => []
         ]);
     }
 
@@ -133,7 +133,7 @@ class NewsController extends Controller
         $data = $request->input();
 
         $news_paginations = array();
-        
+
         try {
             for ($i = 0; $i < count($data['title']) - 1; $i++) {
                 $news_paginations[$i] = [
@@ -155,6 +155,9 @@ class NewsController extends Controller
             }
 
             // return $news_paginations;
+            $date = $data['date'];
+            $time = $data['time'];
+            $margeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
 
             $news = new News([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
@@ -170,15 +173,15 @@ class NewsController extends Controller
                 'is_branded_content' => $request->has('isBrandedContent') == false ? '0' : '1',
                 'title' => $data['title'][0],
                 'slug' => Str::slug($data['title'][0]),
-                'content' => $data['content'],
-                'synopsis' => $data['synopsis'][0],
+                'content' => $data['content'][0],
+                'synopsis' => $data['synopsis'],
                 'description' => $data['description'],
                 'types' => $data['types'],
                 'keywords' => $data['keywords'],
-                'photographers'=>$request->has('photographers') == false ? '[]' :json_encode($data['photographers']),
+                'photographers' => $request->has('photographers') == false ? '[]' : json_encode($data['photographers']),
                 'image' => $data['image'] ?? null,
                 'is_published' => $data['isPublished'],
-                'published_at' => $request->has('isPublished') == false ? null : $data['publishedAt'],
+                'published_at' => $margeDate,
                 'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
                 'created_by' => auth()->id(),
                 'category_id' => $data['category'],
@@ -198,7 +201,7 @@ class NewsController extends Controller
                 $news->tags()->attach($t);
             }
 
-            if(count($news_paginations)){
+            if (count($news_paginations)) {
                 foreach ($news_paginations as $news_page) {
                     NewsPagination::create([
                         'title' => $news_page['title'],
@@ -247,8 +250,8 @@ class NewsController extends Controller
             'types' => $types,
             'news' => $news,
             'tags' => $tags,
-            'contributors'=>$contributors,
-            'users'=>$users
+            'contributors' => $contributors,
+            'users' => $users
         ]);
     }
 
@@ -263,6 +266,9 @@ class NewsController extends Controller
     {
         $data = $request->input();
         $newsById = News::find($id);
+        $date = $data['date'];
+        $time = $data['time'];
+        $margeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
         try {
             $input = [
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
@@ -283,9 +289,9 @@ class NewsController extends Controller
                 'description' => $data['description'],
                 'types' => $data['types'],
                 'keywords' => $data['keywords'],
-                'photographers'=>$request->has('photographers') == false ? null :json_encode($data['photographers']),
+                'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
                 'is_published' => $data['isPublished'],
-                'published_at' => $request->has('isPublished') == false ? null : $data['publishedAt'],
+                'published_at' => $margeDate,
                 'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
                 'updated_by' => auth()->id(),
                 'category_id' => $data['category'],

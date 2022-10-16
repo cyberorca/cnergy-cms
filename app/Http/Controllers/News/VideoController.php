@@ -101,6 +101,8 @@ class VideoController extends Controller
         $categories = Category::all();
         $tags = Tag::all();
         $types = ['news', 'photonews', 'video'];
+        $date = date('Y-m-d');
+        $time = time();
         return view('news.video.editable', [
             'method' => end($method),
             'categories' => $categories,
@@ -119,6 +121,9 @@ class VideoController extends Controller
     public function store(Request $request)
     {
         $data = $request->input();
+        $date = $data['date'];
+            $time = $data['time'];
+            $margeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
         // return response()->json($data);
         try {
 
@@ -143,17 +148,18 @@ class VideoController extends Controller
                 'keywords' => $data['keywords'],
                 'image' => $data['image'] ?? null,
                 'is_published' => $data['isPublished'],
-                'published_at' => $request->has('isPublished') == false ? null : $data['publishedAt'],
+                'published_at' => $margeDate,
                 'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
                 'created_by' => auth()->id(),
                 'category_id' => $data['category'],
-                'video' => $data['video'] 
+                'video' => $data['video']
             ]);
-            if ($news->save()){
-                $log = new Log([
+            if ($news->save()) {
+                $log = new Log(
+                    [
                         'news_id' => $news->id,
                         'updated_by' => \auth()->id(),
-                        'updated_content'=>json_encode($news->getOriginal())
+                        'updated_content' => json_encode($news->getOriginal())
                     ]
                 );
                 $log->save();
@@ -212,6 +218,9 @@ class VideoController extends Controller
     {
         $data = $request->input();
         $newsById = News::find($id);
+        $date = $data['date'];
+        $time = $data['time'];
+        $margeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
         try {
             $input = [
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
@@ -233,7 +242,7 @@ class VideoController extends Controller
                 'types' => $data['types'],
                 'keywords' => $data['keywords'],
                 'is_published' => $data['isPublished'],
-                'published_at' => $request->has('isPublished') == false ? null : $data['publishedAt'],
+                'published_at' => $margeDate,
                 'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
                 'updated_by' => auth()->id(),
                 'category_id' => $data['category'],
@@ -246,10 +255,11 @@ class VideoController extends Controller
                 $newsById->tags()->attach($t);
             }
 
-            $log = new Log([
+            $log = new Log(
+                [
                     'news_id' => $id,
                     'updated_by' => \auth()->id(),
-                    'updated_content'=>json_encode($newsById->getChanges())
+                    'updated_content' => json_encode($newsById->getChanges())
                 ]
             );
             $log->save();
