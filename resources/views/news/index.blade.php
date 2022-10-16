@@ -113,7 +113,7 @@
                                     </td>
                                 @endif
                                 <td>{{ $n->categories->category }}</td>
-                                <td>{{ $n->created_at->format('d M Y H:i') }}</td>
+                                <td>{{ $n->published_at }}</td>
                                 
                                 @if ($n->editor_pick == 1)
                                     <td align="center">
