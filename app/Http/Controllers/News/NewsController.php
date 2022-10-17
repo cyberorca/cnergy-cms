@@ -112,6 +112,8 @@ class NewsController extends Controller
         $tags = Tag::all();
         $types = ['news', 'photonews', 'video'];
         //        return response()->json($users);
+
+        
         return view('news.editable', [
             'method' => end($method),
             'categories' => $categories,
@@ -354,5 +356,22 @@ class NewsController extends Controller
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
+    }
+
+    public function select(Request $request)
+    {
+            //$data = Tag::where('tags', 'LIKE',  '%' .request('q'). '%')->paginate(10)->withQueryString();
+            //return response()->json($data);
+            $data = [];
+
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = Tag::select("id", "tags")
+                ->where('tags', 'LIKE', "%$search%")
+                ->paginate(10)->withQueryString();
+        } else {
+            $data = Tag::paginate(10)->withQueryString();
+        }
+        return response()->json($data);
     }
 }
