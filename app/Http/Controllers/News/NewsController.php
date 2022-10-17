@@ -32,6 +32,7 @@ class NewsController extends Controller
         $news = News::with(['categories', 'tags']);
         $editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
         $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Reporter");
+        $photographers = User::join('roles','users.role_id','=','roles.id')->where('roles.role', "Photographer");
 
         if ($request->get('published')) {
             $published = $request->get('published');
@@ -80,12 +81,17 @@ class NewsController extends Controller
 
         if ($request->get('editor')) {
             $editor = $request->editor;
-            $news->where('updated_by', $editor);
+            $news->whereJsonContains('contributors', $editor);
         }
 
         if ($request->get('reporter')) {
             $reporter = $request->reporter;
-            $news->where('created_by', $reporter);
+            $news->whereJsonContains('reporters',$reporter);
+        }
+
+        if ($request->get('photographer')) {
+            $photographer = $request->photographer;
+            $news->whereJsonContains('photographers',$photographer);
         }
 
         // return response()->json($news);
@@ -95,6 +101,7 @@ class NewsController extends Controller
             'news' => $news->paginate(10)->withQueryString(),
             'editors' => $editors->get(),
             'reporters' => $reporters->get(),
+            'photographers'=>$photographers->get()
             // 'categories' => Category::whereNull("parent_id"),
         ]);
     }
@@ -110,12 +117,10 @@ class NewsController extends Controller
         $users = User::with(['roles'])->get();
         $categories = Category::all();
         $tags = Tag::all();
-        $types = ['news', 'photonews', 'video'];
         //        return response()->json($users);
         return view('news.editable', [
             'method' => end($method),
             'categories' => $categories,
-            'types' => $types,
             'users' => $users,
             'tags' => $tags,
             'contributors' => []
@@ -146,7 +151,7 @@ class NewsController extends Controller
 
             if ($request->file('upload_image') && !$data['upload_image_selected']) {
                 $file = $request->file('upload_image');
-                $fileFormatPath = new FileFormatPath($data['types'], $file);
+                $fileFormatPath = new FileFormatPath('news', $file);
                 $data['image'] = $fileFormatPath->storeFile();
             }
 
@@ -176,9 +181,11 @@ class NewsController extends Controller
                 'content' => $data['content'][0],
                 'synopsis' => $data['synopsis'],
                 'description' => $data['description'],
-                'types' => $data['types'],
+                'types' => 'news',
                 'keywords' => $data['keywords'],
-                'photographers' => $request->has('photographers') == false ? '[]' : json_encode($data['photographers']),
+                'photographers'=>$request->has('photographers') == false ? null :json_encode($data['photographers']),
+                'reporters'=>$request->has('reporters') == false ? null :json_encode($data['reporters']),
+                'contributors'=>$request->has('contributors') == false ? null :json_encode($data['contributors']),
                 'image' => $data['image'] ?? null,
                 'is_published' => $data['isPublished'],
                 'published_at' => $mergeDate,
@@ -241,13 +248,11 @@ class NewsController extends Controller
         $news = News::where('id', $id)->with(['users', 'news_paginations'])->first();
         $categories = Category::all();
         $tags = Tag::all();
-        $types = ['news', 'photonews', 'video'];
         $contributors = $news->users;
         $users = User::with(['roles'])->get();
         return view('news.editable', [
             'method' => end($method),
             'categories' => $categories,
-            'types' => $types,
             'news' => $news,
             'tags' => $tags,
             'contributors' => $contributors,
@@ -282,14 +287,16 @@ class NewsController extends Controller
                 'is_seo' => $request->has('isSeo') == false ? '0' : '1',
                 'is_disable_interactions' => $request->has('isDisableInteractions') == false ? '0' : '1',
                 'is_branded_content' => $request->has('isBrandedContent') == false ? '0' : '1',
-                'title' => $data['title'],
-                'slug' => Str::slug($data['title']),
-                'content' => $data['content'],
+                'title' => $data['title'][0],
+                'slug' => Str::slug($data['title'][0]),
+                'content' => $data['content'][0],
                 'synopsis' => $data['synopsis'],
                 'description' => $data['description'],
-                'types' => $data['types'],
+                'types' => 'news',
                 'keywords' => $data['keywords'],
-                'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
+                'photographers'=>$request->has('photographers') == false ? null :json_encode($data['photographers']),
+                'reporters'=>$request->has('reporters') == false ? null :json_encode($data['reporters']),
+                'contributors'=>$request->has('contributors') == false ? null :json_encode($data['contributors']),
                 'is_published' => $data['isPublished'],
                 'published_at' => $margeDate,
                 'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
@@ -300,7 +307,7 @@ class NewsController extends Controller
 
             if ($request->file('upload_image') && !$data['upload_image_selected']) {
                 $file = $request->file('upload_image');
-                $fileFormatPath = new FileFormatPath($data['types'], $file);
+                $fileFormatPath = new FileFormatPath('news', $file);
                 $input['image'] = $fileFormatPath->storeFile();
             }
 
