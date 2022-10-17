@@ -35,6 +35,8 @@ class News extends Model
         'types',
         'keywords',
         'photographers',
+        'reporters',
+        'contributors',
         'image',
         'video',
         'synopsis',
