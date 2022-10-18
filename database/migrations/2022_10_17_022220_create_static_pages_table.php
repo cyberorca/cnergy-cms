@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('static_pages', function (Blueprint $table) {
             $table->id();
             $table->enum('is_active', [0, 1])->default(0);
-            $table->enum('is_show_footer', [0, 1])->default(0);
             $table->string('title', 255);
             $table->string('slug', 255);
             $table->longText('content');
