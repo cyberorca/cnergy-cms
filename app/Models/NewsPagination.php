@@ -11,5 +11,7 @@ class NewsPagination extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = [];
+    protected $table = 'news_paginations';
     public $timestamps = false;
+    protected $deletedAt = ['deleted_at'];
 }

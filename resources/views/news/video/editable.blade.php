@@ -1,9 +1,14 @@
 @extends('layout.app')
 
 @section('css')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/css/pages/image-uploader.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/extensions/choices.js/public/assets/styles/choices.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
     <style type="text/css">
         .bootstrap-tagsinput {
             width: 100%;
@@ -34,7 +39,6 @@
             display: none;
         }
     </style>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 @endsection
 
 @push('head')
@@ -164,6 +168,7 @@
 
 
 
+                    
                         <a data-bs-toggle="collapse" href="#sembilan" aria-expanded="false"
                             aria-controls="collapseExample">
                             <span class="h6">Category</span>
@@ -175,8 +180,7 @@
                             <div class="form-group">
                                 <div class="row">
                                     <fieldset class="form-group">
-                                        <select data-live-search="true" class="w-100 selectpicker" name="category"
-                                            id="category">
+                                        <select class="form-select" name="category" id="category">
                                             @if ($method === 'create')
                                                 <option value="" disabled selected>Select Category</option>
                                             @endif
@@ -187,15 +191,15 @@
                                                 </option>
                                             @endforeach
                                         </select>
+                                        <br>
                                     </fieldset>
+
                                 </div>
                             </div>
                             <div class="form-group">
 
                             </div>
                         </div>
-
-
 
                         <a data-bs-toggle="collapse" href="#tiga" aria-expanded="false"
                             aria-controls="collapseExample">
@@ -207,18 +211,20 @@
                         <div class="collapse" id="tiga">
                             <div class="form-group">
                                 <div class="row">
-                                    <select name="tags[]" class="choices form-select multiple-remove"
+                                    <select name="tags[]" class="form-select" style='width: 100%;'
                                         multiple="multiple" id="tags" required>
-                                        <optgroup label="Tags">
-                                            @foreach ($tags as $id => $tag)
+                                        @if ($method === 'edit')
+                                        @foreach ($tags as $id => $tag)
                                                 <option id="{{ $id }}" value="{{ $tag->id }}"
                                                     @if ($method === 'edit' and $tag->news()->find($news->id)) selected @endif>{{ $tag->tags }}
                                                 </option>
                                             @endforeach
-                                        </optgroup>
+                                        @endif
                                     </select>
+                                    
                                 </div>
                             </div>
+                            <br>
                         </div>
 
 
@@ -303,7 +309,7 @@
                             <select name="types" class="form-select" id="type" hidden>
                                 @foreach ($types as $type)
                                     <option value="{{ $type }}"
-                                        @if ($type === 'news') selected @endif>{{ ucwords($type) }}</option>
+                                        @if ($type === 'video') selected @endif>{{ ucwords($type) }}</option>
                                 @endforeach
                             </select>
 
@@ -378,13 +384,39 @@
 
 
 @section('javascript')
-    <script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/4/tinymce.min.js"
-        referrerpolicy="origin"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#tags").select2({
+                placeholder:'Select Tags',
+                allowClear: true,
+                ajax: {
+                    url: "{{route('tag.index')}}",
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function({data}){
+                        return {
+                            results: $.map(data, function(item){
+                                return {
+                                    id: item.id,
+                                    text: item.tags
+                                }
+                            })
+                        }
+                    }
+                }
+            });
+        });
+        </script>
+
+<script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/4/tinymce.min.js"
+        referrerpolicy="origin"></script>
+        <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
 
     <script>
         var editor_config = {
@@ -424,9 +456,11 @@
 
         tinymce.init(editor_config);
     </script>
-    <script src="{{ asset('assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
+
+<script src="{{ asset('assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
     <script src="{{ asset('assets/js/pages/form-element-select.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+
     <script>
         $(function() {
             $('input')
@@ -450,6 +484,14 @@
                     );
                 })
                 .trigger('change');
+        });
+    </script>
+
+    <script src="/path/to/cdn/jquery.slim.min.js"></script>
+    <script src="/path/to/js/jquery.dateandtime.js"></script>
+    <script>
+        $(function() {
+            $('.example').dateAndTime();
         });
     </script>
 @endsection
