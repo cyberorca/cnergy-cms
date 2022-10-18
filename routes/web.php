@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\News\VideoController;
+use App\Http\Controllers\Admin\StaticController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use UniSharp\LaravelFilemanager\Lfm;
@@ -89,6 +90,7 @@ Route::group(['middleware' => 'auth'], function () {
     // Tools
     Route::prefix('tools')->group(function () {
         Route::resource('image-bank', ImageBankController::class);
+        Route::resource('static-page', StaticController::class);
     });
     
     // Documentation
