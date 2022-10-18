@@ -36,6 +36,10 @@
         a[aria-expanded=false] .bi-chevron-up {
             display: none;
         }
+
+        .collapse-news:hover {
+            background: rgba(0, 0, 0, 0.11) !important;
+        }
     </style>
 @endsection
 
@@ -54,41 +58,34 @@
         @endif
         @csrf
         @if ($method === 'edit')
+            <input type="hidden" value="{{ $news->id }}" id="id_news">
             <input type="hidden" value="{{ json_encode($news->news_paginations) }}" id="news_paginations">
         @endif
         <div class="d-flex justify-content-between gap-2">
-            <div class="col-8">
-                <div class="d-flex justify-content-end gap-3 mt-3">
-                    <a href="{{ route('news.index') }}" class="btn btn-light" data-bs-toggle="tooltip"
-                        data-bs-placement="top" title="Back to Table Rome">Back</a>
-
-                    <button class="btn btn-primary" name="save" type="submit" data-bs-toggle="tooltip" value="publish"
-                        data-bs-placement="top" title="Create Role">Save
-                    </button>
-                </div>
+            <div class="col-7 ">
                 <div class="card" id="card_content">
                     <div class="card-header"><span class="h4 text-capitalize card-header-text">{{ $method }}
                             News</span>
-                                    </div>
-                                    <div class="card-body d-flex flex-column gap-2">
-                                        <div class="form-group">
-                                            <label for="title" class="mb-2">Title</label>
-                                            <input type="text" class="form-control" id="title" name="title[]"
-                                                   placeholder="Enter Title " required
-                                                   @if ($method === 'edit') value="{{ $news->title }}" @endif />
-                                        </div>
+                    </div>
+                    <div class="card-body d-flex flex-column gap-2">
+                        <div class="form-group">
+                            <label for="title" class="mb-2">Title</label>
+                            <input type="text" class="form-control" id="title" name="title[@if ($method === 'edit'){{ $news->id }}@endif]"
+                                placeholder="Enter Title " required
+                                @if ($method === 'edit') value="{{ $news->title }}" @endif />
+                        </div>
 
-                                        <div class="form-group">
-                                            <label for="synopsis" class="form-label mb-2">Synopsis</label>
-                                            <textarea name="synopsis" class="form-control" id="synopsis" cols="30"
-                                                      rows="3" required
-                                                      placeholder="Enter Synopsis">@if ($method === 'edit'){{ $news->synopsis }}@endif</textarea>
-                                        </div>
+                        <div class="form-group">
+                            <label for="synopsis" class="form-label mb-2">Synopsis</label>
+                            <textarea name="synopsis" class="form-control" id="synopsis" cols="30" rows="3" required
+                                placeholder="Enter Synopsis">
+@if ($method === 'edit'){{ $news->synopsis }}@endif
+</textarea>
+                        </div>
 
-                                        <div class="form-group" id="content_box">
-                                            <label for="content" class="form-label">Content</label>
-                                            <textarea name="content[]" class="my-editor form-control" id="content"
-                                                      cols="30" rows="10" required>
+                        <div class="form-group" id="content_box">
+                            <label for="content" class="form-label">Content</label>
+                            <textarea name="content[@if ($method === 'edit'){{ $news->id }}@endif]" class="my-editor form-control" id="content" cols="30" rows="10" required>
                                     @if ($method === 'edit')
                                                     {{ $news->content }}
                                                 @endif
@@ -96,13 +93,14 @@
                         </div>
                     </div>
                 </div>
-                <div id="other_page"></div>
+                <div id="other_page" class=" d-flex flex-column"></div>
+
                 <span class="btn btn-outline-secondary my-3 w-100" id="add_page_button"><i
                         class="bi bi-plus-circle"></i>&nbsp;
                     Add New Page</span>
 
             </div>
-            <div class="col-4">
+            <div class="col-5">
                 <div class="card">
                     <div class="card-body">
                     <a data-bs-toggle="collapse" href="#satu" aria-expanded="false" aria-controls="collapseExample">
@@ -326,12 +324,6 @@
                                     </optgroup>
                                 </select>
                             </div>
-                            <select name="types" class="form-select" id="type" hidden>
-                                @foreach ($types as $type)
-                                    <option value="{{ $type }}"
-                                        @if ($type === 'news') selected @endif>{{ ucwords($type) }}</option>
-                                @endforeach
-                            </select>
                         </div>
                         <a data-bs-toggle="collapse" href="#lima" aria-expanded="false" aria-controls="collapseExample">
                             <span class="h6">Content Type</span>
@@ -389,6 +381,14 @@
                                 <label class="form-check-label" for="editorPick">Editor Pick</label>
                             </div>
                         </div>
+                        <div class="d-flex justify-content-end gap-3 mt-3 flex-column">
+                            <button class="btn btn-primary w-100" name="save" type="submit" data-bs-toggle="tooltip"
+                                value="publish" data-bs-placement="top" title="Create Role">Save
+                            </button>
+                            <a href="{{ route('news.index') }}" class="btn btn-outline-secondary w-100"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Back to Table Rome">Back</a>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -397,11 +397,27 @@
         </div>
     </section>
     </form>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast fade hide" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-success">
+                <strong class="me-auto text-white">Message</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Hello, world! This is a toast message.
+            </div>
+        </div>
+    </div>
 @endsection
 
 
 @section('javascript')
 
+    <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
+    <script src="{{ asset('assets/extensions/toastify-js/src/toastify.js') }}"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     
 

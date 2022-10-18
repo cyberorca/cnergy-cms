@@ -17,27 +17,155 @@ var add_page_button = document.getElementById("add_page_button");
 var other_page = document.getElementById("other_page");
 var content_box = document.getElementById("content_box");
 var card_content = document.getElementById("card_content");
-let index = 1;
+var liveToast = document.getElementById("liveToast");
+var id_news = document.getElementById("id_news") ? document.getElementById("id_news").value : null;
+let index = 2;
 add_page_button.addEventListener('click', function () {
+    collapseElement(false, index);
+    tinyMCEConfig(`${index}`)
+    index++;
+})
+
+function textareaElement(page_no) {
     let child = document.createElement("textarea");
-    child.name = "content[]"
+    child.name = id_news ? `content[${id_news ?? ''}][]` : `content[]`
     child.rows = 10
     child.cols = 30
-    child.classList.add("my-editor", "form-control", 'my-3', `editors${index}`)
-    child.id = `#editor-${index}`
+    child.classList.add("my-editor", "form-control", 'my-3', `editors${page_no}`)
+    child.id = `#editor-${page_no}`
+
+    return child;
+}
+
+function changeAllPageAfterDeleted() {
+    const collapse = document.querySelectorAll(".text-collapse-news-pagination");
+    index = 2;
+    collapse.forEach((el) => {
+        el.innerHTML = `Page ${index}`
+        index++;
+    })
+}
+
+const collapseLinkElement = (page_no, edit = false, other) => {
+    let collapseBox = document.createElement('div');
+    collapseBox.classList.add("d-flex", "w-100", "mt-3");
+
+    let collapseLink = document.createElement('a');
+    collapseLink.classList.add("bg-white", "py-3", "px-4", "pe-0", "collapse-news", "w-100")
+    collapseLink.setAttribute("data-bs-toggle", "collapse");
+    collapseLink.href = `#collapse-${page_no}`
+    collapseLink.innerHTML = `
+    <div class="d-flex justify-content-between align-items-center pe-3">
+        <span class="h6 text-uppercase m-0 text-collapse-news-pagination">Page ${!edit ? page_no : page_no.split("-")[1]}</span>
+        <i class="bi bi-chevron-down fs-6 mb-2" style="float:right"></i>
+    </div>
+    `
+
+    let deleteCollapse = document.createElement("span")
+    deleteCollapse.classList.add("btn", "icon", "btn-danger", "m-0", "py-1", "rounded-0", "d-flex", "align-items-center")
+    deleteCollapse.innerHTML = `<i class="bi bi-trash-fill fs-6 mb-2"></i>`
+    deleteCollapse.setAttribute("data-status-form", edit)
+    deleteCollapse.setAttribute("data-id", !edit ? page_no : other.id)
+
+    deleteCollapse.addEventListener('click', function () {
+        const status = this.getAttribute("data-status-form") === "true" ? 1 : 0;
+        const id = this.getAttribute("data-id");
+        let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const element = this;
+        if (status) {
+            $.ajax({
+                url: "/update/news/pagination/api/delete/",
+                type: 'POST',
+                data: {
+                    _token: token,
+                    id: id,
+                },
+                success: function ({
+                    message
+                }) {
+                    // new Toastify({
+                    //     text: message,
+                    //     duration: 3000,
+                    //     close: true,
+                    //     gravity: "bottom",
+                    //     position: "right",
+                    // }).showToast()
+                    liveToast.classList.remove("hide");
+                    liveToast.classList.add("show");
+                    liveToast.querySelector(".toast-body").innerHTML = message
+                    document.querySelector(`#collapse-${page_no}`).remove();
+                    element.parentElement.remove();
+                    changeAllPageAfterDeleted();
+                }
+            });
+        } else {
+            // Toastify({
+            //     text: "Successfully deleted page",
+            //     duration: 3000,
+            //     close: true,
+            //     gravity: "bottom",
+            //     position: "right",
+            // }).showToast()
+            liveToast.classList.remove("hide");
+            liveToast.classList.add("show");
+            liveToast.querySelector(".toast-body").innerHTML = "Successfully deleted page"
+            document.querySelector(`#collapse-${page_no}`).remove();
+            element.parentElement.remove();
+            changeAllPageAfterDeleted();
+        }
+    })
+
+    collapseBox.append(collapseLink)
+    collapseBox.append(deleteCollapse)
+    return collapseBox;
+}
+
+const collapseBodyElement = (page_no) => {
+    let collapseBody = document.createElement('div');
+    collapseBody.classList.add("collapse");
+    collapseBody.id = `collapse-${page_no}`
+    return collapseBody;
+}
+
+const newAddContent = (child, edit = false) => {
     const new_add_content = card_content.cloneNode(true);
     new_add_content.querySelector("#synopsis").previousElementSibling.remove();
     new_add_content.querySelector("#synopsis").remove();
     new_add_content.querySelector(".my-editor").remove();
-    new_add_content.querySelector(".mce-tinymce").remove();
-    new_add_content.querySelector(".card-header-text").innerHTML = `Page ${index + 1}`
+    if (!edit) {
+        new_add_content.querySelector(".mce-tinymce").remove();
+    }
+    new_add_content.querySelector(".card-header").remove();
+    // new_add_content.querySelector(".card-header-text").innerHTML = `Page ${index + 1}`
     new_add_content.querySelector("#content_box").append(child);
-    other_page.append(new_add_content)
-    tinymce.EditorManager.execCommand('mceAddEditor', true, `editor-${index}`);
+
+    return new_add_content;
+}
+
+function collapseElement(edit = false, page_no, ...other) {
+    const textarea = textareaElement(page_no);
+    const collapseBody = collapseBodyElement(page_no)
+    const new_add_content = newAddContent(textarea, edit);
+    const collapseLink = collapseLinkElement(page_no, edit, other[0]);
+
+    if (edit) {
+        const {
+            content
+        } = other[0];
+        textarea.innerText = content
+    }
+
+    collapseBody.append(new_add_content);
+    other_page.append(collapseLink);
+    other_page.append(collapseBody);
+}
+
+function tinyMCEConfig(index_pages) {
+    tinymce.EditorManager.execCommand('mceAddEditor', true, `editor-${index_pages}`);
     tinymce.init({
-        selector: `textarea.editors${index}`,
+        selector: `textarea.editors${index_pages}`,
         themes: 'modern',
-        height: 200,
+        height: 400,
         path_absolute: "/",
         plugins: [
             "advlist autolink lists link image charmap print preview hr anchor pagebreak",
@@ -70,11 +198,17 @@ add_page_button.addEventListener('click', function () {
             });
         }
     });
+}
+
+if (document.body.contains(document.getElementById("news_paginations"))) {
+    const news_paginations = JSON.parse(document.getElementById("news_paginations").value);
+    news_paginations.map((el, i) => {
+        index = el.order_by_no;
+        collapseElement(true, `${el.news_id}-${index}`, {
+            content: el.content,
+            id: el.id
+        })
+        tinyMCEConfig(`${el.news_id}-${index}`)
+    })
     index++;
-})
-
-
-if(document.body.contains(document.getElementById("news_paginations"))){
-    const news_paginations = document.getElementById("news_paginations").value;
-    console.log(JSON.parse(news_paginations));
 }
