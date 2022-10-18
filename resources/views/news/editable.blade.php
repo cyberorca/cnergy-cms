@@ -1,10 +1,13 @@
 @extends('layout.app')
-
 @section('css')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('assets/css/pages/image-uploader.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/pages/image-uploader.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/extensions/choices.js/public/assets/styles/choices.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
     <style type="text/css">
         .bootstrap-tagsinput {
             width: 100%;
@@ -22,8 +25,7 @@
         }
 
         .search_select_box select {
-            width: 100%;
-            ;
+            width: 100%;;
         }
 
         a[aria-expanded=true] .bi-chevron-down {
@@ -35,15 +37,13 @@
             display: none;
         }
     </style>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 @endsection
 
 @push('head')
 @endpush
 
 @section('body')
-    <x-page-heading title="Table News" subtitle="View and Manage News Data" />
-    @if ($method === 'edit')
+@if ($method === 'edit')
         <form action="{{ route('news.update', $news->id) }}" method="post" enctype="multipart/form-data">
         @else
             <form action="{{ route('news.store') }}" method="post" enctype="multipart/form-data">
@@ -57,7 +57,7 @@
             <input type="hidden" value="{{ json_encode($news->news_paginations) }}" id="news_paginations">
         @endif
         <div class="d-flex justify-content-between gap-2">
-            <div class="col-7 ">
+            <div class="col-8">
                 <div class="d-flex justify-content-end gap-3 mt-3">
                     <a href="{{ route('news.index') }}" class="btn btn-light" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Back to Table Rome">Back</a>
@@ -69,29 +69,29 @@
                 <div class="card" id="card_content">
                     <div class="card-header"><span class="h4 text-capitalize card-header-text">{{ $method }}
                             News</span>
-                    </div>
-                    <div class="card-body d-flex flex-column gap-2">
-                        <div class="form-group">
-                            <label for="title" class="mb-2">Title</label>
-                            <input type="text" class="form-control" id="title" name="title[]"
-                                placeholder="Enter Title " required
-                                @if ($method === 'edit') value="{{ $news->title }}" @endif />
-                        </div>
+                                    </div>
+                                    <div class="card-body d-flex flex-column gap-2">
+                                        <div class="form-group">
+                                            <label for="title" class="mb-2">Title</label>
+                                            <input type="text" class="form-control" id="title" name="title[]"
+                                                   placeholder="Enter Title " required
+                                                   @if ($method === 'edit') value="{{ $news->title }}" @endif />
+                                        </div>
 
-                        <div class="form-group">
-                            <label for="synopsis" class="form-label mb-2">Synopsis</label>
-                            <textarea name="synopsis" class="form-control" id="synopsis" cols="30" rows="3" required
-                                placeholder="Enter Synopsis">
-@if ($method === 'edit'){{ $news->synopsis }}@endif
-</textarea>
-                        </div>
+                                        <div class="form-group">
+                                            <label for="synopsis" class="form-label mb-2">Synopsis</label>
+                                            <textarea name="synopsis" class="form-control" id="synopsis" cols="30"
+                                                      rows="3" required
+                                                      placeholder="Enter Synopsis">@if ($method === 'edit'){{ $news->synopsis }}@endif</textarea>
+                                        </div>
 
-                        <div class="form-group" id="content_box">
-                            <label for="content" class="form-label">Content</label>
-                            <textarea name="content[]" class="my-editor form-control" id="content" cols="30" rows="10" required>
+                                        <div class="form-group" id="content_box">
+                                            <label for="content" class="form-label">Content</label>
+                                            <textarea name="content[]" class="my-editor form-control" id="content"
+                                                      cols="30" rows="10" required>
                                     @if ($method === 'edit')
-                                        {{ $news->content }}
-                                    @endif
+                                                    {{ $news->content }}
+                                                @endif
                             </textarea>
                         </div>
                     </div>
@@ -102,22 +102,22 @@
                     Add New Page</span>
 
             </div>
-            <div class="col-5">
+            <div class="col-4">
                 <div class="card">
                     <div class="card-body">
-                        <a data-bs-toggle="collapse" href="#satu">
+                    <a data-bs-toggle="collapse" href="#satu" aria-expanded="false" aria-controls="collapseExample">
                             <span class="h6">Status & Visibility</span>
-                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
-
+                            <i class="bi bi-chevron-up pull-right fs-6"></i>
+                            <i class="bi bi-chevron-down pull-right fs-6"></i>
                         </a>
                         <hr />
                         <div class="collapse" id="satu">
                             <div class="form-group">
                                 <div class="row">
-                                    <div class="col-md-5">
+                                    <div class="col-md-6">
                                         <label for="basicInput">Publish Status</label>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-6">
                                         <input class="form-check-input" type="radio" value="1" name="isPublished"
                                             @if ($method === 'edit' and $news->is_published == '1') checked @endif />
                                         <label class="form-check-label">
@@ -130,13 +130,12 @@
                                         </label>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
+                                <br>
                                 <div class="row">
-                                    <div class="col-md-5">
-                                        <label for="publishedAt" class="mb-2">Schedule</label>
+                                    <div class="col-md-6">
+                                        <label for="publishedAt">Schedule</label>
                                     </div>
-                                    <div class="col-md-7">
+                                    <div class="col-md-6">
                                         <input type="date" class="example" name="date"
                                             @if ($method === 'edit') value="{{ date('Y-m-d', strtotime($news->published_at)) }}" @endif>
                                         <input type="time" class="example" name="time"
@@ -148,9 +147,11 @@
                             </div>
                         </div>
 
-                        <a data-bs-toggle="collapse" href="#dua">
-                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
+                        
+                        <a data-bs-toggle="collapse" href="#dua" aria-expanded="false" aria-controls="collapseExample">
                             <span class="h6">Picture</span>
+                            <i class="bi bi-chevron-up pull-right fs-6"></i>
+                            <i class="bi bi-chevron-down pull-right fs-6"></i>
                         </a>
                         <hr />
                         <div class="collapse" id="dua">
@@ -163,17 +164,19 @@
                             </div>
                         </div>
 
-                        <a data-bs-toggle="collapse" href="#sembilan">
-                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
+                        
+                        <a data-bs-toggle="collapse" href="#sembilan" aria-expanded="false"
+                            aria-controls="collapseExample">
                             <span class="h6">Category</span>
+                            <i class="bi bi-chevron-up pull-right fs-6"></i>
+                            <i class="bi bi-chevron-down pull-right fs-6"></i>
                         </a>
                         <hr />
                         <div class="collapse" id="sembilan">
                             <div class="form-group">
                                 <div class="row">
                                     <fieldset class="form-group">
-                                        <select data-live-search="true" class="w-100 selectpicker" name="category"
-                                            id="category">
+                                        <select class="form-select" name="category" id="category">
                                             @if ($method === 'create')
                                                 <option value="" disabled selected>Select Category</option>
                                             @endif
@@ -184,8 +187,9 @@
                                                 </option>
                                             @endforeach
                                         </select>
-                                        <br><a href="{{ route('category.create') }}" class="mb-2">Add Category</a>
+                                        <br>
                                     </fieldset>
+
                                 </div>
                             </div>
                             <div class="form-group">
@@ -193,32 +197,37 @@
                             </div>
                         </div>
 
-
-                        <a data-bs-toggle="collapse" href="#tiga">
-                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
+                        <a data-bs-toggle="collapse" href="#tiga" aria-expanded="false"
+                            aria-controls="collapseExample">
                             <span class="h6">Tags</span>
+                            <i class="bi bi-chevron-up pull-right fs-6"></i>
+                            <i class="bi bi-chevron-down pull-right fs-6"></i>
                         </a>
                         <hr />
                         <div class="collapse" id="tiga">
                             <div class="form-group">
                                 <div class="row">
-                                    <select name="tags[]" class="choices form-select multiple-remove"
+                                    <select name="tags[]" class="form-select" style='width: 100%;'
                                         multiple="multiple" id="tags" required>
-                                        <optgroup label="Tags">
-                                            @foreach ($tags as $id => $tag)
+                                        @if ($method === 'edit')
+                                        @foreach ($tags as $id => $tag)
                                                 <option id="{{ $id }}" value="{{ $tag->id }}"
                                                     @if ($method === 'edit' and $tag->news()->find($news->id)) selected @endif>{{ $tag->tags }}
                                                 </option>
                                             @endforeach
-                                        </optgroup>
+                                        @endif
                                     </select>
+                                    
                                 </div>
                             </div>
+                            <br>
                         </div>
 
-                        <a data-bs-toggle="collapse" href="#tujuh">
-                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
+                        
+                        <a data-bs-toggle="collapse" href="#tujuh" aria-expanded="false" aria-controls="collapseExample">
                             <span class="h6">Description</span>
+                            <i class="bi bi-chevron-up pull-right fs-6"></i>
+                            <i class="bi bi-chevron-down pull-right fs-6"></i>
                         </a>
                         <hr />
                         <div class="collapse" id="tujuh">
@@ -253,16 +262,18 @@
                                                                             </div>
                                                                         </div>-->
 
-                        <a data-bs-toggle="collapse" href="#empat">
-                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
+                        
+                        <a data-bs-toggle="collapse" href="#empat" aria-expanded="false" aria-controls="collapseExample">
                             <span class="h6">Other Settings</span>
+                            <i class="bi bi-chevron-up pull-right fs-6"></i>
+                            <i class="bi bi-chevron-down pull-right fs-6"></i>
                         </a>
                         <hr />
                         <div class="collapse" id="empat">
                             <div class="form-group">
                                 <label class="mb-2">Keyword</label><br>
                                 <input name="keywords" id="keywords" type="text" required
-                                    placeholder="Enter Keyword" class="w-100 form-control" data-role="tagsinput"
+                                @if ($method === 'create') placeholder="Enter Keyword" @endif class="w-100 form-control" data-role="tagsinput"
                                     @if ($method === 'edit') value="{{ $news->keywords }}" @endif />
                             </div>
                             <!--<div class="form-group">
@@ -315,28 +326,17 @@
                                     </optgroup>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="publishedAt" class="mb-2">Type</label>
-                                    <fieldset class="form-group">
-                                        <select name="types" class="form-select" id="type">
-                                            @if ($method === 'create')
-                                                <option value="" disabled selected>Select Type</option>
-                                            @endif
-                                            @foreach ($types as $type)
-                                                <option value="{{ $type }}"
-                                                    @if ($method === 'edit' and $type === $news->types) selected @endif>
-                                                    {{ ucwords($type) }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </fieldset>
-                                </div>
-                            </div>
+                            <select name="types" class="form-select" id="type" hidden>
+                                @foreach ($types as $type)
+                                    <option value="{{ $type }}"
+                                        @if ($type === 'news') selected @endif>{{ ucwords($type) }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                        <a data-bs-toggle="collapse" href="#lima">
-                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
+                        <a data-bs-toggle="collapse" href="#lima" aria-expanded="false" aria-controls="collapseExample">
                             <span class="h6">Content Type</span>
+                            <i class="bi bi-chevron-up pull-right fs-6"></i>
+                            <i class="bi bi-chevron-down pull-right fs-6"></i>
                         </a>
                         <hr />
                         <div class="collapse" id="lima">
@@ -401,14 +401,40 @@
 
 
 @section('javascript')
-    <script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/4/tinymce.min.js"
-        referrerpolicy="origin"></script>
 
-    <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
+
+    <script>
+        $(document).ready(function(){
+            $("#tags").select2({
+                placeholder:'Select Tags',
+                allowClear: true,
+                ajax: {
+                    url: "{{route('tag.index')}}",
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function({data}){
+                        return {
+                            results: $.map(data, function(item){
+                                return {
+                                    id: item.id,
+                                    text: item.tags
+                                }
+                            })
+                        }
+                    }
+                }
+            });
+        });
+        </script>
+
+<script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/4/tinymce.min.js"
+        referrerpolicy="origin"></script>
+        <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
 
     <script>
         var editor_config = {
@@ -448,9 +474,11 @@
 
         tinymce.init(editor_config);
     </script>
-    <script src="{{ asset('assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
+
+<script src="{{ asset('assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
     <script src="{{ asset('assets/js/pages/form-element-select.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+
     <script>
         $(function() {
             $('input')
