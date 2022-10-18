@@ -142,6 +142,7 @@ class NewsController extends Controller
         $news_paginations = array();
 
         try {
+            $i = 2;
             for ($i = 0; $i < count($data['title']) - 1; $i++) {
                 $news_paginations[$i] = [
                     'title' => $data['title'][$i + 1],
@@ -149,6 +150,7 @@ class NewsController extends Controller
                     'content' => $data['content'][$i + 1],
                     'order_by_no' => $i
                 ];
+                $i++;
             }
 
             if ($request->file('upload_image') && !$data['upload_image_selected']) {
@@ -272,6 +274,7 @@ class NewsController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->input();
+        return response()->json($data);
         $newsById = News::find($id);
         $date = $data['date'];
         $time = $data['time'];
@@ -365,6 +368,26 @@ class NewsController extends Controller
         }
     }
 
+    function deleteNewsPagination(Request $request)
+    {
+        try {
+            $id = $request->id;
+            NewsPagination::where('id', $id)->update([
+                'deleted_by' => Auth::user()->uuid,
+            ]);
+            if(NewsPagination::destroy($id)){
+                return response()->json([
+                    "status" => "success",
+                    "message" => "Successfully deleted page",
+                ], 200);
+            } 
+        } catch (\Throwable $e) {
+            return response()->json([
+                "message" => $e->getMessage()
+            ], 500);
+        }
+    }
+    
     public function select(Request $request)
     {
             //$data = Tag::where('tags', 'LIKE',  '%' .request('q'). '%')->paginate(10)->withQueryString();
