@@ -1,20 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\tools;
 
 use App\Http\Controllers\Controller;
 use App\Models\StaticPage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Carbon\Carbon;
-
 use Illuminate\Support\Facades\URL;
-use App\Models\News;
 use Illuminate\Support\Str;
-use App\Models\Log;
 use Illuminate\Support\Facades\Auth;
 
-class StaticController extends Controller
+class StaticPageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -50,15 +47,6 @@ class StaticController extends Controller
                 $static ->where('is_active', "0");
             }else {
                 $static ->where('is_active', "1");
-            }
-        }
-
-        if ($request->get('footer')) {
-            $status = $request->footer;
-            if($status == 2) {
-                $static ->where('is_show_footer', "0");
-            }else {
-                $static ->where('is_show_footer', "1");
             }
         }
 
@@ -103,7 +91,6 @@ class StaticController extends Controller
                 'slug' => Str::slug($data['slug']),
                 'content' => $data['content'],
                 'is_active' => $request->has('isActive') == false ? '0' : '1',
-                'is_show_footer' => $request->has('isShowFooter') == false ? '0' : '1',
                 'created_by' => auth()->id()
             ]);
             
@@ -163,7 +150,6 @@ class StaticController extends Controller
                 'slug' => Str::slug($data['slug']),
                 'content' => $data['content'],
                 'is_active' => $request->has('isActive') == false ? '0' : '1',
-                'is_show_footer' => $request->has('isShowFooter') == false ? '0' : '1',
                 'updated_by' => auth()->id()
             ];
             
