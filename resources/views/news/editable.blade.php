@@ -35,6 +35,9 @@
             display: none;
         }
 
+        .collapse-news:hover {
+            background: rgba(0, 0, 0, 0.11) !important;
+        }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 @endsection
@@ -55,18 +58,11 @@
         @endif
         @csrf
         @if ($method === 'edit')
+            <input type="hidden" value="{{ $news->id }}" id="id_news">
             <input type="hidden" value="{{ json_encode($news->news_paginations) }}" id="news_paginations">
         @endif
         <div class="d-flex justify-content-between gap-2">
             <div class="col-7 ">
-                <div class="d-flex justify-content-end gap-3 mt-3">
-                    <a href="{{ route('news.index') }}" class="btn btn-light" data-bs-toggle="tooltip"
-                        data-bs-placement="top" title="Back to Table Rome">Back</a>
-
-                    <button class="btn btn-primary" name="save" type="submit" data-bs-toggle="tooltip" value="publish"
-                        data-bs-placement="top" title="Create Role">Save
-                    </button>
-                </div>
                 <div class="card" id="card_content">
                     <div class="card-header"><span class="h4 text-capitalize card-header-text">{{ $method }}
                             News</span>
@@ -74,7 +70,7 @@
                     <div class="card-body d-flex flex-column gap-2">
                         <div class="form-group">
                             <label for="title" class="mb-2">Title</label>
-                            <input type="text" class="form-control" id="title" name="title[]"
+                            <input type="text" class="form-control" id="title" name="title[@if ($method === 'edit'){{ $news->id }}@endif]"
                                 placeholder="Enter Title " required
                                 @if ($method === 'edit') value="{{ $news->title }}" @endif />
                         </div>
@@ -82,12 +78,14 @@
                         <div class="form-group">
                             <label for="synopsis" class="form-label mb-2">Synopsis</label>
                             <textarea name="synopsis" class="form-control" id="synopsis" cols="30" rows="3" required
-                                placeholder="Enter Synopsis">@if ($method === 'edit'){{ $news->synopsis }}@endif</textarea>
+                                placeholder="Enter Synopsis">
+@if ($method === 'edit'){{ $news->synopsis }}@endif
+</textarea>
                         </div>
 
                         <div class="form-group" id="content_box">
                             <label for="content" class="form-label">Content</label>
-                            <textarea name="content[]" class="my-editor form-control" id="content" cols="30" rows="10" required>
+                            <textarea name="content[@if ($method === 'edit'){{ $news->id }}@endif]" class="my-editor form-control" id="content" cols="30" rows="10" required>
                                     @if ($method === 'edit')
                                         {{ $news->content }}
                                     @endif
@@ -95,7 +93,8 @@
                         </div>
                     </div>
                 </div>
-                <div id="other_page"></div>
+                <div id="other_page" class=" d-flex flex-column"></div>
+
                 <span class="btn btn-outline-secondary my-3 w-100" id="add_page_button"><i
                         class="bi bi-plus-circle"></i>&nbsp;
                     Add New Page</span>
@@ -136,8 +135,8 @@
                                         <label for="publishedAt" class="mb-2">Schedule</label>
                                     </div>
                                     <div class="col-md-7">
-                                        <input type="date" class="form-control" id="publishedAt" name="publishedAt"
-                                            placeholder="dd-mm-yyyy"
+                                        <input type="date" class="form-control" id="dateTime" name="publishedAt"
+                                            placeholder="dd-mm-yyyy hh:mm:ss"
                                             @if ($method === 'edit') value="{{ date('Y-m-d', strtotime($news->published_at)) }}" @endif />
 
                                     </div>
@@ -231,24 +230,24 @@
                         </div>
 
                         <!--<a data-bs-toggle="collapse"  href="#delapan">
-                                                                <i class="bi bi-chevron-down fs-6" style="float:right"></i>
-                                                                <span class="h6">Author</span>
-                                                            </a>
-                                                            <hr />
-                                                            <div class="collapse" id="delapan">
-                                                                <div class="form-group">
-                                                                    <div class="row">
-                                                                        <select name="author[]" class="choices form-select multiple-remove"
-                                                                        multiple="multiple"
-                                                                        id="author">
-                                                                            <optgroup label="Author">
+                                                                                <i class="bi bi-chevron-down fs-6" style="float:right"></i>
+                                                                                <span class="h6">Author</span>
+                                                                            </a>
+                                                                            <hr />
+                                                                            <div class="collapse" id="delapan">
+                                                                                <div class="form-group">
+                                                                                    <div class="row">
+                                                                                        <select name="author[]" class="choices form-select multiple-remove"
+                                                                                        multiple="multiple"
+                                                                                        id="author">
+                                                                                            <optgroup label="Author">
 
 
-                                                                            </optgroup>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>-->
+                                                                                            </optgroup>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>-->
 
                         <a data-bs-toggle="collapse" href="#empat">
                             <i class="bi bi-chevron-down fs-6" style="float:right"></i>
@@ -263,76 +262,54 @@
                                     @if ($method === 'edit') value="{{ $news->keywords }}" @endif />
                             </div>
                             <!--<div class="form-group">
-                                                                        <label class="mb-2">Photographer</label><br>
-                                                                        <select name="photographer[]" class="choices form-select multiple-remove"
-                                                                        multiple="multiple"
-                                                                        id="photographer">
-                                                                            <optgroup label="photographer">
+                                                                                        <label class="mb-2">Photographer</label><br>
+                                                                                        <select name="photographer[]" class="choices form-select multiple-remove"
+                                                                                        multiple="multiple"
+                                                                                        id="photographer">
+                                                                                            <optgroup label="photographer">
 
-                                                                            </optgroup>
-                                                                        </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                        <label class="mb-2">Contributor</label><br>
-                                                                        <select name="contributor[]" class="choices form-select multiple-remove"
-                                                                        multiple="multiple"
-                                                                        id="contributor">
-                                                                            <optgroup label="contributor">
+                                                                                            </optgroup>
+                                                                                        </select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                        <label class="mb-2">Contributor</label><br>
+                                                                                        <select name="contributor[]" class="choices form-select multiple-remove"
+                                                                                        multiple="multiple"
+                                                                                        id="contributor">
+                                                                                            <optgroup label="contributor">
 
-                                                                            </optgroup>
-                                                                        </select>
+                                                                                            </optgroup>
+                                                                                        </select>
 
-                                                            </div>-->
-                                                            <div class="form-group">
-                                                                <label class="mb-2">Photographer</label><br>
-                                                                <select name="photographers[]"
-                                                                        class="choices form-select multiple-remove"
-                                                                        multiple="multiple"
-                                                                        id="photographer">
-                                                                    <optgroup label="photographer">
-                                                                        @foreach($users as $user)
-                                                                            @if($user->roles->role === 'Photographer')
-                                                                                <option
-                                                                                    @if ($method === 'edit' and is_null(json_decode($news->photographers))==false)
-                                                                                    @if(in_array($user->uuid,json_decode($news->photographers)))
-                                                                                    selected
-                                                                                    @endif
-                                                                                    @endif
-                                                                                    value="{{$user->uuid}}">{{$user->name}}</option>
-                                                                            @endif
-                                                                        @endforeach
-                                                                    </optgroup>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="mb-2">Contributor</label><br>
-                                                                <select name="contributor" class="choices form-select multiple-remove"
-                                                                        multiple="multiple"
-                                                                        id="contributor" disabled>
-                                                                    <optgroup label="contributor">
-                                                                        @foreach($contributors as $contributor)
-                                                                            <option value="{{$contributor->name}}"
-                                                                                    selected>{{$contributor->name}}</option>
-                                                                        @endforeach
-                                                                    </optgroup>
-                                                                </select>
-                                                            </div>
+                                                                            </div>-->
                             <div class="form-group">
-                                <div class="row">
-                                    <label for="publishedAt" class="mb-2">Type</label>
-                                    <fieldset class="form-group">
-                                        <select name="types" class="form-select" id="type">
-                                            @if ($method === 'create')
-                                                <option value="" disabled selected>Select Type</option>
+                                <label class="mb-2">Photographer</label><br>
+                                <select name="photographers[]" class="choices form-select multiple-remove"
+                                    multiple="multiple" id="photographer">
+                                    <optgroup label="photographer">
+                                        @foreach ($users as $user)
+                                            @if ($user->roles->role === 'Photographer')
+                                                <option
+                                                    @if ($method === 'edit' and is_null(json_decode($news->photographers)) == false) @if (in_array($user->uuid, json_decode($news->photographers)))
+                                                                                    selected @endif
+                                                    @endif
+                                                    value="{{ $user->uuid }}">{{ $user->name }}</option>
                                             @endif
-                                            @foreach ($types as $type)
-                                                <option value="{{ $type }}"
-                                                    @if ($method === 'edit' and $type === $news->types) selected @endif>{{ ucwords($type) }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </fieldset>
-                                </div>
+                                        @endforeach
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="mb-2">Contributor</label><br>
+                                <select name="contributor" class="choices form-select multiple-remove"
+                                    multiple="multiple" id="contributor" disabled>
+                                    <optgroup label="contributor">
+                                        @foreach ($contributors as $contributor)
+                                            <option value="{{ $contributor->name }}" selected>{{ $contributor->name }}
+                                            </option>
+                                        @endforeach
+                                    </optgroup>
+                                </select>
                             </div>
                         </div>
                         <a data-bs-toggle="collapse" href="#lima">
@@ -390,6 +367,14 @@
                                 <label class="form-check-label" for="editorPick">Editor Pick</label>
                             </div>
                         </div>
+                        <div class="d-flex justify-content-end gap-3 mt-3 flex-column">
+                            <button class="btn btn-primary w-100" name="save" type="submit" data-bs-toggle="tooltip"
+                                value="publish" data-bs-placement="top" title="Create Role">Save
+                            </button>
+                            <a href="{{ route('news.index') }}" class="btn btn-outline-secondary w-100"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Back to Table Rome">Back</a>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -398,6 +383,17 @@
         </div>
     </section>
     </form>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast fade hide" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-success">
+                <strong class="me-auto text-white">Message</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Hello, world! This is a toast message.
+            </div>
+        </div>
+    </div>
 @endsection
 
 
@@ -406,7 +402,8 @@
         referrerpolicy="origin"></script>
 
     <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="{{ asset('assets/extensions/toastify-js/src/toastify.js') }}"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>

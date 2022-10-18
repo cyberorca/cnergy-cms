@@ -111,14 +111,14 @@ class NewsController extends Controller
         $categories = Category::all();
         $tags = Tag::all();
         $types = ['news', 'photonews', 'video'];
-//        return response()->json($users);
+        //        return response()->json($users);
         return view('news.editable', [
             'method' => end($method),
             'categories' => $categories,
             'types' => $types,
             'users' => $users,
             'tags' => $tags,
-            'contributors'=>[]
+            'contributors' => []
         ]);
     }
 
@@ -133,8 +133,9 @@ class NewsController extends Controller
         $data = $request->input();
 
         $news_paginations = array();
-        
+
         try {
+            $i = 2;
             for ($i = 0; $i < count($data['title']) - 1; $i++) {
                 $news_paginations[$i] = [
                     'title' => $data['title'][$i + 1],
@@ -142,6 +143,7 @@ class NewsController extends Controller
                     'content' => $data['content'][$i + 1],
                     'order_by_no' => $i
                 ];
+                $i++;
             }
 
             if ($request->file('upload_image') && !$data['upload_image_selected']) {
@@ -155,7 +157,6 @@ class NewsController extends Controller
             }
 
             // return $news_paginations;
-
             $news = new News([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
@@ -170,12 +171,12 @@ class NewsController extends Controller
                 'is_branded_content' => $request->has('isBrandedContent') == false ? '0' : '1',
                 'title' => $data['title'][0],
                 'slug' => Str::slug($data['title'][0]),
-                'content' => $data['content'],
-                'synopsis' => $data['synopsis'][0],
+                'content' => $data['content'][0],
+                'synopsis' => $data['synopsis'],
                 'description' => $data['description'],
                 'types' => $data['types'],
                 'keywords' => $data['keywords'],
-                'photographers'=>$request->has('photographers') == false ? '[]' :json_encode($data['photographers']),
+                'photographers' => $request->has('photographers') == false ? '[]' : json_encode($data['photographers']),
                 'image' => $data['image'] ?? null,
                 'is_published' => $data['isPublished'],
                 'published_at' => $request->has('isPublished') == false ? null : $data['publishedAt'],
@@ -198,7 +199,7 @@ class NewsController extends Controller
                 $news->tags()->attach($t);
             }
 
-            if(count($news_paginations)){
+            if (count($news_paginations)) {
                 foreach ($news_paginations as $news_page) {
                     NewsPagination::create([
                         'title' => $news_page['title'],
@@ -247,8 +248,8 @@ class NewsController extends Controller
             'types' => $types,
             'news' => $news,
             'tags' => $tags,
-            'contributors'=>$contributors,
-            'users'=>$users
+            'contributors' => $contributors,
+            'users' => $users
         ]);
     }
 
@@ -262,6 +263,7 @@ class NewsController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->input();
+        return response()->json($data);
         $newsById = News::find($id);
         try {
             $input = [
@@ -283,7 +285,7 @@ class NewsController extends Controller
                 'description' => $data['description'],
                 'types' => $data['types'],
                 'keywords' => $data['keywords'],
-                'photographers'=>$request->has('photographers') == false ? null :json_encode($data['photographers']),
+                'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
                 'is_published' => $data['isPublished'],
                 'published_at' => $request->has('isPublished') == false ? null : $data['publishedAt'],
                 'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
@@ -347,6 +349,26 @@ class NewsController extends Controller
             return Redirect::back()->with('status', 'Successfully to Delete News');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
+        }
+    }
+
+    function deleteNewsPagination(Request $request)
+    {
+        try {
+            $id = $request->id;
+            NewsPagination::where('id', $id)->update([
+                'deleted_by' => Auth::user()->uuid,
+            ]);
+            if(NewsPagination::destroy($id)){
+                return response()->json([
+                    "status" => "success",
+                    "message" => "Successfully deleted page",
+                ], 200);
+            } 
+        } catch (\Throwable $e) {
+            return response()->json([
+                "message" => $e->getMessage()
+            ], 500);
         }
     }
 }

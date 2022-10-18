@@ -98,6 +98,7 @@ Route::group(['middleware' => 'auth'], function () {
     // Update
     Route::prefix('update')->group(function () {
         Route::prefix('news')->group(function () {
+            Route::post('/pagination/api/delete/', [NewsController::class, 'deleteNewsPagination'])->name('news.api.news_pagination');
             Route::resource('news', NewsController::class);
             Route::resource('video', VideoController::class);
         });
