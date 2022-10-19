@@ -199,6 +199,7 @@ class NewsController extends Controller
                     [
                         'news_id' => $news->id,
                         'updated_by' => \auth()->id(),
+                        'updated_at'=>now(),
                         'updated_content' => json_encode($news->getOriginal())
                     ]
                 );
@@ -324,6 +325,7 @@ class NewsController extends Controller
                 [
                     'news_id' => $id,
                     'updated_by' => \auth()->id(),
+                    'updated_at'=>now(),
                     'updated_content' => json_encode($newsById->getChanges())
                 ]
             );
