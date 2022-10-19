@@ -26,9 +26,9 @@ add_page_button.addEventListener('click', function () {
     index++;
 })
 
-function textareaElement(page_no) {
+function textareaElement(page_no, other, edit) {
     let child = document.createElement("textarea");
-    child.name = id_news ? `content[${id_news ?? ''}][]` : `content[]`
+    child.name = edit ? `content[${id_news ?? ''}][${other.id}]` : `content[]`
     child.rows = 10
     child.cols = 30
     child.classList.add("my-editor", "form-control", 'my-3', `editors${page_no}`)
@@ -127,7 +127,7 @@ const collapseBodyElement = (page_no) => {
     return collapseBody;
 }
 
-const newAddContent = (child, edit = false) => {
+const newAddContent = (child, edit = false, other) => {
     const new_add_content = card_content.cloneNode(true);
     new_add_content.querySelector("#synopsis").previousElementSibling.remove();
     new_add_content.querySelector("#synopsis").remove();
@@ -138,14 +138,15 @@ const newAddContent = (child, edit = false) => {
     new_add_content.querySelector(".card-header").remove();
     // new_add_content.querySelector(".card-header-text").innerHTML = `Page ${index + 1}`
     new_add_content.querySelector("#content_box").append(child);
-
+    new_add_content.querySelector("#title").name = edit ? `title[${id_news ?? ''}][${other.id}]` : `title[]`
+    new_add_content.querySelector("#title").value = edit ? `${other.title}` : ``
     return new_add_content;
 }
 
 function collapseElement(edit = false, page_no, ...other) {
-    const textarea = textareaElement(page_no);
+    const textarea = textareaElement(page_no, other[0], edit);
     const collapseBody = collapseBodyElement(page_no)
-    const new_add_content = newAddContent(textarea, edit);
+    const new_add_content = newAddContent(textarea, edit, other[0]);
     const collapseLink = collapseLinkElement(page_no, edit, other[0]);
 
     if (edit) {
@@ -202,13 +203,16 @@ function tinyMCEConfig(index_pages) {
 
 if (document.body.contains(document.getElementById("news_paginations"))) {
     const news_paginations = JSON.parse(document.getElementById("news_paginations").value);
+    let page_count = 2;
     news_paginations.map((el, i) => {
-        index = el.order_by_no;
+        index = page_count;
         collapseElement(true, `${el.news_id}-${index}`, {
             content: el.content,
+            title: el.title,
             id: el.id
         })
         tinyMCEConfig(`${el.news_id}-${index}`)
+        page_count++;
     })
     index++;
 }
