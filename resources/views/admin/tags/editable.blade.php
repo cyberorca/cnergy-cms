@@ -16,7 +16,7 @@
                         <form action="{{ route('tag-management.store') }}" method="POST">
                 @endif
                 @csrf
-                <div class="col-md-12">input
+                <div class="col-md-12">
                     <div class="form-group">
                         <label for="basicInput">Tag Name</label>
                         <input type="text" class="form-control" id="tags" placeholder="Enter Tag Name"
