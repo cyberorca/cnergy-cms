@@ -16,7 +16,7 @@ class Tag extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['tags', 'slug', 'is_active', 'created_at', 'created_by', 'deleted_by'];
+    protected $fillable = ['tags', 'slug', 'is_active', 'created_at', 'created_by', 'deleted_by', 'meta_title', 'meta_description', 'meta_keywords'];
 
     public function tags(){
         return $this->belongsToMany(News::class, 'news_tags');
