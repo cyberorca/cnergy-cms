@@ -28,6 +28,21 @@
                         <input type="text" class="form-control" id="category" placeholder="Ex: Bandung Merdeka"
                             name="category" @if ($method === 'edit') value="{{ $post->category }}" @endif>
                     </div>
+                    <div class="form-group">
+                        <label for="basicInput">Meta Title</label>
+                        <input type="text" class="form-control" id="metaTitle" placeholder=""
+                            name="meta_title" @if ($method === 'edit') value="{{ $post->meta_title }}" @endif>
+                    </div>
+                    <div class="form-group">
+                        <label for="basicInput">Meta Keyword</label>
+                        <input type="text" class="form-control" id="metaKeyword" placeholder=""
+                            name="meta_keywords" @if ($method === 'edit') value="{{ $post->meta_keywords }}" @endif>
+                    </div>
+                    <div class="form-group">
+                        <label for="basicInput">Meta Description</label>
+                        <input type="text" class="form-control" id="metaDescription" placeholder=""
+                            name="meta_description" @if ($method === 'edit') value="{{ $post->meta_description }}" @endif>
+                    </div>
                     
                     <div class="form-group">
                         <label for="basicInput">Type Category</label>

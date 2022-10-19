@@ -56,7 +56,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-4">
+                {{-- <div class="col-md-4">
                     <label for="inputHeadline" class="form-label">Photographer</label>
                     <select name="photographer" id="inputHeadline" class="form-select">
                         <option value="" selected>All</option>
@@ -64,7 +64,7 @@
                             <option value="{{ $p->uuid }}">{{ $p->name }}</option>
                         @endforeach
                     </select>
-                </div>
+                </div> --}}
                 <div class="col-md-4">
                     <label for="inputHeadline" class="form-label">Editor</label>
                     <select name="editor" id="inputHeadline" class="form-select">

@@ -21,6 +21,8 @@ use App\Models\ImageBank;
 use Illuminate\Support\Facades\Storage;
 use ViKon\Diff\Diff;
 
+use function PHPSTORM_META\type;
+
 class VideoController extends Controller
 {
     /**
@@ -30,9 +32,10 @@ class VideoController extends Controller
      */
     public function index(Request $request)
     {
-        $news = News::with(['categories', 'tags'])->whereNotNull('video');
+        $news = News::with(['categories', 'tags'])->where('types','=','video');
         $editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
         $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Reporter");
+        $photographers = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Photographer");
 
         if ($request->get('published')) {
             $published = $request->get('published');
@@ -85,6 +88,7 @@ class VideoController extends Controller
             'news' => $news->paginate(10)->withQueryString(),
             'editors' => $editors->get(),
             'reporters' => $reporters->get(),
+            'photographers' => $photographers->get()
             // 'categories' => Category::whereNull("parent_id"),
         ]);
     }
@@ -108,7 +112,8 @@ class VideoController extends Controller
             'categories' => $categories,
             'types' => $types,
             'users' => $users,
-            'tags' => $tags
+            'tags' => $tags,
+            'contributors' => []
         ]);
     }
 
@@ -146,6 +151,7 @@ class VideoController extends Controller
                 'description' => $data['description'],
                 'types' => $data['types'],
                 'keywords' => $data['keywords'],
+                'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
                 'image' => $data['image'] ?? null,
                 'is_published' => $data['isPublished'],
                 'published_at' => $mergeDate,
@@ -198,12 +204,16 @@ class VideoController extends Controller
         $categories = Category::all();
         $tags = Tag::all();
         $types = ['news', 'photonews', 'video'];
+        $contributors = $news->users;
+        $users = User::with(['roles'])->get();
         return view('news.video.editable', [
             'method' => end($method),
             'categories' => $categories,
             'types' => $types,
             'news' => $news,
-            'tags' => $tags
+            'tags' => $tags,
+            'contributors' => $contributors,
+            'users' => $users
         ]);
     }
 
@@ -241,6 +251,7 @@ class VideoController extends Controller
                 'description' => $data['description'],
                 'types' => $data['types'],
                 'keywords' => $data['keywords'],
+                'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
                 'is_published' => $data['isPublished'],
                 'published_at' => $margeDate,
                 'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
