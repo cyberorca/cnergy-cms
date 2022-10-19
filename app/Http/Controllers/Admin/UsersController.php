@@ -146,7 +146,7 @@ class UsersController extends Controller
             ]);
             return redirect()->route("user-setting.index")->with('status', 'Successfully to Update User');
         } catch (\Throwable $e) {
-            return Redirect::back()->withErrors($e);
+            return Redirect::back()->withErrors($e->getMessage());
         }
     }
 

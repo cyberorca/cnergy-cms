@@ -2,9 +2,9 @@
 @section('css')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-    
+
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('assets/css/pages/image-uploader.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('assets/css/pages/image-uploader.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/extensions/choices.js/public/assets/styles/choices.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
@@ -25,7 +25,8 @@
         }
 
         .search_select_box select {
-            width: 100%;;
+            width: 100%;
+            ;
         }
 
         a[aria-expanded=true] .bi-chevron-down {
@@ -36,6 +37,10 @@
         a[aria-expanded=false] .bi-chevron-up {
             display: none;
         }
+
+        .collapse-news:hover {
+            background: rgba(0, 0, 0, 0.11) !important;
+        }
     </style>
 @endsection
 
@@ -43,7 +48,9 @@
 @endpush
 
 @section('body')
-@if ($method === 'edit')
+    <x-page-heading title="Edit News" subtitle="Manage News Data" />
+
+    @if ($method === 'edit')
         <form action="{{ route('news.update', $news->id) }}" method="post" enctype="multipart/form-data">
         @else
             <form action="{{ route('news.store') }}" method="post" enctype="multipart/form-data">
@@ -54,41 +61,34 @@
         @endif
         @csrf
         @if ($method === 'edit')
+            <input type="hidden" value="{{ $news->id }}" id="id_news">
             <input type="hidden" value="{{ json_encode($news->news_paginations) }}" id="news_paginations">
         @endif
         <div class="d-flex justify-content-between gap-2">
-            <div class="col-8">
-                <div class="d-flex justify-content-end gap-3 mt-3">
-                    <a href="{{ route('news.index') }}" class="btn btn-light" data-bs-toggle="tooltip"
-                        data-bs-placement="top" title="Back to Table Rome">Back</a>
-
-                    <button class="btn btn-primary" name="save" type="submit" data-bs-toggle="tooltip" value="publish"
-                        data-bs-placement="top" title="Create Role">Save
-                    </button>
-                </div>
+            <div class="col-7 ">
                 <div class="card" id="card_content">
                     <div class="card-header"><span class="h4 text-capitalize card-header-text">{{ $method }}
                             News</span>
-                                    </div>
-                                    <div class="card-body d-flex flex-column gap-2">
-                                        <div class="form-group">
-                                            <label for="title" class="mb-2">Title</label>
-                                            <input type="text" class="form-control" id="title" name="title[]"
-                                                   placeholder="Enter Title " required
-                                                   @if ($method === 'edit') value="{{ $news->title }}" @endif />
-                                        </div>
+                    </div>
+                    <div class="card-body d-flex flex-column gap-2">
+                        <div class="form-group">
+                            <label for="title" class="mb-2">Title</label>
+                            <input type="text" class="form-control" id="title" name="title[]"
+                                placeholder="Enter Title " required
+                                @if ($method === 'edit') value="{{ $news->title }}" @endif />
+                        </div>
 
-                                        <div class="form-group">
-                                            <label for="synopsis" class="form-label mb-2">Synopsis</label>
-                                            <textarea name="synopsis" class="form-control" id="synopsis" cols="30"
-                                                      rows="3" required
-                                                      placeholder="Enter Synopsis">@if ($method === 'edit'){{ $news->synopsis }}@endif</textarea>
-                                        </div>
+                        <div class="form-group">
+                            <label for="synopsis" class="form-label mb-2">Synopsis</label>
+                            <textarea name="synopsis" class="form-control" id="synopsis" cols="30" rows="3" required
+                                placeholder="Enter Synopsis">
+@if ($method === 'edit'){{ $news->synopsis }}@endif
+</textarea>
+                        </div>
 
-                                        <div class="form-group" id="content_box">
-                                            <label for="content" class="form-label">Content</label>
-                                            <textarea name="content[]" class="my-editor form-control" id="content"
-                                                      cols="30" rows="10" required>
+                        <div class="form-group" id="content_box">
+                            <label for="content" class="form-label">Content</label>
+                            <textarea name="content[]" class="my-editor form-control" id="content" cols="30" rows="10" required>
                                     @if ($method === 'edit')
                                                     {{ $news->content }}
                                                 @endif
@@ -96,16 +96,17 @@
                         </div>
                     </div>
                 </div>
-                <div id="other_page"></div>
+                <div id="other_page" class=" d-flex flex-column"></div>
+
                 <span class="btn btn-outline-secondary my-3 w-100" id="add_page_button"><i
                         class="bi bi-plus-circle"></i>&nbsp;
                     Add New Page</span>
 
             </div>
-            <div class="col-4">
+            <div class="col-5">
                 <div class="card">
                     <div class="card-body">
-                    <a data-bs-toggle="collapse" href="#satu" aria-expanded="false" aria-controls="collapseExample">
+                        <a data-bs-toggle="collapse" href="#satu" aria-expanded="false" aria-controls="collapseExample">
                             <span class="h6">Status & Visibility</span>
                             <i class="bi bi-chevron-up pull-right fs-6"></i>
                             <i class="bi bi-chevron-down pull-right fs-6"></i>
@@ -147,8 +148,9 @@
                             </div>
                         </div>
 
-                        
-                        <a data-bs-toggle="collapse" href="#dua" aria-expanded="false" aria-controls="collapseExample">
+
+                        <a data-bs-toggle="collapse" href="#dua" aria-expanded="false"
+                            aria-controls="collapseExample">
                             <span class="h6">Picture</span>
                             <i class="bi bi-chevron-up pull-right fs-6"></i>
                             <i class="bi bi-chevron-down pull-right fs-6"></i>
@@ -164,7 +166,7 @@
                             </div>
                         </div>
 
-                        
+
                         <a data-bs-toggle="collapse" href="#sembilan" aria-expanded="false"
                             aria-controls="collapseExample">
                             <span class="h6">Category</span>
@@ -207,24 +209,25 @@
                         <div class="collapse" id="tiga">
                             <div class="form-group">
                                 <div class="row">
-                                    <select name="tags[]" class="form-select" style='width: 100%;'
-                                        multiple="multiple" id="tags" required>
+                                    <select name="tags[]" class="form-select" style='width: 100%;' multiple="multiple"
+                                        id="tags" required>
                                         @if ($method === 'edit')
-                                        @foreach ($tags as $id => $tag)
+                                            @foreach ($tags as $id => $tag)
                                                 <option id="{{ $id }}" value="{{ $tag->id }}"
                                                     @if ($method === 'edit' and $tag->news()->find($news->id)) selected @endif>{{ $tag->tags }}
                                                 </option>
                                             @endforeach
                                         @endif
                                     </select>
-                                    
+
                                 </div>
                             </div>
                             <br>
                         </div>
 
-                        
-                        <a data-bs-toggle="collapse" href="#tujuh" aria-expanded="false" aria-controls="collapseExample">
+
+                        <a data-bs-toggle="collapse" href="#tujuh" aria-expanded="false"
+                            aria-controls="collapseExample">
                             <span class="h6">Description</span>
                             <i class="bi bi-chevron-up pull-right fs-6"></i>
                             <i class="bi bi-chevron-down pull-right fs-6"></i>
@@ -243,27 +246,28 @@
                         </div>
 
                         <!--<a data-bs-toggle="collapse"  href="#delapan">
-                                                                            <i class="bi bi-chevron-down fs-6" style="float:right"></i>
-                                                                            <span class="h6">Author</span>
-                                                                        </a>
-                                                                        <hr />
-                                                                        <div class="collapse" id="delapan">
-                                                                            <div class="form-group">
-                                                                                <div class="row">
-                                                                                    <select name="author[]" class="choices form-select multiple-remove"
-                                                                                    multiple="multiple"
-                                                                                    id="author">
-                                                                                        <optgroup label="Author">
+                                                                                <i class="bi bi-chevron-down fs-6" style="float:right"></i>
+                                                                                <span class="h6">Author</span>
+                                                                            </a>
+                                                                            <hr />
+                                                                            <div class="collapse" id="delapan">
+                                                                                <div class="form-group">
+                                                                                    <div class="row">
+                                                                                        <select name="author[]" class="choices form-select multiple-remove"
+                                                                                        multiple="multiple"
+                                                                                        id="author">
+                                                                                            <optgroup label="Author">
 
 
-                                                                                        </optgroup>
-                                                                                    </select>
+                                                                                            </optgroup>
+                                                                                        </select>
+                                                                                    </div>
                                                                                 </div>
-                                                                            </div>
-                                                                        </div>-->
+                                                                            </div>-->
 
-                        
-                        <a data-bs-toggle="collapse" href="#empat" aria-expanded="false" aria-controls="collapseExample">
+
+                        <a data-bs-toggle="collapse" href="#empat" aria-expanded="false"
+                            aria-controls="collapseExample">
                             <span class="h6">Other Settings</span>
                             <i class="bi bi-chevron-up pull-right fs-6"></i>
                             <i class="bi bi-chevron-down pull-right fs-6"></i>
@@ -273,30 +277,31 @@
                             <div class="form-group">
                                 <label class="mb-2">Keyword</label><br>
                                 <input name="keywords" id="keywords" type="text" required
-                                @if ($method === 'create') placeholder="Enter Keyword" @endif class="w-100 form-control" data-role="tagsinput"
+                                    @if ($method === 'create') placeholder="Enter Keyword" @endif
+                                    class="w-100 form-control" data-role="tagsinput"
                                     @if ($method === 'edit') value="{{ $news->keywords }}" @endif />
                             </div>
                             <!--<div class="form-group">
-                                                                                    <label class="mb-2">Photographer</label><br>
-                                                                                    <select name="photographer[]" class="choices form-select multiple-remove"
-                                                                                    multiple="multiple"
-                                                                                    id="photographer">
-                                                                                        <optgroup label="photographer">
+                                                                                        <label class="mb-2">Photographer</label><br>
+                                                                                        <select name="photographer[]" class="choices form-select multiple-remove"
+                                                                                        multiple="multiple"
+                                                                                        id="photographer">
+                                                                                            <optgroup label="photographer">
 
-                                                                                        </optgroup>
-                                                                                    </select>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                                    <label class="mb-2">Contributor</label><br>
-                                                                                    <select name="contributor[]" class="choices form-select multiple-remove"
-                                                                                    multiple="multiple"
-                                                                                    id="contributor">
-                                                                                        <optgroup label="contributor">
+                                                                                            </optgroup>
+                                                                                        </select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                        <label class="mb-2">Contributor</label><br>
+                                                                                        <select name="contributor[]" class="choices form-select multiple-remove"
+                                                                                        multiple="multiple"
+                                                                                        id="contributor">
+                                                                                            <optgroup label="contributor">
 
-                                                                                        </optgroup>
-                                                                                    </select>
+                                                                                            </optgroup>
+                                                                                        </select>
 
-                                                                        </div>-->
+                                                                            </div>-->
                             <div class="form-group">
                                 <label class="mb-2">Photographer</label><br>
                                 <select name="photographers[]" class="choices form-select multiple-remove"
@@ -326,14 +331,9 @@
                                     </optgroup>
                                 </select>
                             </div>
-                            <select name="types" class="form-select" id="type" hidden>
-                                @foreach ($types as $type)
-                                    <option value="{{ $type }}"
-                                        @if ($type === 'news') selected @endif>{{ ucwords($type) }}</option>
-                                @endforeach
-                            </select>
                         </div>
-                        <a data-bs-toggle="collapse" href="#lima" aria-expanded="false" aria-controls="collapseExample">
+                        <a data-bs-toggle="collapse" href="#lima" aria-expanded="false"
+                            aria-controls="collapseExample">
                             <span class="h6">Content Type</span>
                             <i class="bi bi-chevron-up pull-right fs-6"></i>
                             <i class="bi bi-chevron-down pull-right fs-6"></i>
@@ -389,6 +389,14 @@
                                 <label class="form-check-label" for="editorPick">Editor Pick</label>
                             </div>
                         </div>
+                        <div class="d-flex justify-content-end gap-3 mt-3 flex-column">
+                            <button class="btn btn-primary w-100" name="save" type="submit" data-bs-toggle="tooltip"
+                                value="publish" data-bs-placement="top" title="Create Role">Save
+                            </button>
+                            <a href="{{ route('news.index') }}" class="btn btn-outline-secondary w-100"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Back to Table Rome">Back</a>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -397,26 +405,43 @@
         </div>
     </section>
     </form>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast fade hide" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-success">
+                <strong class="me-auto text-white">Message</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Hello, world! This is a toast message.
+            </div>
+        </div>
+    </div>
 @endsection
 
 
 @section('javascript')
-
+    <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
+    <script src="{{ asset('assets/extensions/toastify-js/src/toastify.js') }}"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    
+
 
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
             $("#tags").select2({
-                placeholder:'Select Tags',
+                placeholder: 'Select Tags',
                 allowClear: true,
                 ajax: {
-                    url: "{{route('tag.index')}}",
+                    url: "{{ route('tag.index') }}",
                     dataType: 'json',
                     delay: 250,
-                    processResults: function({data}){
+                    processResults: function({
+                        data
+                    }) {
                         return {
-                            results: $.map(data, function(item){
+                            results: $.map(data, function(item) {
                                 return {
                                     id: item.id,
                                     text: item.tags
@@ -427,12 +452,12 @@
                 }
             });
         });
-        </script>
+    </script>
 
-<script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/4/tinymce.min.js"
+    <script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/4/tinymce.min.js"
         referrerpolicy="origin"></script>
-        <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
+    <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
 
@@ -475,7 +500,7 @@
         tinymce.init(editor_config);
     </script>
 
-<script src="{{ asset('assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
+    <script src="{{ asset('assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
     <script src="{{ asset('assets/js/pages/form-element-select.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 
