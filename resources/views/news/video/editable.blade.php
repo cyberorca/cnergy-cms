@@ -283,36 +283,41 @@
                                     data-role="tagsinput"
                                     @if ($method === 'edit') value="{{ $news->keywords }}" @else placeholder="Enter Keyword" @endif />
                             </div>
-                            <br>
-                            <!--<div class="form-group">
-                                                        <label class="mb-2">Photographer</label><br>
-                                                        <select name="photographer[]" class="choices form-select multiple-remove"
-                                                        multiple="multiple"
-                                                        id="photographer">
-                                                            <optgroup label="photographer">
-
-                                                            </optgroup>
-                                                        </select>
-                                            </div>
-                                            <div class="form-group">
-                                                        <label class="mb-2">Contributor</label><br>
-                                                        <select name="contributor[]" class="choices form-select multiple-remove"
-                                                        multiple="multiple"
-                                                        id="contributor">
-                                                            <optgroup label="contributor">
-
-                                                            </optgroup>
-                                                        </select>
-
-                                            </div>-->
-
+                            <div class="form-group">
+                                <label class="mb-2">Photographer</label><br>
+                                <select name="photographers[]" class="choices form-select multiple-remove"
+                                    multiple="multiple" id="photographer">
+                                    <optgroup label="photographer">
+                                        @foreach ($users as $user)
+                                            @if ($user->roles->role === 'Photographer')
+                                                <option
+                                                    @if ($method === 'edit' and is_null(json_decode($news->photographers)) == false) @if (in_array($user->uuid, json_decode($news->photographers)))
+                                                                                    selected @endif
+                                                    @endif
+                                                    value="{{ $user->uuid }}">{{ $user->name }}</option>
+                                            @endif
+                                        @endforeach
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="mb-2">Contributor</label><br>
+                                <select name="contributor" class="choices form-select multiple-remove"
+                                    multiple="multiple" id="contributor" disabled>
+                                    <optgroup label="contributor">
+                                        @foreach ($contributors as $contributor)
+                                            <option value="{{ $contributor->name }}" selected>{{ $contributor->name }}
+                                            </option>
+                                        @endforeach
+                                    </optgroup>
+                                </select>
+                            </div>
                             <select name="types" class="form-select" id="type" hidden>
                                 @foreach ($types as $type)
                                     <option value="{{ $type }}"
                                         @if ($type === 'video') selected @endif>{{ ucwords($type) }}</option>
                                 @endforeach
                             </select>
-
                         </div>
 
                         <a data-bs-toggle="collapse" href="#lima" aria-expanded="false"
