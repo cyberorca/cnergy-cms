@@ -276,53 +276,51 @@ class NewsController extends Controller
     {
         $data = $request->input();
         $news_paginations_old = array();
-        $news_paginations_new = array();
+        // $news_paginations_new = array();
 
         $news_parent = [
             'title' => $data['title'][0],
             'content' => $data['content'][0]
         ];
 
-        $i = 2;
-        foreach ($data['title'][$id] as $key => $value) {
-            $news_paginations_old[$i] = [
-                'title' => $data['title'][$id][$key],
-                'content' => $data['content'][$id][$key],
-                'order_by_no' => $i,
-                'news_id' => $id,
-                'id' => $key
-            ];
-            $i++;
+        if (count($data['title']) > 1) {
+            $i = 2;
+            foreach ($data['title'][$id] as $key => $value) {
+                $news_paginations_old[$i] = [
+                    'title' => $data['title'][$id][$key],
+                    'content' => $data['content'][$id][$key],
+                    'order_by_no' => $i,
+                    'news_id' => $id,
+                    'id' => $key
+                ];
+                $i++;
+            }
         }
 
-        foreach ($data['title'] as $key => $value) {
-            if($key === intval($id)){
-                continue;
-            } else {
+        if (count($data['title']) > 1) {
+            foreach ($data['title'] as $key => $value) {
+                if (in_array($key, [0, $id])) {
+                    continue;
+                }
                 $news_paginations_old[$i] = [
                     'title' => $data['title'][$key],
                     'content' => $data['content'][$key],
                     'order_by_no' => $i,
                     'news_id' => $id,
+                    'key' => $key,
                     'id' => null
                 ];
                 $i++;
             }
         }
-        
-        // return response()->json([
-        //     'news_parent' => $news_parent,
-        //     'news_paginations_old' => $news_paginations_old,
-        //     'news_paginations_new' => $news_paginations_new,
-        //     'news' => $data,
-        // ]);
-        
+
+
         $newsById = News::find($id);
         $date = $data['date'];
         $time = $data['time'];
         $margeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
         try {
-            
+
             $input = [
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
@@ -352,13 +350,13 @@ class NewsController extends Controller
                 'category_id' => $data['category'],
                 'video' => $data['video'] ?? null
             ];
-            
+
             if ($request->file('upload_image') && !$data['upload_image_selected']) {
                 $file = $request->file('upload_image');
                 $fileFormatPath = new FileFormatPath('news', $file);
                 $input['image'] = $fileFormatPath->storeFile();
             }
-            
+
             if ($data['upload_image_selected'] && !$request->file('upload_image')) {
                 $input['image'] = explode(Storage::url(""), $data['upload_image_selected'])[1];
             }
@@ -367,9 +365,9 @@ class NewsController extends Controller
             foreach ($data['tags'] as $t) {
                 $newsById->tags()->attach($t);
             }
-            
+
             NewsPagination::upsert($news_paginations_old, ['id'], ['title', 'content', 'order_by_no']);
-            
+
             $log = new Log(
                 [
                     'news_id' => $id,
