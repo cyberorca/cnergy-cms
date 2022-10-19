@@ -29,6 +29,9 @@ class Category extends Model
         'updated_by',
         'deleted_at',
         'deleted_by',
+        'meta_title',
+        'meta_keywords',
+        'meta_description'
     ];
 
     // protected $casts = [
