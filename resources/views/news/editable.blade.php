@@ -236,11 +236,7 @@
                         <div class="collapse" id="tujuh">
                             <div class="form-group">
                                 <textarea name="description" class="form-control" id="description" cols="30" rows="3" required
-                                    placeholder="Enter description">
-@if ($method === 'edit')
-{{ $news->description }}
-@endif
-</textarea>
+                                    placeholder="Enter description">@if($method === 'edit'){{ $news->description }}@endif</textarea>
 
                             </div>
                         </div>
@@ -281,39 +277,44 @@
                                     class="w-100 form-control" data-role="tagsinput"
                                     @if ($method === 'edit') value="{{ $news->keywords }}" @endif />
                             </div>
-                            <!--<div class="form-group">
-                                                                                        <label class="mb-2">Photographer</label><br>
-                                                                                        <select name="photographer[]" class="choices form-select multiple-remove"
-                                                                                        multiple="multiple"
-                                                                                        id="photographer">
-                                                                                            <optgroup label="photographer">
 
-                                                                                            </optgroup>
-                                                                                        </select>
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                        <label class="mb-2">Contributor</label><br>
-                                                                                        <select name="contributor[]" class="choices form-select multiple-remove"
-                                                                                        multiple="multiple"
-                                                                                        id="contributor">
-                                                                                            <optgroup label="contributor">
-
-                                                                                            </optgroup>
-                                                                                        </select>
-
-                                                                            </div>-->
+                            <div class="form-group">
+                                <label class="mb-2">Reporter</label><br>
+                                <select name="reporters[]"
+                                        class="choices form-select multiple-remove"
+                                        multiple="multiple"
+                                        id="reporter">
+                                    <optgroup label="reporter">
+                                        @foreach($users as $user)
+                                            @if($user->roles->role === 'Reporter')
+                                                <option
+                                                    @if ($method === 'edit' and is_null(json_decode($news->reporters))==false)
+                                                    @if(in_array($user->uuid,json_decode($news->reporters)))
+                                                    selected
+                                                    @endif
+                                                    @endif
+                                                    value="{{$user->uuid}}">{{$user->name}}</option>
+                                            @endif
+                                        @endforeach
+                                    </optgroup>
+                                </select>
+                            </div>
                             <div class="form-group">
                                 <label class="mb-2">Photographer</label><br>
-                                <select name="photographers[]" class="choices form-select multiple-remove"
-                                    multiple="multiple" id="photographer">
+                                <select name="photographers[]"
+                                        class="choices form-select multiple-remove"
+                                        multiple="multiple"
+                                        id="photographer">
                                     <optgroup label="photographer">
-                                        @foreach ($users as $user)
-                                            @if ($user->roles->role === 'Photographer')
+                                        @foreach($users as $user)
+                                            @if($user->roles->role === 'Photographer')
                                                 <option
-                                                    @if ($method === 'edit' and is_null(json_decode($news->photographers)) == false) @if (in_array($user->uuid, json_decode($news->photographers)))
-                                                                                    selected @endif
+                                                    @if ($method === 'edit' and is_null(json_decode($news->photographers))==false)
+                                                    @if(in_array($user->uuid,json_decode($news->photographers)))
+                                                    selected
                                                     @endif
-                                                    value="{{ $user->uuid }}">{{ $user->name }}</option>
+                                                    @endif
+                                                    value="{{$user->uuid}}">{{$user->name}}</option>
                                             @endif
                                         @endforeach
                                     </optgroup>
@@ -321,12 +322,20 @@
                             </div>
                             <div class="form-group">
                                 <label class="mb-2">Contributor</label><br>
-                                <select name="contributor" class="choices form-select multiple-remove"
-                                    multiple="multiple" id="contributor" disabled>
+                                <select name="contributors[]"
+                                        class="choices form-select multiple-remove"
+                                        multiple="multiple"
+                                        id="contributor">
                                     <optgroup label="contributor">
-                                        @foreach ($contributors as $contributor)
-                                            <option value="{{ $contributor->name }}" selected>{{ $contributor->name }}
-                                            </option>
+                                        @foreach($contributors as $contributor)
+                                            <option
+                                                @if ($method === 'edit' and is_null(json_decode($news->contributors))==false)
+                                                @if(in_array($contributor->uuid,json_decode($news->contributors)))
+                                                selected
+                                                @endif
+                                                @endif
+                                                value="{{$contributor->uuid}}"
+                                            >{{$contributor->name}}</option>
                                         @endforeach
                                     </optgroup>
                                 </select>
