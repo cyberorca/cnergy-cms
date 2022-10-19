@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\News\VideoController;
+use App\Http\Controllers\Tools\StaticPageController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use UniSharp\LaravelFilemanager\Lfm;
@@ -89,6 +90,7 @@ Route::group(['middleware' => 'auth'], function () {
     // Tools
     Route::prefix('tools')->group(function () {
         Route::resource('image-bank', ImageBankController::class);
+        Route::resource('static-page', StaticPageController::class);
     });
     
     // Documentation
@@ -98,6 +100,7 @@ Route::group(['middleware' => 'auth'], function () {
     // Update
     Route::prefix('update')->group(function () {
         Route::prefix('news')->group(function () {
+            Route::post('/pagination/api/delete/', [NewsController::class, 'deleteNewsPagination'])->name('news.api.news_pagination');
             Route::resource('news', NewsController::class);
             Route::resource('video', VideoController::class);
         });
@@ -119,6 +122,8 @@ Route::get('/auth/callback', [LoginController::class, 'handleProviderCallback'])
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+//Route::get('/news2', [NewsController::class, 'select'])->name('news2');
+Route::get('selTag', [NewsController::class, 'select'])->name('tag.index');
 
 Route::get('/email/verify/{token}', [LoginController::class, 'verify'])->name('email.verify');
 Route::post('/front-end-menu/order/update', [FrontEndMenuController::class, 'changeOrderMenu'])->name('front-end-menu.order');
