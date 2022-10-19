@@ -75,6 +75,9 @@ class TagsController extends Controller
         $tags = new Tag([
             'tags' => ucwords($data['tag']),
             'slug' => Str::slug($data['tag']),
+            'meta_description' => $data['description'],
+            'meta_title' => $data['title'],
+            'meta_keywords' => $data['keywords'],
             'created_at' => now(),
             // ganti uuid user login nanti
             'created_by' => Auth::user()->uuid,
@@ -121,13 +124,16 @@ class TagsController extends Controller
      */
     public function update(TagsRequest $request, $tags)
     {
-        $data = $request->validated();
+        $data = $request->input();
         
         try {
             $tag = Tag::find($tags);
             $tag->tags = ucwords($data['tag']);
             $tag->slug = Str::slug($data['tag']);
             $tag->is_active = $data["is_active"];
+            $tag->meta_description = $data['description'];
+            $tag->meta_title = $data["title"];
+            $tag->meta_keywords = $data['keywords'];
             $tag->updated_at = now();
             $tag->updated_by = Auth::user()->uuid;
             $tag->save();
