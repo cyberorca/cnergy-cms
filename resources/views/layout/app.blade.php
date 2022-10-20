@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="{{ asset('assets/css/main/app-dark.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/pages/menu.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/extensions/toastify-js/src/toastify.css') }}" />
     @yield('css')
     <link rel="shortcut icon" href="assets/images/logo/favicon.svg" type="image/x-icon">
     <link rel="shortcut icon" href="assets/images/logo/favicon.png" type="image/png">

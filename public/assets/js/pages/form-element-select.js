@@ -23,6 +23,7 @@ let index = 2;
 add_page_button.addEventListener('click', function () {
     collapseElement(false, index);
     tinyMCEConfig(`${index}`)
+    console.log(index);
     index++;
 })
 
@@ -83,32 +84,34 @@ const collapseLinkElement = (page_no, edit = false, other) => {
                 success: function ({
                     message
                 }) {
-                    // new Toastify({
-                    //     text: message,
-                    //     duration: 3000,
-                    //     close: true,
-                    //     gravity: "bottom",
-                    //     position: "right",
-                    // }).showToast()
-                    liveToast.classList.remove("hide");
-                    liveToast.classList.add("show");
-                    liveToast.querySelector(".toast-body").innerHTML = message
+                    new Toastify({
+                        text: message,
+                        duration: 3000,
+                        close: true,
+                        gravity: "bottom",
+                        position: "right",
+                        backgroundColor: "#4fbe87",
+                    }).showToast()
+                    // liveToast.classList.remove("hide");
+                    // liveToast.classList.add("show");
+                    // liveToast.querySelector(".toast-body").innerHTML = message
                     document.querySelector(`#collapse-${page_no}`).remove();
                     element.parentElement.remove();
                     changeAllPageAfterDeleted();
                 }
             });
         } else {
-            // Toastify({
-            //     text: "Successfully deleted page",
-            //     duration: 3000,
-            //     close: true,
-            //     gravity: "bottom",
-            //     position: "right",
-            // }).showToast()
-            liveToast.classList.remove("hide");
-            liveToast.classList.add("show");
-            liveToast.querySelector(".toast-body").innerHTML = "Successfully deleted page"
+            Toastify({
+                text: "Successfully deleted page",
+                duration: 3000,
+                close: true,
+                gravity: "bottom",
+                position: "right",
+                backgroundColor: "#4fbe87",
+            }).showToast()
+            // liveToast.classList.remove("hide");
+            // liveToast.classList.add("show");
+            // liveToast.querySelector(".toast-body").innerHTML = "Successfully deleted page"
             document.querySelector(`#collapse-${page_no}`).remove();
             element.parentElement.remove();
             changeAllPageAfterDeleted();
@@ -203,16 +206,18 @@ function tinyMCEConfig(index_pages) {
 
 if (document.body.contains(document.getElementById("news_paginations"))) {
     const news_paginations = JSON.parse(document.getElementById("news_paginations").value);
-    let page_count = 2;
-    news_paginations.map((el, i) => {
-        index = page_count;
-        collapseElement(true, `${el.news_id}-${index}`, {
-            content: el.content,
-            title: el.title,
-            id: el.id
+    if(news_paginations.length){
+        let page_count = 2;
+        news_paginations.map((el, i) => {
+            index = page_count;
+            collapseElement(true, `${el.news_id}-${index}`, {
+                content: el.content,
+                title: el.title,
+                id: el.id
+            })
+            tinyMCEConfig(`${el.news_id}-${index}`)
+            page_count++;
         })
-        tinyMCEConfig(`${el.news_id}-${index}`)
-        page_count++;
-    })
-    index++;
+        index++;
+    }
 }
