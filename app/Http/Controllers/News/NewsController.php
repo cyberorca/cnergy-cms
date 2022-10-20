@@ -284,8 +284,8 @@ class NewsController extends Controller
             'content' => $data['content'][0]
         ];
 
+        $i = 2;
         if (count($data['title']) > 1) {
-            $i = 2;
             foreach ($data['title'][$id] as $key => $value) {
                 $news_paginations_old[$i] = [
                     'title' => $data['title'][$id][$key],
