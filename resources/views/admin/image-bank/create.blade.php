@@ -46,6 +46,19 @@
                                     @enderror
                                 </div>
                             </div>
+                            <div class="form-group">
+                            <label for="site_logo" class="mb-2">Image Alt</label>
+                            <div class="flex flex-column">
+                                <input type="text" class="form-control @error('image_alt') is-invalid @enderror"
+                                    id="basicInput" name="image_alt" placeholder="Enter image alt" />
+                                @error('image_alt')
+                                    <div class="invalid-feedback">
+                                        <i class="bx bx-radio-circle"></i>
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>

@@ -13,9 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('news', function (Blueprint $table) {
-                $table->longText('reporters')->nullable();
-                $table->longText('contributors')->nullable();
+        Schema::table('image_banks', function (Blueprint $table) {
+            $table->string('image_alt', 255);
         });
     }
 
@@ -26,7 +25,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('news', function (Blueprint $table) {
+        Schema::table('image_banks', function (Blueprint $table) {
             //
         });
     }
