@@ -34,7 +34,7 @@
                             name="meta_title" @if ($method === 'edit') value="{{ $post->meta_title }}" @endif>
                     </div>
                     <div class="form-group">
-                        <label for="basicInput">Meta Keyword</label>
+                        <label for="basicInput">Meta Keywords</label>
                         <input type="text" class="form-control" id="metaKeyword" placeholder=""
                             name="meta_keywords" @if ($method === 'edit') value="{{ $post->meta_keywords }}" @endif>
                     </div>

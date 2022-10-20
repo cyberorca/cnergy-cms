@@ -54,7 +54,7 @@
 </textarea>
                         </div>
                     <div class="form-group">
-                        <label for="basicInput">Meta Keyword</label>
+                        <label for="basicInput">Meta Keywords</label>
                         <input name="keywords" id="keywords" type="text"
                                     @if ($method === 'create') placeholder="Enter Meta Keyword" @endif
                                     class="form-control" data-role="tagsinput"
