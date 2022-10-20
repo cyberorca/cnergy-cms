@@ -28,6 +28,7 @@ class ImageBankRequest extends FormRequest
         return [
             'title' => 'required',
             'image_input' => ['file'],
+            'image_alt' => 'required',
             'photographer' => 'required',
             'copyright' => 'required',
             'caption' => 'required',

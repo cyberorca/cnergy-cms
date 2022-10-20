@@ -538,12 +538,12 @@
                 .trigger('change');
         });
     </script>
-
+{{-- 
     <script src="/path/to/cdn/jquery.slim.min.js"></script>
     <script src="/path/to/js/jquery.dateandtime.js"></script>
     <script>
         $(function() {
             $('.example').dateAndTime();
         });
-    </script>
+    </script> --}}
 @endsection
