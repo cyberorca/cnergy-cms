@@ -1,6 +1,24 @@
 @extends('layout.app')
 
 @section('css')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    <style type="text/css">
+        .bootstrap-tagsinput {
+            width: 100%;
+        }
+
+        .bootstrap-tagsinput .tag {
+            margin-right: 2px;
+            color: white !important;
+            background-color: #38E54D;
+            padding: .2em .6em .3em;
+            font-size: 100%;
+            font-weight: 700;
+            vertical-align: baseline;
+            border-radius: .25em;
+        }
+    </style>
 @endsection
 
 @section('body')
@@ -30,44 +48,54 @@
                     </div>
                     <div class="form-group">
                         <label for="basicInput">Meta Title</label>
-                        <input type="text" class="form-control" id="metaTitle" placeholder=""
+                        <input type="text" class="form-control" id="metaTitle" placeholder="Enter Meta Title"
                             name="meta_title" @if ($method === 'edit') value="{{ $post->meta_title }}" @endif>
                     </div>
                     <div class="form-group">
                         <label for="basicInput">Meta Keyword</label>
-                        <input type="text" class="form-control" id="metaKeyword" placeholder=""
-                            name="meta_keywords" @if ($method === 'edit') value="{{ $post->meta_keywords }}" @endif>
+                        <input name="meta_keywords" id="metaKeyword" type="text"
+                            @if ($method === 'create') placeholder="Enter Meta Keyword" @endif class="form-control"
+                            data-role="tagsinput"
+                            @if ($method === 'edit') value="{{ $post->meta_keywords }}" @endif />
                     </div>
                     <div class="form-group">
                         <label for="basicInput">Meta Description</label>
-                        <input type="text" class="form-control" id="metaDescription" placeholder=""
-                            name="meta_description" @if ($method === 'edit') value="{{ $post->meta_description }}" @endif>
+                        <textarea name="meta_description" class="form-control" id="metaDescription" cols="30" rows="3"
+                            placeholder="Enter Meta Description">
+@if ($method === 'edit'){{ $post->meta_description }}@endif
+</textarea>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="basicInput">Type Category</label>
                         <div class="form-group">
-                        <li class="d-inline-block me-2 mb-1">
-                            <div class="form-check">
-                                <div class="checkbox">
-                                    <input type="checkbox" name="types[]" value="news" class="form-check-input" @if ($method === 'edit') @if(in_array("news", $post->types)) checked @endif @endif>
-                                    <label for="checkbox1">News</label>
+                            <li class="d-inline-block me-2 mb-1">
+                                <div class="form-check">
+                                    <div class="checkbox">
+                                        <input type="checkbox" name="types[]" value="news" class="form-check-input"
+                                            @if ($method === 'edit') @if (in_array('news', $post->types)) checked @endif
+                                            @endif>
+                                        <label for="checkbox1">News</label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <input type="checkbox" name="types[]" value="photonews" class="form-check-input"
+                                            @if ($method === 'edit') @if (in_array('photonews', $post->types)) checked @endif
+                                            @endif>
+                                        <label for="checkbox1">Photo News</label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <input type="checkbox" name="types[]" value="video" class="form-check-input"
+                                            @if ($method === 'edit') @if (in_array('video', $post->types)) checked @endif
+                                            @endif>
+                                        <label for="checkbox1">Video</label>
+                                    </div>
                                 </div>
-                                <div class="checkbox">
-                                    <input type="checkbox" name="types[]" value="photonews" class="form-check-input" @if ($method === 'edit') @if(in_array("photonews", $post->types)) checked @endif @endif>
-                                    <label for="checkbox1">Photo News</label>
-                                </div>
-                                <div class="checkbox">
-                                    <input type="checkbox" name="types[]" value="video" class="form-check-input" @if ($method === 'edit') @if(in_array("video", $post->types)) checked @endif @endif>
-                                    <label for="checkbox1">Video</label>
-                                </div>
-                            </div>
-                        </li>
+                            </li>
                         </div>
                     </div>
 
                     @if ($method === 'edit')
-                    <input type="hidden" name="parent_id" value="{{ $post->parent_id }}">
+                        <input type="hidden" name="parent_id" value="{{ $post->parent_id }}">
                         <div class="form-group">
                             <label for="basicInput">Status</label>
                             <div class="form-group">
@@ -97,4 +125,31 @@
     </section>
 @endsection
 @section('javascript')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+
+    <script>
+        $(function() {
+            $('input')
+                .on('change', function(event) {
+                    var $element = $(event.target);
+                    var $container = $element.closest('.example');
+
+                    if (!$element.data('tagsinput')) return;
+
+                    var val = $element.val();
+                    if (val === null) val = 'null';
+                    var items = $element.tagsinput('items');
+
+                    $('code', $('pre.val', $container)).html(
+                        $.isArray(val) ?
+                        JSON.stringify(val) :
+                        '"' + val.replace('"', '\\"') + '"'
+                    );
+                    $('code', $('pre.items', $container)).html(
+                        JSON.stringify($element.tagsinput('items'))
+                    );
+                })
+                .trigger('change');
+        });
+    </script>
 @endsection
