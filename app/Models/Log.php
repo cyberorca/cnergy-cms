@@ -15,6 +15,7 @@ class Log extends Model
     public $timestamps = false;
     protected $fillable = [
         'news_id',
+        'updated_at',
         'updated_by',
         'updated_content'
     ];

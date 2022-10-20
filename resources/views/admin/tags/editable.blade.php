@@ -1,6 +1,25 @@
 @extends('layout.app')
 
 @section('css')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    <style type="text/css">
+        .bootstrap-tagsinput {
+            width: 100%;
+        }
+
+        .bootstrap-tagsinput .tag {
+            margin-right: 2px;
+            color: white !important;
+            background-color: #38E54D;
+            padding: .2em .6em .3em;
+            font-size: 100%;
+            font-weight: 700;
+            vertical-align: baseline;
+            border-radius: .25em;
+        }
+
+    </style>
 @endsection
 
 @section('body')
@@ -22,6 +41,25 @@
                         <input type="text" class="form-control" id="tags" placeholder="Enter Tag Name"
                             name="tag" @if ($method === 'edit') value="{{ $tag->tags }}" @endif>
                     </div>
+                    <div class="form-group">
+                        <label for="basicInput">Meta Title</label>
+                        <input type="text" class="form-control" id="title" placeholder="Enter Meta Title"
+                            name="title" @if ($method === 'edit') value="{{ $tag->meta_title }}" @endif>
+                    </div>
+                    <div class="form-group">
+                            <label for="basicInput">Meta Description</label>
+                            <textarea name="description" class="form-control" id="description" cols="30" rows="3" 
+                                placeholder="Enter Meta Description">
+@if ($method === 'edit'){{ $tag->meta_description }}@endif
+</textarea>
+                        </div>
+                    <div class="form-group">
+                        <label for="basicInput">Meta Keywords</label>
+                        <input name="keywords" id="keywords" type="text"
+                                    @if ($method === 'create') placeholder="Enter Meta Keyword" @endif
+                                    class="form-control" data-role="tagsinput"
+                                    @if ($method === 'edit') value="{{ $tag->meta_keywords}}" @endif />
+                    </div>
                     @if ($method === 'edit')
                         <div class="form-group">
                             <label for="basicInput">Status</label>
@@ -35,7 +73,7 @@
                                     @if ($tag->is_active == 0) checked @endif value="0">
                                 <label class="form-check-label">
                                     Off
-                                </label>
+                                </label> 
                             </div>
                         </div>
                     @endif
@@ -51,3 +89,35 @@
         </div>
     </section>
 @endsection
+@section('javascript')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+
+    <script>
+        $(function() {
+            $('input')
+                .on('change', function(event) {
+                    var $element = $(event.target);
+                    var $container = $element.closest('.example');
+
+                    if (!$element.data('tagsinput')) return;
+
+                    var val = $element.val();
+                    if (val === null) val = 'null';
+                    var items = $element.tagsinput('items');
+
+                    $('code', $('pre.val', $container)).html(
+                        $.isArray(val) ?
+                        JSON.stringify(val) :
+                        '"' + val.replace('"', '\\"') + '"'
+                    );
+                    $('code', $('pre.items', $container)).html(
+                        JSON.stringify($element.tagsinput('items'))
+                    );
+                })
+                .trigger('change');
+        });
+    </script>
+
+
+@endsection
+

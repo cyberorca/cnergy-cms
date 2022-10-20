@@ -75,6 +75,9 @@ class CategoriesController extends Controller
             'created_at' => now(),
             // ganti uuid user login nanti
             'created_by' => Auth::user()->uuid,
+            'meta_title'=> $data['meta_title'],
+            'meta_keywords'=> $data['meta_keywords'],
+            'meta_description'=> $data['meta_description'],
         ]);
         try {
             $category->save();
@@ -128,6 +131,10 @@ class CategoriesController extends Controller
                 'types' => $data['types'],
                 'updated_at' => now(),
                 'updated_by' => Auth::user()->uuid,
+                'meta_title'=> $data['meta_title'],
+                'meta_keywords'=> $data['meta_keywords'],
+                'meta_description'=> $data['meta_description'],
+
             ]);
             return redirect()->route('category.index')->with('status', 'Successfully to Update Category');
         } catch (\Throwable $e) {

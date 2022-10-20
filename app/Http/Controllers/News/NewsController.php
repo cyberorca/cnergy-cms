@@ -29,7 +29,7 @@ class NewsController extends Controller
      */
     public function index(Request $request)
     {
-        $news = News::with(['categories', 'tags']);
+        $news = News::with(['categories', 'tags'])->where('types','=','news');
         $editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
         $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Reporter");
         $photographers = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Photographer");
@@ -203,6 +203,7 @@ class NewsController extends Controller
                 $log = new Log(
                     [
                         'news_id' => $news->id,
+                        'updated_at'=>now(),
                         'updated_by' => \auth()->id(),
                         'updated_content' => json_encode($news->getOriginal())
                     ]
@@ -307,13 +308,11 @@ class NewsController extends Controller
                     'content' => $data['content'][$key],
                     'order_by_no' => $i,
                     'news_id' => $id,
-                    'key' => $key,
                     'id' => null
                 ];
                 $i++;
             }
         }
-
 
         $newsById = News::find($id);
         $date = $data['date'];
@@ -371,6 +370,7 @@ class NewsController extends Controller
             $log = new Log(
                 [
                     'news_id' => $id,
+                    'updated_at'=>now(),
                     'updated_by' => \auth()->id(),
                     'updated_content' => json_encode($newsById->getChanges())
                 ]
