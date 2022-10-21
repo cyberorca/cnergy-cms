@@ -401,7 +401,7 @@ class NewsController extends Controller
                         'news_id' => $id,
                         'updated_by' => \auth()->id(),
                         'updated_at'=>now(),
-                        'updated_content' => json_encode('{}')
+                        'updated_content' => json_encode('DELETED')
                     ]
                 );
                 $log->save();
