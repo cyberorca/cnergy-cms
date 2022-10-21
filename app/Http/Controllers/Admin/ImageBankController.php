@@ -51,6 +51,7 @@ class ImageBankController extends Controller
                 "copyright" => $input["copyright"],
                 "caption" => $input["caption"],
                 "keywords" => $input["keywords"],
+                "image_alt" => $input["image_alt"],
                 "created_by" => Auth::user()->uuid
             ];
             if ($request->hasFile('image_input')) {
