@@ -3,7 +3,7 @@
 @section('css')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-    
+
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/pages/image-uploader.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/extensions/choices.js/public/assets/styles/choices.css') }}">
@@ -115,8 +115,8 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-4">
+            @include('components.other-settings-news')
+            {{-- <div class="col-4">
                 <div class="card">
                     <div class="card-body">
 
@@ -168,7 +168,7 @@
 
 
 
-                    
+
                         <a data-bs-toggle="collapse" href="#sembilan" aria-expanded="false"
                             aria-controls="collapseExample">
                             <span class="h6">Category</span>
@@ -221,7 +221,7 @@
                                             @endforeach
                                         @endif
                                     </select>
-                                    
+
                                 </div>
                             </div>
                             <br>
@@ -240,10 +240,10 @@
                             <div class="form-group">
                                 <textarea name="description" class="form-control" id="description" cols="30" rows="3" required
                                     placeholder="Enter description">
-@if ($method === 'edit')
-{{ $news->description }}
-@endif
-</textarea>
+                                    @if ($method === 'edit')
+                                    {{ $news->description }}
+                                    @endif
+                                    </textarea>
 
                             </div>
                         </div>
@@ -302,12 +302,20 @@
                             </div>
                             <div class="form-group">
                                 <label class="mb-2">Contributor</label><br>
-                                <select name="contributor" class="choices form-select multiple-remove"
-                                    multiple="multiple" id="contributor" disabled>
+                                <select name="contributors[]"
+                                        class="choices form-select multiple-remove"
+                                        multiple="multiple"
+                                        id="contributor">
                                     <optgroup label="contributor">
-                                        @foreach ($contributors as $contributor)
-                                            <option value="{{ $contributor->name }}" selected>{{ $contributor->name }}
-                                            </option>
+                                        @foreach($contributors as $contributor)
+                                            <option
+                                                @if ($method === 'edit' and is_null(json_decode($news->contributors))==false)
+                                                @if(in_array($contributor->uuid,json_decode($news->contributors)))
+                                                selected
+                                                @endif
+                                                @endif
+                                                value="{{$contributor->uuid}}"
+                                            >{{$contributor->name}}</option>
                                         @endforeach
                                     </optgroup>
                                 </select>
@@ -379,7 +387,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         </div>
@@ -390,7 +398,7 @@
 
 @section('javascript')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    
+
 
     <script>
         $(document).ready(function(){

@@ -11,29 +11,24 @@ class CategoriesController extends Controller
 {
     public function index(Request $request)
     {
-        $categories = Category::whereNull("parent_id");
+        $category = Category::whereNull('parent_id')->with(["children"])->get();
 
-        if ($request->get('inputCategory')) {
-            $categories->where('category', 'like', '%' . $request->inputCategory . '%');
+        if ($request->get('name')) {
+            $category->where('category', 'like', '%' . $request->name . '%');
+        } 
+
+        if ($request->get('common')) {
+            $category-> where('common', 'like', '%' . $request->common . '%');
         }
-
-        if ($request->get('inputSlug')) {
-            $categories->where('slug', 'like', '%' . $request->inputSlug . '%');
-        }
-
+        
         if ($request->get('status')) {
             $status = $request->status;
-            if ($status == 2) {
-                $categories->where('is_active', "0");
-            } else {
-                $categories->where('is_active', "1");
-            }
+            $category ->where('is_active', $status);
         }
 
-        $category = Category::whereNull('parent_id')->with(["children"])->get();
         $data = $this->convertDataToResponse($category);
+
         return response()->json($data);
-       
     }
 
     private function convertDataToResponse($dataRaw){
@@ -46,8 +41,9 @@ class CategoriesController extends Controller
                 "common" => strtolower($data->category),
                 "url" => $data->slug,
                 "type" => $data->types,
-                "meta_name" => "",
-                "meta_description" => "",
+                "meta_title"=> $data->meta_title,
+                "meta_keywords"=> $data->meta_keywords,
+                "meta_description"=> $data->meta_description,
                 "children" => $this->convertDataToResponse($data->children),
             ];
         });

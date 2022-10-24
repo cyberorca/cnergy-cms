@@ -10,31 +10,24 @@ class TagsController extends Controller
 {
     public function index(Request $request)
     {
+        $tag = Tag::paginate($request->get('limit', 10))->withQueryString();
 
-        $tags = Tag::latest();
-
-        if ($request->get('inputTags')) {
-            $tags->where('tags', 'like', '%' . $request->inputTags . '%');
+        if ($request->get('name')) {
+            $tag->where('tags', 'like', '%' . $request->name . '%');
         } 
 
-        if ($request->get('inputSlug')) {
-            $tags-> where('slug', 'like', '%' . $request->inputSlug . '%');
+        if ($request->get('slug')) {
+            $tag-> where('slug', 'like', '%' . $request->slug . '%');
         }
         
         if ($request->get('status')) {
             $status = $request->status;
-            if($status == 2) {
-                $tags ->where('is_active', "0");
-            }else {
-                $tags ->where('is_active', "1");
-            }
+            $tag ->where('is_active', $status);
         }
 
-        $tag = Tag::get();
-
         $data["data"] = $this->convertDataToResponse($tag);
-        return response()->json($data);
 
+        return response()->json($data);
     }
 
     private function convertDataToResponse($dataRaw){
@@ -44,9 +37,9 @@ class TagsController extends Controller
                 "name" => $item->tags,
                 "description" => "",
                 "content" => null,
-                "meta_title"=> "",
-                "meta_keyword"=> "",
-                "meta_description"=> "",
+                "meta_title"=> $item->meta_title,
+                "meta_keywords"=> $item->meta_keywords,
+                "meta_description"=> $item->meta_description,
                 "is_headline" => 0,
                 "is_recommended" => 0,
                 "is_smart_tag" => 0,
