@@ -7,12 +7,13 @@ use App\Models\News;
 use App\Models\User;
 use App\Models\NewsPagination;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
     public function index(Request $request)
     {
-        $news = News::with(['categories', 'tags', 'users', 'news_paginations']);
+        $news = News::with(['categories', 'tags', 'users', 'news_paginations'])->latest('published_at');
         $editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
         $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Reporter");
         $photographers = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Photographer");
@@ -71,8 +72,8 @@ class NewsController extends Controller
         return $dataRaw->transform(function ($item, $key) {
             return [
                 "news_id" => $item->id,
-                "news_entry" => $item->created_at,
-                "news_last_update" => $item->updated_at,
+                "news_entry" => date('Y-m-d h:i:s', strtotime($item->created_at)),
+                "news_last_update" => date('Y-m-d h:i:s', strtotime($item->updated_at)),
                 "news_level" => $item->is_publised,
                 "news_top_headline"=> $item->is_headline,
                 "news_editor_pick"=> $item->editor_pick,
@@ -101,30 +102,18 @@ class NewsController extends Controller
                 "news_url" => $item->slug,
                 "news_date_publish" => $item->published_at,
                 "news_type" => $item->types,
-                "news_reporter" => [
-                      "id" => $item->reporters,
-                      "name" => null,
-                      "image" => null,
-                ],
-                "news_editor" => [
-                      "id" => $item->contributors,
-                      "name" => null,
-                      "image" => null,
-                ],
-                "news_photographer" => [
-                      "id" => $item->photographers,
-                      "name" => null,
-                      "image" => null,
-                ],
+                "news_reporter" => self::arrayUserToObjectUser(json_decode($item->reporters)),
+                'news_editor' => self::arrayUserToObjectUserEditor(json_decode($item->contributors)),
+                'news_photographer' => self::arrayUserToObjectUser(json_decode($item->photographers)),
                 "news_hastag" => null,
                 "news_city" => null,
                 "news_sponsorship" => null,
                 "has_paging" => count($item->news_paginations),
                 "is_splitter" => null,
                 "paging_style"=> null,
-                "news_mature" => $item->is_verify_age,
+                "news_mature" => $item->is_adult_content,
                 "news_seo_url" => $item->is_seo,
-                "news_sensitive" => $item->is_adult_content,
+                "news_sensitive" => null,
                 "news_top_headtorial" => null,
                 "news_date_headtorial" => null,
                 "tracker_dmp" => null,
@@ -136,7 +125,7 @@ class NewsController extends Controller
                 ],
                 "video" => $item->video,
                 "category_name" => $item->categories->category,
-                "news_url_full" => null,
+                "news_url_full" => env('APP_URL') . '/' . Str::slug(strtolower($item->categories->category)) . '/read/' . $item->slug,
                 "news_url_full_mobile" => null,
                 "news_paging" => $this->convertDataToResponse3($item->news_paginations),
                 "news_paging_order" => null,
@@ -144,10 +133,7 @@ class NewsController extends Controller
                     
                 ],
                 "news_tag" => $this->convertDataToResponse2($item->tags),
-                
-                "news_keywords" => [
-                    "keywords" => $item->keywords,
-                ],
+                "news_keywords" => self::keywordResponse($item->keywords),
                 "news_related" => [
                     
                 ],
@@ -196,6 +182,52 @@ class NewsController extends Controller
                 ],
             ];
         });
+    }
+
+    private function arrayUserToObjectUser($array)
+    {
+        $temp = array();
+        if ($array != null) {
+            foreach ($array as $uuid) {
+                array_push($temp,
+                    self::userResponse($uuid)
+                );
+            }
+        }
+        return $temp;
+    }
+
+    private function arrayUserToObjectUserEditor($array)
+    {
+        $temp = array();
+        if ($array != null) {
+            foreach ($array as $uuid) {
+                if (User::join('roles', 'users.role_id', '=', 'roles.id')
+                    ->where('roles.role', "Editor")
+                    ->where('uuid', $uuid)
+                    ->exists())
+                    array_push($temp,
+                        self::userResponse($uuid)
+                    );
+            }
+        }
+        return $temp;
+    }
+
+    private function userResponse($uuid)
+    {
+        $userById = User::where('uuid', '=', $uuid)->get('name')->first();
+        return [
+            "id" => $uuid,
+            "name" => $userById->name,
+            "image" => null
+        ];
+    }
+
+    private function keywordResponse($keywords)
+    {
+        if (!empty($keywords))
+            return explode(',', $keywords);
     }
 
 }
