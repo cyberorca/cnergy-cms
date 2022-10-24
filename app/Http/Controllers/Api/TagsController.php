@@ -10,13 +10,24 @@ class TagsController extends Controller
 {
     public function index(Request $request)
     {
-
         $tag = Tag::paginate($request->get('limit', 10))->withQueryString();
 
-        $data["data"] = $this->convertDataToResponse($tag);
-        // return response()->json($data);
-        return response()->json($data);
+        if ($request->get('name')) {
+            $tag->where('tags', 'like', '%' . $request->name . '%');
+        } 
 
+        if ($request->get('slug')) {
+            $tag-> where('slug', 'like', '%' . $request->slug . '%');
+        }
+        
+        if ($request->get('status')) {
+            $status = $request->status;
+            $tag ->where('is_active', $status);
+        }
+
+        $data["data"] = $this->convertDataToResponse($tag);
+
+        return response()->json($data);
     }
 
     private function convertDataToResponse($dataRaw){
