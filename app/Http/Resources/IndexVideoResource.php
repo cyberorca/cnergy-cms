@@ -34,7 +34,7 @@ class IndexVideoResource extends JsonResource
             'news_date_publish' => $this->published_at,
             'news_type' => $this->types,
             'news_reporter' => self::arrayUserToObjectUser(json_decode($this->reporters)),
-            'news_editor' => '',
+            'news_editor' => self::arrayUserToObjectUserEditor(json_decode($this->contributors)),
             'news_photographer' => self::arrayUserToObjectUser(json_decode($this->photographers)),
             'news_hastag' => '',
 //            'news_city'=>'',
@@ -58,7 +58,7 @@ class IndexVideoResource extends JsonResource
             'news_quote' => '',
             'news_video' => $this->videoResponse($this->video),
             'news_tag' => IndexTagResource::collection($this->tags),
-            'news_keywords' => self::keywordsResponse($this->keywords),
+            'news_keywords' => self::keywordResponse($this->keywords),
             'news_related' => '',
             'news_dfp' => '',
             'news_dmp' => '',
@@ -79,6 +79,23 @@ class IndexVideoResource extends JsonResource
         return $temp;
     }
 
+    private function arrayUserToObjectUserEditor($array)
+    {
+        $temp = array();
+        if ($array != null) {
+            foreach ($array as $uuid) {
+                if (User::join('roles', 'users.role_id', '=', 'roles.id')
+                    ->where('roles.role', "Editor")
+                    ->where('uuid', $uuid)
+                    ->exists())
+                    array_push($temp,
+                        self::userResponse($uuid)
+                    );
+            }
+        }
+        return $temp;
+    }
+
     private function userResponse($uuid)
     {
         $userById = User::where('uuid', '=', $uuid)->get('name')->first();
@@ -88,13 +105,14 @@ class IndexVideoResource extends JsonResource
         ];
     }
 
-    private function keywordsResponse($keywords)
+    private function keywordResponse($keywords)
     {
         if (!empty($keywords))
             return explode(',', $keywords);
     }
 
-    private function videoResponse($video){
+    private function videoResponse($video)
+    {
         return [
 //            "id" => ,
             "video" => $video
