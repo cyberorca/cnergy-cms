@@ -33,7 +33,7 @@ class IndexStaticPageResource extends JsonResource
     private function userArrayToCreatorResponse($creator)
     {
         return [
-            'user_id' => $creator->id,
+            'user_uuid' => $creator->uuid,
             'user_realname' => $creator->name,
             'user_nowlogin'=>'',
             'user_loginip'=>'',
