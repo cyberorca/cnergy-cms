@@ -6,28 +6,21 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Tag;
 use App\Http\Resources\TagCollection;
+use Illuminate\Support\Facades\DB;
 
 class TagsController extends Controller
 {
+
     public function index(Request $request)
     {
-        $tag = Tag::paginate($request->get('limit', 10))->withQueryString();
-
-        if ($request->get('name')) {
-            $tag->where('tags', 'like', '%' . $request->name . '%');
-        } 
-
-        if ($request->get('slug')) {
-            $tag-> where('slug', 'like', '%' . $request->slug . '%');
-        }
-        
-        if ($request->get('status')) {
-            $status = $request->status;
-            $tag ->where('is_active', $status);
-        }
+        $tag = Tag::latest()
+        ->where('tags', "LIKE", "%{$request->get('name', '')}%")
+        ->where('slug', 'like', '%' . $request->get('slug', '') . '%')
+        ->whereIn('is_active', $request->get('is_active', ['1', '0']))
+        ->paginate($request->get('limit', 20))->withQueryString();
 
        
-        return response()->json(new TagCollection($tag->paginate(10)));
+        return response()->json(new TagCollection($tag));
     }
 
     
