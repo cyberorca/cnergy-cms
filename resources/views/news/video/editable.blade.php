@@ -115,8 +115,8 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-4">
+            @include('components.other-settings-news')
+            {{-- <div class="col-4">
                 <div class="card">
                     <div class="card-body">
 
@@ -240,10 +240,10 @@
                             <div class="form-group">
                                 <textarea name="description" class="form-control" id="description" cols="30" rows="3" required
                                     placeholder="Enter description">
-@if ($method === 'edit')
-{{ $news->description }}
-@endif
-</textarea>
+                                    @if ($method === 'edit')
+                                    {{ $news->description }}
+                                    @endif
+                                    </textarea>
 
                             </div>
                         </div>
@@ -387,7 +387,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         </div>

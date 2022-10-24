@@ -3,7 +3,7 @@
  var image_list_parent = document.getElementById("image_list_parent")
 
  var image_bank_modal = document.getElementById("image_bank_modal")
- var image_title = document.getElementById("image_title")
+//  var image_title = document.getElementById("image_title")
 
  var search_image_bank_input = document.getElementById("search_image_bank_input")
  var search_image_bank_button = document.getElementById("search_image_bank_button")
@@ -23,7 +23,7 @@
  function selectImage() {
      const imageSrc = this.parentElement.children[0].getAttribute("src");
      const imageTitle = this.parentElement.children[1].innerHTML;
-     image_title.innerHTML = imageTitle;
+    //  image_title.innerHTML = imageTitle;
      image_preview_result.src = imageSrc;
      upload_image_selected.value = imageSrc;
      upload_image_button.value = null;
