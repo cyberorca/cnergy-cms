@@ -11,28 +11,10 @@ class TagsController extends Controller
     public function index(Request $request)
     {
 
-        $tags = Tag::latest();
-
-        if ($request->get('inputTags')) {
-            $tags->where('tags', 'like', '%' . $request->inputTags . '%');
-        } 
-
-        if ($request->get('inputSlug')) {
-            $tags-> where('slug', 'like', '%' . $request->inputSlug . '%');
-        }
-        
-        if ($request->get('status')) {
-            $status = $request->status;
-            if($status == 2) {
-                $tags ->where('is_active', "0");
-            }else {
-                $tags ->where('is_active', "1");
-            }
-        }
-
-        $tag = Tag::get();
+        $tag = Tag::paginate($request->get('limit', 10))->withQueryString();
 
         $data["data"] = $this->convertDataToResponse($tag);
+        // return response()->json($data);
         return response()->json($data);
 
     }

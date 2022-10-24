@@ -29,7 +29,7 @@ class NewsController extends Controller
      */
     public function index(Request $request)
     {
-        $news = News::with(['categories', 'tags'])->where('types','=','news');
+        $news = News::with(['categories', 'tags'])->where('types','=','news')->latest();
         $editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
         $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Reporter");
         $photographers = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Photographer");
@@ -139,7 +139,6 @@ class NewsController extends Controller
     {
         $data = $request->input();
         $news_paginations = array();
-
 
         try {
             $i = 2;

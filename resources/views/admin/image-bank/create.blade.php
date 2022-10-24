@@ -1,11 +1,26 @@
 @extends('layout.app')
 
 @section('css')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" rel="stylesheet" />
     <style>
         .image-preview {
             width: 100%;
             height: 400px;
             object-fit: cover;
+        }
+        .bootstrap-tagsinput {
+            width: 100%;
+        }
+
+        .bootstrap-tagsinput .tag {
+            margin-right: 2px;
+            color: white !important;
+            background-color: #38E54D;
+            padding: .2em .6em .3em;
+            font-size: 100%;
+            font-weight: 700;
+            vertical-align: baseline;
+            border-radius: .25em;
         }
     </style>
 @endsection
@@ -47,18 +62,18 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                            <label for="site_logo" class="mb-2">Image Alt</label>
-                            <div class="flex flex-column">
-                                <input type="text" class="form-control @error('image_alt') is-invalid @enderror"
-                                    id="basicInput" name="image_alt" placeholder="Enter image alt" />
-                                @error('image_alt')
-                                    <div class="invalid-feedback">
-                                        <i class="bx bx-radio-circle"></i>
-                                        {{ $message }}
-                                    </div>
-                                @enderror
+                                <label for="site_logo" class="mb-2">Image Alt</label>
+                                <div class="flex flex-column">
+                                    <input type="text" class="form-control @error('image_alt') is-invalid @enderror"
+                                        id="basicInput" name="image_alt" placeholder="Enter image alt" />
+                                    @error('image_alt')
+                                        <div class="invalid-feedback">
+                                            <i class="bx bx-radio-circle"></i>
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
                         </div>
                     </div>
                 </div>
@@ -111,22 +126,20 @@
                         </div>
                         <div class="form-group">
                             <label for="site_logo" class="mb-2">Keywords</label>
-                            <div class="flex flex-column">
-                                <textarea type="text" class="form-control @error('keywords') is-invalid @enderror" id="basicInput" name="keywords"
-                                    placeholder="Enter keywords"></textarea>
-                                @error('keywords')
-                                    <div class="invalid-feedback">
-                                        <i class="bx bx-radio-circle"></i>
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
+                            <input name="keywords" id="keywords" type="text" required
+                                class="w-100 form-control @error('keywords') is-invalid @enderror" data-role="tagsinput" />
+                            @error('keywords')
+                                <div class="invalid-feedback">
+                                    <i class="bx bx-radio-circle"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                         <div class="d-flex justify-content-end gap-3 mt-3">
                             <a href="{{ route('image-bank.index') }}" class="btn btn-light" data-bs-toggle="tooltip"
                                 data-bs-placement="top" title="Back to Table Menu">Back</a>
-                            <button class="btn btn-primary" type="submit" data-bs-toggle="tooltip" data-bs-placement="top"
-                                title="Create Menu">Save</button>
+                            <button class="btn btn-primary" type="submit" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Create Menu">Save</button>
                         </div>
                     </div>
                 </div>
@@ -136,6 +149,33 @@
 @endsection
 
 @section('javascript')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+
+    <script>
+        $(function() {
+            $('input')
+                .on('change', function(event) {
+                    var $element = $(event.target);
+                    var $container = $element.closest('.example');
+
+                    if (!$element.data('tagsinput')) return;
+
+                    var val = $element.val();
+                    if (val === null) val = 'null';
+                    var items = $element.tagsinput('items');
+
+                    $('code', $('pre.val', $container)).html(
+                        $.isArray(val) ?
+                        JSON.stringify(val) :
+                        '"' + val.replace('"', '\\"') + '"'
+                    );
+                    $('code', $('pre.items', $container)).html(
+                        JSON.stringify($element.tagsinput('items'))
+                    );
+                })
+                .trigger('change');
+        });
+    </script>
     <script>
         var image_preview = document.getElementById("image_preview")
         var image_input = document.getElementById("image_input")

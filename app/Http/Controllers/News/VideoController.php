@@ -7,21 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Log;
 use App\Models\News;
 use App\Models\Tag;
-use App\Models\Role;
 use App\Models\User;
 use App\Models\Category;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\NewsRequest;
 use App\Http\Utils\FileFormatPath;
-use App\Models\ImageBank;
 use Illuminate\Support\Facades\Storage;
-use ViKon\Diff\Diff;
-
-use function PHPSTORM_META\type;
 
 class VideoController extends Controller
 {
@@ -131,7 +124,15 @@ class VideoController extends Controller
             $mergeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
         // return response()->json($data);
         try {
+            if ($request->file('upload_image') && !$data['upload_image_selected']) {
+                $file = $request->file('upload_image');
+                $fileFormatPath = new FileFormatPath('video/image', $file);
+                $data['image'] = $fileFormatPath->storeFile();
+            }
 
+            if ($data['upload_image_selected'] && !$request->file('upload_image')) {
+                $data['image'] = explode(Storage::url(""), $data['upload_image_selected'])[1];
+            }
             $news = new News([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
@@ -232,6 +233,15 @@ class VideoController extends Controller
         $time = $data['time'];
         $margeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
         try {
+            if ($request->file('upload_image') && !$data['upload_image_selected']) {
+                $file = $request->file('upload_image');
+                $fileFormatPath = new FileFormatPath('video/image', $file);
+                $input['image'] = $fileFormatPath->storeFile();
+            }
+
+            if ($data['upload_image_selected'] && !$request->file('upload_image')) {
+                $input['image'] = explode(Storage::url(""), $data['upload_image_selected'])[1];
+            }
             $input = [
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
@@ -248,6 +258,7 @@ class VideoController extends Controller
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
+                'image' => $data['image'] ?? null,
                 'description' => $data['description'],
                 'types' => $data['types'],
                 'keywords' => $data['keywords'],
