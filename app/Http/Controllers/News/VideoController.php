@@ -153,6 +153,7 @@ class VideoController extends Controller
                 'types' => $data['types'],
                 'keywords' => $data['keywords'],
                 'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
+                'contributors' => $request->has('contributors') == false ? null : json_encode($data['contributors']),
                 'image' => $data['image'] ?? null,
                 'is_published' => $data['isPublished'],
                 'published_at' => $mergeDate,
@@ -165,6 +166,7 @@ class VideoController extends Controller
                 $log = new Log(
                     [
                         'news_id' => $news->id,
+                        'updated_at'=>now(),
                         'updated_by' => \auth()->id(),
                         'updated_content' => json_encode($news->getOriginal())
                     ]
@@ -263,6 +265,7 @@ class VideoController extends Controller
                 'types' => $data['types'],
                 'keywords' => $data['keywords'],
                 'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
+                'contributors' => $request->has('contributors') == false ? null : json_encode($data['contributors']),
                 'is_published' => $data['isPublished'],
                 'published_at' => $margeDate,
                 'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
@@ -280,6 +283,7 @@ class VideoController extends Controller
             $log = new Log(
                 [
                     'news_id' => $id,
+                    'updated_at'=>now(),
                     'updated_by' => \auth()->id(),
                     'updated_content' => json_encode($newsById->getChanges())
                 ]
@@ -304,8 +308,18 @@ class VideoController extends Controller
             News::where('id', $id)->update([
                 'deleted_by' => Auth::user()->uuid,
             ]);
-            News::destroy($id);
-            return Redirect::back()->with('status', 'Successfully to Delete User');
+            if (News::destroy($id)) {
+                $log = new Log(
+                    [
+                        'news_id' => $id,
+                        'updated_by' => \auth()->id(),
+                        'updated_at'=>now(),
+                        'updated_content' => json_encode('DELETED')
+                    ]
+                );
+                $log->save();
+            }
+            return Redirect::back()->with('status', 'Successfully to Delete News');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
