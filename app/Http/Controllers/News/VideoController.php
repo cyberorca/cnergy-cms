@@ -97,7 +97,7 @@ class VideoController extends Controller
         $users = User::all();
         $categories = Category::all();
         $tags = Tag::all();
-        $types = ['news', 'photonews', 'video'];
+        $types = 'video';
         $date = date('Y-m-d');
         $time = time();
         return view('news.video.editable', [
@@ -206,7 +206,7 @@ class VideoController extends Controller
         $news = News::where('id', $id)->first();
         $categories = Category::all();
         $tags = Tag::all();
-        $types = ['news', 'photonews', 'video'];
+        $types = 'video';
         $contributors = $news->users;
         $users = User::with(['roles'])->get();
         return view('news.video.editable', [
