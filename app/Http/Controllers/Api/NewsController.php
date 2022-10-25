@@ -14,7 +14,7 @@ class NewsController extends Controller
     public function index(Request $request)
     {
         $news = News::with(['categories', 'tags', 'users', 'news_paginations'])->latest('published_at');
-        $editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
+        /*$editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
         $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Reporter");
         $photographers = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Photographer");
 
@@ -61,9 +61,9 @@ class NewsController extends Controller
             $news->whereBetween('created_at', [
                 $startDate, $endDate
             ]);
-        }
+        }*/
 
-        $data["data"] = $this->convertDataToResponse($news->get());
+        $data["data"] = $this->convertDataToResponse($news->paginate(10));
         return response()->json($data);
 
     }
@@ -77,7 +77,13 @@ class NewsController extends Controller
                 "news_level" => $item->is_publised,
                 "news_top_headline"=> $item->is_headline,
                 "news_editor_pick"=> $item->editor_pick,
-                "news_hot"=> null,
+                "news_hot"=> $item->is_verify_age,
+                "news_home_headline"=> $item->is_home_headline,
+                "news_category_headline"=> $item->is_category_headline,
+                "news_curated"=> $item->is_curated,
+                "news_advertorial"=> $item->is_advertorial,
+                "news_disable_interactions"=> $item->is_disable_interactions,
+                "news_branded_content"=> $item->is_branded_content,
                 "news_category" => [
                     "id" => $item->categories->id,
                     "name" => $item->categories->category,
@@ -86,8 +92,9 @@ class NewsController extends Controller
                 "news_title" => $item->title,
                 "news_subtitle" => null,
                 "news_synopsis" => $item->synopsis,
+                "news_description" => $item->description,
                 "news_content" => $item->content,
-                "news_image_prefix" => null,
+                "news_image_prefix" => $item->image,
                 "news_image" => [
                     "real"=> null,
                 ],
