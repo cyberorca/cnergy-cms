@@ -50,7 +50,7 @@
     <section id="basic-vertical-layouts">
         @csrf
         <div class="d-flex justify-content-between gap-2">
-            <div class="col-8 ">
+            <div class="col-12 ">
                 <div class="card">
                     <div class="card-body d-flex flex-column gap-2">
                         @if ($method === 'edit')

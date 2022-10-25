@@ -19,10 +19,10 @@ class Tag extends Model
     protected $fillable = ['tags', 'slug', 'is_active', 'created_at', 'created_by', 'deleted_by', 'meta_title', 'meta_description', 'meta_keywords'];
 
     public function tags(){
-        return $this->belongsToMany(News::class, 'news_tags');
+        return $this->belongsToMany(News::class, 'news_tags')->withPivot('id');
     }
 
     public function news(){
-        return $this->belongsToMany(News::class, 'news_tags');
+        return $this->belongsToMany(News::class, 'news_tags')->withPivot('id');
     }
 }

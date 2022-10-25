@@ -96,7 +96,7 @@ class StaticPageController extends Controller
             
             $static->save();
 
-            return \redirect()->route('static-page.index')->with('status', 'Successfully Add New News');
+            return \redirect()->route('static-page.index')->with('status', 'Successfully Add New Page');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
@@ -156,7 +156,7 @@ class StaticPageController extends Controller
             $static->update($input);
 
 
-            return \redirect()->route('static-page.index')->with('status', 'Successfully Update News');
+            return \redirect()->route('static-page.index')->with('status', 'Successfully Update Page');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
@@ -176,7 +176,7 @@ class StaticPageController extends Controller
                 'deleted_by' => Auth::user()->uuid,
             ]);
             StaticPage::destroy($id);
-            return Redirect::back()->with('status', 'Successfully to Delete User');
+            return Redirect::back()->with('status', 'Successfully to Delete Page');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }

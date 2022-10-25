@@ -58,7 +58,7 @@ class News extends Model
     }
 
     public function tags(){
-        return $this->belongsToMany(Tag::class, 'news_tags');
+        return $this->belongsToMany(Tag::class, 'news_tags')->withPivot('id');
     }
 
     public function news_paginations(){
