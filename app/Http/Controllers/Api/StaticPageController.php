@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class StaticPageController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
         $staticPage = StaticPage::latest();
 
         if($request->get("slug")){
