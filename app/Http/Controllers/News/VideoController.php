@@ -97,7 +97,7 @@ class VideoController extends Controller
         $users = User::all();
         $categories = Category::all();
         $tags = Tag::all();
-        $types = ['news', 'photonews', 'video'];
+        $types = 'video';
         $date = date('Y-m-d');
         $time = time();
         return view('news.video.editable', [
@@ -150,7 +150,7 @@ class VideoController extends Controller
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
                 'description' => $data['description'],
-                'types' => $data['types'],
+                'types' => 'video',
                 'keywords' => $data['keywords'],
                 'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
                 'contributors' => $request->has('contributors') == false ? null : json_encode($data['contributors']),
@@ -206,7 +206,7 @@ class VideoController extends Controller
         $news = News::where('id', $id)->first();
         $categories = Category::all();
         $tags = Tag::all();
-        $types = ['news', 'photonews', 'video'];
+        $types = 'video';
         $contributors = $news->users;
         $users = User::with(['roles'])->get();
         return view('news.video.editable', [
@@ -262,7 +262,7 @@ class VideoController extends Controller
                 'synopsis' => $data['synopsis'],
                 'image' => $data['image'] ?? null,
                 'description' => $data['description'],
-                'types' => $data['types'],
+                'types' => 'video',
                 'keywords' => $data['keywords'],
                 'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
                 'contributors' => $request->has('contributors') == false ? null : json_encode($data['contributors']),
