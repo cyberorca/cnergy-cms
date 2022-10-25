@@ -16,10 +16,7 @@ class CategoriesController extends Controller
         if($request->get("name")){
             $category->where('category', '=', $request->get('name'));
         }
-        
-        // ->toArray();
 
-        return response()->json(($category->get()));
         return response()->json(Category::convertCategoryDataToResponse($category));
     }
 }
