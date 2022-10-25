@@ -15,15 +15,22 @@ class IndexVideoResource extends JsonResource
             'news_id' => $this->id,
             'news_entry' => date('Y-m-d h:i:s', strtotime($this->created_at)),
             'news_last_update' => date('Y-m-d h:i:s', strtotime($this->updated_at)),
-            'news_level' => '',
+            'news_level' => $this->is_publised,
             'news_top_headline' => $this->is_headline,
             'news_editor_pick' => $this->editor_pick,
-            'news_hot' => '',
+            'news_hot' => $this->is_verify_age,
+            'news_home_headline'=> $this->is_home_headline,
+            'news_category_headline'=> $this->is_category_headline,
+            'news_curated'=> $this->is_curated,
+            'news_advertorial'=> $this->is_advertorial,
+            'news_disable_interactions'=> $this->is_disable_interactions,
+            'news_branded_content'=> $this->is_branded_content,
             'news_category' => $category,
             'news_title' => $this->title,
             'news_subtitle' => '',
             'news_synopsis' => $this->synopsis,
             'news_content' => $this->content,
+            'news_description' => $this->description,
             'news_image_prefix' => '',
             'news_image' => '',
             'news_image_thumbnail' => '',
@@ -100,8 +107,9 @@ class IndexVideoResource extends JsonResource
     {
         $userById = User::where('uuid', '=', $uuid)->get('name')->first();
         return [
-            "uuid" => $uuid,
-            "name" => $userById->name
+            "id" => $uuid,
+            "name" => $userById->name,
+            "image" => null
         ];
     }
 
