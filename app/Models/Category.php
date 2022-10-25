@@ -45,7 +45,7 @@ class Category extends Model
 
     public function child()
     {
-        return $this->hasMany(Category::class, 'parent_id')->select('parent_id', 'id','category','types','slug');
+        return $this->hasMany(Category::class, 'parent_id')->select('parent_id', 'id', 'category', 'types', 'slug');
     }
 
     public function parent()
@@ -63,15 +63,18 @@ class Category extends Model
         return $this->hasMany(Category::class, 'parent_id')->with('child.child');
     }
 
-    public function slug(){
+    public function slug()
+    {
         return $this->slug;
     }
-    
-    public function menu_name(){
+
+    public function menu_name()
+    {
         return $this->category;
     }
 
-    public function childs(){
+    public function childs()
+    {
         return $this->child;
     }
 
@@ -85,4 +88,42 @@ class Category extends Model
         return json_decode($value, true);
     }
 
+    public static function getAll()
+    {
+        $category = self::all()->toArray();
+        return self::convertMenuDataToResponse($category);
+    }
+
+    public static function convertCategoryDataToResponse($dataRaw)
+    {
+        $tree = [];
+        $references = [];
+
+        foreach ($dataRaw as $id => &$node) {
+            $references[intval($node['id'])] = &$node;
+            $node['children'] = array();
+            if (is_null($node['parent_id'])) {
+                $tree[intval($node['id'])] = &$node;
+            } else {
+                $references[$node['parent_id']]['children'][intval($node['id'])] = &$node;
+            }
+        }
+
+        return array_values(self::array_values_recursive($tree));
+    }
+
+    public static function array_values_recursive($arr)
+    {
+        foreach ($arr as $key => $value) {
+            if (is_array($value)) {
+                $arr[$key] = self::array_values_recursive($value);
+            }
+        }
+
+        if (isset($arr['children'])) {
+            $arr['children'] = array_values($arr['children']);
+        }
+
+        return $arr;
+    }
 }
