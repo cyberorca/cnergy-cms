@@ -18,8 +18,10 @@ class TagCollection extends ResourceCollection
             'data' => IndexTagResource::collection($this->collection),
             'attribute' => [
                 "total_result"=>$this->count(),
-                "next_page"=>$this->currentPage(),
+                "next_page"=>$this->currentPage() === $this->lastPage() ? null : $this->currentPage() + 1,
                 "next_url"=>$this->nextPageUrl(),
-            ]];
+                // "all" => $this
+            ],
+        ];
     }
 }
