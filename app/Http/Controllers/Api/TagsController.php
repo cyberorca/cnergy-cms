@@ -13,13 +13,16 @@ class TagsController extends Controller
 
     public function index(Request $request)
     {
-        $tag = Tag::latest()
-        ->where('tags', "LIKE", "%{$request->get('name', '')}%")
-        ->where('slug', 'like', '%' . $request->get('slug', '') . '%')
-        ->where('is_active', $request->get('status', '1'))
-        ->paginate($request->get('limit', 20))->withQueryString();
-       
-        return response()->json(new TagCollection($tag));
+        $tag = Tag::latest();
+
+        if($request->get("slug")){
+            $tag->where('slug', '=', $request->get('slug', ''));
+        }
+        $limit = $request->get('limit', 20);
+        if($limit > 20){
+            $limit = 20;
+        }
+        return response()->json(new TagCollection($tag->paginate($limit)->withQueryString()));
     }
 
     

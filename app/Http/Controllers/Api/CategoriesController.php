@@ -11,11 +11,15 @@ class CategoriesController extends Controller
 {
     public function index(Request $request)
     {
-        $category = Category::select("id", "parent_id", "category as name", "slug", "types", "meta_title", "meta_description", "meta_keywords")
-            ->where('category', 'like', "%{$request->get('name', '')}%")
-            ->where('common', 'like', "%{$request->get('common', '')}%")
-            ->whereIn('is_active', $request->get('status', ["1", "0"]))->get()->toArray();
+        $category = Category::select("id", "parent_id", "category as name", "slug", "types", "meta_title", "meta_description", "meta_keywords");
 
+        if($request->get("name")){
+            $category->where('category', '=', $request->get('name'));
+        }
+        
+        // ->toArray();
+
+        return response()->json(($category->get()));
         return response()->json(Category::convertCategoryDataToResponse($category));
     }
 }
