@@ -10,7 +10,33 @@ use Illuminate\Support\Facades\DB;
 
 class TagsController extends Controller
 {
-
+    /**
+     * Get Tag
+     * @OA\Get (
+     *     tags={"Tag"},
+     *     path="/api/tag/?token={token}",
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="limit",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="slug",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *     )
+     * )
+     */
     public function index(Request $request)
     {
         $tag = Tag::latest();
@@ -25,5 +51,4 @@ class TagsController extends Controller
         return response()->json(new TagCollection($tag->paginate($limit)->withQueryString()));
     }
 
-    
 }

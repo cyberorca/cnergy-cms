@@ -1,0 +1,237 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "CMS KLY API",
+        "description": "Documentation CMS KLY API",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/category/?token={token}": {
+            "get": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Get Category",
+                "operationId": "819759553faf7e85669297d3751a1ff2",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
+        },
+        "/api/setting-fe-menu/?token={token}": {
+            "get": {
+                "tags": [
+                    "Front End Menu"
+                ],
+                "summary": "Get Front End Menu",
+                "operationId": "c17aaa9e806356767feef13d680c5738",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
+        },
+        "/api/fe-setting/?token={token}": {
+            "get": {
+                "tags": [
+                    "Front End Settings"
+                ],
+                "summary": "Get Front End Settings",
+                "operationId": "4172eeffcdaf5fbd74981e472d02d9cd",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
+        },
+        "/api/menu/?token={token}": {
+            "get": {
+                "tags": [
+                    "Menu"
+                ],
+                "summary": "Get Menu",
+                "operationId": "80433f3da5660dc9e0e56da09a8e0a37",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
+        },
+        "/api/news/?token={token}": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Get News",
+                "operationId": "336dc5121486450b20dc662dfeef3cc4",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
+        },
+        "/api/static-page/?token={token}": {
+            "get": {
+                "tags": [
+                    "Static Page"
+                ],
+                "summary": "Get Static Page",
+                "operationId": "ce3be451833f4b2535b1097f53d4dd4e",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "slug",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
+        },
+        "/api/tag/?token={token}": {
+            "get": {
+                "tags": [
+                    "Tag"
+                ],
+                "summary": "Get Tag",
+                "operationId": "3483ac0cc1c5a893dd9552da758d4200",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "slug",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
+        },
+        "/api/video/?token={token}": {
+            "get": {
+                "tags": [
+                    "Video"
+                ],
+                "summary": "Get Video",
+                "operationId": "f886a2ccea9e5f2dcfc0cf64834b7ab0",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
+        }
+    }
+}

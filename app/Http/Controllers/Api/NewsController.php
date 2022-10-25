@@ -11,6 +11,23 @@ use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
+    /**
+     * Get News
+     * @OA\Get (
+     *     tags={"News"},
+     *     path="/api/news/?token={token}",
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *     )
+     * )
+     */
     public function index(Request $request)
     {
         $news = News::with(['categories', 'tags', 'users', 'news_paginations'])->latest('published_at');
@@ -128,7 +145,7 @@ class NewsController extends Controller
                 "news_id_import" => null,
                 "news_guid" => null,
                 "photonews" => [
-        
+
                 ],
                 "video" => $item->video,
                 "category_name" => $item->categories->category,
@@ -137,18 +154,18 @@ class NewsController extends Controller
                 "news_paging" => $this->convertDataToResponse3($item->news_paginations),
                 "news_paging_order" => null,
                 "news_quote" => [
-                    
+
                 ],
                 "news_tag" => $this->convertDataToResponse2($item->tags),
                 "news_keywords" => self::keywordResponse($item->keywords),
                 "news_related" => [
-                    
+
                 ],
                 "news_dfp" => [
-                    
+
                 ],
                 "news_dmp" => [
-                    
+
                 ],
                 "cdn_image" => [
                     "klimg_url" => null,

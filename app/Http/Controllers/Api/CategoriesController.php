@@ -9,6 +9,28 @@ use Illuminate\Support\Str;
 
 class CategoriesController extends Controller
 {
+    /**
+     * Get Category
+     * @OA\Get (
+     *     tags={"Category"},
+     *     path="/api/category/?token={token}",
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="name",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *     )
+     * )
+     */
     public function index(Request $request)
     {
         $category = Category::select("id", "parent_id", "category as name", "slug", "types", "meta_title", "meta_description", "meta_keywords");
@@ -16,7 +38,7 @@ class CategoriesController extends Controller
         if($request->get("name")){
             $category->where('category', '=', $request->get('name'));
         }
-        
+
         // ->toArray();
 
         return response()->json(($category->get()));

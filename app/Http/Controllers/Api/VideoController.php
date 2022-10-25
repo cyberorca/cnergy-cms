@@ -8,6 +8,23 @@ use App\Models\News;
 
 class VideoController extends Controller
 {
+    /**
+     * Get Video
+     * @OA\Get (
+     *     tags={"Video"},
+     *     path="/api/video/?token={token}",
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *     )
+     * )
+     */
     public function index(){
         /*order by published_at desc
         //by is_published

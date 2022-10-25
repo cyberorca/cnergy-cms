@@ -9,6 +9,23 @@ use Illuminate\Http\Request;
 
 class FrontEndMenuController extends Controller
 {
+    /**
+     * Get Front End Menu
+     * @OA\Get (
+     *     tags={"Front End Menu"},
+     *     path="/api/setting-fe-menu/?token={token}",
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *     )
+     * )
+     */
     public function index(Request $request)
     {
         $fe_menus = FrontEndMenu::latest()
@@ -22,7 +39,7 @@ class FrontEndMenuController extends Controller
             return response()->json(new FrontEndMenuCollection($fe_menus));
     }
 
-    /*private function convertDataToResponse($dataRaw){ 
+    /*private function convertDataToResponse($dataRaw){
         return $dataRaw->transform(function ($item, $key) {
             return [
                 'id' => $item->id,
