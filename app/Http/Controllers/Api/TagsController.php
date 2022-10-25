@@ -16,9 +16,8 @@ class TagsController extends Controller
         $tag = Tag::latest()
         ->where('tags', "LIKE", "%{$request->get('name', '')}%")
         ->where('slug', 'like', '%' . $request->get('slug', '') . '%')
-        ->whereIn('is_active', $request->get('is_active', ['1', '0']))
+        ->where('is_active', $request->get('status', '1'))
         ->paginate($request->get('limit', 20))->withQueryString();
-
        
         return response()->json(new TagCollection($tag));
     }
