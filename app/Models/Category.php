@@ -45,7 +45,7 @@ class Category extends Model
 
     public function child()
     {
-        return $this->hasMany(Category::class, 'parent_id')->select('parent_id', 'id', 'category', 'types', 'slug');
+        return $this->hasMany(Category::class, 'parent_id')->select('id', 'parent_id', 'category', 'types', 'slug');
     }
 
     public function parent()
@@ -102,10 +102,10 @@ class Category extends Model
         foreach ($dataRaw as $id => &$node) {
             $references[intval($node['id'])] = &$node;
             $node['children'] = array();
-            if (is_null($node['parent_id'])) {
+            if (is_null($node['parent'])) {
                 $tree[intval($node['id'])] = &$node;
             } else {
-                $references[$node['parent_id']]['children'][intval($node['id'])] = &$node;
+                $references[$node['parent']]['children'][intval($node['id'])] = &$node;
             }
         }
 

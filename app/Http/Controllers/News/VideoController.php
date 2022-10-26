@@ -25,7 +25,7 @@ class VideoController extends Controller
      */
     public function index(Request $request)
     {
-        $news = News::with(['categories', 'tags'])->where('types','=','video');
+        $news = News::with(['categories', 'tags'])->where('types','=','video')->latest();
         $editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
         $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Reporter");
         $photographers = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Photographer");
