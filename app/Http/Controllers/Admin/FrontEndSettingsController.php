@@ -70,12 +70,6 @@ class FrontEndSettingsController extends Controller
 
     public function generateToken(GenerateTokenRequest $request)
     {
-        // if ($input["token_name"]) {
-        //     $data["token"] = json_encode([
-        //         $input["token_name"] => sha1(Str::random(64))
-        //     ]);
-        // }
-
         try {
             $input = $request->validated();
             $menu = FrontEndSetting::first(['token']);
@@ -85,7 +79,6 @@ class FrontEndSettingsController extends Controller
                 $latest_token = json_decode($menu->token, true);
                 $latest_token[$input["token_name"]] = sha1(Str::random(64));
             }
-           // return response()->json($latest_token);
             FrontEndSetting::updateOrCreate([
                 'id' => 1
             ], [
@@ -93,7 +86,7 @@ class FrontEndSettingsController extends Controller
             ]);
             $token = $input["token_name"];
             $code = $latest_token[$input["token_name"]];
-            return redirect()->back()->with('status', 'Successfully generate token '.$token.' - '.$code.' ');
+            return redirect()->back()->with('status', 'Successfully Generate Token - '.$token.' : '.$code.' ');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -146,7 +139,7 @@ class FrontEndSettingsController extends Controller
                 'id' => 1
             ], $data);
 
-            return redirect()->back()->with('status', 'Successfully save menu settings');
+            return redirect()->back()->with('status', 'Successfully Update Frontend Settings');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
