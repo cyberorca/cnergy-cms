@@ -22,9 +22,13 @@ class CategoriesController extends Controller
         if($limit > 10){
             $limit = 10;
         }
-        // if($request->get("nested")){
-        //     $category->where('parent_id', '=', $request->get('nested'));
-        // }
+        
+        $nested = $request->get("nested");
+        if($nested == 0){
+            $category->where('parent_id', '=', $request->get('child.parent.child.parent'))->paginate($limit)->withQueryString();
+        } else {
+            $category->paginate($limit)->withQueryString();
+        }
         // ->toArray();
 
         // return response()->json(($category->get()));
