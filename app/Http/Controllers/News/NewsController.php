@@ -98,7 +98,7 @@ class NewsController extends Controller
         $method = explode('/', URL::current());
         return view('news.index', [
             'type' => end($method),
-            'news' => $news->paginate(10)->withQueryString(),
+            'news' => $news->orderBy("created_at", "DESC")->paginate(10)->withQueryString(),
             'editors' => $editors->get(),
             'reporters' => $reporters->get(),
             'photographers' => $photographers->get()
