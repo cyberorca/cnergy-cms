@@ -4,7 +4,7 @@
             <form action="{{ route('news.create') }}" method="get">
                 <div class="d-flex gap-2">
                     <input type="text" class="form-control" name="search" style="width: 250px"
-                        placeholder="search image" id="search_image_bank_input" />
+                        placeholder="Find Image" id="search_image_bank_input" />
                     <div class="btn btn-success col-2" id="search_image_bank_button"><i class="bi bi-search"></i>&nbsp; Search</div>
                 </div>
             </form>
