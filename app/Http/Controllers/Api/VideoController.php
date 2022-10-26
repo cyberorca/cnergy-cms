@@ -8,6 +8,30 @@ use App\Models\News;
 
 class VideoController extends Controller
 {
+    /**
+     * Get Video
+     * @OA\Get (
+     *     tags={"Video"},
+     *     path="/api/video/?token={token}",
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="unauthorized",
+     *       @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="The security token is invalid"),
+     *          )
+     *     )
+     * )
+     */
     public function index(){
         /*order by published_at desc
         //by is_published

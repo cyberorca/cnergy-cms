@@ -8,13 +8,37 @@ use Illuminate\Http\Request;
 
 class FrontEndSettingsController extends Controller
 {
+    /**
+     * Get Front End Settings
+     * @OA\Get (
+     *     tags={"Front End Settings"},
+     *     path="/api/fe-setting/?token={token}",
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="unauthorized",
+     *       @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="The security token is invalid"),
+     *          )
+     *     )
+     * )
+     */
     public function index()
     {
         $menu_settings = FrontEndSetting::first()->makeHidden(['token', 'deleted_at', 'id']);
         $data = [
             "id" => $menu_settings["id"],
             "title" => $menu_settings["site_title"],
-            "address" => $menu_settings["address"], 
+            "address" => $menu_settings["address"],
             "sosmed" => json_encode([
                 "facebook" => $menu_settings["facebook"],
                 "ig" => $menu_settings["instagram"],

@@ -8,6 +8,30 @@ use Illuminate\Http\Request;
 
 class MenuController extends Controller
 {
+    /**
+     * Get Menu
+     * @OA\Get (
+     *     tags={"Menu"},
+     *     path="/api/menu/?token={token}",
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="unauthorized",
+     *       @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="The security token is invalid"),
+     *          )
+     *     )
+     * )
+     */
     public function index()
     {
         $menus = Menu::whereNull('parent_id')->with(["childMenus", "roles"])->get();
