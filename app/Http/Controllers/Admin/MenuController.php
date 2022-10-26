@@ -46,7 +46,7 @@ class MenuController extends Controller
             $data['created_at'] = now();
             Menu::create($data);
             // return response()->json($data);
-            return redirect()->route('menu.index')->with('status', 'Successfully add new menu');
+            return redirect()->route('menu.index')->with('status', 'Successfully Create Menu');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -91,7 +91,7 @@ class MenuController extends Controller
             $menu->slug = Str::slug($data["menu_name"]);
             $menu->save();
             $menu->updated_at = now();
-            return redirect()->route('menu.index')->with("status", "Successfully to edit menu");
+            return redirect()->route('menu.index')->with("status", "Successfully Update Menu");
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -107,7 +107,7 @@ class MenuController extends Controller
     {
         try {
             Menu::destroy($id);
-            return redirect()->back()->with('status', 'Successfully to delete menu');
+            return redirect()->back()->with('status', 'Successfully Delete Menu');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
