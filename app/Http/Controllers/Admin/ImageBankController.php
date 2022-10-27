@@ -72,7 +72,7 @@ class ImageBankController extends Controller
         try {
             $input = $request->all();
             $data = [
-                "title" => $input["title"],
+                "title" => $input["title_image"],
                 "photographer" => $input["photographer"],
                 "copyright" => $input["copyright"],
                 "caption" => $input["caption"],
