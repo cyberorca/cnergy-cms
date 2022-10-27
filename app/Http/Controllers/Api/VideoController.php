@@ -12,13 +12,8 @@ class VideoController extends Controller
      * Get Video
      * @OA\Get (
      *     tags={"Video"},
-     *     path="/api/video/?token={token}",
-     *     @OA\Parameter(
-     *         in="path",
-     *         name="token",
-     *         required=true,
-     *         @OA\Schema(type="string")
-     *     ),
+     *     path="/api/video/",
+     *     security={{"Authentication_Token":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="success",

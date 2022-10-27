@@ -14,13 +14,8 @@ class TagsController extends Controller
      * Get Tag
      * @OA\Get (
      *     tags={"Tag"},
-     *     path="/api/tag/?token={token}",
-     *     @OA\Parameter(
-     *         in="path",
-     *         name="token",
-     *         required=true,
-     *         @OA\Schema(type="string")
-     *     ),
+     *     path="/api/tag/",
+     *     security={{"Authentication_Token":{}}},
      *     @OA\Parameter(
      *         in="query",
      *         name="limit",

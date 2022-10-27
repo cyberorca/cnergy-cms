@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\StaticPageCollection;
 use App\Models\StaticPage;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class StaticPageController extends Controller
 {
@@ -13,18 +14,8 @@ class StaticPageController extends Controller
      * Get Static Page
      * @OA\Get (
      *     tags={"Static Page"},
-     *     path="/api/static-page/?token={token}",
-     *     @OA\Parameter(
-     *         in="path",
-     *         name="token",
-     *         required=true,
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Parameter(
-     *         in="query",
-     *         name="limit",
-     *         @OA\Schema(type="integer")
-     *     ),
+     *     path="/api/static-page/",
+     *     security={{"Authentication_Token":{}}},
      *     @OA\Parameter(
      *         in="query",
      *         name="slug",
@@ -44,18 +35,21 @@ class StaticPageController extends Controller
      * )
      */
     public function index(Request $request){
-        $staticPage = StaticPage::latest();
+        $staticPage = StaticPage::latest()->with('users');
 
         if($request->get("slug")){
             $staticPage->where('slug', '=', $request->get('slug', ''));
         }
 
-        $limit = $request->get('limit', 20);
-        if($limit > 20){
-            $limit = 20;
-        }
-
-        return response()->json(new StaticPageCollection($staticPage->paginate($limit)->withQueryString()))->setStatusCode(200);
+        return response()->json(
+            new StaticPageCollection($staticPage->get()),
+            Response::HTTP_OK);
+//        $limit = $request->get('limit', 20);
+//        if($limit > 20){
+//            $limit = 20;
+//        }
+//
+//        return response()->json(new StaticPageCollection($staticPage->paginate($limit)->withQueryString()))->setStatusCode(200);
 
         // $staticPage = StaticPage::latest()
         //     ->with(['users'])
