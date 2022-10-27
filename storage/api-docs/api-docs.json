@@ -6,22 +6,14 @@
         "version": "1.0"
     },
     "paths": {
-        "/api/category/?token={token}": {
+        "/api/category/": {
             "get": {
                 "tags": [
                     "Category"
                 ],
                 "summary": "Get Category",
-                "operationId": "819759553faf7e85669297d3751a1ff2",
+                "operationId": "bdaec245c70217f4bbab18ba0415fe94",
                 "parameters": [
-                    {
-                        "name": "token",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
                     {
                         "name": "name",
                         "in": "query",
@@ -50,26 +42,21 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+                    }
+                ]
             }
         },
-        "/api/setting-fe-menu/?token={token}": {
+        "/api/setting-fe-menu/": {
             "get": {
                 "tags": [
                     "Front End Menu"
                 ],
                 "summary": "Get Front End Menu",
-                "operationId": "c17aaa9e806356767feef13d680c5738",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "operationId": "ca367025a5ae2bd4e63bb903644d6bed",
                 "responses": {
                     "200": {
                         "description": "success"
@@ -89,27 +76,25 @@
                                 }
                             }
                         }
+<<<<<<< HEAD
+=======
                     }
-                }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+>>>>>>> 708c00b8c7f969181777c17e908dcedfb31bff9b
+                    }
+                ]
             }
         },
-        "/api/fe-setting/?token={token}": {
+        "/api/fe-setting/": {
             "get": {
                 "tags": [
                     "Front End Settings"
                 ],
                 "summary": "Get Front End Settings",
-                "operationId": "4172eeffcdaf5fbd74981e472d02d9cd",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "operationId": "f358a12d21ddfa3c06786f32d192f0a2",
                 "responses": {
                     "200": {
                         "description": "success"
@@ -129,27 +114,25 @@
                                 }
                             }
                         }
+<<<<<<< HEAD
+=======
                     }
-                }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+>>>>>>> 708c00b8c7f969181777c17e908dcedfb31bff9b
+                    }
+                ]
             }
         },
-        "/api/menu/?token={token}": {
+        "/api/menu/": {
             "get": {
                 "tags": [
                     "Menu"
                 ],
                 "summary": "Get Menu",
-                "operationId": "80433f3da5660dc9e0e56da09a8e0a37",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "operationId": "77534129ea5818987994885726c819f6",
                 "responses": {
                     "200": {
                         "description": "success"
@@ -170,26 +153,21 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+                    }
+                ]
             }
         },
-        "/api/news/?token={token}": {
+        "/api/news/": {
             "get": {
                 "tags": [
                     "News"
                 ],
                 "summary": "Get News",
-                "operationId": "336dc5121486450b20dc662dfeef3cc4",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "operationId": "13ba7d70632a2162ec52a218c86578f4",
                 "responses": {
                     "200": {
                         "description": "success"
@@ -210,25 +188,22 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+                    }
+                ]
             }
         },
-        "/api/static-page/?token={token}": {
+        "/api/static-page/": {
             "get": {
                 "tags": [
                     "Static Page"
                 ],
                 "summary": "Get Static Page",
-                "operationId": "ce3be451833f4b2535b1097f53d4dd4e",
+                "operationId": "033c35292bfbfa0eba108f50805070ba",
                 "parameters": [
-                    {
-                        "name": "token",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
                     {
                         "name": "limit",
                         "in": "query",
@@ -264,25 +239,22 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+                    }
+                ]
             }
         },
-        "/api/tag/?token={token}": {
+        "/api/tag/": {
             "get": {
                 "tags": [
                     "Tag"
                 ],
                 "summary": "Get Tag",
-                "operationId": "3483ac0cc1c5a893dd9552da758d4200",
+                "operationId": "7ffb3664d389353e0588913c2f5025f3",
                 "parameters": [
-                    {
-                        "name": "token",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
                     {
                         "name": "limit",
                         "in": "query",
@@ -318,26 +290,21 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+                    }
+                ]
             }
         },
-        "/api/video/?token={token}": {
+        "/api/video/": {
             "get": {
                 "tags": [
                     "Video"
                 ],
                 "summary": "Get Video",
-                "operationId": "f886a2ccea9e5f2dcfc0cf64834b7ab0",
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "operationId": "6f6eaa7b2fc7fe05750f9bc23fbfb0a2",
                 "responses": {
                     "200": {
                         "description": "success"
@@ -358,7 +325,22 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "Authentication_Token": {
+                "type": "apiKey",
+                "description": "An authorization header. Example: Token",
+                "name": "token",
+                "in": "query"
             }
         }
     }

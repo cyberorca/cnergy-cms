@@ -12,13 +12,8 @@ class FrontEndSettingsController extends Controller
      * Get Front End Settings
      * @OA\Get (
      *     tags={"Front End Settings"},
-     *     path="/api/fe-setting/?token={token}",
-     *     @OA\Parameter(
-     *         in="path",
-     *         name="token",
-     *         required=true,
-     *         @OA\Schema(type="string")
-     *     ),
+     *     path="/api/fe-setting/",
+     *     security={{"Authentication_Token":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="success",

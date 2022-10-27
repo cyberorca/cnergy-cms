@@ -1,29 +1,101 @@
  var image_preview_result = document.getElementById("image_preview_result")
+ var image_preview_modal = document.getElementById("image_preview_modal")
  var upload_image_button = document.getElementById("upload_image_button")
  var image_list_parent = document.getElementById("image_list_parent")
 
  var image_bank_modal = document.getElementById("image_bank_modal")
-//  var image_title = document.getElementById("image_title")
+ //  var image_title = document.getElementById("image_title")
 
  var search_image_bank_input = document.getElementById("search_image_bank_input")
  var search_image_bank_button = document.getElementById("search_image_bank_button")
  let list = []
  var upload_image_selected = document.getElementById("upload_image_selected")
+ var save_uploaded_image = document.getElementById("save_uploaded_image")
+ save_uploaded_image.addEventListener('click', async function () {
+     var form = document.querySelectorAll("#form-upload-image input, #form-upload-image textarea");
+     var fd = new FormData();
+     form.forEach((el, i) => {
+         const name = el.name;
+         let value = el.value;
+         if (name === 'image_input') {
+             const file = el.files
+             value = file[0]
+         }
+         fd.append(name, value);
+     })
+     let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+     fd.append('_token', token);
+     const button = this;
+     $(this).html(`
+            <span class="spinner-border spinner-border-sm" role="status"
+            aria-hidden="true"></span>
+        Loading...
+     `);
+     $(this).attr("disabled", true)
+     $.ajax({
+         url: "/image-bank/api/create/",
+         type: 'POST',
+         data: fd,
+         contentType: false,
+         processData: false,
+         dataType: 'json',
+         success: function ({
+             message,
+             data: {
+                 image_slug
+             }
+         }) {
+             //  console.log(message, image_slug);
+             image_preview_result.src = `${path}/${image_slug}`;
+             $(button).html(` <i class="bx bx-x d-block d-sm-none"></i>
+             <span class="d-sm-block"><i class="bi bi-save"></i>&nbsp;&nbsp;Save
+             Image</span>`);
+             new Toastify({
+                 text: message,
+                 duration: 3000,
+                 close: true,
+                 gravity: "bottom",
+                 position: "right",
+                 backgroundColor: "#4fbe87",
+             }).showToast()
+             $(button).attr("disabled", false)
+             $("#image-bank").modal("hide");
+             form.forEach((el, i) => {
+                 el.value = "";
+             })
+             image_preview_modal.src = `${path.split('/storage').slice(0, -1)}/assets/images/preview-image.jpg`
+         },
+         error: function (err) {
+             form.forEach((el, i) => {
+                 el.value = "";
+             })
+             image_preview_modal.src = `${path.split('/storage').slice(0, -1)}/assets/images/preview-image.jpg`
+             new Toastify({
+                 text: err,
+                 duration: 3000,
+                 close: true,
+                 gravity: "bottom",
+                 position: "right",
+                 backgroundColor: "#ff0000",
+             }).showToast()
+         }
+     });
+ })
 
  let path = document.getElementById('path_image').value;
 
  upload_image_button.onchange = evt => {
      const [file] = upload_image_button.files
      if (file) {
-          upload_image_selected.value = null;
-         image_preview_result.src = URL.createObjectURL(file)
+         upload_image_selected.value = null;
+         image_preview_modal.src = URL.createObjectURL(file)
      }
  }
 
  function selectImage() {
      const imageSrc = this.parentElement.children[0].getAttribute("src");
      const imageTitle = this.parentElement.children[1].innerHTML;
-    //  image_title.innerHTML = imageTitle;
+     //  image_title.innerHTML = imageTitle;
      image_preview_result.src = imageSrc;
      upload_image_selected.value = imageSrc;
      upload_image_button.value = null;

@@ -8,6 +8,14 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\URL;
 use App\Models\News;
 use App\Models\User;
+use App\Models\Log;
+use App\Models\Tag;
+use App\Models\Category;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Utils\FileFormatPath;
+use Illuminate\Support\Facades\Storage;
 
 class PhotoController extends Controller
 {
@@ -102,7 +110,21 @@ class PhotoController extends Controller
      */
     public function create()
     {
-        //
+        $method = explode('/', URL::current());
+        $users = User::all();
+        $categories = Category::all();
+        $tags = Tag::all();
+        $types = 'video';
+        $date = date('Y-m-d');
+        $time = time();
+        return view('news.photonews.editable', [
+            'method' => end($method),
+            'categories' => $categories,
+            'types' => $types,
+            'users' => $users,
+            'tags' => $tags,
+            'contributors' => []
+        ]);
     }
 
     /**
