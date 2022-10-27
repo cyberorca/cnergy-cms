@@ -7,7 +7,7 @@
                 <i class="bi bi-chevron-down pull-right fs-6"></i>
             </a>
             <hr />
-            <div class="collapse" id="satu">
+            <div class="collapse show fade" id="satu">
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-6">
@@ -51,7 +51,7 @@
                 <i class="bi bi-chevron-down pull-right fs-6"></i>
             </a>
             <hr />
-            <div class="collapse" id="dua">
+            <div class="collapse show fade" id="dua">
                 <div class="form-group">
                     @if (isset($news))
                         <x-image-uploader :item="$news" />
@@ -69,7 +69,7 @@
                 <i class="bi bi-chevron-down pull-right fs-6"></i>
             </a>
             <hr />
-            <div class="collapse" id="sembilan">
+            <div class="collapse show fade" id="sembilan">
                 <div class="form-group">
                     <div class="row">
                         <fieldset class="form-group">
@@ -101,7 +101,7 @@
                 <i class="bi bi-chevron-down pull-right fs-6"></i>
             </a>
             <hr />
-            <div class="collapse" id="tiga">
+            <div class="collapse show fade" id="tiga">
                 <div class="form-group">
                     <div class="row">
                         <select name="tags[]" class="form-select" style='width: 100%;' multiple="multiple"
@@ -128,7 +128,7 @@
                 <i class="bi bi-chevron-down pull-right fs-6"></i>
             </a>
             <hr />
-            <div class="collapse" id="tujuh">
+            <div class="collapse show fade" id="tujuh">
                 <div class="form-group">
                     <textarea name="description" class="form-control" id="description" cols="30" rows="3" required
                         placeholder="Enter description">@if($method === 'edit'){{ $news->description }}@endif</textarea>
@@ -141,7 +141,7 @@
                                                                     <span class="h6">Author</span>
                                                                 </a>
                                                                 <hr />
-                                                                <div class="collapse" id="delapan">
+                                                                <div class="collapse show fade" id="delapan">
                                                                     <div class="form-group">
                                                                         <div class="row">
                                                                             <select name="author[]" class="choices form-select multiple-remove"
@@ -164,7 +164,7 @@
                 <i class="bi bi-chevron-down pull-right fs-6"></i>
             </a>
             <hr />
-            <div class="collapse" id="empat">
+            <div class="collapse show fade" id="empat">
                 <div class="form-group">
                     <label class="mb-2">Keyword</label><br>
                     <input name="keywords" id="keywords" type="text" required
@@ -243,7 +243,7 @@
                 <i class="bi bi-chevron-down pull-right fs-6"></i>
             </a>
             <hr />
-            <div class="collapse" id="lima">
+            <div class="collapse show fade" id="lima">
                 <div class="form-group">
 
                     <input name="isCurated" class="form-check-input" type="checkbox" id="isCurated"

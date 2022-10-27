@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Utils\FileFormatPath;
+use App\Models\VideoNews;
 use Illuminate\Support\Facades\Storage;
 
 class VideoController extends Controller
@@ -25,7 +26,7 @@ class VideoController extends Controller
      */
     public function index(Request $request)
     {
-        $news = News::with(['categories', 'tags'])->where('types','=','video')->latest();
+        $news = News::with(['categories', 'tags'])->where('types', '=', 'video')->latest();
         $editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
         $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Reporter");
         $photographers = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Photographer");
@@ -120,9 +121,9 @@ class VideoController extends Controller
     {
         $data = $request->input();
         $date = $data['date'];
-            $time = $data['time'];
-            $mergeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
-        // return response()->json($data);
+        $time = $data['time'];
+        $mergeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
+        // return response()->json($request->all());
         try {
             if ($request->file('upload_image') && !$data['upload_image_selected']) {
                 $file = $request->file('upload_image');
@@ -162,17 +163,30 @@ class VideoController extends Controller
                 'category_id' => $data['category'],
                 'video' => $data['video']
             ]);
+
+
             if ($news->save()) {
                 $log = new Log(
                     [
                         'news_id' => $news->id,
-                        'updated_at'=>now(),
+                        'updated_at' => now(),
                         'updated_by' => \auth()->id(),
                         'updated_content' => json_encode($news->getOriginal())
                     ]
                 );
                 $log->save();
             }
+            VideoNews::create([
+                'title' => $data['title'],
+                'url' => "url",
+                'video' => $data['video'],
+                'description' => $data['description'],
+                'keywords' => $data['keywords'],
+                'copyright' => "copyright",
+                'news_id' => $news->id,
+                'order_by_no' => 1,
+                'created_by' => auth()->id(),
+            ]);
             foreach ($data['tags'] as $t) {
                 $news->tags()->attach($t);
             }
@@ -203,7 +217,7 @@ class VideoController extends Controller
     public function edit($id)
     {
         $method = explode('/', URL::current());
-        $news = News::where('id', $id)->first();
+        $news = News::where('id', $id)->with('news_videos:id,video,news_id')->first();
         $categories = Category::all();
         $tags = Tag::all();
         $types = 'video';
@@ -283,7 +297,7 @@ class VideoController extends Controller
             $log = new Log(
                 [
                     'news_id' => $id,
-                    'updated_at'=>now(),
+                    'updated_at' => now(),
                     'updated_by' => \auth()->id(),
                     'updated_content' => json_encode($newsById->getChanges())
                 ]
@@ -313,7 +327,7 @@ class VideoController extends Controller
                     [
                         'news_id' => $id,
                         'updated_by' => \auth()->id(),
-                        'updated_at'=>now(),
+                        'updated_at' => now(),
                         'updated_content' => json_encode('DELETED')
                     ]
                 );
