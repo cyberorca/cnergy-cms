@@ -13,13 +13,8 @@ class CategoriesController extends Controller
      * Get Category
      * @OA\Get (
      *     tags={"Category"},
-     *     path="/api/category/?token={token}",
-     *     @OA\Parameter(
-     *         in="path",
-     *         name="token",
-     *         required=true,
-     *         @OA\Schema(type="string")
-     *     ),
+     *     path="/api/category/",
+     *     security={{"Authentication_Token":{}}},
      *     @OA\Parameter(
      *         in="query",
      *         name="name",
@@ -45,12 +40,12 @@ class CategoriesController extends Controller
         if($request->get("name")){
             $category->where('category', '=', $request->get('name'));
         }
-        
+
         $limit = $request->get('limit', 10);
         if($limit > 10){
             $limit = 10;
         }
-        
+
         $nested = $request->get("nested");
         if($nested == 0){
             $category->where('parent_id', '=', $request->get('child.parent.child.parent'))->paginate($limit)->withQueryString();

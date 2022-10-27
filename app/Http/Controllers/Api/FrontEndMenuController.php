@@ -13,13 +13,8 @@ class FrontEndMenuController extends Controller
      * Get Front End Menu
      * @OA\Get (
      *     tags={"Front End Menu"},
-     *     path="/api/setting-fe-menu/?token={token}",
-     *     @OA\Parameter(
-     *         in="path",
-     *         name="token",
-     *         required=true,
-     *         @OA\Schema(type="string")
-     *     ),
+     *     path="/api/setting-fe-menu/",
+     *     security={{"Authentication_Token":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="success",
@@ -76,7 +71,7 @@ class FrontEndMenuController extends Controller
         $fe_menus
         //->where('slug', 'like', '%' . $request->get('slug', '') . '%')
         ->where('position', 'like', '%' . $request->get('position', '') . '%');
-        
+
         $limit = $request->get('limit', 20);
         if($limit > 20){
             $limit = 20;

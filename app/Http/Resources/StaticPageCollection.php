@@ -9,19 +9,14 @@ class StaticPageCollection extends ResourceCollection
     /**
      * Transform the resource collection into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
     {
         return [
-            'data' => IndexStaticPageResource::collection($this->collection),
-            'attribute' => [
-                "total_result"=>$this->count(),
-                "total_row" =>  $this->total(),
-                "per_page" =>  $this->perPage(),
-                "current_page" => $this->currentPage(),
-                "last_page" =>  $this->lastPage(),
-            ]];
+            'status'=>200,
+            'data' => IndexStaticPageResource::collection($this->collection)
+        ];
     }
 }

@@ -35,7 +35,6 @@ return new class extends Migration
             $table->longText('keywords');
             $table->longText('photographers')->nullable();
             $table->string('image', 255)->unique()->nullable();
-            $table->text('video')->nullable();
             $table->enum('is_published', [0, 1])->default(1);
             $table->timestamp('published_at')->nullable();
             $table->uuid('published_by')->nullable();
