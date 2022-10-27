@@ -6,6 +6,7 @@ use App\Models\Menu;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,8 +29,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer(['components.sidebar'], function ($view) {
-            $menu_sidebar = Menu::getAll();
-            $view->with('menu_sidebar', $menu_sidebar);
+            if(!Cache::has("menu_sidebar")){
+                Cache::forever("menu_sidebar", Menu::getAll());
+            }
+            $view->with('menu_sidebar', Cache::get("menu_sidebar"));
         });
         Paginator::useBootstrap();
     }
