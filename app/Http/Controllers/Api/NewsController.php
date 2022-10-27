@@ -73,6 +73,10 @@ class NewsController extends Controller
             $news->where('is_published', '=', "0");
         }
 
+        if($request->get("sensitive")){
+            $news->where('is_verify_age', '=', $request->get('sensitive', ''));
+        }
+
         /*if ($request->get('published')) {
             $published = $request->get('published');
             if($published = 1) {
