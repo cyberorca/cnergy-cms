@@ -88,6 +88,9 @@
                         </div>
                         <div class="form-group">
                             <label for="video" class="mb-2">Video Embed Code (HTML)</label>
+                            @if ($method === 'edit')
+                                <input type="hidden" name="video_id" value="{{ $news->news_videos[0]['id'] }}">
+                            @endif
                             <textarea name="video" id="video" class="form-control" cols="30" rows="3" required>
 @if ($method === 'edit')
 {{ $news->video }}
