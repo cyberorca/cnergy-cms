@@ -67,7 +67,7 @@
                                 <div class="form-group">
                                     <label for="basicInput" class="mb-2">Title</label>
                                     <input type="text" class="form-control @error('title') is-invalid @enderror"
-                                        id="basicInput" name="title" placeholder="Enter image title" />
+                                        id="basicInput" name="title_image" placeholder="Enter image title" />
                                     @error('title')
                                         <div class="invalid-feedback">
                                             <i class="bx bx-radio-circle"></i>
