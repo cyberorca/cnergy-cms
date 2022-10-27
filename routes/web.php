@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\TagsController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\News\NewsController;
+use App\Http\Controllers\News\PhotoController;
 use App\Http\Controllers\News\VideoController;
 use App\Http\Controllers\Tools\StaticPageController;
 use Illuminate\Support\Facades\Route;
@@ -102,6 +103,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::prefix('news')->group(function () {
             Route::post('/pagination/api/delete/', [NewsController::class, 'deleteNewsPagination'])->name('news.api.news_pagination');
             Route::resource('news', NewsController::class);
+            Route::resource('photo', PhotoController::class);
             Route::resource('video', VideoController::class);
         });
         Route::prefix('tags')->group(function () {

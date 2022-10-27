@@ -81,7 +81,7 @@ class VideoController extends Controller
             'news' => $news->paginate(10)->withQueryString(),
             'editors' => $editors->get(),
             'reporters' => $reporters->get(),
-            'photographers' => $photographers->get()
+            'photographers' => $photographers->get()    
             // 'categories' => Category::whereNull("parent_id"),
         ]);
     }
