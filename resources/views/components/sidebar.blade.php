@@ -1,4 +1,4 @@
-{{-- @dump($menu_sidebar) --}}
+{{-- @dump(Cache::get('menu_sidebar')) --}}
 {{-- @dump(request()->getRequestUri())
 @dump(request()) --}}
 <div id="sidebar" class="active">

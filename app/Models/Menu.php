@@ -64,6 +64,12 @@ class Menu extends Model
         // return self::with('roles_user')->get()->toArray();
         $menu_role_user = self::with('roles_user')->get()->toArray();
         // $menu_role_user = self::all()->with->toArray();
+        return self::convertMenuDataToResponseAPI($menu_role_user);
+    }
+
+    public static function getAllPage()
+    {
+        $menu_role_user = self::all()->toArray();
         return self::convertMenuDataToResponse($menu_role_user);
     }
 
@@ -88,7 +94,25 @@ class Menu extends Model
         foreach ($dataRaw as $id => &$node) {
             $references[$node['id']] = &$node;
             $node['children'] = array();
-            if(count($node['roles_user'])){
+            if (is_null($node['parent_id'])) {
+                $tree[$node['id']] = &$node;
+            } else {
+                $references[$node['parent_id']]['children'][$node['id']] = &$node;
+            }
+        }
+
+        return $tree;
+    }
+
+    public static function convertMenuDataToResponseAPI($dataRaw)
+    {
+        $tree = array();
+        $references = array();
+
+        foreach ($dataRaw as $id => &$node) {
+            $references[$node['id']] = &$node;
+            $node['children'] = array();
+            if (count($node['roles_user'])) {
                 if (is_null($node['parent_id'])) {
                     $tree[$node['id']] = &$node;
                 } else {
