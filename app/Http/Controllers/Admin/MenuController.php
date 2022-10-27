@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MenuRequest;
 use App\Models\Menu;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class MenuController extends Controller
@@ -16,7 +17,10 @@ class MenuController extends Controller
      */
     public function index()
     {
-        $menus = Menu::whereNull('parent_id')->with(["childMenus", "roles"])->get();
+        if(!Cache::has("menu_config")){
+            Cache::forever("menu_config", Menu::getAllPage());
+        }
+        $menus = Cache::get("menu_config");
         // return response()->json($menus);
         return view('admin.menu.index', compact('menus'));
     }
@@ -46,7 +50,7 @@ class MenuController extends Controller
             $data['created_at'] = now();
             Menu::create($data);
             // return response()->json($data);
-            return redirect()->route('menu.index')->with('status', 'Successfully add new menu');
+            return redirect()->route('menu.index')->with('status', 'Successfully Create Menu');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -91,7 +95,7 @@ class MenuController extends Controller
             $menu->slug = Str::slug($data["menu_name"]);
             $menu->save();
             $menu->updated_at = now();
-            return redirect()->route('menu.index')->with("status", "Successfully to edit menu");
+            return redirect()->route('menu.index')->with("status", "Successfully Update Menu");
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -107,7 +111,7 @@ class MenuController extends Controller
     {
         try {
             Menu::destroy($id);
-            return redirect()->back()->with('status', 'Successfully to delete menu');
+            return redirect()->back()->with('status', 'Successfully Delete Menu');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }

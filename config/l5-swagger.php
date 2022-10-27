@@ -153,6 +153,12 @@ return [
         */
         'securityDefinitions' => [
             'securitySchemes' => [
+                'Authentication_Token' => [ // Unique name of security
+                    'type' => 'apiKey',
+                    'description' => 'An authorization header. Example: Token',
+                    'name' => 'token',
+                    'in' => 'query',
+                ],
                 /*
                  * Examples of Security schemes
                 */

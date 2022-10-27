@@ -90,8 +90,8 @@ class Category extends Model
 
     public static function getAll()
     {
-        $category = self::all()->toArray();
-        return self::convertMenuDataToResponse($category);
+        $category = self::select("*", "category as menu_name")->get()->toArray();
+        return self::convertCategoryDataToResponse($category);
     }
 
     public static function convertCategoryDataToResponse($dataRaw)
