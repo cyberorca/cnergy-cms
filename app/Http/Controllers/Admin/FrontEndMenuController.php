@@ -68,7 +68,7 @@ class FrontEndMenuController extends Controller
             // return response()->json($input);
             FrontEndMenu::create($input);
 
-            return redirect()->route('front-end-menu.index')->with('status', 'Successfully save frontend menu');
+            return redirect()->route('front-end-menu.index')->with('status', 'Successfully Create Frontend Menu');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -119,7 +119,7 @@ class FrontEndMenuController extends Controller
             $fe_menu->position = $input['position'];
             $fe_menu->save();
 
-            return redirect()->route('front-end-menu.index')->with('status', 'Successfully to edit frontend menu');
+            return redirect()->route('front-end-menu.index')->with('status', 'Successfully Update Frontend Menu');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -135,7 +135,7 @@ class FrontEndMenuController extends Controller
     {
         try {
             FrontEndMenu::destroy($id);
-            return redirect()->back()->with('status', 'Successfully to delete frontend menu');
+            return redirect()->back()->with('status', 'Successfully Delete Frontend Menu');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }

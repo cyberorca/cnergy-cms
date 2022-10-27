@@ -1,0 +1,341 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "CMS KLY API",
+        "description": "Documentation CMS KLY API",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/category/": {
+            "get": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Get Category",
+                "operationId": "bdaec245c70217f4bbab18ba0415fe94",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The security token is invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+                    }
+                ]
+            }
+        },
+        "/api/setting-fe-menu/": {
+            "get": {
+                "tags": [
+                    "Front End Menu"
+                ],
+                "summary": "Get Front End Menu",
+                "operationId": "ca367025a5ae2bd4e63bb903644d6bed",
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The security token is invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+                    }
+                ]
+            }
+        },
+        "/api/fe-setting/": {
+            "get": {
+                "tags": [
+                    "Front End Settings"
+                ],
+                "summary": "Get Front End Settings",
+                "operationId": "f358a12d21ddfa3c06786f32d192f0a2",
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The security token is invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+                    }
+                ]
+            }
+        },
+        "/api/menu/": {
+            "get": {
+                "tags": [
+                    "Menu"
+                ],
+                "summary": "Get Menu",
+                "operationId": "77534129ea5818987994885726c819f6",
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The security token is invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+                    }
+                ]
+            }
+        },
+        "/api/news/": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Get News",
+                "operationId": "13ba7d70632a2162ec52a218c86578f4",
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The security token is invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+                    }
+                ]
+            }
+        },
+        "/api/static-page/": {
+            "get": {
+                "tags": [
+                    "Static Page"
+                ],
+                "summary": "Get Static Page",
+                "operationId": "033c35292bfbfa0eba108f50805070ba",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "slug",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The security token is invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+                    }
+                ]
+            }
+        },
+        "/api/tag/": {
+            "get": {
+                "tags": [
+                    "Tag"
+                ],
+                "summary": "Get Tag",
+                "operationId": "7ffb3664d389353e0588913c2f5025f3",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "slug",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The security token is invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+                    }
+                ]
+            }
+        },
+        "/api/video/": {
+            "get": {
+                "tags": [
+                    "Video"
+                ],
+                "summary": "Get Video",
+                "operationId": "6f6eaa7b2fc7fe05750f9bc23fbfb0a2",
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The security token is invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "Authentication_Token": {
+                "type": "apiKey",
+                "description": "An authorization header. Example: Token",
+                "name": "token",
+                "in": "query"
+            }
+        }
+    }
+}

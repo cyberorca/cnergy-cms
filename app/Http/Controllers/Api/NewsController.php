@@ -11,6 +11,25 @@ use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
+    /**
+     * Get News
+     * @OA\Get (
+     *     tags={"News"},
+     *     path="/api/news/",
+     *     security={{"Authentication_Token":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="unauthorized",
+     *       @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="The security token is invalid"),
+     *          )
+     *     )
+     * )
+     */
     public function index(Request $request)
     {
         $news = News::with(['categories', 'tags', 'users', 'news_paginations'])->latest('published_at');
@@ -74,10 +93,10 @@ class NewsController extends Controller
                 "news_id" => $item->id,
                 "news_entry" => date('Y-m-d h:i:s', strtotime($item->created_at)),
                 "news_last_update" => date('Y-m-d h:i:s', strtotime($item->updated_at)),
-                "news_level" => $item->is_publised,
+                "news_level" => $item->is_published,
                 "news_top_headline"=> $item->is_headline,
                 "news_editor_pick"=> $item->editor_pick,
-                "news_hot"=> $item->is_verify_age,
+                "news_hot"=> null,
                 "news_home_headline"=> $item->is_home_headline,
                 "news_category_headline"=> $item->is_category_headline,
                 "news_curated"=> $item->is_curated,
@@ -120,7 +139,7 @@ class NewsController extends Controller
                 "paging_style"=> null,
                 "news_mature" => $item->is_adult_content,
                 "news_seo_url" => $item->is_seo,
-                "news_sensitive" => null,
+                "news_sensitive" => $item->is_verify_age,
                 "news_top_headtorial" => null,
                 "news_date_headtorial" => null,
                 "tracker_dmp" => null,
@@ -128,7 +147,7 @@ class NewsController extends Controller
                 "news_id_import" => null,
                 "news_guid" => null,
                 "photonews" => [
-        
+
                 ],
                 "video" => $item->video,
                 "category_name" => $item->categories->category,
@@ -137,18 +156,18 @@ class NewsController extends Controller
                 "news_paging" => $this->convertDataToResponse3($item->news_paginations),
                 "news_paging_order" => null,
                 "news_quote" => [
-                    
+
                 ],
                 "news_tag" => $this->convertDataToResponse2($item->tags),
                 "news_keywords" => self::keywordResponse($item->keywords),
                 "news_related" => [
-                    
+
                 ],
                 "news_dfp" => [
-                    
+
                 ],
                 "news_dmp" => [
-                    
+
                 ],
                 "cdn_image" => [
                     "klimg_url" => null,

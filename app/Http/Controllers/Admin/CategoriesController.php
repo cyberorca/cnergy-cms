@@ -56,7 +56,6 @@ class CategoriesController extends Controller
             'slug' => Str::slug($data['category']),
             'types' => $data['types'],
             'created_at' => now(),
-            // ganti uuid user login nanti
             'created_by' => Auth::user()->uuid,
             'meta_title'=> $data['meta_title'],
             'meta_keywords'=> $data['meta_keywords'],
@@ -64,7 +63,7 @@ class CategoriesController extends Controller
         ]);
         try {
             $category->save();
-            return redirect()->route('category.index')->with('status', 'Successfully Add New Category');
+            return redirect()->route('category.index')->with('status', 'Successfully Create Category');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -119,7 +118,7 @@ class CategoriesController extends Controller
                 'meta_description'=> $data['meta_description'],
 
             ]);
-            return redirect()->route('category.index')->with('status', 'Successfully to Update Category');
+            return redirect()->route('category.index')->with('status', 'Successfully Update Category');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -142,7 +141,7 @@ class CategoriesController extends Controller
                 'deleted_by' => Auth::user()->uuid,
             ]);
             News::where('category_id',$id)->delete();
-            return Redirect::back()->with('status', 'Successfully to Delete Category');
+            return Redirect::back()->with('status', 'Successfully Delete Category');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }

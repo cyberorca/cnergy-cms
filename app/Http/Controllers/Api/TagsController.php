@@ -11,7 +11,35 @@ use Illuminate\Support\Facades\DB;
 
 class TagsController extends Controller
 {
-
+    /**
+     * Get Tag
+     * @OA\Get (
+     *     tags={"Tag"},
+     *     path="/api/tag/",
+     *     security={{"Authentication_Token":{}}},
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="limit",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="slug",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="unauthorized",
+     *       @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="The security token is invalid"),
+     *          )
+     *     )
+     * )
+     */
     public function index(Request $request)
     {
         $tag = Tag::latest();
@@ -30,5 +58,4 @@ class TagsController extends Controller
         return response()->json(Cache::get("tags_api"));
     }
 
-    
 }

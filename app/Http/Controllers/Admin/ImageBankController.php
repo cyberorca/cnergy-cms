@@ -61,7 +61,7 @@ class ImageBankController extends Controller
             }
 
             ImageBank::create($data);
-            return redirect()->route('image-bank.index')->with('status', 'Successfully add image');
+            return redirect()->route('image-bank.index')->with('status', 'Successfully Add Image');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }

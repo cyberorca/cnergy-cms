@@ -25,7 +25,7 @@ class VideoController extends Controller
      */
     public function index(Request $request)
     {
-        $news = News::with(['categories', 'tags'])->where('types','=','video');
+        $news = News::with(['categories', 'tags'])->where('types','=','video')->latest();
         $editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
         $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Reporter");
         $photographers = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Photographer");
@@ -177,7 +177,7 @@ class VideoController extends Controller
                 $news->tags()->attach($t);
             }
 
-            return \redirect()->route('video.index')->with('status', 'Successfully Add New News');
+            return \redirect()->route('video.index')->with('status', 'Successfully Create Video News');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
@@ -290,7 +290,7 @@ class VideoController extends Controller
             );
             $log->save();
 
-            return \redirect()->route('video.index')->with('status', 'Successfully Update News');
+            return \redirect()->route('video.index')->with('status', 'Successfully Update Video News');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
@@ -319,7 +319,7 @@ class VideoController extends Controller
                 );
                 $log->save();
             }
-            return Redirect::back()->with('status', 'Successfully to Delete News');
+            return Redirect::back()->with('status', 'Successfully Delete Video News');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }

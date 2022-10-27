@@ -37,7 +37,7 @@ class LoginController extends Controller
                 return redirect()->intended('/');
 //            dd(\auth()->user()->roles['role']);
             }else{
-                return redirect('login')->withErrors(["error"=>"Failed to Login"]);
+                return redirect('login')->withErrors(["error"=>"Login Credentials Invalid"]);
             }
         } catch
         (\Exception $e) {
@@ -66,12 +66,9 @@ class LoginController extends Controller
                     'is_active' => '1',
                 ]);
             }
-            return redirect('login')->with('status', 'Successfully verify email');
+            return redirect('login')->with('status', 'Successfully Verify Email');
         }catch(\Exception $e){
-            return abort(401, 'Error to verify email token');
+            return abort(401, 'Email Verification Failed');
         }
-
-
-
     }
 }
