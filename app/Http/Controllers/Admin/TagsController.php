@@ -43,12 +43,9 @@ class TagsController extends Controller
             }
         }
 
-        // return view('admin.tags.index',compact('tags'));
         return view('admin.tags.index',  [
             'tags' => $tags->paginate(10)->withQueryString(),
-            // 'slug' => Tag::all()
         ]);
-
     }
 
     /**
@@ -79,7 +76,6 @@ class TagsController extends Controller
             'meta_title' => $data['title'],
             'meta_keywords' => $data['keywords'],
             'created_at' => now(),
-            // ganti uuid user login nanti
             'created_by' => Auth::user()->uuid,
             'updated_by' => Auth::user()->uuid,
         ]);

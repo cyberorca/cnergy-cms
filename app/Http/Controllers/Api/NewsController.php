@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\NewsCollection;
 use App\Models\News;
 use App\Models\User;
 use App\Models\NewsPagination;
@@ -11,9 +12,81 @@ use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
+    /**
+     * Get News
+     * @OA\Get (
+     *     tags={"News"},
+     *     path="/api/news/?token={token}",
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="unauthorized",
+     *       @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="The security token is invalid"),
+     *          )
+     *     )
+     * )
+     */
     public function index(Request $request)
     {
-        $news = News::with(['categories', 'tags', 'users', 'news_paginations'])->latest('published_at');
+        $news = News::with(['categories', 'tags', 'users', 'news_paginations'])
+        //->where('is_published','=','1')
+        ->where('published_at','<=',now())
+        ->latest('published_at');
+
+        $limit = $request->get('limit', 10);
+        if($limit > 10){
+            $limit = 10;
+        }
+        if($request->get("headline")){
+            $news->where('is_headline', '=', $request->get('headline', ''));
+        }
+        if($request->get("category")){
+            $news->where('category_id', '=', $request->get('category', ''));
+        }
+        if($request->get("max_id")){
+            $news->where('id', '<', $request->get('max_id', ''));
+        }
+        if($request->get("editorpick")){
+            $news->where('editor_pick', '=', $request->get('editorpick', ''));
+        }
+        if($request->get("editorpick")){
+            $news->where('editor_pick', '=', $request->get('editorpick', ''));
+        }
+
+        $alltype = $request->get('alltype', 1);
+        if($alltype == 0){
+            $news->where('types', '=', "news");
+        }
+
+        $published = $request->get('published', 1);
+        if($published == 0){
+            $news->where('is_published', '=', "0");
+        }
+
+        if($request->get("sensitive")){
+            $news->where('is_verify_age', '=', $request->get('sensitive', ''));
+        }
+
+        /*if ($request->get('published')) {
+            $published = $request->get('published');
+            if($published = 1) {
+                $news->where('is_published','=','0');
+            }
+            if ($published = 0) {
+                $news->where('is_published','=','1');
+            } 
+            
+        }*/
         /*$editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
         $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Reporter");
         $photographers = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Photographer");
@@ -63,8 +136,10 @@ class NewsController extends Controller
             ]);
         }*/
 
-        $data["data"] = $this->convertDataToResponse($news->paginate(10));
-        return response()->json($data);
+        //$data["data"] = $this->convertDataToResponse($news->paginate(10));
+        //return response()->json($data);
+
+        return response()->json(new NewsCollection($news->paginate($limit)));
 
     }
 
@@ -128,7 +203,7 @@ class NewsController extends Controller
                 "news_id_import" => null,
                 "news_guid" => null,
                 "photonews" => [
-        
+
                 ],
                 "video" => $item->video,
                 "category_name" => $item->categories->category,
@@ -137,18 +212,18 @@ class NewsController extends Controller
                 "news_paging" => $this->convertDataToResponse3($item->news_paginations),
                 "news_paging_order" => null,
                 "news_quote" => [
-                    
+
                 ],
                 "news_tag" => $this->convertDataToResponse2($item->tags),
                 "news_keywords" => self::keywordResponse($item->keywords),
                 "news_related" => [
-                    
+
                 ],
                 "news_dfp" => [
-                    
+
                 ],
                 "news_dmp" => [
-                    
+
                 ],
                 "cdn_image" => [
                     "klimg_url" => null,
