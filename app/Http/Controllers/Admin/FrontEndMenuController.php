@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\FrontEndMenuRequest;
 use App\Models\FrontEndMenu;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
@@ -18,7 +19,10 @@ class FrontEndMenuController extends Controller
      */
     public function index()
     {
-        $fe_menus = FrontEndMenu::whereNull('parent_id')->with(["childMenus"])->orderBy('order', 'ASC')->get();
+        if(!Cache::has("front_end_menu")){
+            Cache::forever("front_end_menu", FrontEndMenu::getAll());
+        }
+        $fe_menus = Cache::get("front_end_menu");
         return view('admin.menu.front-end.index', compact('fe_menus'));
     }
 
@@ -64,7 +68,7 @@ class FrontEndMenuController extends Controller
             // return response()->json($input);
             FrontEndMenu::create($input);
 
-            return redirect()->route('front-end-menu.index')->with('status', 'Successfully save frontend menu');
+            return redirect()->route('front-end-menu.index')->with('status', 'Successfully Create Frontend Menu');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -115,7 +119,7 @@ class FrontEndMenuController extends Controller
             $fe_menu->position = $input['position'];
             $fe_menu->save();
 
-            return redirect()->route('front-end-menu.index')->with('status', 'Successfully to edit frontend menu');
+            return redirect()->route('front-end-menu.index')->with('status', 'Successfully Update Frontend Menu');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -131,7 +135,7 @@ class FrontEndMenuController extends Controller
     {
         try {
             FrontEndMenu::destroy($id);
-            return redirect()->back()->with('status', 'Successfully to delete frontend menu');
+            return redirect()->back()->with('status', 'Successfully Delete Frontend Menu');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }

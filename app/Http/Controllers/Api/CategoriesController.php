@@ -13,13 +13,8 @@ class CategoriesController extends Controller
      * Get Category
      * @OA\Get (
      *     tags={"Category"},
-     *     path="/api/category/?token={token}",
-     *     @OA\Parameter(
-     *         in="path",
-     *         name="token",
-     *         required=true,
-     *         @OA\Schema(type="string")
-     *     ),
+     *     path="/api/category/",
+     *     security={{"Authentication_Token":{}}},
      *     @OA\Parameter(
      *         in="query",
      *         name="name",
@@ -45,14 +40,16 @@ class CategoriesController extends Controller
         if($request->get("name")){
             $category->where('category', '=', $request->get('name'));
         }
-        
+
         $limit = $request->get('limit', 10);
         if($limit > 10){
             $limit = 10;
         }
+
         
         $nested = intval($request->get("nested"));
         
         return response()->json($nested!==1 ? $category->paginate($limit)->withQueryString()->toArray() : Category::convertCategoryDataToResponseAPI($category->paginate($limit)->withQueryString()->toArray()));
+
     }
 }

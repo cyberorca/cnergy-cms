@@ -224,7 +224,7 @@ class NewsController extends Controller
                 }
             }
 
-            return \redirect()->route('news.index')->with('status', 'Successfully Add New News');
+            return \redirect()->route('news.index')->with('status', 'Successfully Create News');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
@@ -405,7 +405,7 @@ class NewsController extends Controller
                 );
                 $log->save();
             }
-            return Redirect::back()->with('status', 'Successfully to Delete News');
+            return Redirect::back()->with('status', 'Successfully Delete News');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
@@ -421,7 +421,7 @@ class NewsController extends Controller
             if (NewsPagination::destroy($id)) {
                 return response()->json([
                     "status" => "success",
-                    "message" => "Successfully deleted page",
+                    "message" => "Successfully Delete Page",
                 ], 200);
             }
         } catch (\Throwable $e) {

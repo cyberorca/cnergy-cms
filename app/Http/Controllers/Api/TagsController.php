@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Tag;
 use App\Http\Resources\TagCollection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class TagsController extends Controller
@@ -14,13 +15,8 @@ class TagsController extends Controller
      * Get Tag
      * @OA\Get (
      *     tags={"Tag"},
-     *     path="/api/tag/?token={token}",
-     *     @OA\Parameter(
-     *         in="path",
-     *         name="token",
-     *         required=true,
-     *         @OA\Schema(type="string")
-     *     ),
+     *     path="/api/tag/",
+     *     security={{"Authentication_Token":{}}},
      *     @OA\Parameter(
      *         in="query",
      *         name="limit",
@@ -55,7 +51,11 @@ class TagsController extends Controller
         if($limit > 20){
             $limit = 20;
         }
-        return response()->json(new TagCollection($tag->paginate($limit)->withQueryString()));
+
+        if(!Cache::has("tags_api")){
+            Cache::forever("tags_api", new TagCollection($tag->paginate($limit)->withQueryString()));
+        }
+        return response()->json(Cache::get("tags_api"));
     }
 
 }

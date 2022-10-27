@@ -114,6 +114,7 @@ Route::group(['middleware' => 'auth'], function () {
     
     Route::get('image/{filename}', [ImageBankController::class, 'displayImage'])->name('image.displayImage');
     Route::get('/image-bank/api/list/', [ImageBankController::class, 'apiList'])->name('image_bank.api');
+    Route::post('/image-bank/api/create', [ImageBankController::class, 'upload_image']);
 });
 // Route::post('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])
 //     ->middleware(['auth', 'signed']) // <-- don't remove "signed"
