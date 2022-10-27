@@ -76,14 +76,11 @@
                                 }
                             }
                         }
-<<<<<<< HEAD
-=======
                     }
                 },
                 "security": [
                     {
                         "Authentication_Token": []
->>>>>>> 708c00b8c7f969181777c17e908dcedfb31bff9b
                     }
                 ]
             }
@@ -114,14 +111,11 @@
                                 }
                             }
                         }
-<<<<<<< HEAD
-=======
                     }
                 },
                 "security": [
                     {
                         "Authentication_Token": []
->>>>>>> 708c00b8c7f969181777c17e908dcedfb31bff9b
                     }
                 ]
             }
