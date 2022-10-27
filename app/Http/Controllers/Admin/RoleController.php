@@ -8,6 +8,7 @@ use App\Models\Menu;
 use App\Models\Role;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\URL;
 
 class RoleController extends Controller
@@ -44,6 +45,7 @@ class RoleController extends Controller
                     $role->menus()->attach($menusId);
             }
 
+            Cache::forget('menu_sidebar');
             return redirect()->route('role.index')->with('status', 'Successfully Add New Role');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
@@ -78,17 +80,18 @@ class RoleController extends Controller
             }
             $this->roleModel->deleteAccessRoleById($id);
             $roleById->menus()->sync($menusId);
-
+            Cache::forget('menu_sidebar');
             return redirect()->route('role.index')->with("status", "Successfully to Update Role ");
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
     }
-
+    
     public function destroy($id)
     {
         try {
             $this->roleModel->deleteRole($id);
+            Cache::forget('menu_sidebar');
             return Redirect::back()->with('status', 'Successfully to Delete Role');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());

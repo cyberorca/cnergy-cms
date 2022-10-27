@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MenuRequest;
 use App\Models\Menu;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class MenuController extends Controller
@@ -16,7 +17,10 @@ class MenuController extends Controller
      */
     public function index()
     {
-        $menus = Menu::whereNull('parent_id')->with(["childMenus", "roles"])->get();
+        if(!Cache::has("menu_config")){
+            Cache::forever("menu_config", Menu::getAllPage());
+        }
+        $menus = Cache::get("menu_config");
         // return response()->json($menus);
         return view('admin.menu.index', compact('menus'));
     }

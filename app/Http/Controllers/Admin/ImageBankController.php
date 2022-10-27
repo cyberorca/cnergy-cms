@@ -67,6 +67,37 @@ class ImageBankController extends Controller
         }
     }
 
+    public function upload_image(Request $request)
+    {
+        try {
+            $input = $request->all();
+            $data = [
+                "title" => $input["title"],
+                "photographer" => $input["photographer"],
+                "copyright" => $input["copyright"],
+                "caption" => $input["caption"],
+                "keywords" => $input["keywords"],
+                "image_alt" => $input["image_alt"],
+                "created_by" => Auth::user()->uuid
+            ];
+            if ($request->hasFile('image_input')) {
+                $file = $request->file('image_input');
+                $fileFormatPath = new FileFormatPath('image-bank', $file);
+                $data['slug'] = $fileFormatPath->storeFile();
+            }
+
+            ImageBank::create($data);
+            return response()->json([
+                'message' => 'Successfully add image',
+                'data' => [
+                    'image_slug' => $data['slug']
+                ]
+            ], 200);
+        } catch (\Throwable $e) {
+            return response()->json($e->getMessage());
+        }
+    }
+
     /**
      * Display the specified resource.
      *

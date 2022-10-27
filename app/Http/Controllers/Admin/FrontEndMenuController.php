@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\FrontEndMenuRequest;
 use App\Models\FrontEndMenu;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
@@ -18,7 +19,10 @@ class FrontEndMenuController extends Controller
      */
     public function index()
     {
-        $fe_menus = FrontEndMenu::whereNull('parent_id')->with(["childMenus"])->orderBy('order', 'ASC')->get();
+        if(!Cache::has("front_end_menu")){
+            Cache::forever("front_end_menu", FrontEndMenu::getAll());
+        }
+        $fe_menus = Cache::get("front_end_menu");
         return view('admin.menu.front-end.index', compact('fe_menus'));
     }
 
