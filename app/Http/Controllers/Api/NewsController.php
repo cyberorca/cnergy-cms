@@ -15,13 +15,8 @@ class NewsController extends Controller
      * Get News
      * @OA\Get (
      *     tags={"News"},
-     *     path="/api/news/?token={token}",
-     *     @OA\Parameter(
-     *         in="path",
-     *         name="token",
-     *         required=true,
-     *         @OA\Schema(type="string")
-     *     ),
+     *     path="/api/news/",
+     *     security={{"Authentication_Token":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="success",
