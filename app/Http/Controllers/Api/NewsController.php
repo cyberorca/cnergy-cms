@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\NewsCollection;
+use Carbon\Carbon;
 use App\Models\News;
 use App\Models\User;
 use App\Models\NewsPagination;
@@ -59,9 +60,7 @@ class NewsController extends Controller
         if($request->get("editorpick")){
             $news->where('editor_pick', '=', $request->get('editorpick', ''));
         }
-        if($request->get("editorpick")){
-            $news->where('editor_pick', '=', $request->get('editorpick', ''));
-        }
+        
 
         $alltype = $request->get('alltype', 1);
         if($alltype == 0){
@@ -75,6 +74,12 @@ class NewsController extends Controller
 
         if($request->get("sensitive")){
             $news->where('is_verify_age', '=', $request->get('sensitive', ''));
+        }
+
+        if ($request->get('last_update')) {
+            $last_update = Carbon::parse(($request->get('last_update')))
+                ->toDateTimeString();
+            $news->where('updated_at', '>=', $last_update);
         }
 
         /*if ($request->get('published')) {
