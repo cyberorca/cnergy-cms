@@ -18,6 +18,7 @@ class IndexVideoResource extends JsonResource
             'news_level' => $this->is_published,
             'news_top_headline' => $this->is_headline,
             'news_editor_pick' => $this->editor_pick,
+
             'news_hot' => $this->is_verify_age,
             // 'news_home_headline'=> $this->is_home_headline,
             // 'news_category_headline'=> $this->is_category_headline,
