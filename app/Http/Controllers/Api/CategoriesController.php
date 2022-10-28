@@ -45,7 +45,6 @@ class CategoriesController extends Controller
         if($limit > 10){
             $limit = 10;
         }
-
         
         $nested = intval($request->get("nested"));
         

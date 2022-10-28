@@ -72,7 +72,7 @@ class RoleController extends Controller
         $menusId = $request->checkMenu;
         $role = $this->roleModel->findRoleById($id);
         try {
-            //check data not duplicate
+            //check duplicate role
             if (($this->roleModel->isExistRole($data['role'])) == false) {
                 $roleById = $this->roleModel->updateRole($id, $data['role']);
             } else {

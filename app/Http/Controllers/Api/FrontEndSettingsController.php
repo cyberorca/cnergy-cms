@@ -49,7 +49,6 @@ class FrontEndSettingsController extends Controller
             "twitter_username" => $menu_settings["twitter_username"],
             "created_at" => date('Y-m-d H:i:s', strtotime($menu_settings['created_at'])),
             "updated_at" => date('Y-m-d H:i:s', strtotime($menu_settings['updated_at'])),
-
         ];
         return response()->json($data);
     }
