@@ -138,7 +138,6 @@ class FrontEndSettingsController extends Controller
             FrontEndSetting::updateOrCreate([
                 'id' => 1
             ], $data);
-
             return redirect()->back()->with('status', 'Successfully Update Frontend Settings');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
