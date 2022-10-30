@@ -44,17 +44,14 @@ class StaticPageController extends Controller
         return response()->json(
             new StaticPageCollection($staticPage->get()),
             Response::HTTP_OK);
-//        $limit = $request->get('limit', 20);
-//        if($limit > 20){
-//            $limit = 20;
-//        }
-//
-//        return response()->json(new StaticPageCollection($staticPage->paginate($limit)->withQueryString()))->setStatusCode(200);
-
-        // $staticPage = StaticPage::latest()
-        //     ->with(['users'])
-        //     ->paginate(10);
-        // return response()->json(new StaticPageCollection($staticPage))
-        //     ->setStatusCode(200);
+        
+        // possible filter dev
+        // $limit = $request->get('limit', 20);
+        // if($limit > 20){
+        //     $limit = 20;
+        // }
+        // return response()->json(new StaticPageCollection($staticPage->paginate($limit)->withQueryString()))->setStatusCode(200);
+        // $staticPage = StaticPage::latest()->with(['users'])->paginate(10);
+        // return response()->json(new StaticPageCollection($staticPage))->setStatusCode(200);
     }
 }
