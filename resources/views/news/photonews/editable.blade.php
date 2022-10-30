@@ -82,7 +82,9 @@
                             <label for="synopsis" class="form-label mb-2">Synopsis</label>
                             <textarea name="synopsis" class="form-control" id="synopsis" cols="30" rows="3" required
                                 placeholder="Enter Synopsis">
-@if ($method === 'edit'){{ $news->synopsis }}@endif
+@if ($method === 'edit')
+{{ $news->synopsis }}
+@endif
 </textarea>
                         </div>
 
@@ -90,17 +92,15 @@
                             <label for="content" class="form-label">Content</label>
                             <textarea name="content[]" class="my-editor form-control" id="content" cols="30" rows="10" required>
                                     @if ($method === 'edit')
-                                                    {{ $news->content }}
-                                                @endif
+{{ $news->content }}
+@endif
                             </textarea>
                         </div>
                     </div>
                 </div>
                 <div id="other_page" class=" d-flex flex-column"></div>
 
-                <span class="btn btn-outline-secondary my-3 w-100" id="add_page_button"><i
-                        class="bi bi-plus-circle"></i>&nbsp;
-                    Add New Page</span>
+                <x-image-uploader2 />
 
             </div>
             @include('components.other-settings-news')
@@ -124,8 +124,8 @@
 
 
 @section('javascript')
-    <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
     <script src="{{ asset('assets/extensions/toastify-js/src/toastify.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
     {{-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
@@ -160,7 +160,6 @@
 
     <script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/4/tinymce.min.js"
         referrerpolicy="origin"></script>
-    <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
@@ -233,7 +232,7 @@
                 .trigger('change');
         });
     </script>
-{{-- 
+    {{-- 
     <script src="/path/to/cdn/jquery.slim.min.js"></script>
     <script src="/path/to/js/jquery.dateandtime.js"></script>
     <script>
