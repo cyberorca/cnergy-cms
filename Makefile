@@ -12,6 +12,9 @@ composerRun=$(composerCMD)
 init:
 	$(composerRun) install
 
+update:
+	$(composerRun) update
+
 key-gen:
 	$(phpArtisanRun) key:generate
 
@@ -33,6 +36,9 @@ clean:
 # Make for Windows
 init:
 	$(composerRun) install
+	
+update:
+	$(composerRun) update
 
 key-gen:
 	$(phpArtisanRun) key:generate

@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\NewsCollection;
-use Carbon\Carbon;
 use App\Models\News;
 use App\Models\User;
 use App\Models\NewsPagination;
@@ -34,59 +32,7 @@ class NewsController extends Controller
      */
     public function index(Request $request)
     {
-        $news = News::with(['categories', 'tags', 'users', 'news_paginations'])
-        //->where('is_published','=','1')
-        ->where('published_at','<=',now())
-        ->latest('published_at');
-
-        $limit = $request->get('limit', 10);
-        if($limit > 10){
-            $limit = 10;
-        }
-        if($request->get("headline")){
-            $news->where('is_headline', '=', $request->get('headline', ''));
-        }
-        if($request->get("category")){
-            $news->where('category_id', '=', $request->get('category', ''));
-        }
-        if($request->get("max_id")){
-            $news->where('id', '<', $request->get('max_id', ''));
-        }
-        if($request->get("editorpick")){
-            $news->where('editor_pick', '=', $request->get('editorpick', ''));
-        }
-        
-
-        $alltype = $request->get('alltype', 1);
-        if($alltype == 0){
-            $news->where('types', '=', "news");
-        }
-
-        $published = $request->get('published', 1);
-        if($published == 0){
-            $news->where('is_published', '=', "0");
-        }
-
-        if($request->get("sensitive")){
-            $news->where('is_verify_age', '=', $request->get('sensitive', ''));
-        }
-
-        if ($request->get('last_update')) {
-            $last_update = Carbon::parse(($request->get('last_update')))
-                ->toDateTimeString();
-            $news->where('updated_at', '>=', $last_update);
-        }
-
-        /*if ($request->get('published')) {
-            $published = $request->get('published');
-            if($published = 1) {
-                $news->where('is_published','=','0');
-            }
-            if ($published = 0) {
-                $news->where('is_published','=','1');
-            } 
-            
-        }*/
+        $news = News::with(['categories', 'tags', 'users', 'news_paginations'])->latest('published_at');
         /*$editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
         $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Reporter");
         $photographers = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Photographer");
@@ -136,10 +82,8 @@ class NewsController extends Controller
             ]);
         }*/
 
-        //$data["data"] = $this->convertDataToResponse($news->paginate(10));
-        //return response()->json($data);
-
-        return response()->json(new NewsCollection($news->paginate($limit)));
+        $data["data"] = $this->convertDataToResponse($news->paginate(10));
+        return response()->json($data);
 
     }
 

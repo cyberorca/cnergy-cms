@@ -69,7 +69,6 @@ class FrontEndMenuController extends Controller
         }
 
         $fe_menus
-        //->where('slug', 'like', '%' . $request->get('slug', '') . '%')
         ->where('position', 'like', '%' . $request->get('position', '') . '%');
 
         $limit = $request->get('limit', 20);

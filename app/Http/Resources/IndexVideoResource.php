@@ -18,6 +18,15 @@ class IndexVideoResource extends JsonResource
             'news_level' => $this->is_published,
             'news_top_headline' => $this->is_headline,
             'news_editor_pick' => $this->editor_pick,
+<<<<<<<<< Temporary merge branch 1
+            'news_hot' => $this->is_verify_age,
+            // 'news_home_headline'=> $this->is_home_headline,
+            // 'news_category_headline'=> $this->is_category_headline,
+            // 'news_curated'=> $this->is_curated,
+            // 'news_advertorial'=> $this->is_advertorial,
+            // 'news_disable_interactions'=> $this->is_disable_interactions,
+            // 'news_branded_content'=> $this->is_branded_content,
+=========
             'news_hot' => '',
             'news_home_headline'=> $this->is_home_headline,
             'news_category_headline'=> $this->is_category_headline,
@@ -25,6 +34,7 @@ class IndexVideoResource extends JsonResource
             'news_advertorial'=> $this->is_advertorial,
             'news_disable_interactions'=> $this->is_disable_interactions,
             'news_branded_content'=> $this->is_branded_content,
+>>>>>>>>> Temporary merge branch 2
             'news_category' => $category,
             'news_title' => $this->title,
             'news_subtitle' => '',

@@ -45,6 +45,12 @@ class CategoriesController extends Controller
         if($limit > 10){
             $limit = 10;
         }
+<<<<<<<<< Temporary merge branch 1
+        
+        $nested = intval($request->get("nested"));
+        
+        return response()->json($nested!==1 ? $category->paginate($limit)->withQueryString()->toArray() : Category::convertCategoryDataToResponseAPI($category->paginate($limit)->withQueryString()->toArray()));
+=========
 
         $nested = $request->get("nested");
         if($nested == 0){
@@ -57,5 +63,6 @@ class CategoriesController extends Controller
         // return response()->json(($category->get()));
         // return response()->json(Category::convertCategoryDataToResponse($category->paginate($limit)->withQueryString()->toArray()));
         return response()->json(Category::convertCategoryDataToResponse($category->get()->toArray()));
+>>>>>>>>> Temporary merge branch 2
     }
 }
