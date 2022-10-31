@@ -94,11 +94,12 @@ class MenuController extends Controller
             $menu->menu_name = $data["menu_name"];
             if($menu->parent_id){
                 $slug = explode('/', $menu->slug);
-                array_splice($slug, 1, count($slug));
+                array_splice($slug, -2);
                 $menu->slug = implode('/', $slug) . "/" . Str::slug($data['menu_name']) . "/";
             } else {
                 $menu->slug = Str::slug($data['menu_name']) . "/";
             }
+            return $menu;
             $menu->save();
             return redirect()->route('menu.index')->with("status", "Successfully Update Menu");
         } catch (\Throwable $e) {
