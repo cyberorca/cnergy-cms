@@ -39,6 +39,7 @@ class VideoController extends Controller
         */
 
         $video = News::with(['categories', 'tags','users', 'news_videos:id,video,news_id'])
+            ->where('id','=','109')
             ->where('types','=','video')
             ->where('is_published','=','1')
             ->where('published_at','<=',now())
