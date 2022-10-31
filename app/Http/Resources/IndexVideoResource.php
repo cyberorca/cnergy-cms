@@ -65,7 +65,7 @@ class IndexVideoResource extends JsonResource
             'news_paging' => [],
             'news_paging_order' => null,
             'news_quote' => '',
-            'news_video' => $this->videoResponse($this->news_videos)[0],
+            'news_video' => $this->videoResponse($this->news_videos)[0] ?? null,
             'news_tag' => IndexTagResource::collection($this->tags),
             'news_keywords' => self::keywordResponse($this->keywords),
             'news_related' => [],
