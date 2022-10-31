@@ -100,17 +100,36 @@ class Category extends Model
         $references = [];
 
         foreach ($dataRaw as $id => &$node) {
-            $references[intval($node['id'])] = &$node;
+            $references[($node['id'])] = &$node;
             $node['children'] = array();
             if (is_null($node['parent'])) {
-                $tree[intval($node['id'])] = &$node;
+                $tree[($node['id'])] = &$node;
             } else {
-                $references[$node['parent']]['children'][intval($node['id'])] = &$node;
+                $references[$node['parent']]['children'][($node['id'])] = &$node;
             }
         }
 
         return array_values(self::array_values_recursive($tree));
     }
+
+    public static function convertCategoryDataToResponseAPI($dataRaw)
+    {
+        $tree = [];
+        $references = [];
+
+        foreach ($dataRaw['data'] as $id => &$node) {
+            $references[($node['id'])] = &$node;
+            $node['children'] = array();
+            if (is_null($node['parent'])) {
+                $tree[($node['id'])] = &$node;
+            } else {
+                $references[$node['parent']]['children'][($node['id'])] = &$node;
+            }
+        }
+
+        return array_values(self::array_values_recursive($tree));
+    }
+
 
     public static function array_values_recursive($arr)
     {

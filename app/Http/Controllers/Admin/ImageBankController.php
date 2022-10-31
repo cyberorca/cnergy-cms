@@ -59,7 +59,6 @@ class ImageBankController extends Controller
                 $fileFormatPath = new FileFormatPath('image-bank', $file);
                 $data['slug'] = $fileFormatPath->storeFile();
             }
-
             ImageBank::create($data);
             return redirect()->route('image-bank.index')->with('status', 'Successfully Add Image');
         } catch (\Throwable $e) {
@@ -72,7 +71,7 @@ class ImageBankController extends Controller
         try {
             $input = $request->all();
             $data = [
-                "title" => $input["title"],
+                "title" => $input["title_image"],
                 "photographer" => $input["photographer"],
                 "copyright" => $input["copyright"],
                 "caption" => $input["caption"],
@@ -85,7 +84,6 @@ class ImageBankController extends Controller
                 $fileFormatPath = new FileFormatPath('image-bank', $file);
                 $data['slug'] = $fileFormatPath->storeFile();
             }
-
             ImageBank::create($data);
             return response()->json([
                 'message' => 'Successfully add image',
@@ -145,7 +143,6 @@ class ImageBankController extends Controller
             $image->deleted_by = Auth::user()->uuid;
             // Storage::delete('public/image_bank/' . $image->slug);
             $image->delete();
-
             return redirect()->back()->with('status', 'Successfully Delete Image');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
@@ -177,7 +174,6 @@ class ImageBankController extends Controller
         $response = Response::make($file, 200);
 
         // $response->header("Content-Type", $type);
-
         return $response;
     }
 }

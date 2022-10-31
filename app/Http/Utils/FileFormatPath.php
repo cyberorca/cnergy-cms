@@ -25,7 +25,7 @@ class FileFormatPath
     protected function getFileName()
     {
         // path_name_file = /news/2022/10/04/23423-zico-artonang.jpg
-        return  Str::slug(substr(now(), 5) . '-' . explode('.' . $this->file->getClientOriginalExtension(), $this->file->getClientOriginalName())[0]) . '.' . $this->file->getClientOriginalExtension();
+        return  Str::slug(substr(time(), 5) . '-' . explode('.' . $this->file->getClientOriginalExtension(), $this->file->getClientOriginalName())[0]) . '.' . $this->file->getClientOriginalExtension();
     }
 
     public function getFullPathName(){
