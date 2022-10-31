@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\IndexVideoResource;
 use App\Http\Resources\VideoCollection;
 use App\Models\News;
 use Illuminate\Http\Request;
@@ -36,9 +37,8 @@ class VideoController extends Controller
         //filter by id category
         //filter by headline 1|0
         */
-        // $video = News::with(['categories', 'tags'])->where('types','=','video')->latest();
-        
-        $video = News::with(['categories', 'tags','users'])
+
+        $video = News::with(['categories', 'tags','users', 'news_videos:id,video,news_id'])
             ->where('types','=','video')
             ->where('is_published','=','1')
             ->where('published_at','<=',now())
@@ -90,4 +90,8 @@ class VideoController extends Controller
         return response()->json(new VideoCollection($video->paginate($limit)->withQueryString()));
     }
 
+    public function show($id){
+        $video_news = News::with(['categories', 'tags','users', 'news_videos:id,video,news_id'])->where('id', $id)->get();
+        return response()->json(new IndexVideoResource($video_news[0]));        
+    }
 }

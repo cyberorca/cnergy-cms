@@ -4,16 +4,23 @@
          <div class="px-3 ps-0 py-0 border-0">
              <div class="d-flex align-items-center w-100 justify-content-between">
                  <div class="m-0 w-100 h-100 p-3 menu accordion-button" type="button" data-bs-toggle="collapse"
-                     data-bs-target="#collapse-{{ $item['slug'] }}-{{ $item['id'] }}" aria-expanded="false"
-                     aria-controls="collapse-{{ $item['slug'] }}-{{ $item['id'] }}">
-                     <p class="m-0 p-0 ms-3 front-end-name">{!! $item['menu_name'] !!}</p>
+                     data-bs-target="#collapse-{{ implode('-', explode('/', $item['slug'])) }}{{ $item['id'] }}"
+                     aria-expanded="false"
+                     aria-controls="collapse-{{ implode('-', explode('/', $item['slug'])) }}{{ $item['id'] }}">
+                     <p class="m-0 p-0 ms-3 front-end-name">{!! $item['menu_name'] !!} 
+                        {{-- {{ isset($item['parents']) ? implode(',', $item['parents']) : 'null' }} --}}
+                    </p>
                  </div>
                  <div class="d-flex gap-2">
-                     <a class="btn btn-primary ms-3" href="{{ route($path . '.create', $item['id']) }}"
+                     <a class="btn btn-primary ms-3" href="{{ route($path . '.create', [
+                        'parents' => isset($item['parents']) ? implode(',', $item['parents']) : 'null',
+                        'id' => $item['id']
+                    ]) }}"
                          data-bs-toggle="tooltip" data-bs-placement="top" title="Add New Child Menu"><i
                              class="bi bi-plus-circle"></i></a>
-                     <a href="{{ route($path . '.edit', $item['id']) }}" class="btn btn-warning" data-bs-toggle="tooltip"
-                         data-bs-placement="top" title="Edit Menu"><i class="bi bi-pencil-square"></i></a>
+                     <a href="{{ route($path . '.edit', $item['id']) }}" class="btn btn-warning"
+                         data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Menu"><i
+                             class="bi bi-pencil-square"></i></a>
                      <a href="#" class="btn btn-danger" data-bs-toggle="modal"
                          data-bs-target="#delete{{ $item['id'] }}" data-bs-toggle="tooltip" data-bs-placement="top"
                          title="Delete Menu"><i class="bi bi-trash-fill"></i></a>
@@ -57,8 +64,8 @@
      </h2>
  </div>
  @if ($item['children'] !== null)
-     <div id="collapse-{{ $item['slug'] }}-{{ $item['id'] }}" class="accordion-collapse collapse show"
-         aria-labelledby="heading-{{ $item['slug'] }}-{{ $item['id'] }}">
+     <div id="collapse-{{ implode('-', explode('/', $item['slug'])) }}{{ $item['id'] }}"
+         class="accordion-collapse collapse show" aria-labelledby="heading-{{ $item['slug'] }}-{{ $item['id'] }}">
          <div class="accordion-body pe-0 py-0 border-0 d-flex flex-column">
              @foreach ($item['children'] as $child)
                  <x-accordion-menu-item :item="$child" />
@@ -66,4 +73,3 @@
          </div>
      </div>
  @endif
-
