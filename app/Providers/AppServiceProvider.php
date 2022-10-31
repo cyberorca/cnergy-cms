@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
             if(!Cache::has("menu_sidebar")){
                 Cache::forever("menu_sidebar", Menu::getAll());
             }
-            $view->with('menu_sidebar', Cache::get("menu_sidebar"));
+            $view->with('menu_sidebar', Menu::getAll());
         });
         Paginator::useBootstrap();
     }

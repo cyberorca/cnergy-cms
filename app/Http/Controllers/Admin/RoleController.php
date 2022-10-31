@@ -45,7 +45,7 @@ class RoleController extends Controller
                     $role->menus()->attach($menusId);
             }
 
-            Cache::forget('menu_sidebar');
+            // Cache::forget('menu_sidebar');
             return redirect()->route('role.index')->with('status', 'Successfully Create Role');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
@@ -80,7 +80,7 @@ class RoleController extends Controller
             }
             $this->roleModel->deleteAccessRoleById($id);
             $roleById->menus()->sync($menusId);
-            Cache::forget('menu_sidebar');
+            // Cache::forget('menu_sidebar');
 
             return redirect()->route('role.index')->with('status', 'Successfully Update Role');
         } catch (\Throwable $e) {
@@ -92,7 +92,7 @@ class RoleController extends Controller
     {
         try {
             $this->roleModel->deleteRole($id);
-            Cache::forget('menu_sidebar');
+            // Cache::forget('menu_sidebar');
             return Redirect::back()->with('status', 'Successfully Delete Role');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());

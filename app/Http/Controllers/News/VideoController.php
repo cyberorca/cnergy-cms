@@ -26,7 +26,7 @@ class VideoController extends Controller
      */
     public function index(Request $request)
     {
-        $news = News::with(['categories', 'tags'])->where('types', '=', 'video')->latest();
+        $news = News::with(['categories', 'tags'])->where('types', '=', 'video')->orderBy("created_at", "DESC");
         $editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
         $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Reporter");
         $photographers = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Photographer");
@@ -124,7 +124,7 @@ class VideoController extends Controller
         $time = $data['time'];
         $mergeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
         // return response()->json($request->all());
-        try {
+        try {    
             if ($request->file('upload_image') && !$data['upload_image_selected']) {
                 $file = $request->file('upload_image');
                 $fileFormatPath = new FileFormatPath('video/image', $file);
@@ -134,6 +134,7 @@ class VideoController extends Controller
             if ($data['upload_image_selected'] && !$request->file('upload_image')) {
                 $data['image'] = explode(Storage::url(""), $data['upload_image_selected'])[1];
             }
+
             $news = new News([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
@@ -163,7 +164,8 @@ class VideoController extends Controller
                 'category_id' => $data['category'],
                 'video' => $data['video']
             ]);
-
+            
+            // return $news;
 
             if ($news->save()) {
                 $log = new Log(
@@ -178,14 +180,9 @@ class VideoController extends Controller
             }
             VideoNews::create([
                 'title' => $data['title'],
-                'url' => "url",
                 'video' => $data['video'],
-                'description' => $data['description'],
-                'keywords' => $data['keywords'],
-                'copyright' => "copyright",
                 'news_id' => $news->id,
                 'order_by_no' => 1,
-                'created_by' => auth()->id(),
             ]);
             foreach ($data['tags'] as $t) {
                 $news->tags()->attach($t);
@@ -293,7 +290,6 @@ class VideoController extends Controller
             $newsById->update($input);
             VideoNews::find($data['video_id'])->update([
                 'video' => $data['video'],
-                'updated_by' => auth()->id(),
             ]);
             $newsById::find($id)->tags()->detach();
             foreach ($data['tags'] as $t) {
@@ -327,9 +323,6 @@ class VideoController extends Controller
         try {
             News::where('id', $id)->update([
                 'deleted_by' => Auth::user()->uuid,
-            ]);
-            VideoNews::where("news_id", $id)->update([
-                'deleted_by' => auth()->id(),
             ]);
             if (News::destroy($id)) {
                 $log = new Log(
