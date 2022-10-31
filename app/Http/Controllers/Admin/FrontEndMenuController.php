@@ -67,7 +67,6 @@ class FrontEndMenuController extends Controller
             }
             // return response()->json($input);
             FrontEndMenu::create($input);
-
             return redirect()->route('front-end-menu.index')->with('status', 'Successfully Create Frontend Menu');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());

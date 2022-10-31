@@ -47,6 +47,7 @@ class TagsController extends Controller
         if($request->get("slug")){
             $tag->where('slug', '=', $request->get('slug', ''));
         }
+
         $limit = $request->get('limit', 20);
         if($limit > 20){
             $limit = 20;
@@ -55,6 +56,7 @@ class TagsController extends Controller
         if(!Cache::has("tags_api")){
             Cache::forever("tags_api", new TagCollection($tag->paginate($limit)->withQueryString()));
         }
+        
         return response()->json(Cache::get("tags_api"));
     }
 
