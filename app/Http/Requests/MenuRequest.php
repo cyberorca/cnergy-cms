@@ -26,6 +26,7 @@ class MenuRequest extends FormRequest
         return [
             "menu_name" => "required|max:20",
             "parent_id" => "nullable",
+            "parent_slug" => "nullable",
         ];
     }
 }
