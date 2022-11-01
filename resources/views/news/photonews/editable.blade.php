@@ -86,29 +86,16 @@
 @endif
                                              </textarea>
                         </div>
-                        {{-- @foreach ($video as $videos)
-                                        <div class="media">
-                                            <div class="media-body">
-                                                <iframe width="560" height="315" src={{ $video->link + "&output=embed" }} frameborder="0" allowfullscreen>
-                                                </iframe>
-                                            </div>
-                                        </div>
-                                        @endforeach --}}
-
-                        {{-- <div class="d-flex justify-content-end gap-3 mt-3">
-                            <a href="{{ route('video.index') }}" class="btn btn-light" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="Back to Table Rome">Back</a>
-
-                            <button class="btn btn-primary" name="save" type="submit" data-bs-toggle="tooltip"
-                                value="publish" data-bs-placement="top" title="Create Role">Save
-                            </button>
-                        </div> --}}
+                        
 
                     </div>
                 </div>
                 <div id="other_page" class=" d-flex flex-column"></div>
 
                 <x-image-uploader2 />
+               
+
+                @include('components.page-image')    
             </div>
             @include('components.other-settings-news')
         </div>
