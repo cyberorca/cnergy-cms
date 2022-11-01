@@ -12,7 +12,6 @@ class PhotoController extends Controller
 {
     public function index(Request $request)
     {
-
         $photo = News::with(['categories', 'tags', 'users', 'news_photo'])
             ->where('is_published', '=', '1')
             ->where('types', '=', 'photonews')
