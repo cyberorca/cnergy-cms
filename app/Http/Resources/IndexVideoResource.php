@@ -54,7 +54,7 @@ class IndexVideoResource extends JsonResource
             'news_editor' => self::arrayUserToObjectUserEditor(json_decode($this->contributors)),
             'news_photographer' => self::arrayUserToObjectUser(json_decode($this->photographers)),
             'news_hastag' => '',
-            'news_city'=>'',
+            'news_city' => '',
             'news_sponsorship' => '',
             'has_paging' => '',
             'is_splitter' => '',
@@ -73,7 +73,7 @@ class IndexVideoResource extends JsonResource
             'news_url_full_mobile' => '',
             'news_paging_order' => '',
             'news_quote' => '',
-            'news_video' => $this->videoResponse($this->video),
+            'news_video' => $this->videoResponse($this->news_videos)[0] ?? null,
             'news_tag' => IndexTagResource::collection($this->tags),
             'news_keywords' => self::keywordResponse($this->keywords),
             'news_related' => '',
@@ -88,7 +88,8 @@ class IndexVideoResource extends JsonResource
         $temp = array();
         if ($array != null) {
             foreach ($array as $uuid) {
-                array_push($temp,
+                array_push(
+                    $temp,
                     self::userResponse($uuid)
                 );
             }
@@ -104,8 +105,10 @@ class IndexVideoResource extends JsonResource
                 if (User::join('roles', 'users.role_id', '=', 'roles.id')
                     ->where('roles.role', "Editor")
                     ->where('uuid', $uuid)
-                    ->exists())
-                    array_push($temp,
+                    ->exists()
+                )
+                    array_push(
+                        $temp,
                         self::userResponse($uuid)
                     );
             }
@@ -131,9 +134,14 @@ class IndexVideoResource extends JsonResource
 
     private function videoResponse($video)
     {
-        return [
-//            "id" => ,
-            "video" => $video
-        ];
+        $array = array();
+
+        foreach ($video as $item) {
+            array_push($array, [
+                'id' => $item->id,
+                'video' => htmlspecialchars($item->video),
+            ]);
+        }
+        return $array;
     }
 }
