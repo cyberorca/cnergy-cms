@@ -27,7 +27,6 @@ class NewsFactory extends Factory
             'synopsis' => $this->faker->text(),
             'types' => fake()->randomElement(["news", "video", "photonews"]),
             'image' => null,
-            'video' => null,
             'published_at' => now(),
             'published_by' => User::first()->uuid,
             'created_at' => now(),
