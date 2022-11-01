@@ -33,13 +33,58 @@ class NewsController extends Controller
     public function index(Request $request)
     {
         $news = News::with(['categories', 'tags', 'users', 'news_paginations'])->latest('published_at');
-        /*
-        $editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
+        /*$editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
         $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Reporter");
         $photographers = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Photographer");
-        */
+
+        if ($request->get('published')) {
+            $published = $request->get('published');
+            if ($published == 2) {
+                $news->where('is_published', "0");
+            } else {
+                $news->where('is_published', "1");
+            }
+        }
+
+        if ($request->get('inputTitle')) {
+            $news->where('title', 'like', '%' . $request->inputTitle . '%');
+        }
+
+        if ($request->get('inputCategory')) {
+            $news->whereHas('categories', function ($query) use ($request) {
+                $query->where('category', 'like', "%{$request->get('inputCategory')}%");
+            });
+        }
+
+        if ($request->get('headline')) {
+            $headline = $request->get('headline');
+            if ($headline == 2) {
+                $news->where('is_headline', "0");
+            } else {
+                $news->where('is_headline', "1");
+            }
+        }
+
+        if ($request->get('inputTag')) {
+            $news->whereHas('tags', function ($query) use ($request) {
+                $query->where('tags', 'like', "%{$request->get('inputTag')}%");
+            });
+        }
+
+        if ($request->get('startDate') && $request->get('endDate')) {
+            $startDate = Carbon::parse(($request->get('startDate')))
+                ->toDateTimeString();
+
+            $endDate = Carbon::parse($request->get('endDate'))
+                ->toDateTimeString();
+            $news->whereBetween('created_at', [
+                $startDate, $endDate
+            ]);
+        }*/
+
         $data["data"] = $this->convertDataToResponse($news->paginate(10));
         return response()->json($data);
+
     }
 
     private function convertDataToResponse($dataRaw){
