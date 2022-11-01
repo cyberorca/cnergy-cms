@@ -199,13 +199,6 @@
                 "operationId": "033c35292bfbfa0eba108f50805070ba",
                 "parameters": [
                     {
-                        "name": "limit",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
                         "name": "slug",
                         "in": "query",
                         "schema": {

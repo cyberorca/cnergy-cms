@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\tools;
+namespace App\Http\Controllers\Tools;
 
 use App\Http\Controllers\Controller;
 use App\Models\StaticPage;
@@ -32,15 +32,15 @@ class StaticPageController extends Controller
                 $startDate, $endDate
             ]);
         }
-        
+
         if ($request->get('inputTitle')) {
             $static->where('title', 'like', '%' . $request->inputTitle . '%');
-        } 
+        }
 
         if ($request->get('inputSlug')) {
             $static-> where('slug', 'like', '%' . $request->inputSlug . '%');
         }
-        
+
         if ($request->get('status')) {
             $status = $request->status;
             if($status == 2) {
@@ -65,7 +65,7 @@ class StaticPageController extends Controller
      */
     public function create()
     {
-        //masih copas dari news 
+        //masih copas dari news
 
         $method = explode('/', URL::current());
 
@@ -84,7 +84,7 @@ class StaticPageController extends Controller
     {
         //
         $data = $request->input();
-        
+
         try {
             $static = new StaticPage([
                 'title' => $data['title'],
@@ -93,7 +93,7 @@ class StaticPageController extends Controller
                 'is_active' => $request->has('isActive') == false ? '0' : '1',
                 'created_by' => auth()->id()
             ]);
-            
+
             $static->save();
 
             return \redirect()->route('static-page.index')->with('status', 'Successfully Create Static Page');
@@ -152,7 +152,7 @@ class StaticPageController extends Controller
                 'is_active' => $request->has('isActive') == false ? '0' : '1',
                 'updated_by' => auth()->id()
             ];
-            
+
             $static->update($input);
 
 
