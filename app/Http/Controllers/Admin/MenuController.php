@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MenuRequest;
 use App\Models\Menu;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
 class MenuController extends Controller
@@ -17,10 +18,7 @@ class MenuController extends Controller
      */
     public function index()
     {
-        if(!Cache::has("menu_config")){
-            Cache::forever("menu_config", Menu::getAllPage());
-        }
-        $menus = Cache::get("menu_config");
+        $menus = Menu::getAllPage();
         // return response()->json($menus);
         return view('admin.menu.index', compact('menus'));
     }
@@ -32,8 +30,9 @@ class MenuController extends Controller
      */
     public function create($id = null)
     {
-        $parent = Menu::find($id);
-        return view('admin.menu.create', compact('parent'));
+        $menu = Menu::find($id);
+        $method = explode('/', URL::current());
+        return view('admin.menu.editable', ['menu' => $menu, 'method' => end($method)]);
     }
 
     /**
@@ -46,7 +45,7 @@ class MenuController extends Controller
     {
         try {
             $data = $request->validated();
-            $data['slug'] = Str::slug($data['menu_name']);
+            $data['slug'] = isset($data['parent_slug']) ? $data['parent_slug'] . Str::slug($data['menu_name']) . "/" : Str::slug($data['menu_name']) . "/";
             $data['created_at'] = now();
             Menu::create($data);
             // return response()->json($data);
@@ -75,8 +74,9 @@ class MenuController extends Controller
      */
     public function edit($id)
     {
+        $method = explode('/', URL::current());
         $menu = Menu::find($id);
-        return view('admin.menu.update', compact('menu'));
+        return view('admin.menu.editable',  ['menu' => $menu, 'method' => end($method)]);
     }
 
     /**
@@ -92,9 +92,15 @@ class MenuController extends Controller
             $data = $request->validated();
             $menu = Menu::find($id);
             $menu->menu_name = $data["menu_name"];
-            $menu->slug = Str::slug($data["menu_name"]);
+            if($menu->parent_id){
+                $slug = explode('/', $menu->slug);
+                array_splice($slug, -2);
+                $menu->slug = implode('/', $slug) . "/" . Str::slug($data['menu_name']) . "/";
+            } else {
+                $menu->slug = Str::slug($data['menu_name']) . "/";
+            }
+            return $menu;
             $menu->save();
-            $menu->updated_at = now();
             return redirect()->route('menu.index')->with("status", "Successfully Update Menu");
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
