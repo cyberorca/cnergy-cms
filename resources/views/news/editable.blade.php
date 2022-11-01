@@ -105,7 +105,10 @@
                     Add New Page</span>
 
             </div>
-            @include('components.other-settings-news')
+            @include('components.other-settings-news', 
+            [
+                'type' => 'news'
+            ])
         </div>
 
         </div>

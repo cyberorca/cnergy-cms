@@ -22,7 +22,7 @@
     </div> --}}
     <hr>
     <div class="modal fade text-left " id="image-bank" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
-        aria-hidden="true">
+        aria-hidden="true" aria-type="{{ $type }}">
         <div class="modal-dialog modal-dialog-scrollable d-flex justify-content-center modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -150,10 +150,9 @@
                                 </div>
                                 <div class="d-flex justify-content-end w-100">
                                     {{-- data-bs-dismiss="modal" --}}
-                                    <button class="btn btn-primary" type="button"
-                                        id="save_uploaded_image">
+                                    <button class="btn btn-primary" type="button" id="save_uploaded_image">
                                         <i class="bx bx-x d-block d-sm-none"></i>
-                                        <span class="d-sm-block"><i class="bi bi-save"></i>&nbsp;&nbsp;Save
+                                        <span class="d-sm-block"><i class="bi bi-save"></i>&nbsp;&nbsp;Upload
                                             Image</span>
                                     </button>
                                 </div>
@@ -182,6 +181,12 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    @if ($type === 'photonews')
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="save_photo_news">
+                            <i class="bx bx-x d-block d-sm-none"></i>
+                            <span class="d-none d-sm-block">Save Image</span>
+                        </button>
+                    @endif
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         <i class="bx bx-x d-block d-sm-none"></i>
                         <span class="d-none d-sm-block">Cancel</span>

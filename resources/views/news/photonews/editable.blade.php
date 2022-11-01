@@ -106,11 +106,16 @@
 
                     </div>
                 </div>
-                <div id="other_page" class=" d-flex flex-column"></div>
-
-                <x-image-uploader2 />
+                <div id="other_page" class=" d-flex flex-column">
+                </div>
+                <span class="w-100 btn btn-success d-flex justify-content-center align-items-center" data-bs-toggle="modal"
+                    data-bs-target="#image-bank" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Image"><i
+                        class="bi bi-upload mb-2"></i>&nbsp;&nbsp;
+                    Add Image</span>
             </div>
-            @include('components.other-settings-news')
+            @include('components.other-settings-news', [
+                'type' => 'photonews',
+            ])
         </div>
 
         </div>
@@ -120,21 +125,23 @@
 
 
 @section('javascript')
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
             $("#tags").select2({
-                placeholder:'Select Tags',
+                placeholder: 'Select Tags',
                 allowClear: true,
                 ajax: {
-                    url: "{{route('tag.index')}}",
+                    url: "{{ route('tag.index') }}",
                     dataType: 'json',
                     delay: 250,
-                    processResults: function({data}){
+                    processResults: function({
+                        data
+                    }) {
                         return {
-                            results: $.map(data, function(item){
+                            results: $.map(data, function(item) {
                                 return {
                                     id: item.id,
                                     text: item.tags
@@ -145,12 +152,12 @@
                 }
             });
         });
-        </script>
+    </script>
 
-<script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/4/tinymce.min.js"
+    <script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/4/tinymce.min.js"
         referrerpolicy="origin"></script>
-        <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
+    <script src="{{ asset('assets/js/pages/photo-news-uploader.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
 
@@ -193,11 +200,24 @@
         tinymce.init(editor_config);
     </script>
 
-<script src="{{ asset('assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/form-element-select.js') }}"></script>
+    <script src="{{ asset('assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 
     <script>
+        let choices = document.querySelectorAll('.choices');
+        let initChoice;
+        for (let i = 0; i < choices.length; i++) {
+            if (choices[i].classList.contains("multiple-remove")) {
+                initChoice = new Choices(choices[i], {
+                    delimiter: ',',
+                    editItems: true,
+                    maxItemCount: -1,
+                    removeItemButton: true,
+                });
+            } else {
+                initChoice = new Choices(choices[i]);
+            }
+        }
         $(function() {
             $('input')
                 .on('change', function(event) {
@@ -220,14 +240,6 @@
                     );
                 })
                 .trigger('change');
-        });
-    </script>
-
-    <script src="/path/to/cdn/jquery.slim.min.js"></script>
-    <script src="/path/to/js/jquery.dateandtime.js"></script>
-    <script>
-        $(function() {
-            $('.example').dateAndTime();
         });
     </script>
 @endsection
