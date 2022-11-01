@@ -49,14 +49,43 @@ class VideoController extends Controller
             $video->where('types', '=', 'video');
         }
 
-        if ($request->get('orderby')) {
-            if ($request->get('orderby') == 'news_date_publish-desc') {
-                $video->OrderBy('published_at', 'desc');
-            }
-            if ($request->get('orderby') == 'news_entry-asc') {
-                $video->OrderBy('created_at', 'asc');
-            }
+        // if ($request->get('orderby')) {
+        //     if ($request->get('orderby') == 'news_date_publish-desc') {
+        //         $video->OrderBy('published_at', 'desc');
+        //     }
+        //     if ($request->get('orderby') == 'news_date_publish-asc') {
+        //         $video->OrderBy('published_at', 'asc');
+        //     }
+        //     if ($request->get('orderby') == 'news_entry-asc') {
+        //         $video->OrderBy('created_at', 'asc');
+        //     }
+        //     if ($request->get('orderby') == 'news_entry-desc') {
+        //         $video->OrderBy('created_at', 'desc');
+        //     }
+        // }
+
+        
+        $order = explode("-", $request->get('orderby'));
+
+        if ($order == 'news_date_publish-desc') {
+            $video->OrderBy('published_at', 'desc');
         }
+        if ($order == 'news_date_publish-asc') {
+            $video->OrderBy('published_at', 'asc');
+        }
+        if ($order == 'news_entry-asc') {
+            $video->OrderBy('created_at', 'asc');
+        }
+        if ($order == 'news_entry-desc') {
+            $video->OrderBy('created_at', 'desc');
+        }
+        if ($order == 'news_last_update-asc') {
+            $video->OrderBy('updated_at', 'asc');
+        }
+        if ($order == 'news_last_update-desc') {
+            $video->OrderBy('updated_at', 'desc');
+        }
+
 
         if ($request->get("headline")) {
             $video->where('is_headline', '=', $request->get('headline', ''));
@@ -95,6 +124,5 @@ class VideoController extends Controller
         }
 
         return response()->json(new VideoCollection($video->paginate($limit)->withQueryString()));
-
     }
 }
