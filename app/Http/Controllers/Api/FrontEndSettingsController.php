@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\FrontEndSettingCollection;
+use App\Http\Resources\IndexFrontEndSettingResource;
+use App\Http\Resources\StaticPageCollection;
 use App\Models\FrontEndSetting;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class FrontEndSettingsController extends Controller
 {
@@ -19,6 +23,10 @@ class FrontEndSettingsController extends Controller
      *         description="success",
      *     ),
      *     @OA\Response(
+     *         response=400,
+     *         description="bad request",
+     *     ),
+     *     @OA\Response(
      *         response=401,
      *         description="unauthorized",
      *       @OA\JsonContent(
@@ -30,26 +38,8 @@ class FrontEndSettingsController extends Controller
     public function index()
     {
         $menu_settings = FrontEndSetting::first()->makeHidden(['token', 'deleted_at', 'id']);
-        $data = [
-            "id" => $menu_settings["id"],
-            "title" => $menu_settings["site_title"],
-            "address" => $menu_settings["address"],
-            "sosmed" => json_encode([
-                "facebook" => $menu_settings["facebook"],
-                "ig" => $menu_settings["instagram"],
-                "youtube" => $menu_settings["youtube"],
-                "twitter" => $menu_settings["twitter"],
-            ]),
-            "site_logo" => $menu_settings["site_logo"],
-            "favicon" => $menu_settings["favicon"],
-            "color" => $menu_settings["accent_color"],
-            "domain_id" => "",
-            "site_description" => $menu_settings["site_description"],
-            "fb_app_id" => $menu_settings["facebook_app_id"],
-            "twitter_username" => $menu_settings["twitter_username"],
-            "created_at" => date('Y-m-d H:i:s', strtotime($menu_settings['created_at'])),
-            "updated_at" => date('Y-m-d H:i:s', strtotime($menu_settings['updated_at'])),
-        ];
-        return response()->json($data);
+        return response()
+            ->json(new IndexFrontEndSettingResource($menu_settings),
+            Response::HTTP_OK);
     }
 }

@@ -20,6 +20,11 @@ class CategoriesController extends Controller
      *         name="name",
      *         @OA\Schema(type="string")
      *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="limit",
+     *         @OA\Schema(type="int")
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="success",
@@ -45,9 +50,9 @@ class CategoriesController extends Controller
         if($limit > 10){
             $limit = 10;
         }
-        
+
         $nested = intval($request->get("nested"));
-        
+
         return response()->json($nested!==1 ? $category->paginate($limit)->withQueryString()->toArray() : Category::convertCategoryDataToResponseAPI($category->paginate($limit)->withQueryString()->toArray()));
 
     }

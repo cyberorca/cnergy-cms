@@ -32,6 +32,10 @@ class TagsController extends Controller
      *         description="success",
      *     ),
      *     @OA\Response(
+     *         response=400,
+     *         description="bad request",
+     *     ),
+     *     @OA\Response(
      *         response=401,
      *         description="unauthorized",
      *       @OA\JsonContent(
@@ -56,7 +60,7 @@ class TagsController extends Controller
         if(!Cache::has("tags_api")){
             Cache::forever("tags_api", new TagCollection($tag->paginate($limit)->withQueryString()));
         }
-        
+
         return response()->json(Cache::get("tags_api"));
     }
 
