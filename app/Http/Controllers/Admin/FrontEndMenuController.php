@@ -19,10 +19,10 @@ class FrontEndMenuController extends Controller
      */
     public function index()
     {
-        if(!Cache::has("front_end_menu")){
-            Cache::forever("front_end_menu", FrontEndMenu::getAll());
-        }
-        $fe_menus = Cache::get("front_end_menu");
+        // if(!Cache::has("front_end_menu")){
+        //     Cache::forever("front_end_menu", FrontEndMenu::getAll());
+        // }
+        $fe_menus = FrontEndMenu::getAll();
         return view('admin.menu.front-end.index', compact('fe_menus'));
     }
 

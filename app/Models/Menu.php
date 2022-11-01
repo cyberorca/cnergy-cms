@@ -97,7 +97,10 @@ class Menu extends Model
             if (is_null($node['parent_id'])) {
                 $tree[$node['id']] = &$node;
             } else {
+                $res = array();
+                $data = self::getAllParents($references, $node['parent_id'], $res);
                 $references[$node['parent_id']]['children'][$node['id']] = &$node;
+                $references[$node['parent_id']]['children'][$node['id']]['parents'] = $data;
             }
         }
 
