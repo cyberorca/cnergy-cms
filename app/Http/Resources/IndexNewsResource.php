@@ -23,7 +23,7 @@ class IndexNewsResource extends JsonResource
             "news_level" => $this->is_published,
             "news_top_headline"=> $this->is_headline,
             "news_editor_pick"=> $this->editor_pick,
-            "news_hot"=> $this->is_verify_age,
+            "news_hot"=> null,
             "news_home_headline"=> $this->is_home_headline,
             "news_category_headline"=> $this->is_category_headline,
             "news_curated"=> $this->is_curated,
@@ -62,7 +62,7 @@ class IndexNewsResource extends JsonResource
             "paging_style"=> null,
             "news_mature" => $this->is_adult_content,
             "news_seo_url" => $this->is_seo,
-            "news_sensitive" => null,
+            "news_sensitive" => $this->is_verify_age,
             "news_top_headtorial" => null,
             "news_date_headtorial" => null,
             "tracker_dmp" => null,
@@ -177,5 +177,4 @@ class IndexNewsResource extends JsonResource
         if (!empty($keywords))
             return explode(',', $keywords);
     }
-
 }

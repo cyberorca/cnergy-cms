@@ -57,15 +57,19 @@ class NewsController extends Controller
         if($limit > 10){
             $limit = 10;
         }
+        
         if($request->get("headline")){
             $news->where('is_headline', '=', $request->get('headline', ''));
         }
+
         if($request->get("category")){
             $news->where('category_id', '=', $request->get('category', ''));
         }
+
         if($request->get("max_id")){
             $news->where('id', '<', $request->get('max_id', ''));
         }
+
         if($request->get("editorpick")){
             $news->where('editor_pick', '=', $request->get('editorpick', ''));
         }
@@ -90,10 +94,7 @@ class NewsController extends Controller
             $news->where('updated_at', '>=', $last_update);
         }
 
-        
-
         return response()->json(new NewsCollection($news->paginate($limit)->withQueryString()));
-
     }
 
 }
