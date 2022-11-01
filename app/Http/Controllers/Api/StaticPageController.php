@@ -26,6 +26,10 @@ class StaticPageController extends Controller
      *         description="success",
      *     ),
      *     @OA\Response(
+     *         response=400,
+     *         description="bad request",
+     *     ),
+     *     @OA\Response(
      *         response=401,
      *         description="unauthorized",
      *       @OA\JsonContent(
@@ -44,7 +48,7 @@ class StaticPageController extends Controller
         return response()->json(
             new StaticPageCollection($staticPage->get()),
             Response::HTTP_OK);
-        
+
         // possible filter dev
         // $limit = $request->get('limit', 20);
         // if($limit > 20){
