@@ -321,6 +321,53 @@
                 ]
             }
         },
+        "/api/photonews/": {
+            "get": {
+                "tags": [
+                    "Photonews"
+                ],
+                "summary": "Get Photo",
+                "operationId": "d55a7fc00343cf7d3289e465dc68eee3",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "400": {
+                        "description": "bad request"
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The security token is invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+                    }
+                ]
+            }
+        },
         "/api/static-page/": {
             "get": {
                 "tags": [

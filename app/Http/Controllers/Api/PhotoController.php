@@ -11,10 +11,10 @@ use Carbon\Carbon;
 class PhotoController extends Controller
 {
     /**
-     * Get News
+     * Get Photo
      * @OA\Get (
-     *     tags={"News"},
-     *     path="/api/news/",
+     *     tags={"Photonews"},
+     *     path="/api/photonews/",
      *     security={{"Authentication_Token":{}}},
      *     @OA\Parameter(
      *         in="query",
