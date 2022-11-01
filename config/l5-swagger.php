@@ -155,7 +155,7 @@ return [
             'securitySchemes' => [
                 'Authentication_Token' => [ // Unique name of security
                     'type' => 'apiKey',
-                    'description' => 'An authorization header. Example: Token',
+                    'description' => 'An authorization query. Example: ?token={{your token}}',
                     'name' => 'token',
                     'in' => 'query',
                 ],

@@ -15,9 +15,23 @@ class FrontEndMenuController extends Controller
      *     tags={"Front End Menu"},
      *     path="/api/setting-fe-menu/",
      *     security={{"Authentication_Token":{}}},
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="limit",
+     *         @OA\Schema(type="int")
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="nested",
+     *         @OA\Schema(type="boolean")
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="success",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="bad request",
      *     ),
      *     @OA\Response(
      *         response=401,

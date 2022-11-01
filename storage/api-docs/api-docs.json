@@ -20,6 +20,13 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": "int"
+                        }
                     }
                 ],
                 "responses": {
@@ -57,9 +64,28 @@
                 ],
                 "summary": "Get Front End Menu",
                 "operationId": "ca367025a5ae2bd4e63bb903644d6bed",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": "int"
+                        }
+                    },
+                    {
+                        "name": "nested",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "success"
+                    },
+                    "400": {
+                        "description": "bad request"
                     },
                     "401": {
                         "description": "unauthorized",
@@ -96,6 +122,9 @@
                     "200": {
                         "description": "success"
                     },
+                    "400": {
+                        "description": "bad request"
+                    },
                     "401": {
                         "description": "unauthorized",
                         "content": {
@@ -131,6 +160,9 @@
                     "200": {
                         "description": "success"
                     },
+                    "400": {
+                        "description": "bad request"
+                    },
                     "401": {
                         "description": "unauthorized",
                         "content": {
@@ -162,9 +194,155 @@
                 ],
                 "summary": "Get News",
                 "operationId": "13ba7d70632a2162ec52a218c86578f4",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "headline",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                0
+                            ]
+                        }
+                    },
+                    {
+                        "name": "max_id",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "editorpick",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                0
+                            ]
+                        }
+                    },
+                    {
+                        "name": "alltype",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                0
+                            ]
+                        }
+                    },
+                    {
+                        "name": "orderby",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "published",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                0
+                            ]
+                        }
+                    },
+                    {
+                        "name": "sensitive",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                0
+                            ]
+                        }
+                    },
+                    {
+                        "name": "last_update",
+                        "in": "query",
+                        "schema": {
+                            "type": "date"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "success"
+                    },
+                    "400": {
+                        "description": "bad request"
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The security token is invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+                    }
+                ]
+            }
+        },
+        "/api/photonews/": {
+            "get": {
+                "tags": [
+                    "Photonews"
+                ],
+                "summary": "Get Photo",
+                "operationId": "d55a7fc00343cf7d3289e465dc68eee3",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "400": {
+                        "description": "bad request"
                     },
                     "401": {
                         "description": "unauthorized",
@@ -209,6 +387,9 @@
                 "responses": {
                     "200": {
                         "description": "success"
+                    },
+                    "400": {
+                        "description": "bad request"
                     },
                     "401": {
                         "description": "unauthorized",
@@ -261,6 +442,9 @@
                     "200": {
                         "description": "success"
                     },
+                    "400": {
+                        "description": "bad request"
+                    },
                     "401": {
                         "description": "unauthorized",
                         "content": {
@@ -292,9 +476,108 @@
                 ],
                 "summary": "Get Video",
                 "operationId": "6f6eaa7b2fc7fe05750f9bc23fbfb0a2",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "headline",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                0
+                            ]
+                        }
+                    },
+                    {
+                        "name": "max_id",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "editorpick",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                0
+                            ]
+                        }
+                    },
+                    {
+                        "name": "alltype",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                0
+                            ]
+                        }
+                    },
+                    {
+                        "name": "orderby",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "published",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                0
+                            ]
+                        }
+                    },
+                    {
+                        "name": "sensitive",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                0
+                            ]
+                        }
+                    },
+                    {
+                        "name": "last_update",
+                        "in": "query",
+                        "schema": {
+                            "type": "date"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "success"
+                    },
+                    "400": {
+                        "description": "bad request"
                     },
                     "401": {
                         "description": "unauthorized",
@@ -319,13 +602,77 @@
                     }
                 ]
             }
+        },
+        "/api/video/{id}/": {
+            "get": {
+                "tags": [
+                    "Video"
+                ],
+                "summary": "Get Video By ID",
+                "operationId": "5293f74a38bc0fa0bd7486250654c11e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "400": {
+                        "description": "bad request"
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The security token is invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ID Not Found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+                    }
+                ]
+            }
         }
     },
     "components": {
         "securitySchemes": {
             "Authentication_Token": {
                 "type": "apiKey",
-                "description": "An authorization header. Example: Token",
+                "description": "An authorization query. Example: ?token={{your token}}",
                 "name": "token",
                 "in": "query"
             }
