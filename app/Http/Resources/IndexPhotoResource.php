@@ -24,7 +24,6 @@ class IndexPhotoResource extends JsonResource
             'news_level' => $this->is_published,
             'news_top_headline' => $this->is_headline,
             'news_editor_pick' => $this->editor_pick,
-
             'news_hot' => 0,
             // 'news_home_headline'=> $this->is_home_headline,
             // 'news_category_headline'=> $this->is_category_headline,
@@ -110,6 +109,7 @@ class IndexPhotoResource extends JsonResource
         }
         return $temp;
     }
+    
     private function arrayUserToObjectUserEditor($array)
     {
         $temp = array();
@@ -143,24 +143,5 @@ class IndexPhotoResource extends JsonResource
     {
         if (!empty($keywords))
             return explode(',', $keywords);
-    }
-
-    private function videoResponse($video)
-    {
-        return [
-            //            "id" => ,
-            "video" => $video
-        ];
-    }
-
-    private function photonewsRespon($collections)
-    {
-        $temp = array();
-        foreach ($collections as $key) {
-            $item = $key;
-            $item['image']['real'] = $key['image'];
-            array_push($temp, $item);
-        }
-        return $temp;
     }
 }

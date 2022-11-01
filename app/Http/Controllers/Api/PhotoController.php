@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -12,7 +12,6 @@ class PhotoController extends Controller
 {
     public function index(Request $request)
     {
-
         $photo = News::with(['categories', 'tags', 'users', 'news_photo'])
             ->where('is_published', '=', '1')
             ->where('types', '=', 'photonews')
