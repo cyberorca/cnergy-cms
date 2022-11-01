@@ -95,6 +95,7 @@ class IndexPhotoResource extends JsonResource
         }
         return $temp;
     }
+    
     private function arrayUserToObjectUserEditor($array)
     {
         $temp = array();
@@ -126,13 +127,5 @@ class IndexPhotoResource extends JsonResource
     {
         if (!empty($keywords))
             return explode(',', $keywords);
-    }
-
-    private function videoResponse($video)
-    {
-        return [
-//            "id" => ,
-            "video" => $video
-        ];
     }
 }
