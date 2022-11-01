@@ -25,23 +25,29 @@ class IndexPhotoResource extends JsonResource
             'news_top_headline' => $this->is_headline,
             'news_editor_pick' => $this->editor_pick,
 
-            'news_hot' => $this->is_verify_age,
+            'news_hot' => 0,
             // 'news_home_headline'=> $this->is_home_headline,
             // 'news_category_headline'=> $this->is_category_headline,
             // 'news_curated'=> $this->is_curated,
             // 'news_advertorial'=> $this->is_advertorial,
             // 'news_disable_interactions'=> $this->is_disable_interactions,
             // 'news_branded_content'=> $this->is_branded_content,
-            'news_category' => $category,
+            'news_category' => [$category],
             'news_title' => $this->title,
             'news_subtitle' => '',
             'news_synopsis' => $this->synopsis,
             'news_content' => $this->content,
             // 'news_description' => $this->description,
             'news_image_prefix' => '',
-            'news_image' => '',
-            'news_image_thumbnail' => '',
-            'news_image_potrait' => '',
+            'news_image' => [
+                'real' => ''
+            ],
+            'news_image_thumbnail' => [
+                'real' => ''
+            ],
+            'news_image_potrait' => [
+                'real' => ''
+            ],
             'news_image_headline' => '',
             'news_imageinfo' => '',
             'news_url' => $this->slug,
@@ -51,8 +57,8 @@ class IndexPhotoResource extends JsonResource
             'news_editor' => self::arrayUserToObjectUserEditor(json_decode($this->contributors)),
             'news_photographer' => self::arrayUserToObjectUser(json_decode($this->photographers)),
             'news_hastag' => '',
-            'news_city'=>'',
-            'news_sponsorship' => '',
+            'news_city' => '',
+            'news_sponsorship' => null,
             'has_paging' => '',
             'is_splitter' => '',
             'paging_style' => '',
@@ -60,13 +66,14 @@ class IndexPhotoResource extends JsonResource
             'news_seo_url' => $this->is_seo,
             'news_sensitive' => $this->is_verify_age,
             'news_top_headtorial' => '',
-            'tracker_dmp' => '',
-            'special_event_name' => '',
-            'news_id_import' => '',
-            'news_guide' => '',
+            'news_date_headtorial' => '',
+            'tracker_dmp' => null,
+            'special_event_name' => null,
+            'news_id_import' => null,
+            'news_guide' => null,
             'paging' => [],
             'quote' => [],
-            'photonews' => $this->news_photo,
+            'photonews' => PhotonewsResource::collection($this->news_photo),
             'video' => null,
             'category_name' => $category->category,
             'news_url_full' => env('APP_URL') . '/' . Str::slug(strtolower($category->category)) . '/read/' . $this->slug,
@@ -80,7 +87,13 @@ class IndexPhotoResource extends JsonResource
             'news_related' => [],
             'news_dfp' => [],
             'news_dmp' => [],
-            'cdn_image' => ''
+            'cdn_image' => [
+                "klimg_url" => "",
+                "cdnimg_url" => "",
+                "file_image" => "",
+                "file_image_thumbnail" => "",
+                "file_image_potrait" => "",
+            ]
         ];
     }
 
@@ -89,7 +102,8 @@ class IndexPhotoResource extends JsonResource
         $temp = array();
         if ($array != null) {
             foreach ($array as $uuid) {
-                array_push($temp,
+                array_push(
+                    $temp,
                     self::userResponse($uuid)
                 );
             }
@@ -104,8 +118,10 @@ class IndexPhotoResource extends JsonResource
                 if (User::join('roles', 'users.role_id', '=', 'roles.id')
                     ->where('roles.role', "Editor")
                     ->where('uuid', $uuid)
-                    ->exists())
-                    array_push($temp,
+                    ->exists()
+                )
+                    array_push(
+                        $temp,
                         self::userResponse($uuid)
                     );
             }
@@ -132,8 +148,19 @@ class IndexPhotoResource extends JsonResource
     private function videoResponse($video)
     {
         return [
-//            "id" => ,
+            //            "id" => ,
             "video" => $video
         ];
+    }
+
+    private function photonewsRespon($collections)
+    {
+        $temp = array();
+        foreach ($collections as $key) {
+            $item = $key;
+            $item['image']['real'] = $key['image'];
+            array_push($temp, $item);
+        }
+        return $temp;
     }
 }

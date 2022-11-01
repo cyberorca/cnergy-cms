@@ -162,7 +162,7 @@ class VideoController extends Controller
                 'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
                 'created_by' => auth()->id(),
                 'category_id' => $data['category'],
-                'video' => $data['video']
+                // 'video' => $data['video']
             ]);
             
             // return $news;
@@ -274,7 +274,7 @@ class VideoController extends Controller
                 'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
                 'updated_by' => auth()->id(),
                 'category_id' => $data['category'],
-                'video' => $data['video'] ?? null
+                // 'video' => $data['video'] ?? null
             ];
             
             if ($request->file('upload_image') && !$data['upload_image_selected']) {
