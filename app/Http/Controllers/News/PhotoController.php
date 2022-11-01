@@ -256,7 +256,7 @@ class PhotoController extends Controller
         try {
             if ($request->file('upload_image') && !$data['upload_image_selected']) {
                 $file = $request->file('upload_image');
-                $fileFormatPath = new FileFormatPath('video/image', $file);
+                $fileFormatPath = new FileFormatPath('photonews/image', $file);
                 $input['image'] = $fileFormatPath->storeFile();
             }
 

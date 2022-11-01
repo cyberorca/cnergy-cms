@@ -1,8 +1,7 @@
 <div>
     <div class="d-flex input-file-uploader">
         <span class="w-100 btn btn-success d-flex justify-content-center align-items-center" data-bs-toggle="modal"
-            data-bs-target="#image-bank" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Image"><i
-                class="bi bi-upload mb-2"></i>&nbsp;&nbsp;
+            data-bs-target="#image-bank" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Image">&nbsp;&nbsp;
             Add Image</span>
         <input type="hidden" name="upload_image_selected" id="upload_image_selected" />
         {{-- <span class="border">OR</span>
