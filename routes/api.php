@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\StaticPageController;
 use App\Http\Controllers\Api\TagsController;
 use App\Http\Controllers\Api\VideoController;
 use App\Http\Controllers\Api\NewsController;
+use App\Http\Controllers\Api\PhotoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +44,8 @@ Route::middleware(['verifyTokenApi'])->group(function(){
     Route::resource('static-page', StaticPageController::class);
 
     Route::resource('news', NewsController::class);
+
+    Route::resource('photonews', PhotoController::class);
 });
 
 

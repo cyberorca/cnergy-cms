@@ -194,6 +194,102 @@
                 ],
                 "summary": "Get News",
                 "operationId": "13ba7d70632a2162ec52a218c86578f4",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "headline",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                0
+                            ]
+                        }
+                    },
+                    {
+                        "name": "max_id",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "editorpick",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                0
+                            ]
+                        }
+                    },
+                    {
+                        "name": "alltype",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                0
+                            ]
+                        }
+                    },
+                    {
+                        "name": "orderby",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "published",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                0
+                            ]
+                        }
+                    },
+                    {
+                        "name": "sensitive",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                0
+                            ]
+                        }
+                    },
+                    {
+                        "name": "last_update",
+                        "in": "query",
+                        "schema": {
+                            "type": "date"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "success"
@@ -389,6 +485,17 @@
                         }
                     },
                     {
+                        "name": "orderby",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    },
+                    {
                         "name": "published",
                         "in": "query",
                         "schema": {
@@ -408,6 +515,13 @@
                                 1,
                                 0
                             ]
+                        }
+                    },
+                    {
+                        "name": "last_update",
+                        "in": "query",
+                        "schema": {
+                            "type": "date"
                         }
                     }
                 ],

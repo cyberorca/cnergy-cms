@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\FrontEndMenu;
 use App\Models\User;
 use App\Models\News;
+use App\Models\PhotoNews;
 use Illuminate\Database\Seeder;
 use App\Models\Tag;
 
@@ -27,6 +28,7 @@ class DatabaseSeeder extends Seeder
         Tag::factory(100)->create();
         Category::factory(100)->create();
         News::factory(100)->create();
+        PhotoNews::factory(100)->create();
         // $news = News::all();
         // foreach($news as $item){
         //    $news_tag = News::create([
