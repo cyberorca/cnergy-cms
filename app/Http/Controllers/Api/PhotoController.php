@@ -11,7 +11,7 @@ use Carbon\Carbon;
 class PhotoController extends Controller
 {
     /**
-     * Get Photo
+     * Get Photonews
      * @OA\Get (
      *     tags={"Photonews"},
      *     path="/api/photonews/",

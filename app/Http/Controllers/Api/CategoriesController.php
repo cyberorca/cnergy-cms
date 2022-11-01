@@ -30,6 +30,10 @@ class CategoriesController extends Controller
      *         description="success",
      *     ),
      *     @OA\Response(
+     *         response=400,
+     *         description="bad request",
+     *     ),
+     *     @OA\Response(
      *         response=401,
      *         description="unauthorized",
      *       @OA\JsonContent(
