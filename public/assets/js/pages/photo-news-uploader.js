@@ -101,6 +101,7 @@ if (image_bank_type == 'photonews') {
             $(`#button-photonews-selected-${i}`).click(function(){
                 const url = $(this).attr("url-data")
                 image_preview_result.src = url;
+                upload_image_selected.value = url;
             })
         })
     })
