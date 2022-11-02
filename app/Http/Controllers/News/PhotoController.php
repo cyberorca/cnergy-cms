@@ -144,18 +144,18 @@ class PhotoController extends Controller
         //return response()->json($request->all());
         try {
             //$i = 2;
-            for ($i = 0; $i < count($data['title_photonews']) - 1; $i++) {
+            for ($i = 0; $i < count($data['title_photonews']); $i++) {
                 $news_images[$i] = [
-                    'title' => $data['title_photonews'][$i + 1],
-                    'caption' => $data['caption_photonews'][$i + 1],
-                    'url' => $data['url_photonews'][$i + 1],
-                    //'image' => $data['url_photonews'][$i + 1],
-                    'copyright' => $data['copyright_photonews'][$i + 1],
-                    'description' => $data['description_photonews'][$i + 1],
-                    'keywords' => $data['keywords_photonews'][$i + 1],
+                    'title' => $data['title_photonews'][$i],
+                    //'caption' => $data['caption_photonews'][$i + 1],
+                    'url' => $data['url_photonews'][$i],
+                    'image' => $data['image_photonews'][$i],
+                    'copyright' => $data['copyright_photonews'][$i],
+                    'description' => $data['description_photonews'][$i],
+                    'keywords' => $data['keywords_photonews'][$i],
                     'order_by_no' => $i
                 ];
-                //$i++;
+                
             }
             /*if ($request->file('upload_image') && !$data['upload_image_selected']) {
                 $file = $request->file('upload_image');
@@ -216,7 +216,7 @@ class PhotoController extends Controller
                 foreach ($news_images as $photonews) {
                     PhotoNews::create([
                         'title' => $photonews['title'],
-                        'image' => $photonews['caption'],
+                        'image' => $photonews['image'],
                         'url' => $photonews['url'],
                         'copyright' => $photonews['copyright'],
                         'description' => $photonews['description'],

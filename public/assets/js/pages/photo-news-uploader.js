@@ -303,6 +303,7 @@ const cardPhotoNews = (image, index) => {
                             placeholder="Enter Caption " required value="${caption}" />
                         <input type="hidden"  id="title" name="title_photonews[]" value="${title}" />
                         <input type="hidden"  id="url" name="url_photonews[]" value="${path}/${slug}" />
+                        <input type="hidden"  id="image" name="image_photonews[]" value="${slug}" />
                     </div>
                     <div class="form-group">
                         <label for="copyright" class="mb-2">Copyright</label>
