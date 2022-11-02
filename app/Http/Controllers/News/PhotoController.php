@@ -139,7 +139,7 @@ class PhotoController extends Controller
         $date = $data['date'];
         $time = $data['time'];
         $mergeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
-        // return response()->json($request->all());
+        return response()->json($request->all());
         try {
             if ($request->file('upload_image') && !$data['upload_image_selected']) {
                 $file = $request->file('upload_image');

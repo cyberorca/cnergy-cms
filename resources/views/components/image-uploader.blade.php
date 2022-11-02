@@ -182,7 +182,7 @@
                 </div>
                 <div class="modal-footer">
                     @if ($type === 'photonews')
-                        <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="save_photo_news">
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="save_photo_news" disabled>
                             <i class="bx bx-x d-block d-sm-none"></i>
                             <span class="d-none d-sm-block">Save Image</span>
                         </button>

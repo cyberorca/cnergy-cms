@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\News\PhotoController;
 use App\Http\Controllers\News\VideoController;
+use App\Http\Controllers\Tools\NewsDraftController;
 use App\Http\Controllers\Tools\StaticPageController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -37,7 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
         // return Storage::path('/public/news/2022/10/04/03494-11419049-2.png');
         return view('welcome');
     });
-    
+
     // Route::get("/front-end-menu/create/{id?}", [FrontEndMenuController::class, 'create'])->name('front-end-menu.create');
     // Route::resource('front-end-menu', FrontEndMenuController::class)->except(['create']);
 
@@ -61,43 +62,44 @@ Route::group(['middleware' => 'auth'], function () {
     // Route::resource('user-setting', UsersController::class);
 
     // Route::resource('image-bank', ImageBankController::class);
-    
+
     // Route::resource('news', NewsController::class);
     // Dashboard
     Route::prefix('dashboard')->group(function () {
     });
-    
+
     // Master
     Route::prefix('master')->group(function () {
-        
+
         Route::prefix('user')->group(function () {
             Route::resource('role', RoleController::class);
             Route::resource('user-setting', UsersController::class);
         });
-        
+
         Route::get("/front-end-menu/create/{id?}", [FrontEndMenuController::class, 'create'])->name('front-end-menu.create');
         Route::resource('front-end-menu', FrontEndMenuController::class)->except(['create']);
-        
+
         Route::post("/generate/token", [FrontEndSettingsController::class, 'generateToken'])->name('generate.token');
         Route::resource('/front-end-setting', FrontEndSettingsController::class);
-        
+
         Route::get("/menu/create/{id?}", [MenuController::class, 'create'])->name('menu.create');
         Route::resource('menu', MenuController::class)->except(['create']);
-        
+
         Route::get("/category/create/{id?}", [CategoriesController::class, 'create'])->name('category.create');
         Route::resource('category', CategoriesController::class)->except(['create']);
     });
-    
+
     // Tools
     Route::prefix('tools')->group(function () {
         Route::resource('image-bank', ImageBankController::class);
         Route::resource('static-page', StaticPageController::class);
+        Route::resource('news-draft', NewsDraftController::class);
     });
-    
+
     // Documentation
     Route::prefix('documentation')->group(function () {
     });
-    
+
     // Update
     Route::prefix('update')->group(function () {
         Route::prefix('news')->group(function () {
@@ -110,8 +112,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::resource('tag-management', TagsController::class);
         });
     });
-    
-    
+
+
     Route::get('image/{filename}', [ImageBankController::class, 'displayImage'])->name('image.displayImage');
     Route::get('/image-bank/api/list/', [ImageBankController::class, 'apiList'])->name('image_bank.api');
     Route::post('/image-bank/api/create', [ImageBankController::class, 'upload_image']);
