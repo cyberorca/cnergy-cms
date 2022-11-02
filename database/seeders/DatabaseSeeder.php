@@ -9,6 +9,7 @@ use App\Models\News;
 use App\Models\PhotoNews;
 use Illuminate\Database\Seeder;
 use App\Models\Tag;
+use App\Models\VideoNews;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,16 +20,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
-             RoleSeeder::class,
-             MenuSeeder::class,
-             FrontEndMenuSeeder::class,
-        ]);
-        User::factory(100)->create();
-        Tag::factory(100)->create();
-        Category::factory(100)->create();
-        News::factory(100)->create();
-        PhotoNews::factory(100)->create();
+        // $this->call([
+        //      RoleSeeder::class,
+        //      MenuSeeder::class,
+        //      FrontEndMenuSeeder::class,
+        // ]);
+        // User::factory(100)->create();
+        // Tag::factory(100)->create();
+        // Category::factory(100)->create();
+        // News::factory(100)->create();
+        // PhotoNews::factory(100)->create();
+        VideoNews::factory(100)->create();
         // $news = News::all();
         // foreach($news as $item){
         //    $news_tag = News::create([
@@ -41,13 +43,13 @@ class DatabaseSeeder extends Seeder
         //      $news_tag->tags()->attach(Tag::all()->random(rand(1,100))->pluck('id')); 
         // }
 
-        $tags = Tag::all();
+        // $tags = Tag::all();
 
-        // Populate the pivot table
-        News::all()->each(function ($news) use ($tags) { 
-            $news->tags()->attach(
-                $tags->random(rand(1, 5))->pluck('id')->toArray()
-            ); 
-        });
+        // // Populate the pivot table
+        // News::all()->each(function ($news) use ($tags) { 
+        //     $news->tags()->attach(
+        //         $tags->random(rand(1, 5))->pluck('id')->toArray()
+        //     ); 
+        // });
     }
 }
