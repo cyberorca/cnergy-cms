@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\IndexVideoResource;
 use App\Http\Resources\VideoCollection;
 use App\Models\News;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class VideoController extends Controller
 {
@@ -17,9 +18,63 @@ class VideoController extends Controller
      *     tags={"Video"},
      *     path="/api/video/",
      *     security={{"Authentication_Token":{}}},
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="limit",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="category",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="headline",
+     *         @OA\Schema(type="string", enum = {1, 0})
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="max_id",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="editorpick",
+     *         @OA\Schema(type="string", enum = {1, 0})
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="alltype",
+     *         @OA\Schema(type="string", enum = {1, 0})
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="orderby",
+     *         @OA\Schema(type="string", enum = {"asc", "desc"})
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="published",
+     *         @OA\Schema(type="string", enum = {1, 0})
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="sensitive",
+     *         @OA\Schema(type="string", enum = {1, 0})
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="last_update",
+     *         @OA\Schema(type="date")
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="success",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="bad request",
      *     ),
      *     @OA\Response(
      *         response=401,
@@ -30,8 +85,7 @@ class VideoController extends Controller
      *     )
      * )
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request){
         /*order by published_at desc
         //by is_published
         //limit 10
@@ -107,8 +161,53 @@ class VideoController extends Controller
         return response()->json(new VideoCollection($video->paginate($limit)->withQueryString()));
     }
 
+    /**
+     * Get Video By ID
+     * @OA\Get (
+     *     tags={"Video"},
+     *     path="/api/video/{id}/",
+     *     security={{"Authentication_Token":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *     ),
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="bad request",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="unauthorized",
+     *       @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="The security token is invalid"),
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="not found",
+     *       @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="ID Not Found"),
+     *          )
+     *     )
+     * )
+     */
     public function show($id){
-        $video_news = News::with(['categories', 'tags','users', 'news_videos:id,video,news_id'])->where('id', $id)->get();
-        return response()->json(new IndexVideoResource($video_news[0]));        
+        $video_news = News::with(['categories', 'tags','users', 'news_videos:id,video,news_id'])
+            ->where('id', $id)
+            ->where('types','=','video')
+            ->where('is_published','=','1')
+            ->where('published_at','<=',now())
+            ->latest('published_at')
+            ->first();
+        if ($video_news==null){
+            return response()->json(['message'=>'ID Not Found'],Response::HTTP_NOT_FOUND);
+        }
+        return response()->json(new IndexVideoResource($video_news));
     }
 }

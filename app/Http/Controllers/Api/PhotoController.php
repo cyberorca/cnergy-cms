@@ -10,6 +10,34 @@ use Carbon\Carbon;
 
 class PhotoController extends Controller
 {
+    /**
+     * Get Photonews
+     * @OA\Get (
+     *     tags={"Photonews"},
+     *     path="/api/photonews/",
+     *     security={{"Authentication_Token":{}}},
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="limit",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="bad request",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="unauthorized",
+     *       @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="The security token is invalid"),
+     *          )
+     *     )
+     * )
+     */
     public function index(Request $request)
     {
         $photo = News::with(['categories', 'tags', 'users', 'news_photo'])

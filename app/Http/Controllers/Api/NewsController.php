@@ -7,6 +7,7 @@ use App\Http\Resources\NewsCollection;
 use App\Models\News;
 use App\Models\User;
 use App\Models\NewsPagination;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -18,9 +19,63 @@ class NewsController extends Controller
      *     tags={"News"},
      *     path="/api/news/",
      *     security={{"Authentication_Token":{}}},
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="limit",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="category",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="headline",
+     *         @OA\Schema(type="string", enum = {1, 0})
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="max_id",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="editorpick",
+     *         @OA\Schema(type="string", enum = {1, 0})
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="alltype",
+     *         @OA\Schema(type="string", enum = {1, 0})
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="orderby",
+     *         @OA\Schema(type="string", enum = {"asc", "desc"})
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="published",
+     *         @OA\Schema(type="string", enum = {1, 0})
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="sensitive",
+     *         @OA\Schema(type="string", enum = {1, 0})
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="last_update",
+     *         @OA\Schema(type="date")
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="success",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="bad request",
      *     ),
      *     @OA\Response(
      *         response=401,
@@ -57,7 +112,7 @@ class NewsController extends Controller
         if($limit > 10){
             $limit = 10;
         }
-        
+
         if($request->get("headline")){
             $news->where('is_headline', '=', $request->get('headline', ''));
         }
@@ -73,7 +128,7 @@ class NewsController extends Controller
         if($request->get("editorpick")){
             $news->where('editor_pick', '=', $request->get('editorpick', ''));
         }
-        
+
         $alltype = $request->get('alltype', 1);
         if($alltype == 0){
             $news->where('types', '=', "news");
