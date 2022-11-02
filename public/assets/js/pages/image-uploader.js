@@ -22,6 +22,7 @@ save_uploaded_image.addEventListener('click', async function () {
             value = file[0]
         }
         fd.append(name, value);
+        console.log(name, value);
     })
     let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     fd.append('_token', token);

@@ -49,7 +49,7 @@
                             <div class="form-group">
                                 <label for="site_logo" class="mb-2">Image File</label>
                                 <div class="flex flex-column">
-                                    <img src="{{ asset('assets/images/site_logo.png') }}" class="mb-3 image-preview"
+                                    <img src="{{ asset('assets/images/preview-image.jpg') }}" class="mb-3 image-preview"
                                         alt="Your Image" id="image_preview">
                                     <input type="file" class="form-control" name="image_input" id="image_input"
                                         accept="image/*" />
@@ -129,6 +129,19 @@
                             <input name="keywords" id="keywords" type="text" required
                                 class="w-100 form-control @error('keywords') is-invalid @enderror" data-role="tagsinput" />
                             @error('keywords')
+                                <div class="invalid-feedback">
+                                    <i class="bx bx-radio-circle"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="site_logo" class="mb-2">Description</label>
+                            <div class="d-flex flex-column">
+                                <textarea name="description" class="form-control" id="description" cols="30" rows="3" required
+                                    placeholder="Enter Description"></textarea>
+                            </div>
+                            @error('description')
                                 <div class="invalid-feedback">
                                     <i class="bx bx-radio-circle"></i>
                                     {{ $message }}

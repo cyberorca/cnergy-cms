@@ -51,54 +51,29 @@
                             <div class="py-3 px-1" id="form-upload-image">
                                 <div class="form-group">
                                     <label for="site_logo" class="mb-2">Image File</label>
-                                    <div class="flex flex-column image-file-preview">
-                                        <img src="{{ asset('assets/images/site_logo.png') }}" class="mb-3 image-preview"
-                                            alt="Your Image" id="image_preview_modal">
+                                    <div
+                                        class="d-flex flex-column align-items-center justify-content-center image-file-preview">
+                                        <img src="{{ asset('assets/images/preview-image.jpg') }}"
+                                            class="mb-3 image-preview" alt="Your Image" id="image_preview_modal">
                                         <input type="file" class="form-control" name="image_input"
                                             id="upload_image_button" accept="image/*" />
-                                        @error('site_logo')
-                                            <div class="invalid-feedback">
-                                                <i class="bx bx-radio-circle"></i>
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="basicInput" class="mb-2">Title</label>
-                                    <input type="text" class="form-control @error('title') is-invalid @enderror"
-                                        id="basicInput" name="title_image" placeholder="Enter image title" />
-                                    @error('title')
-                                        <div class="invalid-feedback">
-                                            <i class="bx bx-radio-circle"></i>
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
+                                    <input type="text" class="form-control" id="basicInput" name="title_image"
+                                        placeholder="Enter image title" />
                                 </div>
                                 <div class="form-group">
                                     <label for="basicInput" class="mb-2">Image Alt</label>
-                                    <input type="text" class="form-control @error('image_alt') is-invalid @enderror"
-                                        id="basicInput" name="image_alt" placeholder="Enter image alt" />
-                                    @error('image_alt')
-                                        <div class="invalid-feedback">
-                                            <i class="bx bx-radio-circle"></i>
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
+                                    <input type="text" class="form-control " id="basicInput" name="image_alt"
+                                        placeholder="Enter image alt" />
                                 </div>
                                 <div class="form-group">
                                     <label for="site_logo" class="mb-2">Photographer</label>
                                     <div class="flex flex-column">
-                                        <input type="text"
-                                            class="form-control @error('photographer') is-invalid @enderror"
-                                            id="basicInput" name="photographer"
+                                        <input type="text" class="form-control" id="basicInput" name="photographer"
                                             placeholder="Enter image photographer" />
-                                        @error('photographer')
-                                            <div class="invalid-feedback">
-                                                <i class="bx bx-radio-circle"></i>
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -107,45 +82,32 @@
                                         <div class="input-group mb-3">
                                             <span class="input-group-text" id="basic-addon1">&copy;
                                                 {{ Date::now()->year }}</span>
-                                            <input type="text"
-                                                class="form-control @error('copyright') is-invalid @enderror"
-                                                id="basicInput" name="copyright" placeholder="techno.id"
-                                                value="" aria-describedby="basic-addon1" />
+                                            <input type="text" class="form-control" id="basicInput"
+                                                name="copyright" placeholder="techno.id" value=""
+                                                aria-describedby="basic-addon1" />
                                         </div>
-
-                                        @error('copyright')
-                                            <div class="invalid-feedback">
-                                                <i class="bx bx-radio-circle"></i>
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="site_logo" class="mb-2">Caption</label>
                                     <div class="flex flex-column">
-                                        <input type="text"
-                                            class="form-control @error('caption') is-invalid @enderror"
-                                            id="basicInput" name="caption" placeholder="Enter image caption" />
-                                        @error('caption')
-                                            <div class="invalid-feedback">
-                                                <i class="bx bx-radio-circle"></i>
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
+                                        <input type="text" class="form-control" id="basicInput" name="caption"
+                                            placeholder="Enter image caption" />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="site_logo" class="mb-2">Keywords</label>
                                     <div class="flex flex-column">
-                                        <textarea type="text" class="form-control @error('keywords') is-invalid @enderror" id="basicInput"
-                                            name="keywords" placeholder="Enter keywords"></textarea>
-                                        @error('keywords')
-                                            <div class="invalid-feedback">
-                                                <i class="bx bx-radio-circle"></i>
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
+                                        <input name="keywords" id="keywords" type="text" 
+                                            placeholder="Enter Keyword" class="w-100 form-control"
+                                            data-role="tagsinput" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="site_logo" class="mb-2">Description</label>
+                                    <div class="d-flex flex-column">
+                                        <textarea name="description_image" class="form-control" id="description" cols="30" rows="3"
+                                            placeholder="Enter Description"></textarea>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end w-100">
@@ -182,7 +144,8 @@
                 </div>
                 <div class="modal-footer">
                     @if ($type === 'photonews')
-                        <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="save_photo_news" disabled>
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="save_photo_news"
+                            disabled>
                             <i class="bx bx-x d-block d-sm-none"></i>
                             <span class="d-none d-sm-block">Save Image</span>
                         </button>

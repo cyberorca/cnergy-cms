@@ -267,8 +267,7 @@ function tinyMCEConfig(index_pages) {
 }
 
 const cardPhotoNews = (image, index) => {
-    const { title, slug, caption, keywords, copyright } = image;
-
+    const { title, slug, caption, keywords, copyright, description } = image;
     return `<div class="card">
     <div class="card-header d-flex justify-content-between">
         <a data-bs-toggle="collapse" class="d-flex justify-content-between w-100" href="#photonews-${index}" aria-expanded="false"
@@ -287,7 +286,7 @@ const cardPhotoNews = (image, index) => {
                         <div class="image-file-preview mt-3">
                             <img src="${path}/${slug}" alt="" srcset=""
                                 id="image_preview_result">
-                            <input type="hidden" name="image_photonews[]" value="${path}/${slug}" />
+                            <input type="hidden" name="photonews[${index}][image]" value="${slug}" />
                         </div>
                         <div class="form-group">
                             <div class="d-flex justify-content-end gap-3 mt-3 flex-column">
@@ -300,17 +299,17 @@ const cardPhotoNews = (image, index) => {
                 <div class="col-md-7 col-12">
                     <div class="form-group">
                         <label for="caption" class="mb-2">Caption</label>
-                        <input type="text" class="form-control" id="caption" name="caption_photonews[]"
+                        <input type="text" class="form-control" id="caption" name="photonews[${index}][caption]"
                             placeholder="Enter Caption " required value="${caption}" />
                     </div>
                     <div class="form-group">
                         <label for="copyright" class="mb-2">Copyright</label>
-                        <input type="text" class="form-control" id="copyright" name="copyright_photonews[]"
+                        <input type="text" class="form-control" id="copyright" name="photonews[${index}][copyright]"
                             placeholder="Enter Copyright " required value="${copyright}"/>
                     </div>
                     <div class="form-group">
                         <label class="mb-2">Keyword</label><br>
-                        <input name="image_keywords[]" id="image_keywords" type="text" required
+                        <input name="photonews[${index}][keywords]" id="image_keywords" type="text" required
                             class="w-100 form-control" data-role="tagsinput" placeholder="Enter Keywords " value="${keywords}" />
                     </div>
                 </div>
@@ -318,8 +317,8 @@ const cardPhotoNews = (image, index) => {
 
             <div class="form-group">
                 <label for="image_description" class="form-label mb-2">Description</label>
-                <textarea name="image_description[]" class="form-control" id="image_description" cols="30" rows="3" required
-                    placeholder="Enter Description"></textarea>
+                <textarea name="photonews[${index}][description]" class="form-control" id="image_description" cols="30" rows="3" required
+                    placeholder="Enter Description">${description}</textarea>
             </div>
         </div>
     </div>

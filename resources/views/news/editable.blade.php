@@ -41,6 +41,12 @@
         .collapse-news:hover {
             background: rgba(0, 0, 0, 0.11) !important;
         }
+
+        #image_preview_modal {
+            width: 100%;
+            object-fit: cover;
+            max-width: 450px;
+        }
     </style>
 @endsection
 
@@ -105,9 +111,8 @@
                     Add New Page</span>
 
             </div>
-            @include('components.other-settings-news', 
-            [
-                'type' => 'news'
+            @include('components.other-settings-news', [
+                'type' => 'news',
             ])
         </div>
 

@@ -38,6 +38,7 @@
         a[aria-expanded=false] .bi-chevron-up {
             display: none;
         }
+        
     </style>
 @endsection
 
