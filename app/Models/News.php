@@ -64,8 +64,16 @@ class News extends Model
         return $this->hasMany(NewsPagination::class, 'news_id')->orderBy("order_by_no", "ASC");
     }
 
+    public function news_images(){
+        return $this->hasMany(PhotoNews::class, 'news_id')->orderBy("order_by_no", "ASC");
+    }
+
     public function news_videos(){
         return $this->hasMany(VideoNews::class, 'news_id')->orderBy("order_by_no", "ASC");
+    }
+    
+    public function news_photo(){
+        return $this->hasMany(PhotoNews::class, 'news_id')->orderBy("order_by_no", "ASC");
     }
 
     public function users()

@@ -2,12 +2,18 @@
 
 namespace App\Http\Resources;
 
-use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
+use App\Models\User;
 
-class IndexVideoResource extends JsonResource
+class IndexPhotoResource extends JsonResource
 {
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     */
     public function toArray($request): array
     {
         $category = new IndexCategoryResource($this->categories);
@@ -25,23 +31,22 @@ class IndexVideoResource extends JsonResource
             // 'news_advertorial'=> $this->is_advertorial,
             // 'news_disable_interactions'=> $this->is_disable_interactions,
             // 'news_branded_content'=> $this->is_branded_content,
-            'news_hot' => '',
-            'news_home_headline'=> $this->is_home_headline,
-            'news_category_headline'=> $this->is_category_headline,
-            'news_curated'=> $this->is_curated,
-            'news_advertorial'=> $this->is_advertorial,
-            'news_disable_interactions'=> $this->is_disable_interactions,
-            'news_branded_content'=> $this->is_branded_content,
-            'news_category' => $category,
+            'news_category' => [$category],
             'news_title' => $this->title,
             'news_subtitle' => '',
             'news_synopsis' => $this->synopsis,
             'news_content' => $this->content,
-            'news_description' => $this->description,
+            // 'news_description' => $this->description,
             'news_image_prefix' => '',
-            'news_image' => '',
-            'news_image_thumbnail' => '',
-            'news_image_potrait' => '',
+            'news_image' => [
+                'real' => ''
+            ],
+            'news_image_thumbnail' => [
+                'real' => ''
+            ],
+            'news_image_potrait' => [
+                'real' => ''
+            ],
             'news_image_headline' => '',
             'news_imageinfo' => '',
             'news_url' => $this->slug,
@@ -52,7 +57,7 @@ class IndexVideoResource extends JsonResource
             'news_photographer' => self::arrayUserToObjectUser(json_decode($this->photographers)),
             'news_hastag' => '',
             'news_city' => '',
-            'news_sponsorship' => '',
+            'news_sponsorship' => null,
             'has_paging' => '',
             'is_splitter' => '',
             'paging_style' => '',
@@ -60,23 +65,34 @@ class IndexVideoResource extends JsonResource
             'news_seo_url' => $this->is_seo,
             'news_sensitive' => $this->is_verify_age,
             'news_top_headtorial' => '',
-            'tracker_dmp' => '',
-            'special_event_name' => '',
-            'news_id_import' => '',
-            'news_guide' => '',
-            'photonews' => '',
+            'news_date_headtorial' => '',
+            'tracker_dmp' => null,
+            'special_event_name' => null,
+            'news_id_import' => null,
+            'news_guide' => null,
+            'paging' => [],
+            'quote' => [],
+            'photonews' => PhotonewsResource::collection($this->news_photo),
+            'video' => null,
             'category_name' => $category->category,
             'news_url_full' => env('APP_URL') . '/' . Str::slug(strtolower($category->category)) . '/read/' . $this->slug,
             'news_url_full_mobile' => '',
-            'news_paging_order' => '',
-            'news_quote' => '',
-            'news_video' => $this->videoResponse($this->news_videos)[0] ?? null,
+            // 'news_paging' => [],
+            // 'news_paging_order' => null,
+            // 'news_quote' => '',
+            // 'news_video' => $this->videoResponse($this->video),
             'news_tag' => IndexTagResource::collection($this->tags),
             'news_keywords' => self::keywordResponse($this->keywords),
-            'news_related' => '',
-            'news_dfp' => '',
-            'news_dmp' => '',
-            'cdn_image' => ''
+            'news_related' => [],
+            'news_dfp' => [],
+            'news_dmp' => [],
+            'cdn_image' => [
+                "klimg_url" => "",
+                "cdnimg_url" => "",
+                "file_image" => "",
+                "file_image_thumbnail" => "",
+                "file_image_potrait" => "",
+            ]
         ];
     }
 
@@ -93,7 +109,7 @@ class IndexVideoResource extends JsonResource
         }
         return $temp;
     }
-
+    
     private function arrayUserToObjectUserEditor($array)
     {
         $temp = array();
@@ -127,18 +143,5 @@ class IndexVideoResource extends JsonResource
     {
         if (!empty($keywords))
             return explode(',', $keywords);
-    }
-
-    private function videoResponse($video)
-    {
-        $array = array();
-
-        foreach ($video as $item) {
-            array_push($array, [
-                'id' => $item->id,
-                'video' => htmlspecialchars($item->video),
-            ]);
-        }
-        return $array;
     }
 }

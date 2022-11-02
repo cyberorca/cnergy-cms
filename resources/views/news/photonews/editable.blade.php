@@ -64,7 +64,7 @@
                         @endif
 
                         <div class="form-group">
-                            <label for="title" class="mb-2">Title</label>
+                            <label for="title" class="mb-2">Titles</label>
                             <input type="text" class="form-control" id="title" name="title"
                                 placeholder="Enter Title " required
                                 @if ($method === 'edit') value="{{ $news->title }}" @endif />
