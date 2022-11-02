@@ -54,8 +54,4 @@ class PhotoController extends Controller
         return response()->json(new PhotoCollection($photo->paginate($limit)->withQueryString()));
     }
 
-    public function show($id){
-        $photo_news = News::with(['categories', 'tags','users', 'news_photo:id,photonews,news_id'])->where('id', $id)->get();
-        return response()->json(new IndexVideoResource($photo_news[0]));        
-    }
 }
