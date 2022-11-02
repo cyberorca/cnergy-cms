@@ -33,6 +33,9 @@
                     "200": {
                         "description": "success"
                     },
+                    "400": {
+                        "description": "bad request"
+                    },
                     "401": {
                         "description": "unauthorized",
                         "content": {
@@ -326,8 +329,8 @@
                 "tags": [
                     "Photonews"
                 ],
-                "summary": "Get Photo",
-                "operationId": "d55a7fc00343cf7d3289e465dc68eee3",
+                "summary": "Get Photonews",
+                "operationId": "d527e99cc7d8e9f226a6893956426ca6",
                 "parameters": [
                     {
                         "name": "limit",
