@@ -5,7 +5,7 @@
     <style>
         .image-preview {
             width: 100%;
-            height: 400px;
+            height: 100%;
             object-fit: cover;
         }
         .bootstrap-tagsinput {
@@ -30,11 +30,15 @@
     <section class="section">
         <form action="{{ route('image-bank.store') }}" method="post" enctype="multipart/form-data">
             <div class="d-flex justify-content-between gap-2">
-                <div class="card col-md-6">
-                    <div class="card-header"><span class="h5">Add Image</span></div>
+            <div class="card">
+            <div class="row">
+                <div class="col-md-12">
+                <div class="card-header"><span class="h5">Add Image</span></div>
+                </div>
+                <div class="col-md-6">
                     <div class="card-body d-flex flex-column gap-2">
                         @csrf
-                        <div class="col-md-12">
+                        <div class="col-md-12"> 
                             <div class="form-group">
                                 <label for="basicInput" class="mb-2">Image Title</label>
                                 <input type="text" class="form-control @error('title') is-invalid @enderror"
@@ -49,7 +53,7 @@
                             <div class="form-group">
                                 <label for="site_logo" class="mb-2">Image File</label>
                                 <div class="flex flex-column">
-                                    <img src="{{ asset('assets/images/site_logo.png') }}" class="mb-3 image-preview"
+                                    <img src="{{ asset('assets/images/preview-image.jpg') }}" class="mb-3 image-preview"
                                         alt="Your Image" id="image_preview">
                                     <input type="file" class="form-control" name="image_input" id="image_input"
                                         accept="image/*" />
@@ -77,8 +81,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card col-md-6">
-                    <div class="card-header"><span class="h5">Image</span></div>
+                <div class="col-md-6">
                     <div class="card-body d-flex flex-column gap-2">
                         <div class="form-group">
                             <label for="site_logo" class="mb-2">Photographer</label>
@@ -126,7 +129,7 @@
                         </div>
                         <div class="form-group">
                             <label for="site_logo" class="mb-2">Keywords</label>
-                            <input name="keywords" id="keywords" type="text" required
+                            <input name="keywords" id="keywords" type="text" required placeholder="Enter image keywords"
                                 class="w-100 form-control @error('keywords') is-invalid @enderror" data-role="tagsinput" />
                             @error('keywords')
                                 <div class="invalid-feedback">
@@ -143,6 +146,8 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            </div>
             </div>
         </form>
     </section>
