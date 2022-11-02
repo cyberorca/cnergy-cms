@@ -11,10 +11,12 @@ class PhotoNews extends Model
 
     protected $guarded = [];
 
+    protected $table = 'photo_news';
+
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'is_Active',
+        'is_active',
         'title',
         'url',
         'image',
@@ -23,7 +25,7 @@ class PhotoNews extends Model
         'copyright',
         'order_by_no',
         'created_by',
-        'update_by',
+        'news_id',
     ];
 
     

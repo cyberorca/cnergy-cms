@@ -54,9 +54,11 @@
             <div class="collapse show fade" id="dua">
                 <div class="form-group">
                     @if (isset($news))
-                        <x-image-uploader :item="$news" />
+                    <x-image-uploader :item="$news" :type="$type" />
                     @else
-                        <x-image-uploader />
+                    <x-image-uploader
+                            :type="$type"
+                        />
                     @endif
                 </div>
             </div>
