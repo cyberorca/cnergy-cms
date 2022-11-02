@@ -28,7 +28,7 @@ seed:
 	$(phpArtisanRun) db:seed
 
 fresh-seed:
-	$(phpArtisanRun) migrate:fresh -seed
+	$(phpArtisanRun) migrate:fresh --seed
 
 clean:
 	$(phpArtisanRun) route:clear
@@ -53,7 +53,7 @@ seed:
 	$(phpArtisanRun) db:seed
 
 fresh-seed:
-	$(phpArtisanRun) migrate:fresh -seed
+	$(phpArtisanRun) migrate:fresh --seed
 
 clean:
 	$(phpArtisanRun) route:clear
