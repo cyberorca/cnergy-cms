@@ -99,8 +99,9 @@ if (image_bank_type == 'photonews') {
         selectedPhotoNews.map((el, i) => {
             $("#other_page").append(cardPhotoNews(el, i))
             $(`#button-photonews-selected-${i}`).click(function(){
-                const url = $(this).attr("url-data")
+                const url = $(this).attr("url-data");
                 image_preview_result.src = url;
+                upload_image_selected.value = url;
             })
         })
     })
@@ -304,6 +305,7 @@ const cardPhotoNews = (image, index) => {
                         <input type="hidden"  id="title" name="title_photonews[]" value="${title}" />
                         <input type="hidden"  id="url" name="url_photonews[]" value="${path}/${slug}" />
                         <input type="hidden"  id="image" name="image_photonews[]" value="${slug}" />
+                        
                     </div>
                     <div class="form-group">
                         <label for="copyright" class="mb-2">Copyright</label>

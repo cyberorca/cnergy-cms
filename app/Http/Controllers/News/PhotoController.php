@@ -157,15 +157,7 @@ class PhotoController extends Controller
                 ];
                 
             }
-            /*if ($request->file('upload_image') && !$data['upload_image_selected']) {
-                $file = $request->file('upload_image');
-                $fileFormatPath = new FileFormatPath('photo/image', $file);
-                $data['image'] = $fileFormatPath->storeFile();
-            }
-
-            if ($data['upload_image_selected'] && !$request->file('upload_image')) {
-                $data['image'] = explode(Storage::url(""), $data['upload_image_selected']);
-            }*/
+            $data['image'] = explode(Storage::url(""), $data['upload_image_selected'])[1];
             $news = new News([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
