@@ -10,7 +10,6 @@ var search_image_bank_button = document.getElementById("search_image_bank_button
 let list = []
 var upload_image_selected = document.getElementById("upload_image_selected")
 var save_uploaded_image = document.getElementById("save_uploaded_image")
-let index_photonews = 1;
 
 save_uploaded_image.addEventListener('click', async function () {
     var form = document.querySelectorAll("#form-upload-image input, #form-upload-image textarea");
@@ -28,9 +27,9 @@ save_uploaded_image.addEventListener('click', async function () {
     fd.append('_token', token);
     const button = this;
     $(this).html(`
-           <span class="spinner-border spinner-border-sm" role="status"
-           aria-hidden="true"></span>
-       Loading...
+    <span class="spinner-border spinner-border-sm" role="status"
+    aria-hidden="true"></span>
+    Loading...
     `);
     $(this).attr("disabled", true)
     $.ajax({
@@ -94,16 +93,19 @@ upload_image_button.onchange = evt => {
 }
 
 let selectedPhotoNews = [];
+let index_photonews = 1;
 if (image_bank_type == 'photonews') {
     $("#save_photo_news").click(function () {
         selectedPhotoNews.map((el, i) => {
-            $("#other_page").append(cardPhotoNews(el, i))
-            $(`#button-photonews-selected-${i}`).click(function(){
+            $("#other_page").append(cardPhotoNews(el, index_photonews))
+            $(`#button-photonews-selected-${index_photonews}`).click(function(){
                 const url = $(this).attr("url-data")
                 image_preview_result.src = url;
                 upload_image_selected.value = url;
             })
+            index_photonews++;
         })
+        selectedPhotoNews = [];
     })
 }
 
@@ -270,7 +272,7 @@ const cardPhotoNews = (image, index) => {
     const { title, slug, caption, keywords, copyright, description } = image;
     return `<div class="card">
     <div class="card-header d-flex justify-content-between">
-        <a data-bs-toggle="collapse" class="d-flex justify-content-between w-100" href="#photonews-${index}" aria-expanded="false"
+        <a data-bs-toggle="collapse" class="d-flex justify-content-between w-100" href="#photonews-${+index}" aria-expanded="false"
             aria-controls="collapseExample">
             <span class="h4 text-capitalize m-0">Image</span>
             <i class="bi bi-chevron-up pull-right fs-6 me-3"></i>
@@ -278,7 +280,7 @@ const cardPhotoNews = (image, index) => {
         </a>
         <i class="bi bi-trash pull-right text-danger fw-bold" style="cursor: pointer"></i>
     </div>
-    <div class="collapse show fade" id="photonews-${index}">
+    <div class="collapse show fade" id="photonews-${+index}">
         <div class="card-body d-flex flex-column gap-2">
             <div class="row">
                 <div class="col-md-5 col-12">
@@ -286,11 +288,11 @@ const cardPhotoNews = (image, index) => {
                         <div class="image-file-preview mt-3">
                             <img src="${path}/${slug}" alt="" srcset=""
                                 id="image_preview_result">
-                            <input type="hidden" name="photonews[${index}][image]" value="${slug}" />
+                            <input type="hidden" name="photonews[${+index}][url]" value="${slug}" />
                         </div>
                         <div class="form-group">
                             <div class="d-flex justify-content-end gap-3 mt-3 flex-column">
-                                <span url-data="${path}/${slug}" id="button-photonews-selected-${index}" class="btn btn-light-secondary me-1 mb-1">Set as Main
+                                <span url-data="${path}/${slug}" id="button-photonews-selected-${+index}" class="btn btn-light-secondary me-1 mb-1">Set as Main
                                     Image</span>
                             </div>
                         </div>
@@ -299,17 +301,17 @@ const cardPhotoNews = (image, index) => {
                 <div class="col-md-7 col-12">
                     <div class="form-group">
                         <label for="caption" class="mb-2">Caption</label>
-                        <input type="text" class="form-control" id="caption" name="photonews[${index}][caption]"
+                        <input type="text" class="form-control" id="caption" name="photonews[${+index}][caption]"
                             placeholder="Enter Caption " required value="${caption}" />
                     </div>
                     <div class="form-group">
                         <label for="copyright" class="mb-2">Copyright</label>
-                        <input type="text" class="form-control" id="copyright" name="photonews[${index}][copyright]"
+                        <input type="text" class="form-control" id="copyright" name="photonews[${+index}][copyright]"
                             placeholder="Enter Copyright " required value="${copyright}"/>
                     </div>
                     <div class="form-group">
                         <label class="mb-2">Keyword</label><br>
-                        <input name="photonews[${index}][keywords]" id="image_keywords" type="text" required
+                        <input name="photonews[${+index}][keywords]" id="image_keywords" type="text" required
                             class="w-100 form-control" data-role="tagsinput" placeholder="Enter Keywords " value="${keywords}" />
                     </div>
                 </div>
@@ -317,7 +319,7 @@ const cardPhotoNews = (image, index) => {
 
             <div class="form-group">
                 <label for="image_description" class="form-label mb-2">Description</label>
-                <textarea name="photonews[${index}][description]" class="form-control" id="image_description" cols="30" rows="3" required
+                <textarea name="photonews[${+index}][description]" class="form-control" id="image_description" cols="30" rows="3" required
                     placeholder="Enter Description">${description}</textarea>
             </div>
         </div>

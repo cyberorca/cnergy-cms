@@ -141,31 +141,9 @@ class PhotoController extends Controller
         $date = $data['date'];
         $time = $data['time'];
         $mergeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
-        //return response()->json($request->all());
+        return $data;
         try {
-            //$i = 2;
-            for ($i = 0; $i < count($data['title_photonews']) - 1; $i++) {
-                $news_images[$i] = [
-                    'title' => $data['title_photonews'][$i + 1],
-                    'caption' => $data['caption_photonews'][$i + 1],
-                    'url' => $data['url_photonews'][$i + 1],
-                    //'image' => $data['url_photonews'][$i + 1],
-                    'copyright' => $data['copyright_photonews'][$i + 1],
-                    'description' => $data['description_photonews'][$i + 1],
-                    'keywords' => $data['keywords_photonews'][$i + 1],
-                    'order_by_no' => $i
-                ];
-                //$i++;
-            }
-            /*if ($request->file('upload_image') && !$data['upload_image_selected']) {
-                $file = $request->file('upload_image');
-                $fileFormatPath = new FileFormatPath('photo/image', $file);
-                $data['image'] = $fileFormatPath->storeFile();
-            }
 
-            if ($data['upload_image_selected'] && !$request->file('upload_image')) {
-                $data['image'] = explode(Storage::url(""), $data['upload_image_selected']);
-            }*/
             $news = new News([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
@@ -188,7 +166,7 @@ class PhotoController extends Controller
                 'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
                 'reporters' => $request->has('reporters') == false ? null : json_encode($data['reporters']),
                 'contributors' => $request->has('contributors') == false ? null : json_encode($data['contributors']),
-                'image' => $data['image'] ?? null,
+                'image' => $data['upload_image_selected'] ?? null,
                 'is_published' => $data['isPublished'],
                 'published_at' => $mergeDate,
                 'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
@@ -211,21 +189,22 @@ class PhotoController extends Controller
             foreach ($data['tags'] as $t) {
                 $news->tags()->attach($t);
             }
-
-            if (count($news_images)) {
-                foreach ($news_images as $photonews) {
+            $index = 1;
+            if (count($data['photonews'])) {
+                foreach ($data['photonews'] as $photonews) {
                     PhotoNews::create([
-                        'title' => $photonews['title'],
+                        'title' => $news->title,
                         'image' => $photonews['caption'],
                         'url' => $photonews['url'],
                         'copyright' => $photonews['copyright'],
                         'description' => $photonews['description'],
                         'keywords' => $photonews['keywords'],
-                        'order_by_no' => $photonews['order_by_no'],
+                        'order_by_no' => $index,
                         'news_id' => $news->id,
                         'created_by' => auth()->id(),
                         'is_active' => "1"
                     ]);
+                    $index++;
                 }
             }
 
@@ -255,7 +234,7 @@ class PhotoController extends Controller
     public function edit($id)
     {
         $method = explode('/', URL::current());
-        $news = News::where('id', $id)->with('users')->first();
+        $news = News::where('id', $id)->with(['users', 'news_photo'])->first();
         $categories = Category::all();
         $tags = Tag::all();
         $types = 'photonews';
