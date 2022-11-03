@@ -16,7 +16,7 @@
                         <div class="image-file-preview mt-3">
                             <img src="{{ Storage::url($item->url) }}" alt="" srcset=""
                                 id="image_preview_result">
-                            <input type="hidden" name="photonews[{{ $item->id }}][url]"
+                            <input type="hidden" name="photonews[old][{{ $item->id }}][url]"
                                 value="{{ $item->url }}" />
                         </div>
                         <div class="form-group">
@@ -32,17 +32,17 @@
                 <div class="col-md-7 col-12">
                     <div class="form-group">
                         <label for="caption" class="mb-2">Caption</label>
-                        <input type="text" class="form-control" id="caption" name="photonews[{{ $item->id }}][caption]"
+                        <input type="text" class="form-control" id="caption" name="photonews[old][{{ $item->id }}][caption]"
                             placeholder="Enter Caption " required value="{{ $item->image }}" />
                     </div>
                     <div class="form-group">
                         <label for="copyright" class="mb-2">Copyright</label>
-                        <input type="text" class="form-control" id="copyright" name="photonews[{{ $item->id }}][copyright]"
+                        <input type="text" class="form-control" id="copyright" name="photonews[old][{{ $item->id }}][copyright]"
                             placeholder="Enter Copyright " required value="{{ $item->copyright }}" />
                     </div>
                     <div class="form-group">
                         <label class="mb-2">Keyword</label><br>
-                        <input name="photonews[{{ $item->id }}][keywords]" id="image_keywords" type="text" required
+                        <input name="photonews[old][{{ $item->id }}][keywords]" id="image_keywords" type="text" required
                             class="w-100 form-control" data-role="tagsinput" placeholder="Enter Keywords "
                             value="{{ $item->keywords }}" />
                     </div>
@@ -51,7 +51,7 @@
 
             <div class="form-group">
                 <label for="image_description" class="form-label mb-2">Description</label>
-                <textarea name="photonews[{{ $item->id }}][description]" class="form-control" id="image_description" cols="30" rows="3" required
+                <textarea name="photonews[old][{{ $item->id }}][description]" class="form-control" id="image_description" cols="30" rows="3" required
                     placeholder="Enter Description">{{ $item->description }}</textarea>
             </div>
         </div>

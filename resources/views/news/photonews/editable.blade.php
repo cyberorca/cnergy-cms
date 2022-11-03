@@ -95,7 +95,8 @@
                     @if ($method === 'edit')
                         @foreach ($news->news_photo as $item)
                             @include('components.page-image', [
-                                'item' => $item
+                                'item' => $item,
+                                'news_id' => $news->id,
                             ])    
                         @endforeach
                     @endif

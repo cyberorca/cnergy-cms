@@ -258,6 +258,7 @@ class PhotoController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->input();
+        return $data;
         $newsById = News::find($id);
         $date = $data['date'];
         $time = $data['time'];
@@ -288,7 +289,7 @@ class PhotoController extends Controller
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
-                'image' => $data['image'] ?? null,
+                'image' => explode(Storage::url(""), $data['upload_image_selected'])[1] ?? $newsById->image,
                 'description' => $data['description'],
                 'types' => 'photonews',
                 'keywords' => $data['keywords'],
