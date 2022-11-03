@@ -137,13 +137,10 @@ class PhotoController extends Controller
     public function store(Request $request)
     {
         $data = $request->input();
-        $news_images = array();
         $date = $data['date'];
         $time = $data['time'];
         $mergeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
-        return $data;
         try {
-
             $news = new News([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
