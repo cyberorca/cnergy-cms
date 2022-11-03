@@ -93,19 +93,10 @@
                             @endif
                             <textarea name="video" id="video" class="form-control" cols="30" rows="3" required>
 @if ($method === 'edit')
-{{ $news->video }}
+{{ $news->news_videos[0]['video'] }}
 @endif
 </textarea>
                         </div>
-                        {{-- @foreach ($video as $videos)
-                                        <div class="media">
-                                            <div class="media-body">
-                                                <iframe width="560" height="315" src={{ $video->link + "&output=embed" }} frameborder="0" allowfullscreen>
-                                                </iframe>
-                                            </div>
-                                        </div>
-                                        @endforeach --}}
-
                         {{-- <div class="d-flex justify-content-end gap-3 mt-3">
                             <a href="{{ route('video.index') }}" class="btn btn-light" data-bs-toggle="tooltip"
                                 data-bs-placement="top" title="Back to Table Rome">Back</a>
