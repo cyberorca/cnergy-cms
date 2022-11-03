@@ -163,7 +163,7 @@ class PhotoController extends Controller
                 'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
                 'reporters' => $request->has('reporters') == false ? null : json_encode($data['reporters']),
                 'contributors' => $request->has('contributors') == false ? null : json_encode($data['contributors']),
-                'image' => $data['upload_image_selected'] ?? null,
+                'image' => explode(Storage::url(""), $data['upload_image_selected'])[1] ?? null,
                 'is_published' => $data['isPublished'],
                 'published_at' => $mergeDate,
                 'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
