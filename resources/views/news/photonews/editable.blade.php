@@ -92,8 +92,14 @@
                     </div>
                 </div>
                 <div id="other_page" class=" d-flex flex-column">
+                    @if ($method === 'edit')
+                        @foreach ($news->news_photo as $item)
+                            @include('components.page-image', [
+                                'item' => $item
+                            ])    
+                        @endforeach
+                    @endif
                     {{-- <div> --}}
-                        {{-- @include('components.page-image')     --}}
                     {{-- </div> --}}
                 </div>
                 <span class="w-100 btn btn-success d-flex justify-content-center align-items-center" data-bs-toggle="modal"
