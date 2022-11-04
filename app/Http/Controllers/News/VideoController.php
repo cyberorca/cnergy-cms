@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\News;
 
+use App\Models\Menu;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Log;
@@ -77,12 +78,18 @@ class VideoController extends Controller
 
         // return response()->json($news);
         $method = explode('/', URL::current());
+        $videoRole= Menu::where('menu_name','=','Video')->with(['childMenusRoles','roles_user'])->first();
+        $newsRole=[];
+        foreach ($videoRole->childMenusRoles as $r){
+            array_push($newsRole,$r->menu_name);
+        }
         return view('news.index', [
             'type' => end($method),
             'news' => $news->paginate(10)->withQueryString(),
             'editors' => $editors->get(),
             'reporters' => $reporters->get(),
-            'photographers' => $photographers->get()    
+            'photographers' => $photographers->get(),
+            'newsRole'=>$newsRole
             // 'categories' => Category::whereNull("parent_id"),
         ]);
     }
@@ -124,7 +131,7 @@ class VideoController extends Controller
         $time = $data['time'];
         $mergeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
         // return response()->json($request->all());
-        try {    
+        try {
             if ($request->file('upload_image') && !$data['upload_image_selected']) {
                 $file = $request->file('upload_image');
                 $fileFormatPath = new FileFormatPath('video/image', $file);
@@ -164,7 +171,7 @@ class VideoController extends Controller
                 'category_id' => $data['category'],
                 // 'video' => $data['video']
             ]);
-            
+
             // return $news;
 
             if ($news->save()) {
@@ -246,7 +253,7 @@ class VideoController extends Controller
         $time = $data['time'];
         $margeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
         try {
-            
+
             $input = [
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
@@ -276,17 +283,17 @@ class VideoController extends Controller
                 'category_id' => $data['category'],
                 // 'video' => $data['video'] ?? null
             ];
-            
+
             if ($request->file('upload_image') && !$data['upload_image_selected']) {
                 $file = $request->file('upload_image');
                 $fileFormatPath = new FileFormatPath('video/image', $file);
                 $input['image'] = $fileFormatPath->storeFile();
             }
-            
+
             if ($data['upload_image_selected'] && !$request->file('upload_image')) {
                 $input['image'] = explode(Storage::url(""), $data['upload_image_selected'])[1];
             }
-            
+
             $newsById->update($input);
             VideoNews::find($data['video_id'])->update([
                 'video' => $data['video'],

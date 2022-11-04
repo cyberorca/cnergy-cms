@@ -2528,13 +2528,79 @@ textarea.form-control-lg {
     margin-left: 0;
     margin-right: -1.7em;
 }
+/*custom form check input*/
+.form-check .form-check-input-custom {
+    float: left;
+    margin-left: 0.7em;
+}
+.form-check-input-custom {
+    color-adjust: exact;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    background-position: 100%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: 3px solid #e1e3ea;
+    height: 1.2em;
+    margin-top: 0.15em;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    transition: background-color 0.15s ease-in-out,
+    background-position 0.15s ease-in-out, border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+    vertical-align: top;
+    width: 1.2em;
+}
+
+.form-check-input-custom[type="checkbox"] {
+    border-radius: 0.3em;
+}
+.form-check-input-custom[type="radio"] {
+    border-radius: 50%;
+}
+.form-check-input-custom:active {
+    filter: brightness(90%);
+}
+.form-check-input-custom:focus {
+    border-color: #a1afdf;
+    box-shadow: 0 0 0 0.25rem rgba(67, 94, 190, 0.25);
+    outline: 0;
+}
+.form-check-input-custom:checked {
+    background-color: #435ebe;
+    border-color: #435ebe;
+}
+.form-check-input-custom:checked[type="checkbox"] {
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3E%3C/svg%3E");
+}
+.form-check-input-custom:checked[type="radio"] {
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='2' fill='%23fff'/%3E%3C/svg%3E");
+}
+.form-check-input-custom[type="checkbox"]:indeterminate {
+    background-color: #435ebe;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10h8'/%3E%3C/svg%3E");
+    border-color: #435ebe;
+}
+.form-check-input-custom:disabled {
+    filter: none;
+    opacity: 0.5;
+    pointer-events: none;
+}
+.form-check-input-custom:disabled ~ .form-check-label,
+.form-check-input-custom[disabled] ~ .form-check-label {
+    cursor: default;
+    opacity: 0.5;
+}
+/*end custon form chenk input*/
 .form-check-input {
     color-adjust: exact;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     background-color: #fff;
-    background-position: 50%;
+    background-position: 100%;
     background-repeat: no-repeat;
     background-size: contain;
     border: 3px solid #e1e3ea;
@@ -4636,6 +4702,100 @@ fieldset:disabled .btn {
     --bs-accordion-active-color: #3c55ab;
     --bs-accordion-active-bg: #eceff9;
 }
+/*accordian button custom empty*/
+.accordion-button-custom-empty {
+    align-items: center;
+    /*background-color: var(--bs-accordion-btn-bg);*/
+    border: 0;
+    border-radius: 0;
+    color: var(--bs-accordion-btn-color);
+    display: flex;
+    font-size: 1rem;
+    overflow-anchor: none;
+    padding: var(--bs-accordion-btn-padding-y) var(--bs-accordion-btn-padding-x);
+    position: relative;
+    text-align: left;
+    transition: var(--bs-accordion-transition);
+    width: 100%;
+}
+.accordion-button-custom-empty:not(.collapsed) {
+    /*background-color: var(--bs-accordion-active-bg);*/
+    /*box-shadow: inset 0 calc(var(--bs-accordion-border-width) * -1) 0*/
+    /*var(--bs-accordion-border-color);*/
+    /*color: var(--bs-accordion-active-color);*/
+}
+.accordion-button-custom-empty:not(.collapsed):after {
+    /*background-image: var(--bs-accordion-btn-active-icon);*/
+    transform: var(--bs-accordion-btn-icon-transform);
+}
+.accordion-button-custom-empty:after {
+    /*background-image: var(--bs-accordion-btn-icon);*/
+    background-repeat: no-repeat;
+    background-size: var(--bs-accordion-btn-icon-width);
+    content: "";
+    flex-shrink: 0;
+    height: var(--bs-accordion-btn-icon-width);
+    margin-left: auto;
+    transition: var(--bs-accordion-btn-icon-transition);
+    width: var(--bs-accordion-btn-icon-width);
+}
+.accordion-button-custom-empty:hover {
+    z-index: 2;
+}
+.accordion-button-custom-empty:focus {
+    /*border-color: var(--bs-accordion-btn-focus-border-color);*/
+    /*box-shadow: var(--bs-accordion-btn-focus-box-shadow);*/
+    outline: 0;
+    z-index: 3;
+}
+/*end accordian button custom empty*/
+/*accordian button custom*/
+.accordion-button-custom {
+    align-items: center;
+    /*background-color: var(--bs-accordion-btn-bg);*/
+    border: 0;
+    border-radius: 0;
+    color: var(--bs-accordion-btn-color);
+    display: flex;
+    font-size: 1rem;
+    overflow-anchor: none;
+    padding: var(--bs-accordion-btn-padding-y) var(--bs-accordion-btn-padding-x);
+    position: relative;
+    text-align: left;
+    transition: var(--bs-accordion-transition);
+    width: 100%;
+}
+.accordion-button-custom:not(.collapsed) {
+    /*background-color: var(--bs-accordion-active-bg);*/
+    /*box-shadow: inset 0 calc(var(--bs-accordion-border-width) * -1) 0*/
+    /*var(--bs-accordion-border-color);*/
+    /*color: var(--bs-accordion-active-color);*/
+}
+.accordion-button-custom:not(.collapsed):after {
+    background-image: var(--bs-accordion-btn-active-icon);
+    transform: var(--bs-accordion-btn-icon-transform);
+}
+.accordion-button-custom:after {
+    background-image: var(--bs-accordion-btn-icon);
+    background-repeat: no-repeat;
+    background-size: var(--bs-accordion-btn-icon-width);
+    content: "";
+    flex-shrink: 0;
+    height: var(--bs-accordion-btn-icon-width);
+    margin-left: auto;
+    transition: var(--bs-accordion-btn-icon-transition);
+    width: var(--bs-accordion-btn-icon-width);
+}
+.accordion-button-custom:hover {
+    z-index: 2;
+}
+.accordion-button-custom:focus {
+    /*border-color: var(--bs-accordion-btn-focus-border-color);*/
+    /*box-shadow: var(--bs-accordion-btn-focus-box-shadow);*/
+    outline: 0;
+    z-index: 3;
+}
+/*end accordian button custom*/
 .accordion-button {
     align-items: center;
     background-color: var(--bs-accordion-btn-bg);

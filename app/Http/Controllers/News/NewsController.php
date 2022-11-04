@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\News;
 
 use App\Http\Controllers\Controller;
+use App\Models\Menu;
 use Carbon\Carbon;
 use App\Models\Log;
 use App\Models\News;
@@ -95,13 +96,21 @@ class NewsController extends Controller
         // }
 
         // return response()->json($news);
+
         $method = explode('/', URL::current());
+        $newsRoleAccess= Menu::where('menu_name','=','News')->with(['childMenusRoles','roles_user'])->get();
+        $newsRole=[];
+        foreach ($newsRoleAccess[1]->childMenusRoles as $r){
+            array_push($newsRole,$r->menu_name);
+        }
+
         return view('news.index', [
             'type' => end($method),
             'news' => $news->orderBy("created_at", "DESC")->paginate(10)->withQueryString(),
             'editors' => $editors->get(),
             'reporters' => $reporters->get(),
-            'photographers' => $photographers->get()
+            'photographers' => $photographers->get(),
+            'newsRole'=>$newsRole
             // 'categories' => Category::whereNull("parent_id"),
         ]);
     }
