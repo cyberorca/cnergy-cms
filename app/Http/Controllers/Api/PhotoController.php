@@ -42,13 +42,65 @@ class PhotoController extends Controller
     {
         $photo = News::with(['categories', 'tags', 'users', 'news_photo'])
             ->where('is_published', '=', '1')
-            ->where('types', '=', 'photonews')
+            // ->where('types', '=', 'photonews')
             ->where('published_at', '<=', now())
             ->latest('published_at');
 
-        $limit = $request->get('limit', 10);
-        if ($limit > 10) {
-            $limit = 10;
+        $limit = $request->get('limit', 20);
+        if ($limit > 20) {
+            $limit = 20;
+        }
+
+        if ($request->get("max_id")) {
+            $photo->where('id', '<', $request->get('max_id', ''));
+        }
+
+        if ($request->get('last_update')) {
+            $last_update = Carbon::parse(($request->get('last_update')))
+                ->toDateTimeString();
+            $photo->where('updated_at', '>=', $last_update);
+        }
+
+        if ($request->get("category")) {
+            $photo->where('category_id', '=', $request->get('category', ''));
+        }
+
+        if ($request->get("headline")) {
+            $photo->where('is_headline', '=', $request->get('headline', ''));
+        }
+
+        if ($request->get("editorpick")) {
+            $photo->where('editor_pick', '=', $request->get('editorpick', ''));
+        }
+
+        $published = $request->get('published', 1);
+        if ($published == 0) {
+            $photo->where('is_published', '=', "0");
+        }
+
+        $alltype = $request->get('alltype', 0);
+        if ($alltype == 0) {
+            $photo->where('types', '=', 'photonews');
+        }
+
+        $order = $request->get('orderby');
+        if($order){
+            $data = explode("-" , $order);
+            if ($data[0] == 'news_date_publish') {
+                $photo->OrderBy('published_at', $data[1]);
+            }
+            if ($data[0] == 'news_entry') {
+                $photo->OrderBy('created_at', $data[1]);
+            }
+            if ($data[0] == 'news_last_update') {
+                $photo->OrderBy('updated_at', $data[1]);
+            }
+        }else{
+            $photo->latest('published_at');
+        }
+
+        if ($request->get("sensitive")) {
+            $photo->where('is_verify_age', '=', $request->get('sensitive', ''));
         }
 
         return response()->json(new PhotoCollection($photo->paginate($limit)->withQueryString()));
