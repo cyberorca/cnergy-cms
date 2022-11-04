@@ -42,7 +42,6 @@ class PhotoController extends Controller
     {
         $photo = News::with(['categories', 'tags', 'users', 'news_photo'])
             ->where('is_published', '=', '1')
-            // ->where('types', '=', 'photonews')
             ->where('published_at', '<=', now())
             ->latest('published_at');
 
