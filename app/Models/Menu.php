@@ -25,6 +25,11 @@ class Menu extends Model
         return $this->hasMany(Menu::class, 'parent_id')->with('childMenus');
     }
 
+    public function childMenusRoles()
+    {
+        return $this->hasMany(Menu::class, 'parent_id')->whereHas('roles_user')->with(['childMenus','roles_user']);
+    }
+
     public function parent()
     {
         return $this->belongsTo(Menu::class, 'parent_id');
@@ -103,7 +108,6 @@ class Menu extends Model
                 $references[$node['parent_id']]['children'][$node['id']]['parents'] = $data;
             }
         }
-
         return $tree;
     }
 
