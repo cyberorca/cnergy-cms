@@ -12,9 +12,11 @@ class ImageUploader extends Component
      * @return void
      */
     public $item;
-    public function __construct($item = null)
+    public $type;
+    public function __construct($item = null, $type = null)
     {
         $this->item = $item;
+        $this->type = $type;
     }
 
     /**
