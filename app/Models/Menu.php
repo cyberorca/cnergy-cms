@@ -27,7 +27,7 @@ class Menu extends Model
 
     public function childMenusRoles()
     {
-        return $this->hasMany(Menu::class, 'parent_id')->whereHas('roles_user')->with(['childMenus','roles_user']);
+        return $this->hasMany(Menu::class, 'parent_id')->whereHas('roles_user')->with(['childMenus', 'roles_user']);
     }
 
     public function parent()
@@ -39,6 +39,7 @@ class Menu extends Model
     {
         return $this->slug;
     }
+
     public function menu_name()
     {
         return $this->menu_name;
@@ -61,13 +62,18 @@ class Menu extends Model
 
     public function roles_user()
     {
-        return $this->belongsToMany(Role::class, 'roles_menus')->where('role_id', Auth::user()->role_id);
+        return $this->belongsToMany(Role::class, 'roles_menus')
+            ->where('role_id', Auth::user()->role_id);
     }
 
     public static function getAll()
     {
         // return self::with('roles_user')->get()->toArray();
-        $menu_role_user = self::with('roles_user')->get()->toArray();
+        $menu_role_user = self::with('roles_user')
+            ->where('menu_name','!=','Create')
+            ->where('menu_name','!=','Edit')
+            ->where('menu_name', '!=', 'Delete')
+            ->get()->toArray();
         // $menu_role_user = self::all()->with->toArray();
         return self::convertMenuDataToResponseAPI($menu_role_user);
     }
@@ -87,7 +93,6 @@ class Menu extends Model
         } else {
             array_push($res, $current_parent['id']);
         }
-
         return $res;
     }
 
