@@ -177,8 +177,4 @@ class IndexNewsResource extends JsonResource
         if (!empty($keywords))
             return explode(',', $keywords);
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> 7923604eec282dbf7dd251cfa885129183603246
 }

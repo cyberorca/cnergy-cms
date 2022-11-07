@@ -25,6 +25,8 @@ class PhotoNews extends Model
         'copyright',
         'order_by_no',
         'created_by',
+        'updated_by',
+        'deleted_by',
         'news_id',
     ];
 
