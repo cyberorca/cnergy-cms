@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\News;
 
 use App\Http\Controllers\Controller;
+use App\Models\Menu;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\URL;
@@ -27,7 +29,7 @@ class PhotoController extends Controller
      */
     public function index(Request $request)
     {
-        $news = News::with(['categories', 'tags'])->where('types','=','photonews')->latest();
+        $news = News::with(['categories', 'tags'])->where('types', '=', 'photonews')->latest();
         $editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
         $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Reporter");
         $photographers = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Photographer");
@@ -93,15 +95,24 @@ class PhotoController extends Controller
         // }
 
         // return response()->json($news);
+
         $method = explode('/', URL::current());
+        $photoRole = Menu::where('menu_name', '=', 'Photo')->with(['childMenusRoles', 'roles_user'])->first();
+        $newsRole = [];
+        foreach ($photoRole->childMenusRoles as $r) {
+            array_push($newsRole, $r->menu_name);
+        }
+
         return view('news.index', [
             'type' => end($method),
             'news' => $news->orderBy("id", "DESC")->paginate(10)->withQueryString(),
             'editors' => $editors->get(),
             'reporters' => $reporters->get(),
-            'photographers' => $photographers->get()
+            'photographers' => $photographers->get(),
+            'newsRole' => $newsRole
             // 'categories' => Category::whereNull("parent_id"),
         ]);
+
     }
 
     /**
@@ -131,7 +142,7 @@ class PhotoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -214,7 +225,7 @@ class PhotoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -225,7 +236,7 @@ class PhotoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -251,8 +262,8 @@ class PhotoController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -328,7 +339,7 @@ class PhotoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

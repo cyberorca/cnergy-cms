@@ -81,7 +81,7 @@ class IndexPhotoResource extends JsonResource
             // 'news_paging_order' => null,
             // 'news_quote' => '',
             // 'news_video' => $this->videoResponse($this->video),
-            'news_tag' => IndexTagResource::collection($this->tags),
+            'news_tag' => IndexPhotoTagResource::collection($this->tags),
             'news_keywords' => self::keywordResponse($this->keywords),
             'news_related' => [],
             'news_dfp' => [],
