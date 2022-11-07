@@ -276,6 +276,7 @@ class PhotoController extends Controller
                         'order_by_no' => $i,
                         'is_active' => $data['photonews']['old'][$key]['is_active'],
                         'created_by' => $data['photonews']['old'][$key]['created_by'],
+                        'updated_by' => auth()->id(),
                         'news_id' => $id,
                         'id' => $key
                     ];
@@ -298,6 +299,7 @@ class PhotoController extends Controller
                     'keywords' => $data['photonews'][$key]['keywords'],
                     'order_by_no' => $i,
                     'created_by' => auth()->id(),
+                    'updated_by' => null,
                     'is_active' => "1",
                     'news_id' => $id,
                     'id' => null
@@ -332,7 +334,7 @@ class PhotoController extends Controller
                 'description' => $data['description'],
                 'types' => 'photonews',
                 'keywords' => $data['keywords'],
-               // 'image' => explode(Storage::url(""), $data['upload_image_selected'])[1] ?? null,
+                'image' => explode(Storage::url(""), $data['upload_image_selected'])[1] ?? null,
                 'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
                 'reporters' => $request->has('reporters') == false ? null : json_encode($data['reporters']),
                 'contributors' => $request->has('contributors') == false ? null : json_encode($data['contributors']),
@@ -350,7 +352,7 @@ class PhotoController extends Controller
                 $newsById->tags()->attach($t);
             }
 
-            PhotoNews::upsert($news_images_old, ['id'], ['title','is_active', 'url', 'image', 'description', 'keywords', 'copyright', 'order_by_no', 'created_by', 'news_id']);
+            PhotoNews::upsert($news_images_old, ['id'], ['title','is_active', 'url', 'image', 'description', 'keywords', 'copyright', 'order_by_no', 'created_by', 'news_id', 'updated_by']);
 
             $log = new Log(
                 [

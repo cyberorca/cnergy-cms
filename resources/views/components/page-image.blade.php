@@ -15,7 +15,7 @@
                     <div class="form-group">
                         <div class="image-file-preview mt-3">
                             <img src="{{ Storage::url($item->url) }}" alt="" srcset=""
-                                id="image_preview_result">
+                            >
                             <input type="hidden" name="photonews[old][{{ $item->id }}][url]"
                                 value="{{ $item->url }}" />
                         </div>
@@ -23,7 +23,7 @@
                             <div class="d-flex justify-content-end gap-3 mt-3 flex-column">
                                 <span url-data="{{ Storage::url($item->url) }}"
                                     id="#button-photonews-selected-{{ $item->id }}"
-                                    class="btn btn-light-secondary me-1 mb-1">Set as Main
+                                    class="btn btn-light-secondary me-1 mb-1 button-old-photo-news">Set as Main
                                     Image</span>
                                     
                             </div>
@@ -39,6 +39,10 @@
                             placeholder="Enter Caption " required value="{{ $item->is_active }}" />
                             <input type="hidden" class="form-control" id="caption" name="photonews[old][{{ $item->id }}][created_by]"
                             placeholder="Enter Caption " required value="{{ $item->created_by }}" />
+                            <input type="hidden" class="form-control" id="caption" name="photonews[old][{{ $item->id }}][created_by]"
+                            placeholder="Enter Caption " required value="{{ $item->created_by }}" />
+                            <input type="hidden" class="form-control" id="caption" name="photonews[old][{{ $item->id }}][updated_by]"
+                            placeholder="Enter Caption " required value="{{ $item->updated_by }}" />
                     </div>
                     <div class="form-group">
                         <label for="copyright" class="mb-2">Copyright</label>
