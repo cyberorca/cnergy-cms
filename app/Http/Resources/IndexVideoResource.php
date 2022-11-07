@@ -5,7 +5,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class IndexNewsResource extends JsonResource
+class IndexVideoResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
