@@ -17,7 +17,7 @@
                             <img src="{{ Storage::url($item->url) }}" alt="" srcset=""
                                 id="image_preview_result">
                             <input type="hidden" name="photonews[old][{{ $item->id }}][url]"
-                                value="{{ $item->url }}" />
+                                value="{{ Storage::url($item->url) }}" />
                         </div>
                         <div class="form-group">
                             <div class="d-flex justify-content-end gap-3 mt-3 flex-column">

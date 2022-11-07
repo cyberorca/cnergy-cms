@@ -9,6 +9,7 @@ use App\Models\News;
 use App\Models\PhotoNews;
 use Illuminate\Database\Seeder;
 use App\Models\Tag;
+use App\Models\VideoNews;
 
 class DatabaseSeeder extends Seeder
 {
@@ -29,6 +30,8 @@ class DatabaseSeeder extends Seeder
         Category::factory(100)->create();
         News::factory(100)->create();
         PhotoNews::factory(100)->create();
+        VideoNews::factory(100)->create();
+
         // $news = News::all();
         // foreach($news as $item){
         //    $news_tag = News::create([

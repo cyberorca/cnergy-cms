@@ -12,10 +12,10 @@ use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\News\PhotoController;
 use App\Http\Controllers\News\VideoController;
+use App\Http\Controllers\Tools\InventoryManagementController;
 use App\Http\Controllers\Tools\NewsDraftController;
 use App\Http\Controllers\Tools\StaticPageController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 use UniSharp\LaravelFilemanager\Lfm;
 
 /*
@@ -94,6 +94,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('image-bank', ImageBankController::class);
         Route::resource('static-page', StaticPageController::class);
         Route::resource('news-draft', NewsDraftController::class);
+        Route::resource('inventory-management', InventoryManagementController::class);
     });
 
     // Documentation
