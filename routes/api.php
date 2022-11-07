@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\TagsController;
 use App\Http\Controllers\Api\VideoController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\PhotoController;
+use App\Http\Controllers\Api\InventoryManagementController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +47,8 @@ Route::middleware(['verifyTokenApi'])->group(function(){
     Route::resource('news', NewsController::class);
 
     Route::resource('photonews', PhotoController::class);
+    
+    Route::resource('inventory', InventoryManagementController::class);
 });
 
 
