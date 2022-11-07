@@ -5,13 +5,13 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\FrontEndMenuController;
 use App\Http\Controllers\Admin\FrontEndSettingsController;
-use App\Http\Controllers\Admin\ImageBankController;
 use App\Http\Controllers\Admin\TagsController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\News\PhotoController;
 use App\Http\Controllers\News\VideoController;
+use App\Http\Controllers\Tools\ImageBankController;
 use App\Http\Controllers\Tools\InventoryManagementController;
 use App\Http\Controllers\Tools\NewsDraftController;
 use App\Http\Controllers\Tools\StaticPageController;
@@ -34,36 +34,9 @@ Route::group(['middleware' => 'auth'], function () {
         Lfm::routes();
     });
     Route::get('/', function () {
-        // $data = Menu::whereNull('parent_id')->with("childMenus")->get();
-        // return Storage::path('/public/news/2022/10/04/03494-11419049-2.png');
         return view('welcome');
     });
 
-    // Route::get("/front-end-menu/create/{id?}", [FrontEndMenuController::class, 'create'])->name('front-end-menu.create');
-    // Route::resource('front-end-menu', FrontEndMenuController::class)->except(['create']);
-
-    // Route::post("/generate/token", [FrontEndSettingsController::class, 'generateToken'])->name('generate.token');
-    // Route::resource('/front-end-setting', FrontEndSettingsController::class);
-    // Route::get("/menu/create/{id?}", [MenuController::class, 'create'])->name('menu.create');
-
-    // Route::resource('menu', MenuController::class)->only([
-    //     'index', 'show', 'store', 'update', 'destroy', 'edit'
-    // ]);
-
-    // Route::get("/category/create/{id?}", [CategoriesController::class, 'create'])->name('category.create');
-    // Route::resource('category', CategoriesController::class)->only([
-    //     'index', 'show', 'store', 'update', 'destroy', 'edit'
-    // ]);
-
-    // Route::resource('role', RoleController::class);
-
-    // Route::resource('tag-management', TagsController::class);
-
-    // Route::resource('user-setting', UsersController::class);
-
-    // Route::resource('image-bank', ImageBankController::class);
-
-    // Route::resource('news', NewsController::class);
     // Dashboard
     Route::prefix('dashboard')->group(function () {
     });
@@ -128,7 +101,6 @@ Route::get('/auth/callback', [LoginController::class, 'handleProviderCallback'])
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-//Route::get('/news2', [NewsController::class, 'select'])->name('news2');
 Route::get('selTag', [NewsController::class, 'select'])->name('tag.index');
 
 Route::get('/email/verify/{token}', [LoginController::class, 'verify'])->name('email.verify');
