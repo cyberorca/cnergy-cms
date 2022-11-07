@@ -22,9 +22,10 @@
                         <div class="form-group">
                             <div class="d-flex justify-content-end gap-3 mt-3 flex-column">
                                 <span url-data="{{ Storage::url($item->url) }}"
-                                    id="button-photonews-selected-{{ $item->id }}"
+                                    id="#button-photonews-selected-{{ $item->id }}"
                                     class="btn btn-light-secondary me-1 mb-1">Set as Main
                                     Image</span>
+                                    
                             </div>
                         </div>
                     </div>
@@ -34,6 +35,10 @@
                         <label for="caption" class="mb-2">Caption</label>
                         <input type="text" class="form-control" id="caption" name="photonews[old][{{ $item->id }}][caption]"
                             placeholder="Enter Caption " required value="{{ $item->image }}" />
+                            <input type="hidden" class="form-control" id="caption" name="photonews[old][{{ $item->id }}][is_active]"
+                            placeholder="Enter Caption " required value="{{ $item->is_active }}" />
+                            <input type="hidden" class="form-control" id="caption" name="photonews[old][{{ $item->id }}][created_by]"
+                            placeholder="Enter Caption " required value="{{ $item->created_by }}" />
                     </div>
                     <div class="form-group">
                         <label for="copyright" class="mb-2">Copyright</label>

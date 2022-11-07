@@ -275,6 +275,7 @@ class NewsController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->input();
+        //return $data;
         $news_paginations_old = array();
         // $news_paginations_new = array();
 

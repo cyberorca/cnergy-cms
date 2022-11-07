@@ -258,21 +258,61 @@ class PhotoController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->input();
-        return $data;
+        //return $data['photonews']['old'];
+
+        $news_images_old = array();
+
+        $i=0;
+        if (count($data['photonews']['old']) >= 1) {
+
+                foreach ($data['photonews']['old'] as $key => $value) {
+                    $news_images_old[$i] = [
+                        'title' => $data['title'],
+                        'image' => $data['photonews']['old'][$key]['caption'],
+                        'url' => $data['photonews']['old'][$key]['url'],
+                        'copyright' => $data['photonews']['old'][$key]['copyright'],
+                        'description' => $data['photonews']['old'][$key]['description'],
+                        'keywords' => $data['photonews']['old'][$key]['keywords'],
+                        'order_by_no' => $i,
+                        'is_active' => $data['photonews']['old'][$key]['is_active'],
+                        'created_by' => $data['photonews']['old'][$key]['created_by'],
+                        'news_id' => $id,
+                        'id' => $key
+                    ];
+                    $i++;
+                }
+           // }
+        }
+
+        if (count($data['photonews']) >= 1) {
+            foreach ($data['photonews'] as $key => $value) {
+                if ($key === "old") {
+                    continue;
+                }
+                $news_images_old[$i] = [
+                    'title' => $data['title'],
+                    'image' => $data['photonews'][$key]['caption'],
+                    'url' => $data['photonews'][$key]['url'],
+                    'copyright' => $data['photonews'][$key]['copyright'],
+                    'description' => $data['photonews'][$key]['description'],
+                    'keywords' => $data['photonews'][$key]['keywords'],
+                    'order_by_no' => $i,
+                    'created_by' => auth()->id(),
+                    'is_active' => "1",
+                    'news_id' => $id,
+                    'id' => null
+                ];
+                $i++;
+            }
+        }
+        //return $news_images_old;
+       
         $newsById = News::find($id);
         $date = $data['date'];
         $time = $data['time'];
         $margeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
         try {
-            if ($request->file('upload_image') && !$data['upload_image_selected']) {
-                $file = $request->file('upload_image');
-                $fileFormatPath = new FileFormatPath('photonews/image', $file);
-                $input['image'] = $fileFormatPath->storeFile();
-            }
 
-            if ($data['upload_image_selected'] && !$request->file('upload_image')) {
-                $input['image'] = explode(Storage::url(""), $data['upload_image_selected'])[1];
-            }
             $input = [
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
@@ -289,10 +329,10 @@ class PhotoController extends Controller
                 'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
-                'image' => explode(Storage::url(""), $data['upload_image_selected'])[1] ?? $newsById->image,
                 'description' => $data['description'],
                 'types' => 'photonews',
                 'keywords' => $data['keywords'],
+               // 'image' => explode(Storage::url(""), $data['upload_image_selected'])[1] ?? null,
                 'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
                 'reporters' => $request->has('reporters') == false ? null : json_encode($data['reporters']),
                 'contributors' => $request->has('contributors') == false ? null : json_encode($data['contributors']),
@@ -300,7 +340,8 @@ class PhotoController extends Controller
                 'published_at' => $margeDate,
                 'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
                 'updated_by' => auth()->id(),
-                'category_id' => $data['category']
+                'category_id' => $data['category'],
+                // 'video' => $data['video'] ?? null
             ];
 
             $newsById->update($input);
@@ -309,20 +350,23 @@ class PhotoController extends Controller
                 $newsById->tags()->attach($t);
             }
 
+            PhotoNews::upsert($news_images_old, ['id'], ['title','is_active', 'url', 'image', 'description', 'keywords', 'copyright', 'order_by_no', 'created_by', 'news_id']);
+
             $log = new Log(
                 [
                     'news_id' => $id,
-                    'updated_at' => now(),
+                    'updated_at'=>now(),
                     'updated_by' => \auth()->id(),
                     'updated_content' => json_encode($newsById->getChanges())
                 ]
             );
             $log->save();
 
-            return \redirect()->route('photo.index')->with('status', 'Successfully Update PhotoNews');
+            return \redirect()->route('photo.index')->with('status', 'Successfully PhotoUpdate News');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
+        
     }
 
     /**
