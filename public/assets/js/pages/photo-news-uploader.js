@@ -92,6 +92,18 @@ upload_image_button.onchange = evt => {
     }
 }
 
+if($(`.button-old-photo-news`).length > 0){
+   var buttonsOldPhotoNews = document.querySelectorAll('.button-old-photo-news');
+    buttonsOldPhotoNews.forEach((el, i) => {
+        el.addEventListener('click', function(){
+            const url = $(el).attr("url-data")
+            image_preview_result.src = url;
+            upload_image_selected.value = url;
+        })
+    })
+}
+
+
 let selectedPhotoNews = [];
 let index_photonews = 1;
 if (image_bank_type == 'photonews') {
