@@ -6,7 +6,7 @@
 
 @section('body')
 
-    <x-page-heading title="Table News" subtitle="View and Manage News Data" />
+    <x-page-heading title="Table News" subtitle="View and Manage News Data"/>
     <div class="card ">
         <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">News Search</span>
         </div>
@@ -45,7 +45,8 @@
 
                 <div class="d-flex justify-content-end gap-3 mt-3">
                     <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
-                            title="Category Search"><i class="bi bi-search"></i>&nbsp;&nbsp;&nbsp;Search</button>
+                            title="Category Search"><i class="bi bi-search"></i>&nbsp;&nbsp;&nbsp;Search
+                    </button>
                     <a href="" class="btn btn-light" data-bs-toggle="tooltip"
                        data-bs-placement="top" title="Show All Category Data"><i
                             class="bi bi-card-list"></i>&nbsp;&nbsp;&nbsp;Show All</a>
@@ -58,8 +59,8 @@
         <!-- Basic Tables start -->
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between"><span class="h4">Page List</span>
-{{--                <a href="" class="btn btn-primary"><i class="bi bi-plus-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Tag"></i>&nbsp;&nbsp;&nbsp;Add--}}
-{{--                    Page</a>--}}
+                {{--                <a href="" class="btn btn-primary"><i class="bi bi-plus-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Tag"></i>&nbsp;&nbsp;&nbsp;Add--}}
+                {{--                    Page</a>--}}
             </div>
             <div class="card-body">
                 <table class="table" id="table1">
@@ -67,7 +68,7 @@
                     <tr>
                         <th>No</th>
                         <th>Title</th>
-                        <th>Reporter</th>
+                        <th style="width: 20%">Reporter</th>
                         <th>Last Modified</th>
                         <th>Type</th>
                         <th style="width:20%">Action</th>
@@ -78,13 +79,19 @@
                         <tr>
                             <td>{{ $news->firstItem() + $loop->index }}</td>
                             <td>{{ $n->title}}</td>
-                            <td></td>
+                            <td>
+                                @foreach($reporters as $user)
+                                @if(in_array($user->uuid,json_decode($n->reporters)))
+                                    <span class="badge badge-pill bg-light-secondary me-1">{{$user->name}}</span>
+                                @endif
+                                @endforeach
+                            </td>
                             <td>@if(is_null($n->updated_at))
                                     {{$n->created_at}}
                                 @else
                                     {{$n->updated_at}}
                                 @endif
-                                </td>
+                            </td>
                             <td>{{$n->types}}</td>
                             <td>
                                 <a href="{{route($n->types .'.edit', $n->id)}}" class="btn icon btn-warning"
