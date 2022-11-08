@@ -22,7 +22,7 @@ class ImageBankController extends Controller
     public function index()
     {
         $image_bank = ImageBank::all();
-        return view("admin.image-bank.index", compact("image_bank"));
+        return view("tools.image-bank.index", compact("image_bank"));
     }
 
     /**
@@ -32,7 +32,7 @@ class ImageBankController extends Controller
      */
     public function create()
     {
-        return view("admin.image-bank.create");
+        return view("tools.image-bank.create");
     }
 
     /**
