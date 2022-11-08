@@ -110,16 +110,34 @@ if (image_bank_type == 'photonews') {
     $("#save_photo_news").click(function () {
         selectedPhotoNews.map((el, i) => {
             $("#other_page").append(cardPhotoNews(el, index_photonews))
+            $(`.bi-trash`).click(function(){
+                document.querySelector(`#imagephotonews-${index_photonews-1}`).remove();
+            })
             $(`#button-photonews-selected-${index_photonews}`).click(function(){
                 const url = $(this).attr("url-data")
                 image_preview_result.src = url;
                 upload_image_selected.value = url;
             })
+            
             index_photonews++;
         })
         selectedPhotoNews = [];
     })
 }
+
+function deleteImage(){
+    var buttonsOldPhotoNews2 = document.querySelectorAll('.bi-trash');
+         buttonsOldPhotoNews2.forEach((el, i) => {
+             el.addEventListener('click', function(){
+                 const id = $(el).attr("id")
+                 document.querySelector(`#imagephotonews-${id}`).remove();
+             })
+         })
+}
+
+$(`.bi-trash`).click(function(){
+    deleteImage();
+})
 
 function selectImage() {
     if (image_bank_type == 'photonews') {
@@ -282,7 +300,7 @@ function tinyMCEConfig(index_pages) {
 
 const cardPhotoNews = (image, index) => {
     const { title, slug, caption, keywords, copyright, description } = image;
-    return `<div class="card">
+    return `<div class="card" id="imagephotonews-${+index}">
     <div class="card-header d-flex justify-content-between">
         <a data-bs-toggle="collapse" class="d-flex justify-content-between w-100" href="#photonews-${+index}" aria-expanded="false"
             aria-controls="collapseExample">
@@ -290,7 +308,7 @@ const cardPhotoNews = (image, index) => {
             <i class="bi bi-chevron-up pull-right fs-6 me-3"></i>
             <i class="bi bi-chevron-down pull-right fs-6 me-3"></i>
         </a>
-        <i class="bi bi-trash pull-right text-danger fw-bold" style="cursor: pointer"></i>
+        <i class="bi bi-trash pull-right text-danger fw-bold"></i> 
     </div>
     <div class="collapse show fade" id="photonews-${+index}">
         <div class="card-body d-flex flex-column gap-2">
