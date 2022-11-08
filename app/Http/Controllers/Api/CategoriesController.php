@@ -58,17 +58,5 @@ class CategoriesController extends Controller
         $nested = intval($request->get("nested"));
 
         return response()->json($nested!==1 ? $category->paginate($limit)->withQueryString()->toArray() : Category::convertCategoryDataToResponseAPI($category->paginate($limit)->withQueryString()->toArray()));
-
-        $nested = $request->get("nested");
-        if($nested == 0){
-            $category->where('parent_id', '=', $request->get('child.parent.child.parent'))->paginate($limit)->withQueryString();
-        } else {
-            $category->paginate($limit)->withQueryString();
-        }
-        // ->toArray();
-
-        // return response()->json(($category->get()));
-        // return response()->json(Category::convertCategoryDataToResponse($category->paginate($limit)->withQueryString()->toArray()));
-        return response()->json(Category::convertCategoryDataToResponse($category->get()->toArray()));
     }
 }
