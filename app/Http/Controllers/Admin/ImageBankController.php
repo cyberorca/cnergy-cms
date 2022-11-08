@@ -94,7 +94,7 @@ class ImageBankController extends Controller
                 ]
             ], 200);
         } catch (\Throwable $e) {
-            return response()->json($e->getMessage());
+            return response()->json($e->getMessage(), 500);
         }
     }
 
