@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" id="imagephotonews-{{ $item->id }}">
     <div class="card-header d-flex justify-content-between">
         <a data-bs-toggle="collapse" class="d-flex justify-content-between w-100" href="#photonews-{{ $item->id }}"
             aria-expanded="false" aria-controls="collapseExample">
@@ -6,7 +6,7 @@
             <i class="bi bi-chevron-up pull-right fs-6 me-3"></i>
             <i class="bi bi-chevron-down pull-right fs-6 me-3"></i>
         </a>
-        <i class="bi bi-trash pull-right text-danger fw-bold"></i>
+        <i class="bi bi-trash pull-right text-danger fw-bold" id="{{ $item->id }}"></i> 
     </div>
     <div class="collapse show fade photonews" id="photonews-{{ $item->id }}">
         <div class="card-body d-flex flex-column gap-2">
@@ -17,7 +17,7 @@
                             <img src="{{ Storage::url($item->url) }}" alt="" srcset=""
                             >
                             <input type="hidden" name="photonews[old][{{ $item->id }}][url]"
-                                value="{{ $item->url }}" />
+                                value="{{ $item->url }}"/>
                         </div>
                         <div class="form-group">
                             <div class="d-flex justify-content-end gap-3 mt-3 flex-column">
@@ -37,8 +37,6 @@
                             placeholder="Enter Caption " required value="{{ $item->image }}" />
                             <input type="hidden" class="form-control" id="caption" name="photonews[old][{{ $item->id }}][is_active]"
                             placeholder="Enter Caption " required value="{{ $item->is_active }}" />
-                            <input type="hidden" class="form-control" id="caption" name="photonews[old][{{ $item->id }}][created_by]"
-                            placeholder="Enter Caption " required value="{{ $item->created_by }}" />
                             <input type="hidden" class="form-control" id="caption" name="photonews[old][{{ $item->id }}][created_by]"
                             placeholder="Enter Caption " required value="{{ $item->created_by }}" />
                             <input type="hidden" class="form-control" id="caption" name="photonews[old][{{ $item->id }}][updated_by]"

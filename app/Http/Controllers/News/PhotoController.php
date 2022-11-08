@@ -211,6 +211,18 @@ class PhotoController extends Controller
         }
     }
 
+    function deleteNewsImages($data)
+    {
+        for($i=0;$i<count($data);$i++){
+                PhotoNews::where('id', $data[$i])->update([
+                    'deleted_by' => Auth::user()->uuid,
+                    'is_active' => '0',
+                ]);
+                PhotoNews::destroy($data[$i]);
+        }
+        
+    }
+
     /**
      * Display the specified resource.
      *
@@ -259,7 +271,14 @@ class PhotoController extends Controller
     {
         $data = $request->input();
         //return $data['photonews']['old'];
+        $news = News::where('id', $id)->with(['users', 'news_photo'])->first();
+        $i=0;
+        foreach ($news->news_photo as $item){
+            $old[$i] = $item->id;
+            $i++;
+        }
 
+        //return $id_image[];
         $news_images_old = array();
 
         $i=0;
@@ -280,10 +299,14 @@ class PhotoController extends Controller
                         'news_id' => $id,
                         'id' => $key
                     ];
+
+                    $new[$i] = $key;
                     $i++;
                 }
            // }
         }
+
+       // return $old;
 
         if (count($data['photonews']) >= 1) {
             foreach ($data['photonews'] as $key => $value) {
@@ -307,7 +330,22 @@ class PhotoController extends Controller
                 $i++;
             }
         }
-        //return $news_images_old;
+
+        if(count($new) !== count($old)){
+            $diff=array_diff($old, $new);
+
+            $i=0;
+            if(count($diff)>0){
+                foreach ($diff as $value){
+                    if($value !== null){
+                        $x[$i] = $value;
+                        $i++;
+                    }
+                }
+            }
+            $this->deleteNewsImages($x);
+        }
+        //return $diff;
        
         $newsById = News::find($id);
         $date = $data['date'];
@@ -381,4 +419,5 @@ class PhotoController extends Controller
     {
         //
     }
+    
 }

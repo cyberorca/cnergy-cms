@@ -92,12 +92,15 @@
                     </div>
                 </div>
                 <div id="other_page" class=" d-flex flex-column">
+                
                     @if ($method === 'edit')
+                    @php $no = 1; @endphp
                         @foreach ($news->news_photo as $item)
                             @include('components.page-image', [
                                 'item' => $item,
                                 'news_id' => $news->id,
-                            ])    
+                            ])  
+                            @php $no++; @endphp
                         @endforeach
                     @endif
                     {{-- <div> --}}
