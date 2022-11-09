@@ -31,7 +31,6 @@
 <x-page-heading title="Image Bank" subtitle="Manage Image" />
 <section class="section">
     <form action="{{ route('image-bank.store') }}" method="post" enctype="multipart/form-data">
-        <div class="d-flex justify-content-between gap-2">
             <div class="card">
                 <div class="row">
                     <div class="col-md-12">
@@ -153,7 +152,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     </form>
 </section>
 @endsection
