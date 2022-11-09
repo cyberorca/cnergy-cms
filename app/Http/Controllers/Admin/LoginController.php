@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Utils\SendEmailToNewUsers;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\Request;
 
@@ -27,13 +28,14 @@ class LoginController extends Controller
     public function handleProviderCallback()
     {
         try {
-            $user_google_email = Socialite::driver('google')->user()->getEmail();
+            $user_google_email = Socialite::driver('google')->user();
             $user = User::where([
-                'email'=> $user_google_email,
+                'email'=> $user_google_email->getEmail(),
                 'is_active'=>'1'
                 ])->first();
             if ($user != null){
-                \auth()->loginUsingId($user['uuid'],true);
+                \auth()->loginUsingId($user['uuid'],false);
+                Session::put('avatar',$user_google_email->getAvatar());
                 return redirect()->intended('/');
 //            dd(\auth()->user()->roles['role']);
             }else{
