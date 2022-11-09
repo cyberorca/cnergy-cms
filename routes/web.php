@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\FrontEndMenuController;
@@ -39,8 +40,10 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     // Dashboard
-    Route::prefix('dashboard')->group(function () {
-    });
+    Route::resource('dashboard', DashboardController::class);
+    //Route::prefix('dashboard')->group(function () {
+    //    Route::resource('dashboard', DashboardController::class);
+    //});
 
     // Master
     Route::prefix('master')->group(function () {
