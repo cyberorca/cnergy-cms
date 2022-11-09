@@ -10,9 +10,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class InventoryManagementController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $inventoryManagement = InventoryManagement::latest();
+
+        $type = $request->get('type');
+        if($type){
+            $inventoryManagement->where('type', '=', $type);
+        }
 
         return response()->json(new InventoryCollection($inventoryManagement->get()));
         
