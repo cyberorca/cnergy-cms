@@ -34,7 +34,7 @@ class LoginController extends Controller
                 'is_active'=>'1'
                 ])->first();
             if ($user != null){
-                \auth()->loginUsingId($user['uuid'],false);
+                \auth()->loginUsingId($user['uuid'],true);
                 Session::put('avatar',$user_google_email->getAvatar());
                 return redirect()->intended('/');
 //            dd(\auth()->user()->roles['role']);
