@@ -8,7 +8,6 @@ use Carbon\Carbon;
 use App\Models\Log;
 use App\Models\News;
 use App\Models\Tag;
-use App\Models\Role;
 use App\Models\User;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -16,13 +15,14 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\NewsRequest;
+use App\Http\Services\NewsServices;
 use App\Http\Utils\FileFormatPath;
 use App\Models\NewsPagination;
 use Illuminate\Support\Facades\Storage;
 
-class NewsController extends Controller
+class NewsController extends Controller implements NewsServices
 {
+    
     /**
      * Display a listing of the resource.
      *
@@ -30,7 +30,7 @@ class NewsController extends Controller
      */
     public function index(Request $request)
     {
-        $news = News::with(['categories', 'tags'])->where('types','=','news')->latest();
+        $news = News::with(['categories', 'tags'])->where('types', '=', 'news')->latest();
         $editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
         $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Reporter");
         $photographers = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Photographer");
@@ -98,10 +98,10 @@ class NewsController extends Controller
         // return response()->json($news);
 
         $method = explode('/', URL::current());
-        $newsRoleAccess= Menu::where('menu_name','=','News')->with(['childMenusRoles','roles_user'])->get();
-        $newsRole=[];
-        foreach ($newsRoleAccess[1]->childMenusRoles as $r){
-            array_push($newsRole,$r->menu_name);
+        $newsRoleAccess = Menu::where('menu_name', '=', 'News')->with(['childMenusRoles', 'roles_user'])->get();
+        $newsRole = [];
+        foreach ($newsRoleAccess[1]->childMenusRoles as $r) {
+            array_push($newsRole, $r->menu_name);
         }
 
         return view('news.index', [
@@ -110,7 +110,7 @@ class NewsController extends Controller
             'editors' => $editors->get(),
             'reporters' => $reporters->get(),
             'photographers' => $photographers->get(),
-            'newsRole'=>$newsRole
+            'newsRole' => $newsRole
             // 'categories' => Category::whereNull("parent_id"),
         ]);
     }
@@ -211,7 +211,7 @@ class NewsController extends Controller
                 $log = new Log(
                     [
                         'news_id' => $news->id,
-                        'updated_at'=>now(),
+                        'updated_at' => now(),
                         'updated_by' => \auth()->id(),
                         'updated_content' => json_encode($news->getOriginal())
                     ]
@@ -379,7 +379,7 @@ class NewsController extends Controller
             $log = new Log(
                 [
                     'news_id' => $id,
-                    'updated_at'=>now(),
+                    'updated_at' => now(),
                     'updated_by' => \auth()->id(),
                     'updated_content' => json_encode($newsById->getChanges())
                 ]
@@ -409,7 +409,7 @@ class NewsController extends Controller
                     [
                         'news_id' => $id,
                         'updated_by' => \auth()->id(),
-                        'updated_at'=>now(),
+                        'updated_at' => now(),
                         'updated_content' => json_encode('DELETED')
                     ]
                 );

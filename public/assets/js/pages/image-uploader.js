@@ -72,7 +72,7 @@ save_uploaded_image.addEventListener('click', async function () {
             })
             image_preview_modal.src = `${path.split('/storage').slice(0, -1)}/assets/images/preview-image.jpg`
             new Toastify({
-                text: JSON.stringify(err),
+                text: err.statusText,
                 duration: 3000,
                 close: true,
                 gravity: "bottom",

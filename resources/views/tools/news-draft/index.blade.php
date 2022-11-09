@@ -80,11 +80,14 @@
                             <td>{{ $news->firstItem() + $loop->index }}</td>
                             <td>{{ $n->title}}</td>
                             <td>
-                                @foreach($reporters as $user)
-                                @if(in_array($user->uuid,json_decode($n->reporters)))
-                                    <span class="badge badge-pill bg-light-secondary me-1">{{$user->name}}</span>
+                                @if(json_decode($n->reporters)!=null)
+                                    @foreach($reporters as $user)
+                                        @if(in_array($user->uuid,json_decode($n->reporters)))
+                                            <span
+                                                class="badge badge-pill bg-light-secondary me-1">{{$user->name}}</span>
+                                        @endif
+                                    @endforeach
                                 @endif
-                                @endforeach
                             </td>
                             <td>@if(is_null($n->updated_at))
                                     {{$n->created_at}}
