@@ -73,7 +73,7 @@
                                                 @else
                                                     <input type="hidden"
                                                         name="{{ $type }}[{{ $index_arr }}][id]"
-                                                        value="{{ $inventory_management[$type][$index_arr]['id'] }}">
+                                                        value="{{ $inventory_management[$type][$index_arr]['id'] ?? null }}">
                                                     <input type="hidden"
                                                         name="{{ $type }}[{{ $index_arr }}][{{ $keys_name }}]"
                                                         value="{{ $input_value }}">
