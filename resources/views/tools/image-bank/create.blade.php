@@ -1,7 +1,8 @@
 @extends('layout.app')
 
 @section('css')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css"
+    rel="stylesheet" />
 <style>
     .image-preview {
         width: 100%;
@@ -30,19 +31,15 @@
 <x-page-heading title="Image Bank" subtitle="Manage Image" />
 <section class="section">
     <form action="{{ route('image-bank.store') }}" method="post" enctype="multipart/form-data">
-        <div class="d-flex justify-content-between gap-2">
             <div class="card">
                 <div class="row">
-
                     <div class="col-md-12">
                         <div class="card-header"><span class="h5">Add Image</span></div>
                     </div>
-
                     <div class="col-md-6">
                         <div class="card-body d-flex flex-column gap-2">
                             @csrf
                             <div class="col-md-12">
-
                                 <div class="form-group">
                                     <label for="basicInput" class="mb-2">Image Title</label>
                                     <input type="text" class="form-control @error('title') is-invalid @enderror"
@@ -54,7 +51,6 @@
                                     </div>
                                     @enderror
                                 </div>
-
                                 <div class="form-group">
                                     <label for="site_logo" class="mb-2">Image File</label>
                                     <div class="flex flex-column">
@@ -70,7 +66,6 @@
                                         @enderror
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <label for="site_logo" class="mb-2">Image Alt</label>
                                     <div class="flex flex-column">
@@ -84,14 +79,11 @@
                                         @enderror
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
-
                     <div class="col-md-6">
                         <div class="card-body d-flex flex-column gap-2">
-
                             <div class="form-group">
                                 <label for="site_logo" class="mb-2">Photographer</label>
                                 <div class="flex flex-column">
@@ -105,7 +97,6 @@
                                     @enderror
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <label for="site_logo" class="mb-2">Copyright</label>
                                 <div class="flex flex-column">
@@ -125,7 +116,6 @@
                                     @enderror
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <label for="site_logo" class="mb-2">Caption</label>
                                 <div class="flex flex-column">
@@ -139,7 +129,6 @@
                                     @enderror
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <label for="site_logo" class="mb-2">Keywords</label>
                                 <input name="keywords" id="keywords" type="text" required
@@ -153,20 +142,16 @@
                                 </div>
                                 @enderror
                             </div>
-
                             <div class="d-flex justify-content-end gap-3 mt-3">
                                 <a href="{{ route('image-bank.index') }}" class="btn btn-light" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Back to Table Menu">Back</a>
                                 <button class="btn btn-primary" type="submit" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Create Menu">Save</button>
                             </div>
-
                         </div>
                     </div>
-
                 </div>
             </div>
-        </div>
     </form>
 </section>
 @endsection
@@ -180,13 +165,10 @@
             .on('change', function (event) {
                 var $element = $(event.target);
                 var $container = $element.closest('.example');
-
                 if (!$element.data('tagsinput')) return;
-
                 var val = $element.val();
                 if (val === null) val = 'null';
                 var items = $element.tagsinput('items');
-
                 $('code', $('pre.val', $container)).html(
                     $.isArray(val) ?
                     JSON.stringify(val) :
@@ -198,17 +180,17 @@
             })
             .trigger('change');
     });
-</script>
 
+</script>
 <script>
     var image_preview = document.getElementById("image_preview")
     var image_input = document.getElementById("image_input")
-
     image_input.onchange = evt => {
         const [file] = image_input.files
         if (file) {
             image_preview.src = URL.createObjectURL(file)
         }
     }
+
 </script>
 @endsection

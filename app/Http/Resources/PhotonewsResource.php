@@ -23,6 +23,7 @@ class PhotonewsResource extends JsonResource
             ],
             'description' => $this->description,
             'keywords' => $this->keywords,
+            'photographer' => null,
             'copyright' => $this->copyright,
             'photo_id' => '',
             'cdn_image' => [

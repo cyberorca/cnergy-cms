@@ -38,7 +38,6 @@ class News extends Model
         'reporters',
         'contributors',
         'image',
-        'video',
         'synopsis',
         'description',
         'content',
@@ -63,6 +62,10 @@ class News extends Model
 
     public function news_paginations(){
         return $this->hasMany(NewsPagination::class, 'news_id')->orderBy("order_by_no", "ASC");
+    }
+
+    public function news_images(){
+        return $this->hasMany(PhotoNews::class, 'news_id')->orderBy("order_by_no", "ASC");
     }
 
     public function news_videos(){

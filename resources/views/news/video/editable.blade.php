@@ -108,8 +108,11 @@
                     </div>
                 </div>
             </div>
-            @include('components.other-settings-news')
-            </div>
+            @include('components.other-settings-news', 
+            [
+                'type' => 'video'
+            ])
+        </div>
 
             </div>
         </section>

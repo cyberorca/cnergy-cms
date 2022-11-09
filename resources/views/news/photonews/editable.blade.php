@@ -1,4 +1,5 @@
 @extends('layout.app')
+
 @section('css')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
@@ -37,16 +38,7 @@
         a[aria-expanded=false] .bi-chevron-up {
             display: none;
         }
-
-        .collapse-news:hover {
-            background: rgba(0, 0, 0, 0.11) !important;
-        }
-
-        #image_preview_modal {
-            width: 100%;
-            object-fit: cover;
-            max-width: 450px;
-        }
+        
     </style>
 @endsection
 
@@ -54,37 +46,31 @@
 @endpush
 
 @section('body')
-    {{-- <x-page-heading title="Edit News" subtitle="Manage News Data" /> --}}
-
     @if ($method === 'edit')
-        <form action="{{ route('news.update', $news->id) }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('photo.update', $news->id) }}" method="post" enctype="multipart/form-data">
         @else
-            <form action="{{ route('news.store') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('photo.store') }}" method="post" enctype="multipart/form-data">
     @endif
     <section id="basic-vertical-layouts">
-        @if ($method === 'edit')
-            @method('PUT')
-        @endif
         @csrf
-        @if ($method === 'edit')
-            <input type="hidden" value="{{ $news->id }}" id="id_news">
-            <input type="hidden" value="{{ json_encode($news->news_paginations) }}" id="news_paginations">
-        @endif
         <div class="d-flex justify-content-between gap-2">
-            <div class="col-8">
-                <div class="card" id="card_content">
-                    <div class="card-header"><span class="h4 text-capitalize card-header-text">{{ $method }}
-                            News</span>
+            <div class="col-8 ">
+                <div class="card">
+                    <div class="card-header"><span class="h4 text-capitalize">{{ $method }} News</span>
                     </div>
                     <div class="card-body d-flex flex-column gap-2">
+                        @if ($method === 'edit')
+                            @method('PUT')
+                        @endif
+
                         <div class="form-group">
-                            <label for="title" class="mb-2">Title</label>
-                            <input type="text" class="form-control" id="title" name="title[]"
+                            <label for="title" class="mb-2">Titles</label>
+                            <input type="text" class="form-control" id="title" name="title"
                                 placeholder="Enter Title " required
                                 @if ($method === 'edit') value="{{ $news->title }}" @endif />
                         </div>
-
                         <div class="form-group">
+
                             <label for="synopsis" class="form-label mb-2">Synopsis</label>
                             <textarea name="synopsis" class="form-control" id="synopsis" cols="30" rows="3" required
                                 placeholder="Enter Synopsis">
@@ -93,52 +79,50 @@
 @endif
 </textarea>
                         </div>
-
-                        <div class="form-group" id="content_box">
+                        <div class="form-group">
                             <label for="content" class="form-label">Content</label>
-                            <textarea name="content[]" class="my-editor form-control" id="content" cols="30" rows="10" required>
-                                    @if ($method === 'edit')
+                            <textarea name="content" class="my-editor form-control" id="content" cols="30" rows="10" required>
+                                                @if ($method === 'edit')
 {{ $news->content }}
 @endif
-                            </textarea>
+                                             </textarea>
                         </div>
+                        
+
                     </div>
                 </div>
-                <div id="other_page" class=" d-flex flex-column"></div>
-
-                <span class="btn btn-outline-secondary my-3 w-100" id="add_page_button"><i
-                        class="bi bi-plus-circle"></i>&nbsp;
-                    Add New Page</span>
-
+                <div id="other_page" class=" d-flex flex-column">
+                
+                    @if ($method === 'edit')
+                    @php $no = 1; @endphp
+                        @foreach ($news->news_photo as $item)
+                            @include('components.page-image', [
+                                'item' => $item,
+                                'news_id' => $news->id,
+                            ])  
+                            @php $no++; @endphp
+                        @endforeach
+                    @endif
+                    {{-- <div> --}}
+                    {{-- </div> --}}
+                </div>
+                <span class="w-100 btn btn-success d-flex justify-content-center align-items-center" data-bs-toggle="modal"
+                    data-bs-target="#image-bank" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Image"><i
+                        class="bi bi-upload mb-2"></i>&nbsp;&nbsp;
+                    Add Image</span>
             </div>
             @include('components.other-settings-news', [
-                'type' => 'news',
+                'type' => 'photonews',
             ])
         </div>
 
         </div>
     </section>
     </form>
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="liveToast" class="toast fade hide" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header bg-success">
-                <strong class="me-auto text-white">Message</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                Hello, world! This is a toast message.
-            </div>
-        </div>
-    </div>
 @endsection
 
 
 @section('javascript')
-    <script src="{{ asset('assets/extensions/toastify-js/src/toastify.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
-    {{-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> --}}
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
@@ -170,6 +154,7 @@
 
     <script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/4/tinymce.min.js"
         referrerpolicy="origin"></script>
+    <script src="{{ asset('assets/js/pages/photo-news-uploader.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
@@ -214,10 +199,23 @@
     </script>
 
     <script src="{{ asset('assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/form-element-select.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 
     <script>
+        let choices = document.querySelectorAll('.choices');
+        let initChoice;
+        for (let i = 0; i < choices.length; i++) {
+            if (choices[i].classList.contains("multiple-remove")) {
+                initChoice = new Choices(choices[i], {
+                    delimiter: ',',
+                    editItems: true,
+                    maxItemCount: -1,
+                    removeItemButton: true,
+                });
+            } else {
+                initChoice = new Choices(choices[i]);
+            }
+        }
         $(function() {
             $('input')
                 .on('change', function(event) {
@@ -242,12 +240,4 @@
                 .trigger('change');
         });
     </script>
-    {{-- 
-    <script src="/path/to/cdn/jquery.slim.min.js"></script>
-    <script src="/path/to/js/jquery.dateandtime.js"></script>
-    <script>
-        $(function() {
-            $('.example').dateAndTime();
-        });
-    </script> --}}
 @endsection

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Tools;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ImageBankRequest;
@@ -22,7 +22,7 @@ class ImageBankController extends Controller
     public function index()
     {
         $image_bank = ImageBank::all();
-        return view("admin.image-bank.index", compact("image_bank"));
+        return view("tools.image-bank.index", compact("image_bank"));
     }
 
     /**
@@ -32,7 +32,7 @@ class ImageBankController extends Controller
      */
     public function create()
     {
-        return view("admin.image-bank.create");
+        return view("tools.image-bank.create");
     }
 
     /**
@@ -52,6 +52,7 @@ class ImageBankController extends Controller
                 "caption" => $input["caption"],
                 "keywords" => $input["keywords"],
                 "image_alt" => $input["image_alt"],
+                "description" => $input["description"],
                 "created_by" => Auth::user()->uuid
             ];
             if ($request->hasFile('image_input')) {
@@ -76,6 +77,7 @@ class ImageBankController extends Controller
                 "copyright" => $input["copyright"],
                 "caption" => $input["caption"],
                 "keywords" => $input["keywords"],
+                "description" => $input["description_image"],
                 "image_alt" => $input["image_alt"],
                 "created_by" => Auth::user()->uuid
             ];
@@ -92,7 +94,7 @@ class ImageBankController extends Controller
                 ]
             ], 200);
         } catch (\Throwable $e) {
-            return response()->json($e->getMessage());
+            return response()->json($e->getMessage(), 500);
         }
     }
 

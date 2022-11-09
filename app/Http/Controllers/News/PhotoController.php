@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\News;
 
 use App\Http\Controllers\Controller;
+use App\Http\Services\NewsServices;
 use App\Models\Menu;
 use App\Models\Role;
 use Illuminate\Http\Request;
@@ -10,8 +11,17 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\URL;
 use App\Models\News;
 use App\Models\User;
+use App\Models\Log;
+use App\Models\Tag;
+use App\Models\Category;
+use App\Models\PhotoNews;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Utils\FileFormatPath;
+use Illuminate\Support\Facades\Storage;
 
-class PhotoController extends Controller
+class PhotoController extends Controller implements NewsServices
 {
     /**
      * Display a listing of the resource.
@@ -113,7 +123,21 @@ class PhotoController extends Controller
      */
     public function create()
     {
-        //
+        $method = explode('/', URL::current());
+        $users = User::all();
+        $categories = Category::all();
+        $tags = Tag::all();
+        $types = 'photonews';
+        $date = date('Y-m-d');
+        $time = time();
+        return view('news.photonews.editable', [
+            'method' => end($method),
+            'categories' => $categories,
+            'types' => $types,
+            'users' => $users,
+            'tags' => $tags,
+            'contributors' => []
+        ]);
     }
 
     /**
@@ -124,7 +148,91 @@ class PhotoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->input();
+        $date = $data['date'];
+        $time = $data['time'];
+        $mergeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
+        try {
+            $news = new News([
+                'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
+                'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
+                'is_category_headline' => $request->has('isCategoryHeadline') == false ? '0' : '1',
+                'editor_pick' => $request->has('editorPick') == false ? '0' : '1',
+                'is_curated' => $request->has('isCurated') == false ? '0' : '1',
+                'is_adult_content' => $request->has('isAdultContent') == false ? '0' : '1',
+                'is_verify_age' => $request->has('isVerifyAge') == false ? '0' : '1',
+                'is_advertorial' => $request->has('isAdvertorial') == false ? '0' : '1',
+                'is_seo' => $request->has('isSeo') == false ? '0' : '1',
+                'is_disable_interactions' => $request->has('isDisableInteractions') == false ? '0' : '1',
+                'is_branded_content' => $request->has('isBrandedContent') == false ? '0' : '1',
+                'title' => $data['title'],
+                'slug' => Str::slug($data['title']),
+                'content' => $data['content'],
+                'synopsis' => $data['synopsis'],
+                'description' => $data['description'],
+                'types' => 'photonews',
+                'keywords' => $data['keywords'],
+                'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
+                'reporters' => $request->has('reporters') == false ? null : json_encode($data['reporters']),
+                'contributors' => $request->has('contributors') == false ? null : json_encode($data['contributors']),
+                'image' => explode(Storage::url(""), $data['upload_image_selected'])[1] ?? null,
+                'is_published' => $data['isPublished'],
+                'published_at' => $mergeDate,
+                'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
+                'created_by' => auth()->id(),
+                'category_id' => $data['category']
+            ]);
+
+
+            if ($news->save()) {
+                $log = new Log(
+                    [
+                        'news_id' => $news->id,
+                        'updated_at' => now(),
+                        'updated_by' => \auth()->id(),
+                        'updated_content' => json_encode($news->getOriginal())
+                    ]
+                );
+                $log->save();
+            }
+            foreach ($data['tags'] as $t) {
+                $news->tags()->attach($t);
+            }
+            $index = 1;
+            if (count($data['photonews'])) {
+                foreach ($data['photonews'] as $photonews) {
+                    PhotoNews::create([
+                        'title' => $news->title,
+                        'image' => $photonews['caption'],
+                        'url' => $photonews['url'],
+                        'copyright' => $photonews['copyright'],
+                        'description' => $photonews['description'],
+                        'keywords' => $photonews['keywords'],
+                        'order_by_no' => $index,
+                        'news_id' => $news->id,
+                        'created_by' => auth()->id(),
+                        'is_active' => "1"
+                    ]);
+                    $index++;
+                }
+            }
+
+            return \redirect()->route('photo.index')->with('status', 'Successfully Create PhotoNews');
+        } catch (\Throwable $e) {
+            return Redirect::back()->withErrors($e->getMessage());
+        }
+    }
+
+    function deleteNewsImages($data)
+    {
+        for($i=0;$i<count($data);$i++){
+                PhotoNews::where('id', $data[$i])->update([
+                    'deleted_by' => Auth::user()->uuid,
+                    'is_active' => '0',
+                ]);
+                PhotoNews::destroy($data[$i]);
+        }
+        
     }
 
     /**
@@ -146,7 +254,22 @@ class PhotoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $method = explode('/', URL::current());
+        $news = News::where('id', $id)->with(['users', 'news_photo'])->first();
+        $categories = Category::all();
+        $tags = Tag::all();
+        $types = 'photonews';
+        $contributors = $news->users;
+        $users = User::with(['roles'])->get();
+        return view('news.photonews.editable', [
+            'method' => end($method),
+            'categories' => $categories,
+            'types' => $types,
+            'news' => $news,
+            'tags' => $tags,
+            'contributors' => $contributors,
+            'users' => $users
+        ]);
     }
 
     /**
@@ -158,7 +281,144 @@ class PhotoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->input();
+        //return $data['photonews']['old'];
+        $news = News::where('id', $id)->with(['users', 'news_photo'])->first();
+        $i=0;
+        foreach ($news->news_photo as $item){
+            $old[$i] = $item->id;
+            $i++;
+        }
+
+        //return $id_image[];
+        $news_images_old = array();
+
+        $i=0;
+        if (count($data['photonews']['old']) >= 1) {
+
+                foreach ($data['photonews']['old'] as $key => $value) {
+                    $news_images_old[$i] = [
+                        'title' => $data['title'],
+                        'image' => $data['photonews']['old'][$key]['caption'],
+                        'url' => $data['photonews']['old'][$key]['url'],
+                        'copyright' => $data['photonews']['old'][$key]['copyright'],
+                        'description' => $data['photonews']['old'][$key]['description'],
+                        'keywords' => $data['photonews']['old'][$key]['keywords'],
+                        'order_by_no' => $i,
+                        'is_active' => $data['photonews']['old'][$key]['is_active'],
+                        'created_by' => $data['photonews']['old'][$key]['created_by'],
+                        'updated_by' => auth()->id(),
+                        'news_id' => $id,
+                        'id' => $key
+                    ];
+
+                    $new[$i] = $key;
+                    $i++;
+                }
+           // }
+        }
+
+       // return $old;
+
+        if (count($data['photonews']) >= 1) {
+            foreach ($data['photonews'] as $key => $value) {
+                if ($key === "old") {
+                    continue;
+                }
+                $news_images_old[$i] = [
+                    'title' => $data['title'],
+                    'image' => $data['photonews'][$key]['caption'],
+                    'url' => $data['photonews'][$key]['url'],
+                    'copyright' => $data['photonews'][$key]['copyright'],
+                    'description' => $data['photonews'][$key]['description'],
+                    'keywords' => $data['photonews'][$key]['keywords'],
+                    'order_by_no' => $i,
+                    'created_by' => auth()->id(),
+                    'updated_by' => null,
+                    'is_active' => "1",
+                    'news_id' => $id,
+                    'id' => null
+                ];
+                $i++;
+            }
+        }
+
+        if(count($new) !== count($old)){
+            $diff=array_diff($old, $new);
+
+            $i=0;
+            if(count($diff)>0){
+                foreach ($diff as $value){
+                    if($value !== null){
+                        $x[$i] = $value;
+                        $i++;
+                    }
+                }
+            }
+            $this->deleteNewsImages($x);
+        }
+        //return $diff;
+       
+        $newsById = News::find($id);
+        $date = $data['date'];
+        $time = $data['time'];
+        $margeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
+        try {
+
+            $input = [
+                'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
+                'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
+                'is_category_headline' => $request->has('isCategoryHeadline') == false ? '0' : '1',
+                'editor_pick' => $request->has('editorPick') == false ? '0' : '1',
+                'is_curated' => $request->has('isCurated') == false ? '0' : '1',
+                'is_adult_content' => $request->has('isAdultContent') == false ? '0' : '1',
+                'is_verify_age' => $request->has('isVerifyAge') == false ? '0' : '1',
+                'is_advertorial' => $request->has('isAdvertorial') == false ? '0' : '1',
+                'is_seo' => $request->has('isSeo') == false ? '0' : '1',
+                'is_disable_interactions' => $request->has('isDisableInteractions') == false ? '0' : '1',
+                'is_branded_content' => $request->has('isBrandedContent') == false ? '0' : '1',
+                'title' => $data['title'],
+                'slug' => Str::slug($data['title']),
+                'content' => $data['content'],
+                'synopsis' => $data['synopsis'],
+                'description' => $data['description'],
+                'types' => 'photonews',
+                'keywords' => $data['keywords'],
+                'image' => explode(Storage::url(""), $data['upload_image_selected'])[1] ?? null,
+                'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
+                'reporters' => $request->has('reporters') == false ? null : json_encode($data['reporters']),
+                'contributors' => $request->has('contributors') == false ? null : json_encode($data['contributors']),
+                'is_published' => $data['isPublished'],
+                'published_at' => $margeDate,
+                'published_by' => $request->has('isPublished') == false ? null : auth()->id(),
+                'updated_by' => auth()->id(),
+                'category_id' => $data['category'],
+                // 'video' => $data['video'] ?? null
+            ];
+
+            $newsById->update($input);
+            $newsById::find($id)->tags()->detach();
+            foreach ($data['tags'] as $t) {
+                $newsById->tags()->attach($t);
+            }
+
+            PhotoNews::upsert($news_images_old, ['id'], ['title','is_active', 'url', 'image', 'description', 'keywords', 'copyright', 'order_by_no', 'created_by', 'news_id', 'updated_by']);
+
+            $log = new Log(
+                [
+                    'news_id' => $id,
+                    'updated_at'=>now(),
+                    'updated_by' => \auth()->id(),
+                    'updated_content' => json_encode($newsById->getChanges())
+                ]
+            );
+            $log->save();
+
+            return \redirect()->route('photo.index')->with('status', 'Successfully PhotoUpdate News');
+        } catch (\Throwable $e) {
+            return Redirect::back()->withErrors($e->getMessage());
+        }
+        
     }
 
     /**
@@ -171,4 +431,5 @@ class PhotoController extends Controller
     {
         //
     }
+    
 }
