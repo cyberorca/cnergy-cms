@@ -18177,3 +18177,6 @@ a {
 .z-1 {
     z-index: 1;
 }
+.no-children:after {
+    background-image: none !important;
+}
