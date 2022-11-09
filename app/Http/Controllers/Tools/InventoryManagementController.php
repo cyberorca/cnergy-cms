@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Tools;
 
 use App\Http\Controllers\Controller;
+use App\Models\InventoryManagement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class InventoryManagementController extends Controller
 {
@@ -15,7 +17,9 @@ class InventoryManagementController extends Controller
     public function index()
     {
         $inventory_config = config('inventory');
-        return view('tools.inventory.editable', compact('inventory_config'));
+        $inventory_management = InventoryManagement::getAll();
+
+        return view('tools.inventory.editable', compact('inventory_config', 'inventory_management'));
     }
 
     /**
@@ -36,7 +40,34 @@ class InventoryManagementController extends Controller
      */
     public function store(Request $request)
     {
-        return $request->all();
+        try {
+            $input = $request->all();
+            $data = [];
+            $type = '';
+            unset($input['_token']);
+            foreach ($input as $key => $item) {
+                $type = $key;
+                foreach ($item as $inventory) {
+                    $inventory['type'] = $type;
+                    $inventory['size'] = $inventory['creative_size'] ?? null;
+                    if (isset($inventory['creative_size'])) {
+                        unset($inventory['creative_size']);
+                    }
+                    $inventory['code'] = "var example = 'example var'";
+                    $inventory['created_by'] = auth()->id();
+                    $inventory['template_id'] = $inventory['template_id'] ?? null;
+                    $inventory['adunit_size'] = $inventory['adunit_size'] ?? null;
+                    $inventory['id'] = intval($inventory['id']) ?? null;
+                    array_push($data, $inventory);
+                }
+            }
+            // return $data;
+            InventoryManagement::upsert($data, ['id'], ['inventory', 'slot_name', 'adunit_size', 'size', 'template_id', 'code', 'created_by']);
+
+            return redirect()->route('inventory-management.index')->with('status', 'Successfully to change inventory');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
     }
 
     /**
