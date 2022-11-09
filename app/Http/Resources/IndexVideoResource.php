@@ -72,7 +72,6 @@ class IndexVideoResource extends JsonResource
             "photonews" => [
 
             ],
-            "video" => $this->video,
             "category_name" => $category->category,
             "news_url_full" => env('APP_URL') . '/' . Str::slug(strtolower($this->categories->category)) . '/read/' . $this->slug,
             "news_url_full_mobile" => null,
@@ -81,6 +80,7 @@ class IndexVideoResource extends JsonResource
             "news_quote" => [
 
             ],
+            "news_video" => $this->videoResponse($this->news_videos)[0] ?? null,
             "news_tag" => $this->convertDataToResponse2($this->tags),
             "news_keywords" => self::keywordResponse($this->keywords),
             "news_related" => [
@@ -176,5 +176,18 @@ class IndexVideoResource extends JsonResource
     {
         if (!empty($keywords))
             return explode(',', $keywords);
+    }
+
+    private function videoResponse($video)
+    {
+        $array = array();
+
+        foreach ($video as $item) {
+            array_push($array, [
+                'id' => $item->id,
+                'video' => htmlspecialchars($item->video),
+            ]);
+        }
+        return $array;
     }
 }
