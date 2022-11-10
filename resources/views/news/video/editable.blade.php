@@ -70,20 +70,12 @@
 
                         <div class="form-group">
                             <label for="synopsis" class="form-label mb-2">Synopsis</label>
-                            <textarea name="synopsis" placeholder="Enter Synopsis" class="form-control" id="synopsis" cols="30" rows="3" required>
-                            @if ($method === 'edit')
-                                {{ $news->synopsis }}
-                            @endif
-                            </textarea>
+                            <textarea name="synopsis" placeholder="Enter Synopsis" class="form-control" id="synopsis" cols="30" rows="3" required>@if ($method === 'edit'){{ $news->synopsis }}@endif</textarea>
                         </div>
 
                         <div class="form-group">
                             <label for="content" class="form-label">Content</label>
-                            <textarea name="content" class="my-editor form-control" id="content" cols="30" rows="10" required>
-                            @if ($method === 'edit')
-                                {{ $news->content }}
-                            @endif
-                            </textarea>
+                            <textarea name="content" class="my-editor form-control" id="content" cols="30" rows="10" required>@if ($method === 'edit'){{ $news->content }}@endif</textarea>
                         </div>
 
                         <div class="form-group">
@@ -91,11 +83,7 @@
                             @if ($method === 'edit')
                             <input type="hidden" name="video_id" value="{{ $news->news_videos[0]['id'] }}">
                             @endif
-                            <textarea name="video" id="video" placeholder="Paste Embed Code Here" class="form-control" cols="30" rows="3" required>
-                            @if ($method === 'edit')
-                                {{ $news->news_videos[0]['video'] }}
-                            @endif
-                            </textarea>
+                            <textarea name="video" id="video" placeholder="Paste Embed Code Here" class="form-control" cols="30" rows="3" required>@if ($method === 'edit'){{ $news->news_videos[0]['video'] }}@endif</textarea>
                         </div>
                     </div>
                 </div>
