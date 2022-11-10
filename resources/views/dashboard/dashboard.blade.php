@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-6 col-lg-3 col-md-6">
                     <div class="card">
-                        <div class="card-body" style="background-color: #4e4df7;">
+                        <div class="card-body" style="background-color: #4e4df7; border-radius: 10px;">
                                 <h6 class="font-extrabold mb-0" style="color:white;">News</h6>
                                 </br>
                                 <h6 class="font-extrabold mb-0" style="color:white;" align="center">{{ $news }}</h6>
@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-6 col-lg-3 col-md-6">
                     <div class="card">
-                    <div class="card-body" style="background-color: #f74d9f;">
+                    <div class="card-body" style="background-color: #f74d9f; border-radius: 10px;">
                                 <h6 class="font-extrabold mb-0" style="color:white;">Photo News</h6>
                                 </br>
                                 <h6 class="font-extrabold mb-0" style="color:white;" align="center">{{ $photo }}</h6>
@@ -42,7 +42,7 @@
                 </div>
                 <div class="col-6 col-lg-3 col-md-6">
                     <div class="card">
-                    <div class="card-body" style="background-color: #d18221;">
+                    <div class="card-body" style="background-color: #d18221; border-radius: 10px;">
                                 <h6 class="font-extrabold mb-0" style="color:white;">Video News</h6>
                                 </br>
                                 <h6 class="font-extrabold mb-0" style="color:white;" align="center">{{ $video }}</h6>
@@ -57,7 +57,7 @@
                 </div>
                 <div class="col-6 col-lg-3 col-md-6">
                     <div class="card">
-                    <div class="card-body" style="background-color: #f76116;">
+                    <div class="card-body" style="background-color: #f76116; border-radius: 10px;">
                                 <h6 class="font-extrabold mb-0" style="color:white;">Tags</h6>
                                 </br>
                                 <h6 class="font-extrabold mb-0" style="color:white;" align="center">{{ $tags }}</h6>
