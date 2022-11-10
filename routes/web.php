@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\FrontEndMenuController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\News\PhotoController;
 use App\Http\Controllers\News\VideoController;
+use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Tools\ImageBankController;
 use App\Http\Controllers\Tools\InventoryManagementController;
 use App\Http\Controllers\Tools\NewsDraftController;
@@ -38,8 +40,10 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     // Dashboard
-    Route::prefix('dashboard')->group(function () {
-    });
+    Route::resource('dashboard', DashboardController::class);
+    //Route::prefix('dashboard')->group(function () {
+    //    Route::resource('dashboard', DashboardController::class);
+    //});
 
     // Master
     Route::prefix('master')->group(function () {
@@ -91,6 +95,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('image/{filename}', [ImageBankController::class, 'displayImage'])->name('image.displayImage');
     Route::get('/image-bank/api/list/', [ImageBankController::class, 'apiList'])->name('image_bank.api');
     Route::post('/image-bank/api/create', [ImageBankController::class, 'upload_image']);
+
+    Route::resource('profile', ProfileController::class);
 });
 // Route::post('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])
 //     ->middleware(['auth', 'signed']) // <-- don't remove "signed"

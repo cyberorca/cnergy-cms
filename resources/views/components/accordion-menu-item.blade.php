@@ -3,19 +3,27 @@
      <h2 class="menu accordion-header" id="heading-{{ $item['slug'] }}-{{ $item['id'] }}">
          <div class="px-3 ps-0 py-0 border-0">
              <div class="d-flex align-items-center w-100 justify-content-between">
-                 <div class="m-0 w-100 h-100 p-3 menu accordion-button" type="button" data-bs-toggle="collapse"
+                 @php
+                     $noChildren = '';
+                     if ($item['children'] == null) {
+                         $noChildren = 'no-children';
+                     }
+                 @endphp
+                 <div class="m-0 w-100 h-100 p-3 menu accordion-button {{ $noChildren }}" type="button"
+                     data-bs-toggle="collapse"
                      data-bs-target="#collapse-{{ implode('-', explode('/', $item['slug'])) }}{{ $item['id'] }}"
                      aria-expanded="false"
                      aria-controls="collapse-{{ implode('-', explode('/', $item['slug'])) }}{{ $item['id'] }}">
-                     <p class="m-0 p-0 ms-3 front-end-name">{!! $item['menu_name'] !!} 
-                        {{-- {{ isset($item['parents']) ? implode(',', $item['parents']) : 'null' }} --}}
-                    </p>
+                     <p class="m-0 p-0 ms-3 front-end-name">{!! $item['menu_name'] !!}
+                         {{-- {{ isset($item['parents']) ? implode(',', $item['parents']) : 'null' }} --}}
+                     </p>
                  </div>
                  <div class="d-flex gap-2">
-                     <a class="btn btn-primary ms-3" href="{{ route($path . '.create', [
-                        'parents' => isset($item['parents']) ? implode(',', $item['parents']) : 'null',
-                        'id' => $item['id']
-                    ]) }}"
+                     <a class="btn btn-primary ms-3"
+                         href="{{ route($path . '.create', [
+                             'parents' => isset($item['parents']) ? implode(',', $item['parents']) : 'null',
+                             'id' => $item['id'],
+                         ]) }}"
                          data-bs-toggle="tooltip" data-bs-placement="top" title="Add New Child Menu"><i
                              class="bi bi-plus-circle"></i></a>
                      <a href="{{ route($path . '.edit', $item['id']) }}" class="btn btn-warning"
