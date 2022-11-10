@@ -1,19 +1,21 @@
 var txtarea = document.querySelectorAll('.code-inventory');
 var nav = document.querySelectorAll('.nav-link-inventory');
 
+var mixedMode = {
+    name: "htmlmixed",
+};
+
 txtarea.forEach((el, i) => {
     CodeMirror.fromTextArea(el, {
-        lineNumbers: true,  
-        matchBrackets: true,
-        indentUnit: 4,
-        indentWithTabs: true,
-        tabSize: 4,
-        lineWrapping: true,
+        lineNumbers: true,
+        mode: mixedMode,
     });
 })
 
 nav.forEach((el, i) => {
-    el.addEventListener('click', function(){
-        CodeMirror.refresh();
+    el.addEventListener('click', function () {
+        $('.CodeMirror').each(function (i, el) {
+            el.CodeMirror.refresh();
+        });
     })
 })

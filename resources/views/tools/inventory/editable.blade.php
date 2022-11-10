@@ -2,7 +2,6 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/pages/codemirror.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/pages/dracula.css') }}">
     <style>
         .CodeMirror {
             border: 1px solid #eee;
@@ -83,7 +82,7 @@
                                     </div>
                                     <div class="col-md-9">
                                         <textarea name="{{ $type }}[{{ $index_arr }}][code]" id="code" cols="30" rows="20"
-                                            class="h-100 CodeMirror code-inventory">{{ $inventory_management[$type][$index_arr]['code'] ?? null }}</textarea>
+                                            class="h-100 code-inventory">{{ $inventory_management[$type][$index_arr]['code'] ?? null }}</textarea>
                                     </div>
                                 </div>
                             @endforeach
@@ -101,6 +100,10 @@
 
 @section('javascript')
     <script src="{{ asset('assets/js/codemirror.js') }}"></script>
+    <script src="{{ asset('assets/js/extensions/xml.js') }}"></script>
     <script src="{{ asset('assets/js/extensions/javascript.js') }}"></script>
+    <script src="{{ asset('assets/js/extensions/css.js') }}"></script>
+    <script src="{{ asset('assets/js/extensions/vbscript.js') }}"></script>
+    <script src="{{ asset('assets/js/extensions/htmlmixed.js') }}"></script>
     <script src="{{ asset('assets/js/pages/inventory.js') }}"></script>
 @endsection
