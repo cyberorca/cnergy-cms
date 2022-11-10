@@ -53,7 +53,11 @@ class InventoryManagementController extends Controller
                     if (isset($inventory['creative_size'])) {
                         unset($inventory['creative_size']);
                     }
-                    $inventory['code'] = "var example = 'example var'";
+                    $inventory['code'] = $inventory['code'] ?? "<script>
+                    function jsFunc(arg1, arg2) {
+                       if (arg1 && arg2) document.body.innerHTML = 'achoo';
+                    }
+                </script>";
                     $inventory['created_by'] = auth()->id();
                     $inventory['template_id'] = $inventory['template_id'] ?? null;
                     $inventory['adunit_size'] = $inventory['adunit_size'] ?? null;
