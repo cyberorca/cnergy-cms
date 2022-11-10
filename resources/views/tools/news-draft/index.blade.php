@@ -97,9 +97,16 @@
                             </td>
                             <td>{{$n->types}}</td>
                             <td>
-                                <a href="{{route($n->types .'.edit', $n->id)}}" class="btn icon btn-warning"
-                                   data-bs-toggle="tooltip" data-bs-placement="top" title="Update Page Data"><i
-                                        class="bi bi-pencil-square"></i></a>
+                                @if($n->types==='photonews')
+                                    <a href="{{route('photo.edit', $n->id)}}" class="btn icon btn-warning"
+                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Update Page Data"><i
+                                            class="bi bi-pencil-square"></i></a>
+                                @else
+                                    <a href="{{route($n->types .'.edit', $n->id)}}" class="btn icon btn-warning"
+                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Update Page Data"><i
+                                            class="bi bi-pencil-square"></i></a>
+                                @endif
+
                                 <button type="button" data-toggle="modal"
                                         data-target="#deleteModal{{ $n->id }}" class="btn icon btn-danger"
                                         data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Page Data"><i
