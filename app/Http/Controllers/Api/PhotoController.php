@@ -21,6 +21,51 @@ class PhotoController extends Controller
      *         name="limit",
      *         @OA\Schema(type="integer")
      *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="max_id",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="last_update",
+     *         @OA\Schema(type="date")
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="category",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="headline",
+     *         @OA\Schema(type="string", enum = {1, 0})
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="editorpick",
+     *         @OA\Schema(type="string", enum = {1, 0})
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="published",
+     *         @OA\Schema(type="string", enum = {1, 0})
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="orderby",
+     *         @OA\Schema(type="string", enum = {"asc", "desc"})
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="sensitive",
+     *         @OA\Schema(type="string", enum = {1, 0})
+     *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="alltype",
+     *         @OA\Schema(type="string", enum = {1, 0})
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="success",
