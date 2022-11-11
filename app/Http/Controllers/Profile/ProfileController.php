@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -24,7 +25,7 @@ class ProfileController extends Controller
      */
     public function create()
     {
-        //
+        // 
     }
 
     /**
@@ -69,7 +70,17 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->input();
+        
+        try {
+            User::where('uuid', $id)->update([
+                'name' => ucwords($data['name']),
+                'biography' => $data['biography'],
+            ]);
+            return redirect()->route("profile.index")->with('status', 'Successfully Update User');
+        } catch (\Throwable $e) {
+            return Redirect::back()->withErrors($e->getMessage());
+        }
     }
 
     /**
