@@ -33,7 +33,8 @@ class User extends Authenticatable
         'email',
         'role_id',
         'is_active',
-        'remember_token'
+        'remember_token',
+        'profile_image'
     ];
 
     /**
@@ -58,13 +59,13 @@ class User extends Authenticatable
     public $timestamps = false;
 
     public function roles(){
-        return $this->belongsTo(Role::class, 'role_id', 'id'); 
+        return $this->belongsTo(Role::class, 'role_id', 'id');
     }
 
     public static function boot()
 {
     parent::boot();
-    
+
     static::creating(function ($model) {
         $model->uuid = Str::uuid();
     });

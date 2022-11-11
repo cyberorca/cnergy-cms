@@ -15,7 +15,7 @@
                 <div class="form-group">
                         <div class="d-flex align-items-center">
                             <div class="avatar">
-                                <img src="{{session('avatar')}}" style="height:200px; width:200px;">
+                                <img src="{{auth()->user()->profile_image}}" style="height:200px; width:200px;">
                             </div>
                             <div class="ms-3 name">
                                 <h5 class="font-bold mb-3">{{auth()->user()->name}}</h5>
@@ -27,7 +27,7 @@
 
                 <div class="form-group">
                     <label for="basicInput">Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="Enter Name" name="name" 
+                    <input type="text" class="form-control" id="name" placeholder="Enter Name" name="name"
                         value="{{auth()->user()->name}}" >
                 </div>
 

@@ -50,7 +50,7 @@
                             </div>
                             <div class="user-img d-flex align-items-center">
                                 <div class="avatar avatar-md">
-                                    <img src="{{session('avatar')}}">
+                                    <img src="{{auth()->user()->profile_image}}">
                                 </div>
                             </div>
                         </div>
