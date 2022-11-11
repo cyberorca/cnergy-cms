@@ -9,7 +9,7 @@ use App\Http\Resources\InventoryCollection;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Get Front End Settings
+ * Get Inventory Management
  * @OA\Get (
  *     tags={"Inventory Management"},
  *     path="/api/inventory/",
