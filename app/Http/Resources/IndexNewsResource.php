@@ -164,11 +164,11 @@ class IndexNewsResource extends JsonResource
 
     private function userResponse($uuid)
     {
-        $userById = User::where('uuid', '=', $uuid)->get('name')->first();
+        $userById = User::where('uuid', '=', $uuid)->get(['name','profile_image'])->first();
         return [
             "id" => $uuid,
             "name" => $userById->name,
-            "image" => null
+            "image" => $userById->profile_image
         ];
     }
 
