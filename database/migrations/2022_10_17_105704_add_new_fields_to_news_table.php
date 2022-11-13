@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::table('news', function (Blueprint $table) {
             $table->longText('reporters')->nullable();
             $table->longText('contributors')->nullable();
+            $table->foreignId('keywords_id')->constrained('keywords');
         });
     }
 

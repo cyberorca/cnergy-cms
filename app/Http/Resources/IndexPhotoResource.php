@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
 use App\Models\User;
+use App\Models\ImageBank;
 
 class IndexPhotoResource extends JsonResource
 {
@@ -19,28 +20,29 @@ class IndexPhotoResource extends JsonResource
         $category = new IndexCategoryResource($this->categories);
         return [
             'news_id' => $this->id,
-            'news_entry' => date('Y-m-d h:i:s', strtotime($this->created_at)),
-            'news_last_update' => date('Y-m-d h:i:s', strtotime($this->updated_at)),
+            'news_entry' => date('Y-m-d G:i:s', strtotime($this->created_at)),
+            'news_last_update' => date('Y-m-d G:i:s', strtotime($this->updated_at)),
             'news_level' => $this->is_published,
             'news_top_headline' => $this->is_headline,
             'news_editor_pick' => $this->editor_pick,
             'news_hot' => '',
-            // 'news_home_headline'=> $this->is_home_headline,
-            // 'news_category_headline'=> $this->is_category_headline,
-            // 'news_curated'=> $this->is_curated,
-            // 'news_advertorial'=> $this->is_advertorial,
-            // 'news_disable_interactions'=> $this->is_disable_interactions,
-            // 'news_branded_content'=> $this->is_branded_content,
+            'news_home_headline'=> $this->is_home_headline,
+            'news_category_headline'=> $this->is_category_headline,
+            'news_curated'=> $this->is_curated,
+            'news_advertorial'=> $this->is_advertorial,
+            'news_disable_interactions'=> $this->is_disable_interactions,
+            'news_branded_content'=> $this->is_branded_content,
             'news_category' => [$category],
             'news_title' => $this->title,
             'news_subtitle' => '',
             'news_synopsis' => $this->synopsis,
             'news_content' => $this->content,
-            // 'news_description' => $this->description,
-            'news_image_prefix' => '',
-            'news_image' => [
-                'real' => ''
-            ],
+            'news_description' => $this->description,
+            'news_image_prefix' => env('APP_URL') . '/',
+            // 'news_image' => [
+            //     'real' => $this->image,
+            // ],
+            "news_image" => $this->newsImage($this->image),
             'news_image_thumbnail' => [
                 'real' => ''
             ],
@@ -48,7 +50,7 @@ class IndexPhotoResource extends JsonResource
                 'real' => ''
             ],
             'news_image_headline' => '',
-            'news_imageinfo' => '',
+            'news_imageinfo' => $this->newsImageInfo($this->image),
             'news_url' => $this->slug,
             'news_date_publish' => $this->published_at,
             'news_type' => $this->types,
@@ -109,7 +111,7 @@ class IndexPhotoResource extends JsonResource
         }
         return $temp;
     }
-    
+
     private function arrayUserToObjectUserEditor($array)
     {
         $temp = array();
@@ -131,11 +133,11 @@ class IndexPhotoResource extends JsonResource
 
     private function userResponse($uuid)
     {
-        $userById = User::where('uuid', '=', $uuid)->get('name')->first();
+        $userById = User::where('uuid', '=', $uuid)->get(['name','profile_image'])->first();
         return [
             "id" => $uuid,
             "name" => $userById->name,
-            "image" => null
+            "image" => $userById->profile_image
         ];
     }
 
@@ -143,5 +145,24 @@ class IndexPhotoResource extends JsonResource
     {
         if (!empty($keywords))
             return explode(',', $keywords);
+    }
+
+    private function newsImage($image){
+        if($image === NULL){
+            return null;
+        }else{
+            return [
+                "real" => env('APP_URL') . '/' . $this->image
+            ];
+        }
+    }
+
+    private function newsImageInfo($image2){
+        if($image2 === NULL){
+            return null;
+        }else{
+            $info = ImageBank::where('slug', '=', $image2)->get('description')->first();
+            return $info->description;
+        }
     }
 }

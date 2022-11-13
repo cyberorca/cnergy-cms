@@ -342,7 +342,7 @@ class NewsController extends Controller implements NewsServices
                 'is_disable_interactions' => $request->has('isDisableInteractions') == false ? '0' : '1',
                 'is_branded_content' => $request->has('isBrandedContent') == false ? '0' : '1',
                 'title' => $news_parent['title'],
-                'slug' => Str::slug($news_parent['title']),
+                //'slug' => Str::slug($news_parent['title']),
                 'content' => $news_parent['content'],
                 'synopsis' => $data['synopsis'],
                 'description' => $data['description'],
