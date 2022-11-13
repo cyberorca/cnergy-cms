@@ -28,7 +28,7 @@ class DashboardController extends Controller
         $tags = Tag::where('is_active', '=', '1')
             ->count();
         //echo $tags;
-        return view('dashboard.dashboard',['photo' => $photo,
+        return view('dashboard.index',['photo' => $photo,
                                'news' => $news,
                                'tags' => $tags,
                                'video' => $video,]);

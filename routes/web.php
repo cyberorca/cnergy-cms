@@ -36,7 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
         Lfm::routes();
     });
     Route::get('/', function () {
-        return view('welcome');
+        return view('dashboard.index');
     });
 
     // Dashboard
