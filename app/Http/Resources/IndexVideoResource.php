@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\ImageBank;
 
 class IndexVideoResource extends JsonResource
 {
@@ -18,8 +19,8 @@ class IndexVideoResource extends JsonResource
         $category = new IndexCategoryResource($this->categories);
         return [
             "news_id" => $this->id,
-            "news_entry" => date('Y-m-d h:i:s', strtotime($this->created_at)),
-            "news_last_update" => date('Y-m-d h:i:s', strtotime($this->updated_at)),
+            "news_entry" => date('Y-m-d G:i:s', strtotime($this->created_at)),
+            "news_last_update" => date('Y-m-d G:i:s', strtotime($this->updated_at)),
             "news_level" => $this->is_published,
             "news_top_headline"=> $this->is_headline,
             "news_editor_pick"=> $this->editor_pick,
@@ -36,10 +37,8 @@ class IndexVideoResource extends JsonResource
             "news_synopsis" => $this->synopsis,
             "news_description" => $this->description,
             "news_content" => $this->content,
-            "news_image_prefix" => $this->image,
-            "news_image" => [
-                "real"=> null,
-            ],
+            "news_image_prefix" => env('APP_URL') . '/',
+            "news_image" => $this->newsImage($this->image),
             "news_image_thumbnail" => [
                 "real" => null,
             ],
@@ -47,7 +46,7 @@ class IndexVideoResource extends JsonResource
                 "real"=> null,
             ],
             "news_image_headline" => null,
-            "news_imageinfo" => null,
+            'news_imageinfo' => $this->newsImageInfo($this->image),
             "news_url" => $this->slug,
             "news_date_publish" => $this->published_at,
             "news_type" => $this->types,
@@ -189,5 +188,24 @@ class IndexVideoResource extends JsonResource
             ]);
         }
         return $array;
+    }
+
+    private function newsImage($image){
+        if($image === NULL){
+            return null;
+        }else{
+            return [
+                "real" => env('APP_URL') . '/' . $this->image
+            ];
+        }
+    }
+
+    private function newsImageInfo($image2){
+        if($image2 === NULL){
+            return null;
+        }else{
+            $info = ImageBank::where('slug', '=', $image2)->get('description')->first();
+            return $info->description;
+        }
     }
 }
