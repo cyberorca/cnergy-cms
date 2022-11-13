@@ -37,7 +37,7 @@ class IndexNewsResource extends JsonResource
             "news_synopsis" => $this->synopsis,
             "news_description" => $this->description,
             "news_content" => $this->content,
-            "news_image_prefix" => "/image-bank/",
+            "news_image_prefix" => env('APP_URL') . '/',
             /*"news_image" => [
                 "real"=> $this->image,
             ],*/
