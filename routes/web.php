@@ -35,9 +35,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'laravel-filemanager'], function () {
         Lfm::routes();
     });
-    Route::get('/', function () {
-        return view('dashboard.index');
-    });
+
+    Route::get('/', [DashboardController::class, 'index']);
 
     // Dashboard
     Route::resource('dashboard', DashboardController::class);
@@ -47,7 +46,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Master
     Route::prefix('master')->group(function () {
-
         Route::prefix('user')->group(function () {
             Route::resource('role', RoleController::class);
             Route::resource('user-setting', UsersController::class);
