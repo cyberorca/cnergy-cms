@@ -111,7 +111,7 @@ class IndexPhotoResource extends JsonResource
         }
         return $temp;
     }
-    
+
     private function arrayUserToObjectUserEditor($array)
     {
         $temp = array();
@@ -133,11 +133,11 @@ class IndexPhotoResource extends JsonResource
 
     private function userResponse($uuid)
     {
-        $userById = User::where('uuid', '=', $uuid)->get('name')->first();
+        $userById = User::where('uuid', '=', $uuid)->get(['name','profile_image'])->first();
         return [
             "id" => $uuid,
             "name" => $userById->name,
-            "image" => $this->image
+            "image" => $userById->profile_image
         ];
     }
 
