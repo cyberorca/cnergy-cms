@@ -205,7 +205,11 @@ class IndexVideoResource extends JsonResource
             return null;
         }else{
             $info = ImageBank::where('slug', '=', $image2)->get('description')->first();
-            return $info->description;
+            if($info === NULL){
+                return null;
+            }else{
+                return $info->description;
+            }
         }
     }
 }
