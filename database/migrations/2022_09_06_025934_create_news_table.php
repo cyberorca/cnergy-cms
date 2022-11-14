@@ -31,20 +31,22 @@ return new class extends Migration
             $table->longText('content');
             $table->longText('synopsis');
             $table->longText('description');
-            $table->enum('types', ['news', 'photonews', 'video']);
-            $table->longText('keywords');
+            $table->enum('types', ['news', 'photonews', 'video']);            
             $table->longText('photographers')->nullable();
-            $table->string('image', 255)->unique()->nullable();
+            $table->longText('reporters')->nullable();
+            $table->longText('contributors')->nullable();
+            $table->string('image', 255)->nullable();
             $table->enum('is_published', [0, 1])->default(1);
             $table->timestamp('published_at')->nullable();
             $table->uuid('published_by')->nullable();
-            $table->timestamp('created_at', 0)->nullable();
+            $table->timestamp('created_at', 0);
             $table->uuid('created_by');
             $table->timestamp('updated_at', 0)->nullable();
             $table->uuid('updated_by')->nullable();
             $table->softDeletes();
             $table->uuid('deleted_by')->nullable();
             $table->unsignedBigInteger('category_id');
+            
             $table->index(['title', 'slug', 'created_by', 'types', 'published_by']);
 
             $table->foreign('category_id')

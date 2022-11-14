@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('news_tags', function (Blueprint $table) {
+        Schema::create('news_keywords', function (Blueprint $table) {
             $table->id();
             $table->enum('is_active', [0, 1])->default(1);
             $table->foreignId('news_id')->constrained('news');
-            $table->foreignId('tag_id')->constrained('tags');
+            $table->foreignId('keywords_id')->constrained('keywords');
             $table->timestamp('created_at', 0);
             $table->uuid('created_by');
             $table->timestamp('updated_at', 0)->nullable();
@@ -49,6 +49,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('news_tags');
+        Schema::dropIfExists('news_keywords');
     }
 };
