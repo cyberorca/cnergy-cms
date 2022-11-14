@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('is_active', [0, 1])->default(1);
             $table->foreignId('news_id')->constrained('news');
             $table->foreignId('tag_id')->constrained('tags');
-            $table->timestamp('created_at', 0);
+            $table->timestamp('created_at', 0)->nullable();
             $table->uuid('created_by');
             $table->timestamp('updated_at', 0)->nullable();
             $table->uuid('updated_by')->nullable();

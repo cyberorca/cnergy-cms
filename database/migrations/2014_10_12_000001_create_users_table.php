@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->uuid()->primary();
             $table->enum('is_active', [0, 1])->default(0); 
-            $table->bigInteger('role_id')->unsigned();
+            $table->foreignId('role_id')->constrained('roles');
             $table->string('email')->unique();
             $table->string('name');
             $table->longText('biography')->nullable();
@@ -27,11 +27,6 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->index(['name', 'email']);
-            
-            $table->foreign('role_id')
-                    ->references('id')
-                    ->on('roles')
-                    ->onCascade('delete');
         });
     }
 

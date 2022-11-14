@@ -21,7 +21,7 @@ return new class extends Migration
             $table->longText('meta_title')->nullable();
             $table->longText('meta_description')->nullable();
             $table->longText('meta_keywords')->nullable();
-            $table->timestamp('created_at', 0);
+            $table->timestamp('created_at', 0)->nullable();
             $table->uuid('created_by');
             $table->timestamp('updated_at', 0)->nullable();
             $table->uuid('updated_by')->nullable();

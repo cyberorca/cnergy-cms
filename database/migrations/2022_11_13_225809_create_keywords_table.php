@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->enum('is_active', [1, 0])->default(1);
             $table->string('keywords', 100);
-            $table->timestamp('created_at', 0);
+            $table->timestamp('created_at', 0)->nullable();
             $table->uuid('created_by');
             $table->timestamp('updated_at', 0)->nullable();
             $table->uuid('updated_by')->nullable();
