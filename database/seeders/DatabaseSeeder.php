@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             MenuSeeder::class,
             FrontEndMenuSeeder::class,
         ]);
-        // User::factory(100)->create();
+        User::factory(100)->create();
         // Tag::factory(100)->create();
         // Category::factory(100)->create();
         // News::factory(100)->create();
