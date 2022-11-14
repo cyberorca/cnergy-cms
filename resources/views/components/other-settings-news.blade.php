@@ -183,9 +183,9 @@
                         <select name="keywords[]" class="form-select" style='width: 100%;' multiple="multiple"
                             id="keyword" required>
                             @if ($method === 'edit')
-                                @foreach ($tags as $id => $tag)
-                                    <option id="{{ $id }}" value="{{ $tag->id }}"
-                                        @if ($method === 'edit' and $tag->news()->find($news->id)) selected @endif>{{ $tag->tags }}
+                                @foreach ($keywords as $id => $keyword)
+                                    <option id="{{ $id }}" value="{{ $keyword->id }}"
+                                        @if ($method === 'edit' and $keyword->news()->find($news->id)) selected @endif>{{ $keyword->keywords }}
                                     </option>
                                 @endforeach
                             @endif
