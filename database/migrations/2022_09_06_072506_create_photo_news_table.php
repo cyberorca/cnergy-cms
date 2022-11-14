@@ -31,12 +31,27 @@ return new class extends Migration
             $table->softDeletes();
             $table->uuid('deleted_by')->nullable();
 
+            $table->index(['title']);
+
             $table->foreign('news_id')
                     ->references('id')
                     ->on('news')
                     ->onCascade('delete');
 
-            $table->index(['title']);
+            $table->foreign('created_by')
+                    ->references('uuid')
+                    ->on('users')
+                    ->onCascade('delete');
+
+            $table->foreign('updated_by')
+                    ->references('uuid')
+                    ->on('users')
+                    ->onCascade('delete');
+
+            $table->foreign('deleted_by')
+                    ->references('uuid')
+                    ->on('users')
+                    ->onCascade('delete');
         });
     }
 

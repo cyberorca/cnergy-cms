@@ -11,6 +11,11 @@ return [
         'atanmegis.cn@gmail.com',
         '1910631170191@student.unsika.ac.id',
         'bunsmart18@gmail.com',
-        'leonardo.christofer2001@gmail.com'
+        'leonardo.christofer2001@gmail.com',
+        'leonardochristofer333@gmail.com',
+        'vioren.paramitta@gmail.com',
+        'yosafatangga11@gmail.com',
+        'ari.herdiawan@kly.id',
+        'fiqqi.fauzi@kly.id',
     ]
 ];

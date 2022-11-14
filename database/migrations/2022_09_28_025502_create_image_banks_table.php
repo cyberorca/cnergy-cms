@@ -16,11 +16,13 @@ return new class extends Migration
         Schema::create('image_banks', function (Blueprint $table) {
             $table->id();
             $table->string('title', 100);
+            $table->string('image_alt', 255);
             $table->string('slug', 100);
             $table->string('photographer', 100);
             $table->string('copyright', 100);
             $table->string('caption', 100);
             $table->string('keywords', 100);
+            $table->longText('description');
             $table->timestamp('created_at', 0)->nullable();
             $table->uuid('created_by');
             $table->timestamp('updated_at', 0)->nullable();

@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('tags', function (Blueprint $table) {
-            $table->longText('meta_title')->nullable();
-            $table->longText('meta_description')->nullable();
-            $table->longText('meta_keywords')->nullable();
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id();
+            $table->string('role')->unique();
+            $table->index(['role']);
+            $table->timestamp('deleted_at', 0)->nullable();
         });
     }
 
@@ -27,8 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('tags', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('roles');
     }
 };

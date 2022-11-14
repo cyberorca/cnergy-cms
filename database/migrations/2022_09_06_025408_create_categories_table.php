@@ -21,12 +21,16 @@ return new class extends Migration
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->string('slug', 100);
             $table->json('types');
+            $table->longText('meta_title')->nullable();
+            $table->longText('meta_description')->nullable();
+            $table->longText('meta_keywords')->nullable();
             $table->timestamp('created_at', 0)->nullable();
             $table->uuid('created_by');
             $table->timestamp('updated_at', 0)->nullable();
             $table->uuid('updated_by')->nullable();
             $table->softDeletes();
             $table->uuid('deleted_by')->nullable();
+            
             $table->index(['category', 'slug']);
 
             $table->foreign('deleted_by')
