@@ -96,6 +96,9 @@
                 </div>
             </div>
 
+                
+
+
             <a data-bs-toggle="collapse" href="#tiga" aria-expanded="false"
                 aria-controls="collapseExample">
                 <span class="h6">Tags</span>
@@ -116,7 +119,6 @@
                                 @endforeach
                             @endif
                         </select>
-
                     </div>
                 </div>
                 <br>
@@ -167,12 +169,28 @@
             </a>
             <hr />
             <div class="collapse show fade" id="empat">
-                <div class="form-group">
+                {{--<div class="form-group">
                     <label class="mb-2">Keyword</label><br>
                     <input name="keywords" id="keywords" type="text" required
                         @if ($method === 'create') placeholder="Enter Keyword" @endif
                         class="w-100 form-control" data-role="tagsinput"
                         @if ($method === 'edit') value="{{ $news->keywords }}" @endif />
+                </div>--}}
+                
+                <div class="form-group">
+                    <div class="row">
+                    <label class="mb-2">Keyword</label><br>
+                        <select name="keywords[]" class="form-select" style='width: 100%;' multiple="multiple"
+                            id="keyword" required>
+                            @if ($method === 'edit')
+                                @foreach ($keywords as $id => $keyword)
+                                    <option id="{{ $id }}" value="{{ $keyword->id }}"
+                                        @if ($method === 'edit' and $keyword->news()->find($news->id)) selected @endif>{{ $keyword->keywords }}
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
                 </div>
 
                 <div class="form-group">
