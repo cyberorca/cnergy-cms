@@ -34,8 +34,8 @@ save_uploaded_image.addEventListener('click', async function () {
     `);
     $(this).attr("disabled", true)
     $.ajax({
-        url: "/image-bank/api/create/",
-        type: 'POST',
+        url: "/image-bank/api/create",
+        type: "POST",
         data: fd,
         contentType: false,
         processData: false,

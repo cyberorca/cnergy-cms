@@ -58,4 +58,11 @@ class StaticPageController extends Controller
         // $staticPage = StaticPage::latest()->with(['users'])->paginate(10);
         // return response()->json(new StaticPageCollection($staticPage))->setStatusCode(200);
     }
+
+    public function show(Request $request, $slug){
+        $staticPage = StaticPage::where('slug', $slug)->with('users')->get();
+        return response()->json(
+            new StaticPageCollection($staticPage),
+            Response::HTTP_OK);
+    }
 }
