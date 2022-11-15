@@ -149,6 +149,30 @@
                     }
                 }
             });
+
+            $(document).ready(function() {
+            $("#keyword").select2({
+                tags: true,
+                placeholder: 'Select Keywords',
+                allowClear: true,
+                ajax: {
+                    url: "{{ route('keyword.index') }}",
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function({
+                        data
+                    }) {
+                        return {
+                            results: $.map(data, function(item) {
+                                return {
+                                    id: item.id,
+                                    text: item.keywords
+                                }
+                            })
+                        }
+                    }
+                }
+            });
         });
     </script>
 
