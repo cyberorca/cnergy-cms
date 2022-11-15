@@ -123,6 +123,7 @@
                 }
             }
         });
+    });
 
         $(document).ready(function() {
             $("#keyword").select2({

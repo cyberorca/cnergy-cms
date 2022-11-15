@@ -149,7 +149,7 @@
                     }
                 }
             });
-
+        });
             $(document).ready(function() {
             $("#keyword").select2({
                 tags: true,
