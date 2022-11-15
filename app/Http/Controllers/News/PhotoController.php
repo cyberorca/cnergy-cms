@@ -429,7 +429,24 @@ class PhotoController extends Controller implements NewsServices
      */
     public function destroy($id)
     {
-        //
+        try {
+            News::where('id', $id)->update([
+                'deleted_by' => Auth::user()->uuid,
+            ]);
+            if (News::destroy($id)) {
+                $log = new Log(
+                    [
+                        'news_id' => $id,
+                        'updated_by' => \auth()->id(),
+                        'updated_at' => now(),
+                        'updated_content' => json_encode('DELETED')
+                    ]
+                );
+                $log->save();
+            }
+            return Redirect::back()->with('status', 'Successfully Delete Photo News');
+        } catch (\Throwable $e) {
+            return Redirect::back()->withErrors($e->getMessage());
+        }
     }
-    
 }
