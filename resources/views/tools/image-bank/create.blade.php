@@ -142,6 +142,12 @@
                                 </div>
                                 @enderror
                             </div>
+                            <div class="form-group">
+                                <label for="site_logo" class="mb-2">Description</label>
+                                <div class="d-flex flex-column">
+                                    <textarea name="description_image" class="form-control" id="description" cols="30" rows="3" placeholder="Enter Description"></textarea>
+                                </div>
+                            </div>
                             <div class="d-flex justify-content-end gap-3 mt-3">
                                 <a href="{{ route('image-bank.index') }}" class="btn btn-light" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Back to Table Menu">Back</a>
