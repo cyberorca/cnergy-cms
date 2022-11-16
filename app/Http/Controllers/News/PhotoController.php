@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Services\NewsServices;
 use App\Models\Menu;
 use App\Models\Role;
+use App\Models\Keywords;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\URL;
@@ -153,6 +154,18 @@ class PhotoController extends Controller implements NewsServices
         $time = $data['time'];
         $mergeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
         try {
+            foreach ($data['keywords'] as $t) {
+                if (is_numeric($t)){
+                    $keyArr[] =  $t;
+                }   
+                else{
+                    $newKeyword = Keywords::create(['keywords'=>$t, 
+                                                'created_at' => now(),
+                                                'created_by' => Auth::user()->uuid,
+                                            ]);
+                    $keyArr[] = $newKeyword->id;
+                }   
+            }
             $news = new News([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
@@ -171,7 +184,7 @@ class PhotoController extends Controller implements NewsServices
                 'synopsis' => $data['synopsis'],
                 'description' => $data['description'],
                 'types' => 'photonews',
-                'keywords' => $data['keywords'],
+                //'keywords' => $data['keywords'],
                 'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
                 'reporters' => $request->has('reporters') == false ? null : json_encode($data['reporters']),
                 'contributors' => $request->has('contributors') == false ? null : json_encode($data['contributors']),
@@ -196,7 +209,10 @@ class PhotoController extends Controller implements NewsServices
                 $log->save();
             }
             foreach ($data['tags'] as $t) {
-                $news->tags()->attach($t);
+                $news->tags()->attach($t, ['created_by' => auth()->id()]);
+            }
+            foreach ($keyArr as $k) {
+                $news->keywords()->attach($k, ['created_by' => auth()->id()]);
             }
             $index = 1;
             if (count($data['photonews'])) {
@@ -258,6 +274,7 @@ class PhotoController extends Controller implements NewsServices
         $news = News::where('id', $id)->with(['users', 'news_photo'])->first();
         $categories = Category::all();
         $tags = Tag::all();
+        $keywords = Keywords::all();
         $types = 'photonews';
         $contributors = $news->users;
         $users = User::with(['roles'])->get();
@@ -267,6 +284,7 @@ class PhotoController extends Controller implements NewsServices
             'types' => $types,
             'news' => $news,
             'tags' => $tags,
+            'keywords' => $keywords,
             'contributors' => $contributors,
             'users' => $users
         ]);
@@ -364,7 +382,18 @@ class PhotoController extends Controller implements NewsServices
         $time = $data['time'];
         $margeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
         try {
-
+            foreach ($data['keywords'] as $t) {
+                if (is_numeric($t)){
+                    $keyArr[] =  $t;
+                }   
+                else{
+                    $newKeyword = Keywords::create(['keywords'=>$t, 
+                                                'created_at' => now(),
+                                                'created_by' => Auth::user()->uuid,
+                                            ]);
+                    $keyArr[] = $newKeyword->id;
+                }   
+            }
             $input = [
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
@@ -383,7 +412,7 @@ class PhotoController extends Controller implements NewsServices
                 'synopsis' => $data['synopsis'],
                 'description' => $data['description'],
                 'types' => 'photonews',
-                'keywords' => $data['keywords'],
+                //'keywords' => $data['keywords'],
                 'image' => explode(Storage::url(""), $data['upload_image_selected'])[1] ?? null,
                 'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
                 'reporters' => $request->has('reporters') == false ? null : json_encode($data['reporters']),
@@ -399,7 +428,11 @@ class PhotoController extends Controller implements NewsServices
             $newsById->update($input);
             $newsById::find($id)->tags()->detach();
             foreach ($data['tags'] as $t) {
-                $newsById->tags()->attach($t);
+                $newsById->tags()->attach($t, ['created_by' => auth()->id()]);
+            }
+            $newsById::find($id)->keywords()->detach();
+            foreach ($keyArr as $k) {
+                $newsById->keywords()->attach($k, ['created_by' => auth()->id()]);
             }
 
             PhotoNews::upsert($news_images_old, ['id'], ['title','is_active', 'url', 'image', 'description', 'keywords', 'copyright', 'order_by_no', 'created_by', 'news_id', 'updated_by']);
