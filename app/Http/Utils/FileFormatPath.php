@@ -19,7 +19,7 @@ class FileFormatPath
 
     protected function getPath()
     {
-        return "/" . $this->type . Carbon::now()->format('/Y/m/d/');
+        return "/trustedly" . Carbon::now()->format('/Y/m/d/');
     }
 
     protected function getFileName()
