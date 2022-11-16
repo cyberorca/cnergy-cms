@@ -47,7 +47,19 @@ class MenuSeeder extends Seeder
 
             array('slug' => 'tag-management', 'menu_name' => 'Tag Management', 'parent_id' => '21'),
             array('slug' => 'news-tagging', 'menu_name' => 'News Tagging', 'parent_id' => '21'),
-            array('slug' => 'today-tag', 'menu_name' => 'Today Tag', 'parent_id' => '21')
+            array('slug' => 'today-tag', 'menu_name' => 'Today Tag', 'parent_id' => '21'),
+
+            array('slug' => 'create', 'menu_name' => 'Create', 'parent_id' => '23'),
+            array('slug' => 'edit', 'menu_name' => 'Edit', 'parent_id' => '23'),
+            array('slug' => 'delete', 'menu_name' => 'Delete', 'parent_id' => '23'),
+
+            array('slug' => 'create', 'menu_name' => 'Create', 'parent_id' => '24'),
+            array('slug' => 'edit', 'menu_name' => 'Edit', 'parent_id' => '24'),
+            array('slug' => 'delete', 'menu_name' => 'Delete', 'parent_id' => '24'),
+
+            array('slug' => 'create', 'menu_name' => 'Create', 'parent_id' => '25'),
+            array('slug' => 'edit', 'menu_name' => 'Edit', 'parent_id' => '25'),
+            array('slug' => 'delete', 'menu_name' => 'Delete', 'parent_id' => '25')
         );
 
         foreach($menus as $menu){
