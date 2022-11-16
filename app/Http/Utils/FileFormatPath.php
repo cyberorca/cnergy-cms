@@ -19,7 +19,7 @@ class FileFormatPath
 
     protected function getPath()
     {
-        return "/" . $this->type . Carbon::now()->format('/Y/m/d/');
+        return "/trustedly" . Carbon::now()->format('/Y/m/d/');
     }
 
     protected function getFileName()
@@ -35,9 +35,11 @@ class FileFormatPath
     public function storeFile()
     {
         try{
-            Storage::putFileAs($this->getPath(), $this->file, $this->getFileName());
+            $fileName = $this->getFileName();
+            $folderPath = $this->getPath();
+            Storage::putFileAs($folderPath, $this->file, $fileName);
 
-            return $this->getFullPathName();
+            return $folderPath . $fileName;
         } catch (\Throwable $e) {
             return $e;
         }

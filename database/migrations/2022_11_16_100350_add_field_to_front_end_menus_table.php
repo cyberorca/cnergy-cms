@@ -13,10 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('tags', function (Blueprint $table) {
-            $table->longText('meta_title')->nullable();
-            $table->longText('meta_description')->nullable();
-            $table->longText('meta_keywords')->nullable();
+        Schema::table('front_end_menus', function (Blueprint $table) {
+
         });
     }
 
@@ -27,7 +25,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('tags', function (Blueprint $table) {
+        Schema::table('front_end_menus', function (Blueprint $table) {
             //
         });
     }

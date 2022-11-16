@@ -35,9 +35,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'laravel-filemanager'], function () {
         Lfm::routes();
     });
-    Route::get('/', function () {
-        return view('welcome');
-    });
+
+    Route::get('/', [DashboardController::class, 'index']);
 
     // Dashboard
     Route::resource('dashboard', DashboardController::class);
@@ -47,7 +46,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Master
     Route::prefix('master')->group(function () {
-
         Route::prefix('user')->group(function () {
             Route::resource('role', RoleController::class);
             Route::resource('user-setting', UsersController::class);
@@ -108,6 +106,7 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('selTag', [NewsController::class, 'select'])->name('tag.index');
+Route::get('selKeyword', [NewsController::class, 'select2'])->name('keyword.index');
 
 Route::get('/email/verify/{token}', [LoginController::class, 'verify'])->name('email.verify');
 Route::post('/front-end-menu/order/update', [FrontEndMenuController::class, 'changeOrderMenu'])->name('front-end-menu.order');

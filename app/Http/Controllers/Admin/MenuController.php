@@ -99,7 +99,6 @@ class MenuController extends Controller
             } else {
                 $menu->slug = Str::slug($data['menu_name']) . "/";
             }
-            return $menu;
             $menu->save();
             return redirect()->route('menu.index')->with("status", "Successfully Update Menu");
         } catch (\Throwable $e) {

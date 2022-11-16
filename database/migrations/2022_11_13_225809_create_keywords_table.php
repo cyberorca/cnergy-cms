@@ -13,24 +13,32 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('image_banks', function (Blueprint $table) {
+        Schema::create('keywords', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 100);
-            $table->string('image_alt', 255);
-            $table->string('slug', 100);
-            $table->string('photographer', 100);
-            $table->string('copyright', 100);
-            $table->string('caption', 100);
+            $table->enum('is_active', [1, 0])->default(1);
             $table->string('keywords', 100);
-            $table->longText('description');
             $table->timestamp('created_at', 0)->nullable();
             $table->uuid('created_by');
             $table->timestamp('updated_at', 0)->nullable();
             $table->uuid('updated_by')->nullable();
             $table->timestamp('deleted_at', 0)->nullable();
             $table->uuid('deleted_by')->nullable();
+            $table->index(['keywords', 'created_by', 'is_active']);
 
-            $table->index(['title', 'photographer', 'caption', 'keywords']);
+            $table->foreign('created_by')
+                ->references('uuid')
+                ->on('users')
+                ->onCascade('delete');
+
+            $table->foreign('updated_by')
+                ->references('uuid')
+                ->on('users')
+                ->onCascade('delete');
+
+            $table->foreign('deleted_by')
+                ->references('uuid')
+                ->on('users')
+                ->onCascade('delete');
         });
     }
 
@@ -41,6 +49,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('image_banks');
+        Schema::dropIfExists('keywords');
     }
 };

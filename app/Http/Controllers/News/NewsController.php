@@ -5,6 +5,7 @@ namespace App\Http\Controllers\News;
 use App\Http\Controllers\Controller;
 use App\Models\Menu;
 use Carbon\Carbon;
+use App\Models\Keywords;
 use App\Models\Log;
 use App\Models\News;
 use App\Models\Tag;
@@ -148,8 +149,22 @@ class NewsController extends Controller implements NewsServices
     {
         $data = $request->input();
         $news_paginations = array();
-
+        
         try {
+            foreach ($data['keywords'] as $t) {
+                if (is_numeric($t)){
+                    $keyArr[] =  $t;
+                }   
+                else{
+                    $newKeyword = Keywords::create(['keywords'=>$t, 
+                                                'created_at' => now(),
+                                                'created_by' => Auth::user()->uuid,
+                                            ]);
+                    $keyArr[] = $newKeyword->id;
+                }   
+            }
+
+
             $i = 2;
             for ($i = 0; $i < count($data['title']) - 1; $i++) {
                 $news_paginations[$i] = [
@@ -195,7 +210,7 @@ class NewsController extends Controller implements NewsServices
                 'synopsis' => $data['synopsis'],
                 'description' => $data['description'],
                 'types' => 'news',
-                'keywords' => $data['keywords'],
+               // 'keywords' => $data['keywords'],
                 'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
                 'reporters' => $request->has('reporters') == false ? null : json_encode($data['reporters']),
                 'contributors' => $request->has('contributors') == false ? null : json_encode($data['contributors']),
@@ -219,7 +234,11 @@ class NewsController extends Controller implements NewsServices
                 $log->save();
             }
             foreach ($data['tags'] as $t) {
-                $news->tags()->attach($t);
+                $news->tags()->attach($t, ['created_by' => auth()->id()]);
+            }
+
+            foreach ($keyArr as $k) {
+                $news->keywords()->attach($k, ['created_by' => auth()->id()]);
             }
 
             if (count($news_paginations)) {
@@ -262,6 +281,7 @@ class NewsController extends Controller implements NewsServices
         $news = News::where('id', $id)->with(['users', 'news_paginations'])->first();
         $categories = Category::all();
         $tags = Tag::all();
+        $keywords = Keywords::all();
         $contributors = $news->users;
         $users = User::with(['roles'])->get();
         return view('news.editable', [
@@ -269,6 +289,7 @@ class NewsController extends Controller implements NewsServices
             'categories' => $categories,
             'news' => $news,
             'tags' => $tags,
+            'keywords' => $keywords,
             'contributors' => $contributors,
             'users' => $users
         ]);
@@ -329,6 +350,19 @@ class NewsController extends Controller implements NewsServices
         $margeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
         try {
 
+            foreach ($data['keywords'] as $t) {
+                if (is_numeric($t)){
+                    $keyArr[] =  $t;
+                }   
+                else{
+                    $newKeyword = Keywords::create(['keywords'=>$t, 
+                                                'created_at' => now(),
+                                                'created_by' => Auth::user()->uuid,
+                                            ]);
+                    $keyArr[] = $newKeyword->id;
+                }   
+            }
+
             $input = [
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
@@ -342,12 +376,12 @@ class NewsController extends Controller implements NewsServices
                 'is_disable_interactions' => $request->has('isDisableInteractions') == false ? '0' : '1',
                 'is_branded_content' => $request->has('isBrandedContent') == false ? '0' : '1',
                 'title' => $news_parent['title'],
-                'slug' => Str::slug($news_parent['title']),
+                //'slug' => Str::slug($news_parent['title']),
                 'content' => $news_parent['content'],
                 'synopsis' => $data['synopsis'],
                 'description' => $data['description'],
                 'types' => 'news',
-                'keywords' => $data['keywords'],
+                //'keywords' => $data['keywords'],
                 'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
                 'reporters' => $request->has('reporters') == false ? null : json_encode($data['reporters']),
                 'contributors' => $request->has('contributors') == false ? null : json_encode($data['contributors']),
@@ -371,7 +405,11 @@ class NewsController extends Controller implements NewsServices
             $newsById->update($input);
             $newsById::find($id)->tags()->detach();
             foreach ($data['tags'] as $t) {
-                $newsById->tags()->attach($t);
+                $newsById->tags()->attach($t, ['created_by' => auth()->id()]);
+            }
+            $newsById::find($id)->keywords()->detach();
+            foreach ($keyArr as $k) {
+                $newsById->keywords()->attach($k, ['created_by' => auth()->id()]);
             }
 
             NewsPagination::upsert($news_paginations_old, ['id'], ['title', 'content', 'order_by_no']);
@@ -451,9 +489,26 @@ class NewsController extends Controller implements NewsServices
             $search = $request->q;
             $data = Tag::select("id", "tags")
                 ->where('tags', 'LIKE', "%$search%")
-                ->paginate(10)->withQueryString();
+                ->paginate(10)->withQueryString(); 
         } else {
             $data = Tag::paginate(10)->withQueryString();
+        }
+        return response()->json($data);
+    }
+
+    public function select2(Request $request)
+    {
+        //$data = Tag::where('tags', 'LIKE',  '%' .request('q'). '%')->paginate(10)->withQueryString();
+        //return response()->json($data);
+        $data = [];
+
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = Keywords::select("id", "keywords")
+                ->where('keywords', 'LIKE', "%$search%")
+                ->paginate(10)->withQueryString(); 
+        } else {
+            $data = Keywords::paginate(10)->withQueryString();
         }
         return response()->json($data);
     }

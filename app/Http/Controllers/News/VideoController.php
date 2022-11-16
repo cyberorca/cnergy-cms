@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Log;
 use App\Models\News;
 use App\Models\Tag;
+use App\Models\Keywords;
 use App\Models\User;
 use App\Models\Category;
 use Illuminate\Support\Facades\Redirect;
@@ -142,6 +143,19 @@ class VideoController extends Controller
                 $data['image'] = explode(Storage::url(""), $data['upload_image_selected'])[1];
             }
 
+            foreach ($data['keywords'] as $t) {
+                if (is_numeric($t)){
+                    $keyArr[] =  $t;
+                }   
+                else{
+                    $newKeyword = Keywords::create(['keywords'=>$t, 
+                                                'created_at' => now(),
+                                                'created_by' => Auth::user()->uuid,
+                                            ]);
+                    $keyArr[] = $newKeyword->id;
+                }   
+            }
+
             $news = new News([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
@@ -160,7 +174,7 @@ class VideoController extends Controller
                 'synopsis' => $data['synopsis'],
                 'description' => $data['description'],
                 'types' => 'video',
-                'keywords' => $data['keywords'],
+                //'keywords' => $data['keywords'],
                 'reporters' => $request->has('reporters') == false ? null : json_encode($data['reporters']),
                 'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
                 'contributors' => $request->has('contributors') == false ? null : json_encode($data['contributors']),
@@ -193,7 +207,10 @@ class VideoController extends Controller
                 'order_by_no' => 1,
             ]);
             foreach ($data['tags'] as $t) {
-                $news->tags()->attach($t);
+                $news->tags()->attach($t, ['created_by' => auth()->id()]);
+            }
+            foreach ($keyArr as $k) {
+                $news->keywords()->attach($k, ['created_by' => auth()->id()]);
             }
 
             return \redirect()->route('video.index')->with('status', 'Successfully Create Video News');
@@ -225,6 +242,7 @@ class VideoController extends Controller
         $news = News::where('id', $id)->with('news_videos:id,video,news_id')->first();
         $categories = Category::all();
         $tags = Tag::all();
+        $keywords = Keywords::all();
         $types = 'video';
         $contributors = $news->users;
         $users = User::with(['roles'])->get();
@@ -234,6 +252,7 @@ class VideoController extends Controller
             'types' => $types,
             'news' => $news,
             'tags' => $tags,
+            'keywords' => $keywords,
             'contributors' => $contributors,
             'users' => $users
         ]);
@@ -254,7 +273,18 @@ class VideoController extends Controller
         $time = $data['time'];
         $margeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
         try {
-
+            foreach ($data['keywords'] as $t) {
+                if (is_numeric($t)){
+                    $keyArr[] =  $t;
+                }   
+                else{
+                    $newKeyword = Keywords::create(['keywords'=>$t, 
+                                                'created_at' => now(),
+                                                'created_by' => Auth::user()->uuid,
+                                            ]);
+                    $keyArr[] = $newKeyword->id;
+                }   
+            }
             $input = [
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
                 'is_home_headline' => $request->has('isHomeHeadline') == false ? '0' : '1',
@@ -274,7 +304,7 @@ class VideoController extends Controller
                 'image' => $data['image'] ?? $newsById->image,
                 'description' => $data['description'],
                 'types' => 'video',
-                'keywords' => $data['keywords'],
+                //'keywords' => $data['keywords'],
                 'reporters' => $request->has('reporters') == false ? null : json_encode($data['reporters']),
                 'photographers' => $request->has('photographers') == false ? null : json_encode($data['photographers']),
                 'contributors' => $request->has('contributors') == false ? null : json_encode($data['contributors']),
@@ -302,7 +332,11 @@ class VideoController extends Controller
             ]);
             $newsById::find($id)->tags()->detach();
             foreach ($data['tags'] as $t) {
-                $newsById->tags()->attach($t);
+                $newsById->tags()->attach($t, ['created_by' => auth()->id()]);
+            }
+            $newsById::find($id)->keywords()->detach();
+            foreach ($keyArr as $k) {
+                $newsById->keywords()->attach($k, ['created_by' => auth()->id()]);
             }
 
             $log = new Log(
