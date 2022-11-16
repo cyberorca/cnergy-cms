@@ -35,9 +35,11 @@ class FileFormatPath
     public function storeFile()
     {
         try{
-            Storage::putFileAs($this->getPath(), $this->file, $this->getFileName());
+            $fileName = $this->getFileName();
+            $folderPath = $this->getPath();
+            Storage::putFileAs($folderPath, $this->file, $fileName);
 
-            return $this->getFullPathName();
+            return $folderPath . $fileName;
         } catch (\Throwable $e) {
             return $e;
         }

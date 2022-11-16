@@ -59,6 +59,34 @@ class StaticPageController extends Controller
         // return response()->json(new StaticPageCollection($staticPage))->setStatusCode(200);
     }
 
+    /**
+     * Get Static Page With Slug
+     * @OA\Get (
+     *     tags={"Static Page"},
+     *     path="/api/static-page/{slug}/",
+     *     security={{"Authentication_Token":{}}},
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="slug",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="bad request",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="unauthorized",
+     *       @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="The security token is invalid"),
+     *          )
+     *     )
+     * )
+     */
     public function show(Request $request, $slug){
         $staticPage = StaticPage::where('slug', $slug)->with('users')->get();
         return response()->json(
