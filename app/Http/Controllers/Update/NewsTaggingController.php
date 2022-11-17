@@ -83,8 +83,9 @@ class NewsTaggingController extends Controller
             $tags = $request->tags;
             $newsById = News::find($request->id);
             if ($tags != null) {
+                $newsById->tags()->detach();
                 foreach ($tags as $t) {
-                    $newsById->tags()->attach($t, ['created_by' => auth()->id(),'created_at'=>now()]);
+                    $newsById->tags()->attach($t, ['created_by' => auth()->id(), 'created_at' => now()]);
                 }
             } else {
                 $newsById->tags()->detach();
@@ -120,18 +121,18 @@ class NewsTaggingController extends Controller
         $massTag = $request->get('massTag');
         $checkedTag = $request->get('checkedTag');
         try {
-            if ($checkedTag!= null){
+            if ($checkedTag != null) {
                 foreach ($checkedTag as $id) {
                     $newsById = News::find($id);
                     foreach ($massTag as $m) {
-                        if (!$newsById->tags->contains($m)){
-                            $newsById->tags()->attach($m, ['created_by' => auth()->id(),'created_at'=>now()]);
+                        if (!$newsById->tags->contains($m)) {
+                            $newsById->tags()->attach($m, ['created_by' => auth()->id(), 'created_at' => now()]);
                         }
                     }
                 }
                 return \redirect()->route('news-tagging.index')->with('status', 'Successfully Update News Tags');
-            }else{
-                return Redirect::back()->withErrors(['Error'=>'Please Checked First']);
+            } else {
+                return Redirect::back()->withErrors(['Error' => 'Please Checked First']);
             }
 
         } catch (\Exception $e) {
