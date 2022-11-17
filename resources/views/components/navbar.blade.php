@@ -9,37 +9,72 @@
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-lg-0">
-                    <li class="nav-item dropdown me-3">
-                        <a class="nav-link active dropdown-toggle text-gray-600" href="#"
-                            data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-                            <i class='bi bi-bell bi-sub fs-4'></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end notification-dropdown"
-                            aria-labelledby="dropdownMenuButton">
-                            <li class="dropdown-header">
-                                <h6>Notifications</h6>
-                            </li>
-                            <li class="dropdown-item notification-item">
-                                <a class="d-flex align-items-center" href="#">
-                                    <div class="notification-icon bg-success">
-                                        <i class="bi bi-file-earmark-check"></i>
-                                    </div>
-                                    <div class="notification-text ms-4">
-                                        <p class="notification-title font-bold">Feature</p>
-                                        <p class="notification-subtitle font-thin text-sm">Coming Soon</p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <p class="text-center py-2 mb-0"><a href="#">See all
-                                        notification</a></p>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+            <div>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-lg-0">
+                        <li class="nav-item dropdown me-3 dropdown-hover">
+                            <a class="nav-link active dropdown-toggle text-gray-600 font-bold" href="#"
+                                data-bs-toggle="dropdown"><i class='bi bi-plus fs-4'></i> News
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end notification-dropdown"
+                                aria-labelledby="dropdownMenuButton">
+                                <li class="dropdown-item notification-item">
+                                    <a class="d-flex align-items-center font-bold"
+                                        href="{{ route('news.create') }}">News</a>
+                                </li>
+                                <li class="dropdown-item notification-item">
+                                    <a class="d-flex align-items-center font-bold"
+                                        href="{{ route('photo.create') }}">Photo News</a>
+                                </li>
+                                <li class="dropdown-item notification-item">
+                                    <a class="d-flex align-items-center font-bold"
+                                        href="{{ route('video.create') }}">Video News</a>
+                                </li>
+                                <li class="dropdown-item notification-item">
+                                    <a class="d-flex align-items-center font-bold"
+                                        href="{{ route('category.create') }}">Category</a>
+                                </li>
+                                <li class="dropdown-item notification-item">
+                                    <a class="d-flex align-items-center font-bold"
+                                        href="{{ route('tag-management.create') }}">Tag</a>
+                                </li>
+                                <li class="dropdown-item notification-item">
+                                    <a class="d-flex align-items-center font-bold"
+                                        href="{{ route('static-page.create') }}">Static Page</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    {{--  --}}
+                    <ul class="navbar-nav ms-auto mb-lg-0">
+                        <li class="nav-item dropdown me-3">
+                            <a class="nav-link active dropdown-toggle text-gray-600" href="#"
+                                data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                                <i class='bi bi-bell bi-sub fs-4'></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end notification-dropdown"
+                                aria-labelledby="dropdownMenuButton">
+                                <li class="dropdown-header">
+                                    <h6>Notifications</h6>
+                                </li>
+                                <li class="dropdown-item notification-item">
+                                    <a class="d-flex align-items-center" href="#">
+                                        <div class="notification-icon bg-success">
+                                            <i class="bi bi-file-earmark-check"></i>
+                                        </div>
+                                        <div class="notification-text ms-4">
+                                            <p class="notification-title font-bold">Feature</p>
+                                            <p class="notification-subtitle font-thin text-sm">Coming Soon</p>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <p class="text-center py-2 mb-0"><a href="#">See all
+                                            notification</a></p>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 <div class="dropdown">
                     <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="user-menu d-flex">
@@ -70,26 +105,3 @@
         </div>
     </nav>
 </header>
-
-<script src="assets/extensions/jquery/jquery.min.js"></script>
-<script>
-    $(document).ready(function() {
-
-        // Add hover action for dropdowns
-        let dropdown_hover = $(".dropdown-hover");
-        dropdown_hover.on('mouseover', function() {
-            let menu = $(this).find('.dropdown-menu'),
-                toggle = $(this).find('.dropdown-toggle');
-            menu.addClass('show');
-            toggle.addClass('show').attr('aria-expanded', true);
-        });
-        dropdown_hover.on('mouseout', function() {
-            let menu = $(this).find('.dropdown-menu'),
-                toggle = $(this).find('.dropdown-toggle');
-            menu.removeClass('show');
-            toggle.removeClass('show').attr('aria-expanded', false);
-        });
-
-    });
-</script>
-
