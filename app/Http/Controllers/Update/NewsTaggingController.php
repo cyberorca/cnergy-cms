@@ -84,7 +84,7 @@ class NewsTaggingController extends Controller
             $newsById = News::find($request->id);
             if ($tags != null) {
                 foreach ($tags as $t) {
-                    $newsById->tags()->attach($t, ['created_by' => auth()->id()]);
+                    $newsById->tags()->attach($t, ['created_by' => auth()->id(),'created_at'=>now()]);
                 }
             } else {
                 $newsById->tags()->detach();
@@ -125,7 +125,7 @@ class NewsTaggingController extends Controller
                     $newsById = News::find($id);
                     foreach ($massTag as $m) {
                         if (!$newsById->tags->contains($m)){
-                            $newsById->tags()->attach($m, ['created_by' => auth()->id()]);
+                            $newsById->tags()->attach($m, ['created_by' => auth()->id(),'created_at'=>now()]);
                         }
                     }
                 }
