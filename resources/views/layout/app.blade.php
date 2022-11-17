@@ -74,6 +74,26 @@
     <script src="{{ asset('assets/js/app.js') }}"></script>
     <script src="{{ asset('assets/js/menu.js') }}"></script>
     <script src="{{ asset('assets/extensions/jquery/jquery.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+    
+            // Add hover action for dropdowns
+            let dropdown_hover = $(".dropdown-hover");
+            dropdown_hover.on('mouseover', function() {
+                let menu = $(this).find('.dropdown-menu'),
+                    toggle = $(this).find('.dropdown-toggle');
+                menu.addClass('show');
+                toggle.addClass('show').attr('aria-expanded', true);
+            });
+            dropdown_hover.on('mouseout', function() {
+                let menu = $(this).find('.dropdown-menu'),
+                    toggle = $(this).find('.dropdown-toggle');
+                menu.removeClass('show');
+                toggle.removeClass('show').attr('aria-expanded', false);
+            });
+    
+        });
+    </script>
     @yield('javascript')
 </body>
 
