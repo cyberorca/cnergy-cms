@@ -17,6 +17,7 @@ use App\Http\Controllers\Tools\ImageBankController;
 use App\Http\Controllers\Tools\InventoryManagementController;
 use App\Http\Controllers\Tools\NewsDraftController;
 use App\Http\Controllers\Tools\StaticPageController;
+use App\Http\Controllers\Update\NewsTaggingController;
 use Illuminate\Support\Facades\Route;
 use UniSharp\LaravelFilemanager\Lfm;
 
@@ -86,9 +87,12 @@ Route::group(['middleware' => 'auth'], function () {
         });
         Route::prefix('tags')->group(function () {
             Route::resource('tag-management', TagsController::class);
+            Route::resource('news-tagging', NewsTaggingController::class)->only(['index']);
+            Route::post('tagging-search', [NewsTaggingController::class,'getTagging'])->name('tagging.search');
+            Route::post('tagging-multi', [NewsTaggingController::class,'multiTagging'])->name('tagging.multi');
+            Route::post('tagging-update', [NewsTaggingController::class,'updateTagging'])->name('tagging.edit');
         });
     });
-
 
     Route::get('image/{filename}', [ImageBankController::class, 'displayImage'])->name('image.displayImage');
     Route::get('/image-bank/api/list/', [ImageBankController::class, 'apiList'])->name('image_bank.api');
@@ -110,4 +114,3 @@ Route::get('selKeyword', [NewsController::class, 'select2'])->name('keyword.inde
 
 Route::get('/email/verify/{token}', [LoginController::class, 'verify'])->name('email.verify');
 Route::post('/front-end-menu/order/update', [FrontEndMenuController::class, 'changeOrderMenu'])->name('front-end-menu.order');
-
