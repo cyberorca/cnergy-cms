@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
         ]);
         User::factory(100)->create();
         // Tag::factory(100)->create();
-        Category::factory(10)->create();
+        // Category::factory(10)->create();
         // News::factory(100)->create();
         // PhotoNews::factory(100)->create();
         // VideoNews::factory(100)->create();

@@ -75,7 +75,7 @@
 
                         <div class="form-group">
                             <label for="content" class="form-label">Content</label>
-                            <textarea name="content" class="my-editor form-control" id="content" cols="30" rows="10" required>@if ($method === 'edit'){{ $news->content }}@endif</textarea>
+                            <textarea name="content" class="my-editor form-control" id="content" cols="30" rows="10">@if ($method === 'edit'){{ $news->content }}@endif</textarea>
                         </div>
 
                         <div class="form-group">
@@ -123,6 +123,31 @@
                 }
             }
         });
+    });
+
+        $(document).ready(function() {
+            $("#keyword").select2({
+                tags: true,
+                placeholder: 'Select Keywords',
+                allowClear: true,
+                ajax: {
+                    url: "{{ route('keyword.index') }}",
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function({
+                        data
+                    }) {
+                        return {
+                            results: $.map(data, function(item) {
+                                return {
+                                    id: item.id,
+                                    text: item.keywords
+                                }
+                            })
+                        }
+                    }
+                }
+            });
     });
 </script>
 
