@@ -62,6 +62,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('menu', MenuController::class)->except(['create']);
 
         Route::get("/category/create/{id?}", [CategoriesController::class, 'create'])->name('category.create');
+        Route::post("/category/api/change/", [CategoriesController::class, 'changeCategoriesData']);
         Route::resource('category', CategoriesController::class)->except(['create']);
     });
 

@@ -75,7 +75,7 @@
 
                         <div class="form-group">
                             <label for="content" class="form-label">Content</label>
-                            <textarea name="content" class="my-editor form-control" id="content" cols="30" rows="10" required>@if ($method === 'edit'){{ $news->content }}@endif</textarea>
+                            <textarea name="content" class="my-editor form-control" id="content" cols="30" rows="10">@if ($method === 'edit'){{ $news->content }}@endif</textarea>
                         </div>
 
                         <div class="form-group">

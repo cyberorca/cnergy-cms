@@ -143,7 +143,6 @@ class FrontEndMenuController extends Controller
     public function changeOrderMenu(Request $request)
     {
         try {
-            // return json_decode(json_encode($request->get('data')),true) ;
             FrontEndMenu::upsert($request->get('data'), ['id', 'title', 'slug'], ['order', 'parent_id']);
             return [
                 'message' => 'success'

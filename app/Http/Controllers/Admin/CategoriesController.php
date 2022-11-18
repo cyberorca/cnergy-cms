@@ -47,6 +47,7 @@ class CategoriesController extends Controller
     public function store(Request $request)
     {
         $data = $request->input();
+        return $data['types'];
         $category = new Category([
             'is_active' => '1',
             'category' => ucwords($data['category']),
@@ -143,6 +144,27 @@ class CategoriesController extends Controller
             return Redirect::back()->with('status', 'Successfully Delete Category');
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
+        }
+    }
+
+    public function changeCategoriesData(Request $request)
+    {
+        try {
+            $input = $request->category;
+            $category = array();
+            foreach ($input as $item) {
+                $item['created_by'] = auth()->id();
+                $item['types'] = json_encode(['news']);
+                array_push($category, $item);
+            }
+            Category::upsert($category, ['id'], ['parent_id']);
+            return response()->json([
+                'message' => 'Successfully to change categories data'
+            ], 200);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
 }

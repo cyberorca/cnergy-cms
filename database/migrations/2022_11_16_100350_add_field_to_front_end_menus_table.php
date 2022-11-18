@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('front_end_menus', function (Blueprint $table) {
-
+            $table->string('type', 50);
+            $table->string('target', 50);
         });
     }
 
