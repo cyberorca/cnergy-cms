@@ -8,7 +8,6 @@ use App\Models\Tag;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
 class NewsTaggingController extends Controller
@@ -23,7 +22,6 @@ class NewsTaggingController extends Controller
         $news = News::with(['categories', 'tags'])->latest();
         $reporters = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Reporter");
         $editors = User::join('roles', 'users.role_id', '=', 'roles.id')->where('roles.role', "Editor");
-        $tags = Tag::all();
         if ($request->get('reporter')) {
             $reporter = $request->reporter;
             $news->whereJsonContains('reporters', $reporter);
@@ -72,8 +70,7 @@ class NewsTaggingController extends Controller
             'newsTypes' => ['video', 'news', 'photonews'],
             'news' => $news->paginate(10)->withQueryString(),
             'reporters' => $reporters->get(),
-            'editors' => $editors->get(),
-            'tags' => $tags,
+            'editors' => $editors->get()
         ]);
     }
 
