@@ -69,7 +69,7 @@ class InventoryManagementController extends Controller
             // return $data;
             InventoryManagement::upsert($data, ['id'], ['inventory', 'slot_name', 'adunit_size', 'size', 'template_id', 'code', 'created_by']);
 
-            return redirect()->route('inventory-management.index')->with('status', 'Successfully to change inventory');
+            return redirect()->route('inventory-management.index')->with('status', 'Successfully Update Inventory');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
