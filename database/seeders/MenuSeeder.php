@@ -59,7 +59,9 @@ class MenuSeeder extends Seeder
 
             array('slug' => 'create', 'menu_name' => 'Create', 'parent_id' => '25'),
             array('slug' => 'edit', 'menu_name' => 'Edit', 'parent_id' => '25'),
-            array('slug' => 'delete', 'menu_name' => 'Delete', 'parent_id' => '25')
+            array('slug' => 'delete', 'menu_name' => 'Delete', 'parent_id' => '25'),
+
+            array('slug' => 'news-draft', 'menu_name' => 'News Draft', 'parent_id' => '3')
         );
 
         foreach($menus as $menu){
