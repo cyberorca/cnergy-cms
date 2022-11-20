@@ -35,6 +35,8 @@ class FrontEndMenuSeeder extends Seeder
                 'title' => $menu['title'],
                 'parent_id' => $menu['parent_id'],
                 'order' => $menu['order'],
+                'type' => fake()->randomElement(['anchor', 'label', 'link']),
+                'target' => fake()->randomElement(['Same Tab', 'New Window']),
                 'position' => json_encode(fake()->randomElement([['header'], ['footer'], ['header', 'footer']])),
             ]);
         }
