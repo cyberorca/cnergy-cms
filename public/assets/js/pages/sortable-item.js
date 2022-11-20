@@ -1,5 +1,8 @@
-let orderedMenu = [];
 var button = document.querySelector("#button-save-order");
+var type_data = document.querySelector("#type_data").value;
+let orderedMenu = {
+    [type_data]: []
+};
 
 button.addEventListener('click', function () {
     var nestedSortableSaved = document.querySelectorAll('.accordion-item');
@@ -7,14 +10,25 @@ button.addEventListener('click', function () {
         const id = el.getAttribute("data-id");
         const parent_id = el.parentNode.parentNode.getAttribute("data-id");
         const name = el.getAttribute("data-name");
-        orderedMenu.push({
-            'id': +id,
-            'category': name,
-            'common': name,
-            'slug': name.toLocaleLowerCase().split(' ').join('-'),
-            'types': ["news","video","photonews"],
-            'parent_id': parent_id ?? null,
-        })
+        if(type_data == 'menu'){
+            orderedMenu[type_data].push({
+                'id': +id,
+                'menu_name': name,
+                'slug': name.toLocaleLowerCase().split(' ').join('-'),
+                'parent_id': parent_id ?? null,
+                'order': index
+            })
+        }
+        if(type_data == 'category'){
+            orderedMenu[type_data].push({
+                'id': +id,
+                'category': name,
+                'common': name,
+                'slug': name.toLocaleLowerCase().split(' ').join('-'),
+                'types': ["news","video","photonews"],
+                'parent_id': parent_id ?? null,
+            })    
+        }
     })
     $(this).html(`
            <span class="spinner-border spinner-border-sm" role="status"
@@ -36,7 +50,7 @@ for (var i = 0; i < nestedSortables.length; i++) {
     });
 }
 
-function saveData(category) {
+function saveData(sortedData) {
     // let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     $.ajaxSetup({
         headers: {
@@ -44,10 +58,12 @@ function saveData(category) {
         }
     });
     const input = {
-        category: category
-    }
+        sortedData: sortedData[type_data]
+    } 
+    const url = `/master/${type_data}/api/change`
+
     $.ajax({
-        url: "/master/category/api/change",
+        url: url,
         type: "POST",
         data: input,
         success: function (data) {

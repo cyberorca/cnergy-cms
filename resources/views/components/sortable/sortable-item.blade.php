@@ -3,7 +3,9 @@
 @endphp
 <div class="box-sortable">
     <div class="accordion-item  border-top-0 border-end-0 border-bottom-0 draggable" data-id='{{ $item['id'] }}'
-        data-parent="{{ $item['parent_id'] }}" data-name="{{ $item['menu_name'] }}">
+        data-parent="{{ $item['parent_id'] }}" data-name="{{ $item['menu_name'] }}" 
+        @if ($path === 'front-end-menu') data-position="{{ $item['position'] }}" @endif
+        >
         <h2 class="menu accordion-header" id="heading-{{ $item['slug'] }}-{{ $item['id'] }}">
             <div class="px-3 ps-0 py-0 border-0">
                 <div class="d-flex align-items-center w-100 justify-content-between">

@@ -121,4 +121,19 @@ class MenuController extends Controller
             return redirect()->back()->withErrors($e->getMessage());
         }
     }
+
+    public function changeOrderMenu(Request $request)
+    {
+        try {
+            $input = $request->sortedData;
+            Menu::upsert($input, ['id'], ['parent_id']);
+            return response()->json([
+                'message' => 'Successfully to change menu data'
+            ], 200);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

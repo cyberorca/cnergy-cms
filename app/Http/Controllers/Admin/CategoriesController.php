@@ -150,7 +150,7 @@ class CategoriesController extends Controller
     public function changeCategoriesData(Request $request)
     {
         try {
-            $input = $request->category;
+            $input = $request->sortedData;
             $category = array();
             foreach ($input as $item) {
                 $item['created_by'] = auth()->id();
