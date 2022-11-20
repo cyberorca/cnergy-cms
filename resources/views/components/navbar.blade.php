@@ -14,7 +14,7 @@
                     <ul class="navbar-nav ms-auto mb-lg-0">
                         <li class="nav-item dropdown me-3 dropdown-hover">
                             <a class="nav-link active dropdown-toggle text-gray-600 font-bold" href="#"
-                                data-bs-toggle="dropdown"><i class='bi bi-plus fs-4'></i> News
+                                data-bs-toggle="dropdown"><i class='bi bi-plus fs-4'></i> New
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end notification-dropdown"
                                 aria-labelledby="dropdownMenuButton">
