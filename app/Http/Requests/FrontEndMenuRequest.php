@@ -27,6 +27,9 @@ class FrontEndMenuRequest extends FormRequest
             'title' => 'required',
             'parent_id' => 'nullable',
             'position' => 'required',
+            'type' => 'required',
+            'target' => 'nullable',
+            'slug' => 'nullable'
         ];
     }
 }

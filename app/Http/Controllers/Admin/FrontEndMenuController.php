@@ -51,7 +51,18 @@ class FrontEndMenuController extends Controller
     {
         try {
             $input = $request->validated();
-            $input['slug'] = Str::slug($input['title']);
+            if($input['type'] == 'anchor') {
+                $input['slug'] = Str::slug($input['slug']);
+                $input['target'] = 'self';
+            }
+            if($input['type'] == 'label') {
+                $input['target'] = 'self';
+                $input['slug'] = '#';
+            }
+            if($input['type'] == 'link') {
+                $input['slug'] = Str::slug($input['slug']);
+            }
+            
             $input['position'] = json_encode($input['position']);
             if (array_key_exists("parent_id", $input)) {
                 $order = FrontEndMenu::select('id')->where('id', $input['parent_id'])
@@ -109,12 +120,25 @@ class FrontEndMenuController extends Controller
     {
         try {
             $input = $request->validated();
-            $input['slug'] = Str::slug($input['title']);
+            if($input['type'] == 'anchor') {
+                $input['slug'] = Str::slug($input['slug']);
+                $input['target'] = 'self';
+            }
+            if($input['type'] == 'label') {
+                $input['target'] = 'self';
+                $input['slug'] = '#';
+            }
+            if($input['type'] == 'link') {
+                $input['slug'] = Str::slug($input['slug']);
+            }
+            // $input['slug'] = Str::slug($input['title']);
             $input['position'] = json_encode($input['position']);
-
+            // return response()->json($input);
             $fe_menu = FrontEndMenu::find($id);
             $fe_menu->title = $input['title'];
             $fe_menu->slug = $input['slug'];
+            $fe_menu->type = $input['type'];
+            $fe_menu->target = $input['target'];
             $fe_menu->position = $input['position'];
             $fe_menu->save();
 
