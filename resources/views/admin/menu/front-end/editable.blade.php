@@ -85,10 +85,6 @@
                         <label for="basicInput" class="mb-2">Type</label>
                         <select name="type" class="form-select" aria-label="Default select example"
                             onchange="getType(this)">
-                            <option value="anchor"
-                                @if ($method === 'edit') @if ($fe_menu->type == 'anchor')
-                                selected @endif
-                                @endif>Anchor</option>
                             <option value="link"
                                 @if ($method === 'edit') @if ($fe_menu->type == 'link')
                                 selected @endif
@@ -97,6 +93,10 @@
                                 @if ($method === 'edit') @if ($fe_menu->type == 'label')
                                 selected @endif
                                 @endif>Label</option>
+                            <option value="anchor"
+                                @if ($method === 'edit') @if ($fe_menu->type == 'anchor')
+                                selected @endif
+                                @endif>Anchor</option>
                         </select>
                     </div>
 

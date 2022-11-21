@@ -152,6 +152,43 @@
                 ]
             }
         },
+        "/api/inventory/": {
+            "get": {
+                "tags": [
+                    "Inventory Management"
+                ],
+                "summary": "Get Inventory Management",
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "400": {
+                        "description": "bad request"
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The security token is invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+                    }
+                ]
+            }
+        },
         "/api/menu/": {
             "get": {
                 "tags": [
@@ -337,6 +374,93 @@
                         "in": "query",
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "max_id",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "last_update",
+                        "in": "query",
+                        "schema": {
+                            "type": "date"
+                        }
+                    },
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "headline",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                0
+                            ]
+                        }
+                    },
+                    {
+                        "name": "editorpick",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                0
+                            ]
+                        }
+                    },
+                    {
+                        "name": "published",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                0
+                            ]
+                        }
+                    },
+                    {
+                        "name": "orderby",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "sensitive",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                0
+                            ]
+                        }
+                    },
+                    {
+                        "name": "alltype",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                0
+                            ]
                         }
                     }
                 ],
