@@ -22,11 +22,12 @@
                 <a href="{{ route('category.create') }}" class="btn btn-primary">
                     <i class="bi bi-plus-circle"></i>&nbsp;&nbsp;&nbsp;Add Category
                 </a>
+                <input type="hidden" value="category" id="type_data">
             </div>
             <div class="card-body d-flex flex-column gap-2">
                 <button class="btn btn-success col-2 d-none" id="button-save-order"><i class="bi bi-save"></i>
                     &nbsp;&nbsp;Save</button>
-                @include('components.sortable.sortable', ['list' => $categories])
+                @include('components.sortable.sortable', ['list' => $categories, 'type' => 'category'])
             </div>
         </div>
 
