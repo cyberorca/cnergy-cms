@@ -1,7 +1,7 @@
 <li
     class="submenu-item 
     @if (count($item['children'])) sidebar-item has-sub subs-child @endif
-    " data-parent-sidebar="{{ $item['parent_id'] }}" data-id-sidebar="{{ $item['id'] }}" data-parents-sidebar="{{ json_encode($item['parents']) }}" 
+    " data-parent-sidebar="{{ $item['parent_id'] }}" data-id-sidebar="{{ $item['id'] }}" 
     @if (str_contains(request()->getRequestUri() . "/", $item['slug']) && count($item['children']) == 0) data-status-sidebar="true" @endif>
     <a @if (count($item['children'])) class="sidebar-link"
         href="{{ url($item['slug']) }}" 

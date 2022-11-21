@@ -1,5 +1,5 @@
 @php
-    $path = 'category';
+    $path = $type;
 @endphp
 <div class="box-sortable">
     <div class="accordion-item  border-top-0 border-end-0 border-bottom-0 draggable" data-id='{{ $item['id'] }}'
@@ -84,13 +84,6 @@
                     @foreach ($item['children'] as $child)
                         @include('components.sortable.sortable-item', ['item' => $child])
                     @endforeach
-                </div>
-            </div>
-        @else
-            <div id="collapse-{{ implode('-', explode('/', $item['slug'])) }}{{ $item['id'] }}"
-                class="accordion-collapse collapse show"
-                aria-labelledby="heading-{{ $item['slug'] }}-{{ $item['id'] }}">
-                <div class="accordion-body pe-0 py-0 py-5 border-0 d-flex flex-column nested">
                 </div>
             </div>
         @endif

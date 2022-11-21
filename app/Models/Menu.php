@@ -73,6 +73,8 @@ class Menu extends Model
             ->where('menu_name','!=','Create')
             ->where('menu_name','!=','Edit')
             ->where('menu_name', '!=', 'Delete')
+            ->orderBy('parent_id')
+            ->orderBy('order')
             ->get()->toArray();
         // $menu_role_user = self::all()->with->toArray();
         return self::convertMenuDataToResponseAPI($menu_role_user);
@@ -80,7 +82,7 @@ class Menu extends Model
 
     public static function getAllPage()
     {
-        $menu_role_user = self::all()->toArray();
+        $menu_role_user = self::orderBy('parent_id')->orderBy('order')->get()->toArray();
         return self::convertMenuDataToResponse($menu_role_user);
     }
 
@@ -108,9 +110,9 @@ class Menu extends Model
                 $tree[$node['id']] = &$node;
             } else {
                 $res = array();
-                $data = self::getAllParents($references, $node['parent_id'], $res);
+                // $data = self::getAllParents($references, $node['parent_id'], $res);
                 $references[$node['parent_id']]['children'][$node['id']] = &$node;
-                $references[$node['parent_id']]['children'][$node['id']]['parents'] = $data;
+                // $references[$node['parent_id']]['children'][$node['id']]['parents'] = $data;
             }
         }
         return $tree;
@@ -129,9 +131,9 @@ class Menu extends Model
                     $tree[$node['id']] = &$node;
                 } else {
                     $res = array();
-                    $data = self::getAllParents($references, $node['parent_id'], $res);
+                    // $data = self::getAllParents($references, $node['parent_id'], $res);
                     $references[$node['parent_id']]['children'][$node['id']] = &$node;
-                    $references[$node['parent_id']]['children'][$node['id']]['parents'] = $data;
+                    // $references[$node['parent_id']]['children'][$node['id']]['parents'] = $data;
                 }
             }
         }

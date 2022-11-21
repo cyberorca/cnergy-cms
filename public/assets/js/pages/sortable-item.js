@@ -60,6 +60,7 @@ function saveData(sortedData) {
     const input = {
         sortedData: sortedData[type_data]
     } 
+    
     const url = `/master/${type_data}/api/change`
 
     $.ajax({

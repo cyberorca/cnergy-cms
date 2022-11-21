@@ -47,7 +47,6 @@ class CategoriesController extends Controller
     public function store(Request $request)
     {
         $data = $request->input();
-        return $data['types'];
         $category = new Category([
             'is_active' => '1',
             'category' => ucwords($data['category']),

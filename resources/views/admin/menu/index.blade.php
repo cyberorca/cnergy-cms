@@ -18,7 +18,7 @@
             <div class="card-body d-flex flex-column gap-2">
                 <button class="btn btn-success col-2 d-none" id="button-save-order"><i class="bi bi-save"></i>
                     &nbsp;&nbsp;Save</button>
-                    @include('components.sortable.sortable', ['list' => $menus])
+                    @include('components.sortable.sortable', ['list' => $menus, 'type' => 'menu'])
             </div>
         </div>
     </section>

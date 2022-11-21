@@ -126,7 +126,7 @@ class MenuController extends Controller
     {
         try {
             $input = $request->sortedData;
-            Menu::upsert($input, ['id'], ['parent_id']);
+            Menu::upsert($input, ['id'], ['parent_id', 'order']);
             return response()->json([
                 'message' => 'Successfully to change menu data'
             ], 200);
