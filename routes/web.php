@@ -59,6 +59,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/front-end-setting', FrontEndSettingsController::class);
 
         Route::get("/menu/create/{id?}", [MenuController::class, 'create'])->name('menu.create');
+        Route::post("/menu/api/change/", [MenuController::class, 'changeOrderMenu']);
         Route::resource('menu', MenuController::class)->except(['create']);
 
         Route::get("/category/create/{id?}", [CategoriesController::class, 'create'])->name('category.create');

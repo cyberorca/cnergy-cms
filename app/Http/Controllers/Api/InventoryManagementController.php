@@ -35,7 +35,7 @@ class InventoryManagementController extends Controller
 {
     public function index(Request $request)
     {
-        $inventoryManagement = InventoryManagement::latest();
+        $inventoryManagement = InventoryManagement::orderBy('id');
 
         $type = $request->get('type');
         if($type){
