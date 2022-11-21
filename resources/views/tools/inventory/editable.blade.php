@@ -62,7 +62,7 @@
                                                             <input type="text" class="form-control"
                                                                 id="{{ $keys_name }}"
                                                                 name="{{ $type }}[{{ $index_arr }}][{{ $keys_name }}]"
-                                                                required value="{{ $inventory_management[$type][$index_arr][$keys_name] ?? null }}" />
+                                                                value="{{ $inventory_management[$type][$index_arr][$keys_name] ?? null }}" />
                                                         </div>
                                                     @else
                                                         <input type="hidden"
