@@ -47,7 +47,6 @@ class CategoriesController extends Controller
     public function store(Request $request)
     {
         $data = $request->input();
-        return $data['types'];
         $category = new Category([
             'is_active' => '1',
             'category' => ucwords($data['category']),
@@ -150,7 +149,7 @@ class CategoriesController extends Controller
     public function changeCategoriesData(Request $request)
     {
         try {
-            $input = $request->category;
+            $input = $request->sortedData;
             $category = array();
             foreach ($input as $item) {
                 $item['created_by'] = auth()->id();
