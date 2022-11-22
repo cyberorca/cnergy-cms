@@ -170,9 +170,9 @@ class NewsTaggingController extends Controller
 
         //filter tags convert to new array
         foreach ($tags as $t) {
-            $isTagReady = Tag::where('tags', '=', $t)->exists();
+            $isTagReady = Tag::where('tags', '=', $t)->orWhere('id','=',$t)->exists();
             if ($isTagReady) {
-                $getId = Tag::where('tags', '=', $t)->first()->id;
+                $getId = Tag::where('tags', '=', $t)->orWhere('id','=',$t)->first()->id;
                 array_push($tagsFilled, $getId);
             } else {
                 if (!is_numeric($t)) {
