@@ -81,27 +81,15 @@ class NewsTaggingController extends Controller
         if ($request->ajax()) {
             $tags = $request->tags;
             $newsById = News::find($request->id);
-            $tagsFilled= [];
+            $tagsFilled = [];
 
             if ($tags != null) {
                 $newsById->tags()->detach();
-                foreach ($tags as $t) {
-                    $isTagReady = Tag::where('tags', '=', $t)->exists();
-                    if ($isTagReady) {
-                        $getId = Tag::where('tags','=',$t)->first()->id;
-                        array_push($tagsFilled, $getId);
-                    } else {
-                        $newTagID = Tag::insertGetId([
-                            'tags' => ucwords($t),
-                            'slug' => Str::slug($t),
-                            'created_at' => now(),
-                            'created_by' => Auth::user()->uuid,
-                        ]);
-                        array_push($tagsFilled, $newTagID);
-                    }
-                }
-//                return response()->json($tagsFilled);
-                foreach ($tagsFilled as $id){
+                //data temp tags
+                $tagsFilled = $this->getTagsFilled($tags);
+
+//               return response()->json($tagsFilled);
+                foreach ($tagsFilled as $id) {
                     $newsById->tags()->attach($id, ['created_by' => auth()->id(), 'created_at' => now()]);
                 }
 
@@ -109,7 +97,7 @@ class NewsTaggingController extends Controller
                 $newsById->tags()->detach();
             }
 
-            return response()->json(['news' => $newsById, 'tagFilled'=>$tagsFilled]);
+            return response()->json(['news' => $newsById, 'tagFilled' => $tagsFilled]);
         }
 
     }
@@ -148,26 +136,7 @@ class NewsTaggingController extends Controller
         $massTag = $request->get('massTag');
 
         //data temp tags
-        $tagsFilled = [];
-
-        //filter tags convert to new array
-        foreach ($massTag as $t) {
-            $isTagReady = Tag::where('tags', '=', $t)->exists();
-            if ($isTagReady) {
-                $getId = Tag::where('tags','=',$t)->first()->id;
-                array_push($tagsFilled, $getId);
-            } else {
-                if (!is_numeric($t)){
-                    $newTagID = Tag::insertGetId([
-                        'tags' => ucwords($t),
-                        'slug' => Str::slug($t),
-                        'created_at' => now(),
-                        'created_by' => Auth::user()->uuid,
-                    ]);
-                    array_push($tagsFilled, $newTagID);
-                }
-            }
-        }
+        $tagsFilled = $this->getTagsFilled($massTag);
 
         //data id news only checked
         $checkedTag = $request->get('checkedTag');
@@ -192,4 +161,46 @@ class NewsTaggingController extends Controller
         }
 
     }
+
+    public function insertTagging(Request $request)
+    {
+        if ($request->ajax()) {
+            $tags = $request->tags;
+
+            //data temp tags
+            $tagsFilled = $this->getTagsFilled($tags);
+
+            return response()->json(['tagFilled' => $tagsFilled]);
+        }
+    }
+
+    /**
+     * @param mixed $tags
+     * @return array
+     */
+    public function getTagsFilled(mixed $tags): array
+    {
+        $tagsFilled = [];
+
+        //filter tags convert to new array
+        foreach ($tags as $t) {
+            $isTagReady = Tag::where('tags', '=', $t)->exists();
+            if ($isTagReady) {
+                $getId = Tag::where('tags', '=', $t)->first()->id;
+                array_push($tagsFilled, $getId);
+            } else {
+                if (!is_numeric($t)) {
+                    $newTagID = Tag::insertGetId([
+                        'tags' => ucwords($t),
+                        'slug' => Str::slug($t),
+                        'created_at' => now(),
+                        'created_by' => Auth::user()->uuid,
+                    ]);
+                    array_push($tagsFilled, $newTagID);
+                }
+            }
+        }
+        return $tagsFilled;
+    }
+
 }
