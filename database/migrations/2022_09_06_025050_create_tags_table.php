@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->enum('is_active', [1, 0])->default(1);
             $table->string('tags', 100);
-            $table->longText('slug');
+            $table->string('slug', 255);
             $table->longText('meta_title')->nullable();
             $table->longText('meta_description')->nullable();
             $table->longText('meta_keywords')->nullable();

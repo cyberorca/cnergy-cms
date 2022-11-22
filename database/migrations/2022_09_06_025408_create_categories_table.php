@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('common', 100);
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->integer('order')->nullable();
-            $table->longText('slug');
+            $table->string('slug', 255);
             $table->json('types');
             $table->longText('meta_title')->nullable();
             $table->longText('meta_description')->nullable();

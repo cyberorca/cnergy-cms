@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->enum('is_active', [0, 1])->default(0);
             $table->string('title', 255);
-            $table->longText('slug');
+            $table->string('slug', 255);
             $table->longText('content');
             $table->timestamp('created_at', 0)->nullable();
             $table->uuid('created_by');
