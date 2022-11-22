@@ -96,10 +96,8 @@ class NewsTaggingController extends Controller
             } else {
                 $newsById->tags()->detach();
             }
-
-            return response()->json(['news' => $newsById, 'tagFilled' => $tagsFilled]);
         }
-
+        return response()->json(['news' => $newsById, 'tagFilled' => $tagsFilled]);
     }
 
     public function getTagging(Request $request)
@@ -160,18 +158,6 @@ class NewsTaggingController extends Controller
             return Redirect::back()->withErrors($e->getMessage());
         }
 
-    }
-
-    public function insertTagging(Request $request)
-    {
-        if ($request->ajax()) {
-            $tags = $request->tags;
-
-            //data temp tags
-            $tagsFilled = $this->getTagsFilled($tags);
-
-            return response()->json(['tagFilled' => $tagsFilled]);
-        }
     }
 
     /**
