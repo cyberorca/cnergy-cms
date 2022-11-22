@@ -45,14 +45,10 @@
             {{-- <div class="spinner-border text-light" role="status">
                     <span class="visually-hidden">Loading...</span>
                   </div> --}}
-            <button class="btn btn-success col-2 d-none" type="button" disabled id="button-loading">
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                Loading...
-            </button>
-
-            <button class="btn btn-success col-2 d-none" id="button-save-order"><i class="bi bi-save"></i> &nbsp;&nbsp;Save</button>
-
-            <x-accordion-menu :accordion="$fe_menus" />
+                  <input type="hidden" value="front-end-menu" id="type_data">
+                  <button class="btn btn-success col-2 d-none" id="button-save-order"><i class="bi bi-save"></i>
+                    &nbsp;&nbsp;Save</button>
+                    @include('components.sortable.sortable', ['list' => $fe_menus, 'type' => 'front-end-menu'])
         </div>
 
     </div>
