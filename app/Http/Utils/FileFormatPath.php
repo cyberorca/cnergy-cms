@@ -19,13 +19,16 @@ class FileFormatPath
 
     protected function getPath()
     {
-        return "/trustedly" . Carbon::now()->format('/Y/m/d/');
+        return "/trstdly" . Carbon::now()->format('/Y/m/d/');
     }
 
     protected function getFileName()
     {
+        $fullFileNameExtension = explode('.' . $this->file->getClientOriginalExtension(), $this->file->getClientOriginalName())[0];
+        $fileName = strlen($fullFileNameExtension) > 150 ? substr($fullFileNameExtension, 150) : $fullFileNameExtension;
+        // path_name_file = /news/2022/10/04/23423/zico-artonang.jpg
         // path_name_file = /news/2022/10/04/23423-zico-artonang.jpg
-        return  Str::slug(substr(time(), 5) . '-' . explode('.' . $this->file->getClientOriginalExtension(), $this->file->getClientOriginalName())[0]) . '.' . $this->file->getClientOriginalExtension();
+        return  substr(time(), 5) . '-' . Str::slug($fileName) . '.' . $this->file->getClientOriginalExtension();
     }
 
     public function getFullPathName(){

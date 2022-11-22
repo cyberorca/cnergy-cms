@@ -13,14 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('front_end_menus', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('parent_id')->nullable();
-            $table->string('title', 20);
-            $table->longText('slug');
-            $table->integer('order');
-            $table->longText('position');
-            $table->timestamps();
+        Schema::table('categories', function (Blueprint $table) {
+            $table->integer('order')->nullable();
         });
     }
 
@@ -31,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('front_end_menus');
+        Schema::table('categories', function (Blueprint $table) {
+            //
+        });
     }
 };

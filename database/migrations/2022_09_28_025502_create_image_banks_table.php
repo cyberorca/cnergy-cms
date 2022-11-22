@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title', 100);
             $table->string('image_alt', 255);
-            $table->string('slug', 100);
+            $table->longText('slug');
             $table->string('photographer', 100);
             $table->string('copyright', 100);
             $table->string('caption', 100);

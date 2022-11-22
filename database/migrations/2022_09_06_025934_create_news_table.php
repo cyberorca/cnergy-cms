@@ -27,7 +27,7 @@ return new class extends Migration
             $table->enum('is_disable_interactions', [0, 1])->default(0);
             $table->enum('is_branded_content', [0, 1])->default(0);
             $table->string('title', 255);
-            $table->string('slug', 255);
+            $table->longText('slug');
             $table->longText('content');
             $table->longText('synopsis');
             $table->longText('description');

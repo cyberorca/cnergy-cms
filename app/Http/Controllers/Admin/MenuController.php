@@ -47,6 +47,18 @@ class MenuController extends Controller
             $data = $request->validated();
             $data['slug'] = isset($data['parent_slug']) ? $data['parent_slug'] . Str::slug($data['menu_name']) . "/" : Str::slug($data['menu_name']) . "/";
             $data['created_at'] = now();
+            if (array_key_exists("parent_id", $data)) {
+                $order = Menu::select('id')->where('id', $data['parent_id'])
+                    ->with(['child' => function ($query) {
+                        return $query
+                            ->select('order', 'parent_id')
+                            ->first();
+                    }])->first();
+                $input['order'] = count($order->child) === 0 ? 0 : $order->child[0]->order + 1;
+            } else {
+                $order = Menu::select('order')->orderBy('order', 'desc')->first();
+                $input['order'] = $order->order + 1;
+            }
             Menu::create($data);
             // return response()->json($data);
             return redirect()->route('menu.index')->with('status', 'Successfully Create Menu');
