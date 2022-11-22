@@ -20,6 +20,8 @@ return new class extends Migration
             $table->longText('slug');
             $table->integer('order');
             $table->longText('position');
+            $table->string('type', 50);
+            $table->string('target', 50);
             $table->timestamps();
         });
     }

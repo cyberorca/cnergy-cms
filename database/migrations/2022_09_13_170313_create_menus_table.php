@@ -18,6 +18,7 @@ return new class extends Migration
             $table->longText('slug');
             $table->string('menu_name', 255);
             $table->unsignedBigInteger('parent_id')->nullable();
+            $table->integer('order')->nullable();
 
             $table->timestamp('created_at', 0)->nullable();
             $table->timestamp('updated_at', 0)->nullable();
