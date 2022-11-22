@@ -8,7 +8,9 @@ use App\Models\Tag;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
 
 class NewsTaggingController extends Controller
 {
@@ -79,17 +81,23 @@ class NewsTaggingController extends Controller
         if ($request->ajax()) {
             $tags = $request->tags;
             $newsById = News::find($request->id);
+            $tagsFilled = [];
+
             if ($tags != null) {
                 $newsById->tags()->detach();
-                foreach ($tags as $t) {
-                    $newsById->tags()->attach($t, ['created_by' => auth()->id(), 'created_at' => now()]);
+                //data temp tags
+                $tagsFilled = $this->getTagsFilled($tags);
+
+//               return response()->json($tagsFilled);
+                foreach ($tagsFilled as $id) {
+                    $newsById->tags()->attach($id, ['created_by' => auth()->id(), 'created_at' => now()]);
                 }
+
             } else {
                 $newsById->tags()->detach();
             }
-            return response()->json(['news' => $newsById, 'tags' => $tags]);
         }
-
+        return response()->json(['news' => $newsById, 'tagFilled' => $tagsFilled]);
     }
 
     public function getTagging(Request $request)
@@ -97,9 +105,16 @@ class NewsTaggingController extends Controller
         $search = $request->search;
 
         if ($search == '') {
-            $tags = Tag::orderby('tags', 'asc')->select('id', 'tags')->limit(5)->get();
+            $tags = Tag::orderby('tags', 'asc')
+                ->select('id', 'tags')
+                ->limit(5)
+                ->get();
         } else {
-            $tags = Tag::orderby('tags', 'asc')->select('id', 'tags')->where('tags', 'like', '%' . $search . '%')->limit(5)->get();
+            $tags = Tag::orderby('tags', 'asc')
+                ->select('id', 'tags')
+                ->where('tags', 'like', '%' . $search . '%')
+                ->limit(5)
+                ->get();
         }
 
         $response = array();
@@ -115,13 +130,20 @@ class NewsTaggingController extends Controller
 
     public function multiTagging(Request $request)
     {
+        //data mass tags
         $massTag = $request->get('massTag');
+
+        //data temp tags
+        $tagsFilled = $this->getTagsFilled($massTag);
+
+        //data id news only checked
         $checkedTag = $request->get('checkedTag');
+
         try {
             if ($checkedTag != null) {
                 foreach ($checkedTag as $id) {
                     $newsById = News::find($id);
-                    foreach ($massTag as $m) {
+                    foreach ($tagsFilled as $m) {
                         if (!$newsById->tags->contains($m)) {
                             $newsById->tags()->attach($m, ['created_by' => auth()->id(), 'created_at' => now()]);
                         }
@@ -137,4 +159,34 @@ class NewsTaggingController extends Controller
         }
 
     }
+
+    /**
+     * @param mixed $tags
+     * @return array
+     */
+    public function getTagsFilled(mixed $tags): array
+    {
+        $tagsFilled = [];
+
+        //filter tags convert to new array
+        foreach ($tags as $t) {
+            $isTagReady = Tag::where('tags', '=', $t)->exists();
+            if ($isTagReady) {
+                $getId = Tag::where('tags', '=', $t)->first()->id;
+                array_push($tagsFilled, $getId);
+            } else {
+                if (!is_numeric($t)) {
+                    $newTagID = Tag::insertGetId([
+                        'tags' => ucwords($t),
+                        'slug' => Str::slug($t),
+                        'created_at' => now(),
+                        'created_by' => Auth::user()->uuid,
+                    ]);
+                    array_push($tagsFilled, $newTagID);
+                }
+            }
+        }
+        return $tagsFilled;
+    }
+
 }
