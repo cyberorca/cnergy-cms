@@ -186,7 +186,7 @@ class NewsTaggingController extends Controller
                 }
             }
         }
-        return $tagsFilled;
+        return array_unique($tagsFilled);
     }
 
 }
