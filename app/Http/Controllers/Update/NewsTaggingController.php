@@ -150,7 +150,7 @@ class NewsTaggingController extends Controller
         //data temp tags
         $tagsFilled = [];
 
-        //filter tags convert to news array
+        //filter tags convert to new array
         foreach ($massTag as $t) {
             $isTagReady = Tag::where('tags', '=', $t)->exists();
             if ($isTagReady) {

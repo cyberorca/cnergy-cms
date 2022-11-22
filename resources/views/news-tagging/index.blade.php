@@ -246,7 +246,8 @@
                             url: "{{route('tagging.search')}}",
                             type: "post",
                             dataType: 'json',
-                            delay: 100,
+                            delay: 250,
+                            global: false,
                             data: function (params) {
                                 return {
                                     _token: '{{csrf_token()}}',
