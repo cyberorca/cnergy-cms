@@ -17,9 +17,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->string('title', 20);
-            $table->string('slug', 50);
+            $table->longText('slug');
             $table->integer('order');
             $table->longText('position');
+            $table->string('type', 50);
+            $table->string('target', 50);
             $table->timestamps();
         });
     }

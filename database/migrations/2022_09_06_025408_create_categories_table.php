@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('category', 100)->unique();
             $table->string('common', 100);
             $table->unsignedBigInteger('parent_id')->nullable();
-            $table->string('slug', 100);
+            $table->integer('order')->nullable();
+            $table->longText('slug');
             $table->json('types');
             $table->longText('meta_title')->nullable();
             $table->longText('meta_description')->nullable();
