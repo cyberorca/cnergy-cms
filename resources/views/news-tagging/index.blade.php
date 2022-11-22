@@ -150,13 +150,21 @@
                                     <script>
                                         $('#tags{{$n->id}}').select2({
                                             width: '100%',
+                                            multiple: true,
+                                            tags: true,
+                                            tokenSeparators: [',', '\n'],
+                                            // maximumSelectionSize: 12,
+                                            // minimumInputLength: 2,
                                             placeholder: "Select Tags",
                                             allowClear: true,
+
                                             ajax: {
                                                 url: "{{route('tagging.search')}}",
                                                 type: "post",
                                                 dataType: 'json',
-                                                delay: 100,
+                                                delay: 250,
+                                                global: false,
+                                                cache: true,
                                                 data: function (params) {
                                                     return {
                                                         _token: '{{csrf_token()}}',
@@ -167,8 +175,8 @@
                                                     return {
                                                         results: response
                                                     };
+
                                                 },
-                                                cache: true,
                                                 success: function (response) {
                                                     console.log('response', response)
                                                 },
@@ -224,10 +232,14 @@
                     </div>
                 </div>
                 {{--   Get Tags In Mass Tag   --}}
-
                 <script>
                     $('#massTag').select2({
                         width: '100%',
+                        multiple: true,
+                        tags: true,
+                        tokenSeparators: [',', '\n'],
+                        // maximumSelectionSize: 12,
+                        // minimumInputLength: 2,
                         placeholder: "Select Tags",
                         allowClear: true,
                         ajax: {
