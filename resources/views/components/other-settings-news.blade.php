@@ -184,7 +184,7 @@
                             id="keyword" required>
                             @if ($method === 'edit')
                                 @foreach ($keywords as $id => $keyword)
-                                    <option id="{{ $id }}" value="{{ $keyword->id }}"
+                                    <option value="{{ $keyword->id }}"
                                         @if ($method === 'edit' and $keyword->news()->find($news->id)) selected @endif>{{ $keyword->keywords }}
                                     </option>
                                 @endforeach
