@@ -75,7 +75,7 @@ const collapseLinkElement = (page_no, edit = false, other) => {
         const element = this;
         if (status) {
             $.ajax({
-                url: "/update/news/pagination/api/delete/",
+                url: "/update/news/pagination/api/delete",
                 type: 'POST',
                 data: {
                     _token: token,

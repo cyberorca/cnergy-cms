@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\IndexStaticPageResource;
 use App\Http\Resources\StaticPageCollection;
 use App\Models\StaticPage;
 use Illuminate\Http\Request;
@@ -57,5 +58,14 @@ class StaticPageController extends Controller
         // return response()->json(new StaticPageCollection($staticPage->paginate($limit)->withQueryString()))->setStatusCode(200);
         // $staticPage = StaticPage::latest()->with(['users'])->paginate(10);
         // return response()->json(new StaticPageCollection($staticPage))->setStatusCode(200);
+    }
+
+    public function show($slug){
+        $video_news = StaticPage::where('slug', $slug)->with('users')
+            ->get();
+        if ($video_news==null){
+            return response()->json(['message'=>'Video News Not Found'],Response::HTTP_NOT_FOUND);
+        }
+        return response()->json(new StaticPageCollection($video_news), Response::HTTP_OK);
     }
 }

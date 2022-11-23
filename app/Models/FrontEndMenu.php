@@ -67,7 +67,7 @@ class FrontEndMenu extends Model
 
     public static function getAll()
     {
-        $category = self::select("*", "title as menu_name")->get()->toArray();
+        $category = self::select("*", "title as menu_name")->orderBy('order')->get()->toArray();
         return self::convertCategoryDataToResponse($category);
     }
 

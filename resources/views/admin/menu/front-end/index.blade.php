@@ -2,28 +2,6 @@
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('assets/css/pages/menu.css') }}" />
-<style>
-    .card-body * {
-        transition: all 0.2s;
-    }
-
-    .accordion-item.draggable.over .accordion-button {
-        background-color: rgba(71, 71, 71, 0.233) !important;
-    }
-
-    .space-element {
-        height: 52px;
-        background-color: rgba(77, 77, 77, 0.245);
-        transition: all 1s;
-    }
-
-    .front-end-name span {
-        background-color: rgb(154, 220, 255);
-        border-radius: 10px;
-        padding: 0 10px;
-        margin-left: 10px;
-    }
-</style>
 @endsection
 
 @section('body')
@@ -68,5 +46,7 @@
 @endsection
 
 @section('javascript')
-<script src={{ asset('assets/js/dragable.js') }}></script>
+<script src="{{ asset('assets/extensions/toastify-js/src/toastify.js') }}"></script>
+<script src="{{ asset('assets/js/sortable.js') }}"></script>
+<script src="{{ asset('assets/js/pages/sortable-item.js') }}"></script>
 @endsection
