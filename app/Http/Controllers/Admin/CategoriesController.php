@@ -156,7 +156,7 @@ class CategoriesController extends Controller
                 $item['types'] = json_encode(['news']);
                 array_push($category, $item);
             }
-            Category::upsert($category, ['id'], ['parent_id']);
+            Category::upsert($category, ['id'], ['parent_id', 'order']);
             return response()->json([
                 'message' => 'Successfully to change categories data'
             ], 200);

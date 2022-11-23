@@ -164,18 +164,26 @@ class FrontEndMenuController extends Controller
         }
     }
 
+    
     public function changeOrderMenu(Request $request)
     {
         try {
-            FrontEndMenu::upsert($request->get('data'), ['id', 'title', 'slug'], ['order', 'parent_id']);
-            return [
-                'message' => 'success'
-            ];
-            // return response()->json($request->get("data"));
+            $input = $request->sortedData;
+            $fe_menu = array();
+            foreach ($input as $item) {
+                $item['type'] = json_encode(['anchor']);
+                $item['target'] = json_encode(['same tab']);
+                $item['position'] = json_encode(['header', 'footer']);
+                array_push($fe_menu, $item);
+            }
+            FrontEndMenu::upsert($fe_menu, ['id'], ['parent_id', 'order']);
+            return response()->json([
+                'message' => 'Successfully to change categories data'
+            ], 200);
         } catch (\Throwable $e) {
-            return [
+            return response()->json([
                 'message' => $e->getMessage()
-            ];
+            ], 500);
         }
     }
 }

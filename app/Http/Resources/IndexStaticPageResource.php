@@ -18,15 +18,24 @@ class IndexStaticPageResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'slug' => $this->slug,
-            'content' => $this->content,
+            'content' => htmlspecialchars($this->content),
             'status' => $this->is_active,
             'show_footer' => '',
             'domain_id' => '',
             'created_by' => $this->created_by,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'created_at' => self::formatDateArray($this->created_at),
+            'updated_at' => self::formatDateArray($this->updated_at),
             'creator' => self::userArrayToCreatorResponse($this->users),
             'translate' => ''
+        ];
+    }
+
+    private function formatDateArray($date){
+        $timezone = date_timezone_get($date);
+        return [
+            'date' => date('Y-m-d H:m:s.u', strtotime($date)),
+            'timezone_type' => 3,
+            'timezone' => timezone_name_get($timezone),
         ];
     }
 
@@ -35,6 +44,7 @@ class IndexStaticPageResource extends JsonResource
         return [
             'user_uuid' => $creator->uuid,
             'user_realname' => $creator->name,
+            'user_photo' => $creator->profile_image,
             'user_nowlogin'=>'',
             'user_loginip'=>'',
             'user_lastlogin'=>$creator->last_logged_in,
