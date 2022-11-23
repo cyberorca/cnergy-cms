@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FrontEndSettingsRequest;
 use App\Http\Requests\GenerateTokenRequest;
+use App\Http\Requests\GenerateConfigurationRequest;
 use App\Http\Utils\FileFormatPath;
 use App\Models\FrontEndSetting;
 use App\Models\MenuSetting;
@@ -73,7 +74,7 @@ class FrontEndSettingsController extends Controller
         try {
             $input = $request->validated();
             $menu = FrontEndSetting::first(['token']);
-            if(!$menu){
+            if (!$menu) {
                 $latest_token[$input["token_name"]] = sha1(Str::random(64));
             } else {
                 $latest_token = json_decode($menu->token, true);
@@ -86,7 +87,30 @@ class FrontEndSettingsController extends Controller
             ]);
             $token = $input["token_name"];
             $code = $latest_token[$input["token_name"]];
-            return redirect()->back()->with('status', 'Successfully Generate Token - '.$token.' : '.$code.' ');
+            return redirect()->back()->with('status', 'Successfully Generate Token - ' . $token . ' : ' . $code . ' ');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+    }
+
+    public function generateConfiguration(GenerateConfigurationRequest $request)
+    {
+        try {
+            $input = $request->validated();
+            $data = [
+                "facebook_fanspage" => $input["facebook_fanspage"],
+                "advertiser_id" => $input["advertiser_id"],
+                "cse_id" => $input["cse_id"],
+                "gtm_id" => $input["gtm_id"],
+                "robot_txt" => $input["robot_txt"],
+                "ads_txt" => $input["ads_txt"],
+                "embed_code_data_studio" => $input["embed_code_data_studio"],
+            ];
+
+            FrontEndSetting::updateOrCreate([
+                'id' => 1
+            ], $data);
+            return redirect()->back()->with('status', 'Successfully Update Frontend Settings');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -119,8 +143,8 @@ class FrontEndSettingsController extends Controller
                 $file = $request->file('site_logo');
                 $fileFormatPath = new FileFormatPath('front-end-settings/site-logo', $file);
                 $data['site_logo'] = $fileFormatPath->storeFile();
-                if(isset($menu->site_logo)){
-                    if(Storage::exists($menu->site_logo)){
+                if (isset($menu->site_logo)) {
+                    if (Storage::exists($menu->site_logo)) {
                         Storage::delete($menu->site_logo);
                     }
                 }
@@ -129,8 +153,8 @@ class FrontEndSettingsController extends Controller
                 $file = $request->file('favicon');
                 $fileFormatPath = new FileFormatPath('front-end-settings/site-logo', $file);
                 $data['favicon'] = $fileFormatPath->storeFile();
-                if(isset($menu->favicon)){
-                    if(Storage::exists($menu->favicon)){
+                if (isset($menu->favicon)) {
+                    if (Storage::exists($menu->favicon)) {
                         Storage::delete($menu->favicon);
                     }
                 }
