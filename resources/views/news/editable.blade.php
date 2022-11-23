@@ -166,7 +166,19 @@
                 }
             });
         });
-        
+
+        var keywords = [];
+
+        $('#keyword').on('select2:select', function(e) {
+            const { params: { data } } = e;
+            var findItem = keywords.map(el => el.text);
+            keywords.push(data);
+            console.log(keywords);
+        });
+        $('#keyword').on('select2:unselect', function(e) {
+            const { params: { data } } = e;
+            keywords = keywords.filter(el => el.text !== data.text)
+        });
         $(document).ready(function() {
             $("#keyword").select2({
                 tags: true,
