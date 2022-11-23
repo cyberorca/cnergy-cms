@@ -126,8 +126,8 @@ class PhotoController extends Controller implements NewsServices
     {
         $method = explode('/', URL::current());
         $users = User::all();
-        $categories = Category::all();
-        $tags = Tag::all();
+        $categories = Category::whereJsonContains('types','photonews')->get();
+//        $tags = Tag::all();
         $types = 'photonews';
         $date = date('Y-m-d');
         $time = time();
@@ -136,7 +136,7 @@ class PhotoController extends Controller implements NewsServices
             'categories' => $categories,
             'types' => $types,
             'users' => $users,
-            'tags' => $tags,
+//            'tags' => $tags,
             'contributors' => []
         ]);
     }
@@ -157,14 +157,14 @@ class PhotoController extends Controller implements NewsServices
             foreach ($data['keywords'] as $t) {
                 if (is_numeric($t)){
                     $keyArr[] =  $t;
-                }   
+                }
                 else{
-                    $newKeyword = Keywords::create(['keywords'=>$t, 
+                    $newKeyword = Keywords::create(['keywords'=>$t,
                                                 'created_at' => now(),
                                                 'created_by' => Auth::user()->uuid,
                                             ]);
                     $keyArr[] = $newKeyword->id;
-                }   
+                }
             }
             $news = new News([
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
@@ -248,7 +248,7 @@ class PhotoController extends Controller implements NewsServices
                 ]);
                 PhotoNews::destroy($data[$i]);
         }
-        
+
     }
 
     /**
@@ -272,8 +272,8 @@ class PhotoController extends Controller implements NewsServices
     {
         $method = explode('/', URL::current());
         $news = News::where('id', $id)->with(['users', 'news_photo'])->first();
-        $categories = Category::all();
-        $tags = Tag::all();
+        $categories = Category::whereJsonContains('types','photonews')->get();
+//        $tags = Tag::all();
         $keywords = Keywords::all();
         $types = 'photonews';
         $contributors = $news->users;
@@ -283,7 +283,7 @@ class PhotoController extends Controller implements NewsServices
             'categories' => $categories,
             'types' => $types,
             'news' => $news,
-            'tags' => $tags,
+//            'tags' => $tags,
             'keywords' => $keywords,
             'contributors' => $contributors,
             'users' => $users
@@ -376,7 +376,7 @@ class PhotoController extends Controller implements NewsServices
             $this->deleteNewsImages($x);
         }
         //return $diff;
-       
+
         $newsById = News::find($id);
         $date = $data['date'];
         $time = $data['time'];
@@ -385,14 +385,14 @@ class PhotoController extends Controller implements NewsServices
             foreach ($data['keywords'] as $t) {
                 if (is_numeric($t)){
                     $keyArr[] =  $t;
-                }   
+                }
                 else{
-                    $newKeyword = Keywords::create(['keywords'=>$t, 
+                    $newKeyword = Keywords::create(['keywords'=>$t,
                                                 'created_at' => now(),
                                                 'created_by' => Auth::user()->uuid,
                                             ]);
                     $keyArr[] = $newKeyword->id;
-                }   
+                }
             }
             $input = [
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',
@@ -451,7 +451,7 @@ class PhotoController extends Controller implements NewsServices
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
-        
+
     }
 
     /**

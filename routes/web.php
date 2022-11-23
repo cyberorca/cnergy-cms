@@ -54,14 +54,14 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get("/front-end-menu/create/{id?}", [FrontEndMenuController::class, 'create'])->name('front-end-menu.create');
         Route::resource('front-end-menu', FrontEndMenuController::class)->except(['create']);
-        
+
         Route::post("/generate/token", [FrontEndSettingsController::class, 'generateToken'])->name('generate.token');
         Route::resource('/front-end-setting', FrontEndSettingsController::class);
-        
+
         Route::get("/menu/create/{id?}", [MenuController::class, 'create'])->name('menu.create');
         Route::post("/menu/api/change/", [MenuController::class, 'changeOrderMenu']);
         Route::resource('menu', MenuController::class)->except(['create']);
-        
+
         Route::post('/front-end-menu/api/change/', [FrontEndMenuController::class, 'changeOrderMenu'])->name('front-end-menu.order');
         Route::get("/category/create/{id?}", [CategoriesController::class, 'create'])->name('category.create');
         Route::post("/category/api/change/", [CategoriesController::class, 'changeCategoriesData']);
@@ -112,7 +112,7 @@ Route::get('/auth/callback', [LoginController::class, 'handleProviderCallback'])
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-Route::get('selTag', [NewsController::class, 'select'])->name('tag.index');
+//Route::get('selTag', [NewsController::class, 'select'])->name('tag.index');
 Route::get('selKeyword', [NewsController::class, 'select2'])->name('keyword.index');
 
 Route::get('/email/verify/{token}', [LoginController::class, 'verify'])->name('email.verify');
