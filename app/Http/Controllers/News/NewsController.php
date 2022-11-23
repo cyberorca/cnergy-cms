@@ -164,8 +164,6 @@ class NewsController extends Controller implements NewsServices
                 }   
             }
 
-
-            $i = 2;
             for ($i = 0; $i < count($data['title']) - 1; $i++) {
                 $news_paginations[$i] = [
                     'title' => $data['title'][$i + 1],
@@ -173,9 +171,7 @@ class NewsController extends Controller implements NewsServices
                     'content' => $data['content'][$i + 1],
                     'order_by_no' => $i
                 ];
-                $i++;
             }
-
 
             if ($request->file('upload_image') && !$data['upload_image_selected']) {
                 $file = $request->file('upload_image');

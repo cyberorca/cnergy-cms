@@ -19,6 +19,16 @@ button.addEventListener('click', function () {
                 'order': index
             })
         }
+
+        if(type_data == 'front-end-menu'){
+            orderedMenu[type_data].push({
+                'id': +id,
+                'title': name,
+                'slug': name.toLocaleLowerCase().split(' ').join('-'),
+                'parent_id': parent_id ?? null,
+                'order': index
+            })
+        }
         if(type_data == 'category'){
             orderedMenu[type_data].push({
                 'id': +id,
@@ -27,6 +37,7 @@ button.addEventListener('click', function () {
                 'slug': name.toLocaleLowerCase().split(' ').join('-'),
                 'types': ["news","video","photonews"],
                 'parent_id': parent_id ?? null,
+                'order': index
             })    
         }
     })
@@ -60,7 +71,7 @@ function saveData(sortedData) {
     const input = {
         sortedData: sortedData[type_data]
     } 
-    
+
     const url = `/master/${type_data}/api/change`
 
     $.ajax({

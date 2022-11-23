@@ -52,6 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::resource('user-setting', UsersController::class);
         });
 
+        Route::post('/front-end-menu/api/change/', [FrontEndMenuController::class, 'changeOrderMenu']);
         Route::get("/front-end-menu/create/{id?}", [FrontEndMenuController::class, 'create'])->name('front-end-menu.create');
         Route::resource('front-end-menu', FrontEndMenuController::class)->except(['create']);
         
@@ -62,7 +63,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post("/menu/api/change/", [MenuController::class, 'changeOrderMenu']);
         Route::resource('menu', MenuController::class)->except(['create']);
         
-        Route::post('/front-end-menu/api/change/', [FrontEndMenuController::class, 'changeOrderMenu'])->name('front-end-menu.order');
         Route::get("/category/create/{id?}", [CategoriesController::class, 'create'])->name('category.create');
         Route::post("/category/api/change/", [CategoriesController::class, 'changeCategoriesData']);
         Route::resource('category', CategoriesController::class)->except(['create']);
