@@ -58,6 +58,7 @@ Route::group(['middleware' => 'auth'], function () {
         
         Route::post("/generate/token", [FrontEndSettingsController::class, 'generateToken'])->name('generate.token');
         Route::resource('/front-end-setting', FrontEndSettingsController::class);
+        Route::post("/generate/configuration", [FrontEndSettingsController::class, 'generateConfiguration'])->name('generate.configuration');
         
         Route::get("/menu/create/{id?}", [MenuController::class, 'create'])->name('menu.create');
         Route::post("/menu/api/change/", [MenuController::class, 'changeOrderMenu']);
