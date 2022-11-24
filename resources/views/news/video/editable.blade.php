@@ -184,6 +184,7 @@
                             tags: true,
                             placeholder: 'Select Keywords',
                             allowClear: true,
+                            tokenSeparators: [',', '\n'],
                             ajax: {
                                 url: "{{ route('keyword.index') }}",
                                 dataType: 'json',
