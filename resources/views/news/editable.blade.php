@@ -14,7 +14,6 @@
         .bootstrap-tagsinput {
             width: 100%;
         }
-
         .bootstrap-tagsinput .tag {
             margin-right: 2px;
             color: white !important;
@@ -25,24 +24,18 @@
             vertical-align: baseline;
             border-radius: .25em;
         }
-
         .search_select_box select {
             width: 100%;;
         }
-
         a[aria-expanded=true] .bi-chevron-down {
             display: none;
         }
-
-
         a[aria-expanded=false] .bi-chevron-up {
             display: none;
         }
-
         .collapse-news:hover {
             background: rgba(0, 0, 0, 0.11) !important;
         }
-
         #image_preview_modal {
             width: 100%;
             object-fit: cover;
@@ -158,7 +151,6 @@
                             // minimumInputLength: 2,
                             placeholder: "Select Tags",
                             allowClear: true,
-
                             ajax: {
                                 url: "{{route('tagging.search')}}",
                                 type: "post",
@@ -176,7 +168,6 @@
                                     return {
                                         results: response
                                     };
-
                                 },
                                 success: function (response) {
                                     console.log('response', response)
@@ -187,7 +178,6 @@
                             }
                         });
                     });
-
                     $(document).ready(function () {
                         {{--  Auto Save Tags--}}
                         $('#tags').change(function () {
@@ -214,12 +204,12 @@
                             });
                         });
                     });
-
                     $(document).ready(function () {
                         $("#keyword").select2({
                             tags: true,
                             placeholder: 'Select Keywords',
                             allowClear: true,
+                            tokenSeparators: [',', '\n'],
                             ajax: {
                                 url: "{{ route('keyword.index') }}",
                                 dataType: 'json',
@@ -266,14 +256,12 @@
                                 'body')[0].clientWidth;
                             var y = window.innerHeight || document.documentElement.clientHeight || document
                                 .getElementsByTagName('body')[0].clientHeight;
-
                             var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
                             if (type == 'image') {
                                 cmsURL = cmsURL + "&type=Images";
                             } else {
                                 cmsURL = cmsURL + "&type=Files";
                             }
-
                             tinyMCE.activeEditor.windowManager.open({
                                 file: cmsURL,
                                 title: 'Filemanager',
@@ -283,45 +271,7 @@
                                 close_previous: "no"
                             });
                         }
-<<<<<<< HEAD
-                    }
-                }
-            });
-        });
-
-        var keywords = [];
-
-        $('#keyword').on('select2:select', function(e) {
-            const { params: { data } } = e;
-            var findItem = keywords.map(el => el.text);
-            keywords.push(data);
-            console.log(keywords);
-        });
-        $('#keyword').on('select2:unselect', function(e) {
-            const { params: { data } } = e;
-            keywords = keywords.filter(el => el.text !== data.text)
-        });
-        $(document).ready(function() {
-            $("#keyword").select2({
-                tags: true,
-                placeholder: 'Select Keywords',
-                allowClear: true,
-                ajax: {
-                    url: "{{ route('keyword.index') }}",
-                    dataType: 'json',
-                    delay: 250,
-                    processResults: function({
-                        data
-                    }) {
-                        return {
-                            results: $.map(data, function(item) {
-                                return {
-                                    id: item.id,
-                                    text: item.keywords
-                                }
-=======
                     };
-
                     tinymce.init(editor_config);
                 </script>
 
@@ -336,13 +286,10 @@
                             .on('change', function (event) {
                                 var $element = $(event.target);
                                 var $container = $element.closest('.example');
-
                                 if (!$element.data('tagsinput')) return;
-
                                 var val = $element.val();
                                 if (val === null) val = 'null';
                                 var items = $element.tagsinput('items');
-
                                 $('code', $('pre.val', $container)).html(
                                     $.isArray(val) ?
                                         JSON.stringify(val) :
@@ -351,7 +298,6 @@
                                 $('code', $('pre.items', $container)).html(
                                     JSON.stringify($element.tagsinput('items'))
                                 );
->>>>>>> 41c3fc1c1bf399ef83c9243b6a0fb2127f81dda8
                             })
                             .trigger('change');
                     });
