@@ -18,9 +18,9 @@ class IndexFrontEndMenuResource extends JsonResource
             'id' => $this->id,
             'parent' => $this->parent_id,
             'title'=>$this->title,
-            'url'=>'/'.$this->slug,
+            'url'=> env('APP_URL') . '/' . $this->slug,
             'type'=>'link',
-            'target'=>'self',
+            'target'=> $this->target($this->target),
             'order'=>$this->order,
             'position'=>json_decode($this->position),
             'children'=>$this->convertDataToResponse($this->childMenus)
@@ -33,13 +33,21 @@ class IndexFrontEndMenuResource extends JsonResource
                 'id' => $item->id,
                 'parent' => $item->parent_id,
                 'title'=>$item->title,
-                'url'=>'/'.$item->slug,
+                'url'=> env('APP_URL') . '/' . $this->slug,
                 'type'=>'link',
-                'target'=>'self',
+                'target'=> $this->target($this->target),
                 'order'=>$item->order,
                 'position'=>json_decode($item->position),
                 'children'=>$this->convertDataToResponse($item->childMenus)
             ];
         });
+    }
+
+    private function target($target){
+        if($target == 'Same Tab'){
+            return 'self';
+        } elseif ($target == 'New Window') {
+            return 'blank';
+        }
     }
 }
