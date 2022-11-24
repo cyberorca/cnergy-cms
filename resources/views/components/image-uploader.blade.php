@@ -14,7 +14,7 @@
     </div>
     <div class="image-file-preview mt-3">
         <img src="@if (!isset($item)) {{ asset('assets/images/preview-image.jpg') }} @else {{ Storage::url($item->image) }} @endif"
-            alt="" srcset="" id="image_preview_result">
+            alt="" srcset="" id="image_preview_result" selectedImage="false">
     </div>
 
     {{-- <div class="p-2 px-3 border mt-2">

@@ -301,7 +301,6 @@ class NewsController extends Controller implements NewsServices
     public function update(Request $request, $id)
     {
         $data = $request->input();
-        //return $data;
         $news_paginations_old = array();
         // $news_paginations_new = array();
 
@@ -310,8 +309,10 @@ class NewsController extends Controller implements NewsServices
             'content' => $data['content'][0]
         ];
 
-        $i = 2;
-        if (count($data['title']) > 1) {
+        
+
+        $i = 1;
+        if (count($data['title']) > 1 && isset($data['title'][$id])) {
             foreach ($data['title'][$id] as $key => $value) {
                 $news_paginations_old[$i] = [
                     'title' => $data['title'][$id][$key],
@@ -323,7 +324,7 @@ class NewsController extends Controller implements NewsServices
                 $i++;
             }
         }
-
+        
         if (count($data['title']) > 1) {
             foreach ($data['title'] as $key => $value) {
                 if (in_array($key, [0, $id])) {

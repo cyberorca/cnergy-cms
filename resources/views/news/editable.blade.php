@@ -173,7 +173,11 @@
             const { params: { data } } = e;
             var findItem = keywords.map(el => el.text);
             keywords.push(data);
-            console.log(keywords);
+            // console.log(keywords);
+            console.log('select');
+        });
+        $('#keyword').on('select2:selecting', function(e) {
+            console.log('selecting');
         });
         $('#keyword').on('select2:unselect', function(e) {
             const { params: { data } } = e;

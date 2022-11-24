@@ -75,17 +75,17 @@
                     </div>
                 </div>
             </div>
-        </h2>
-        @if ($item['children'] !== null)
-            <div id="collapse-{{ implode('-', explode('/', $item['slug'])) }}{{ $item['id'] }}"
-                class="accordion-collapse collapse show"
-                aria-labelledby="heading-{{ $item['slug'] }}-{{ $item['id'] }}">
-                <div class="accordion-body pe-0 py-0 border-0 d-flex flex-column nested" data-id='{{ $item['id'] }}'>
-                    @foreach ($item['children'] as $child)
-                        @include('components.sortable.sortable-item', ['item' => $child])
-                    @endforeach
+            @if ($item['children'] !== null)
+                <div id="collapse-{{ implode('-', explode('/', $item['slug'])) }}{{ $item['id'] }}"
+                    class="accordion-collapse collapse show "
+                    aria-labelledby="heading-{{ $item['slug'] }}-{{ $item['id'] }}">
+                    <div class="accordion-body pe-0 py-0 border-0 d-flex flex-column nested box-sortable" data-id='{{ $item['id'] }}'>
+                        @foreach ($item['children'] as $child)
+                            @include('components.sortable.sortable-item', ['item' => $child])
+                        @endforeach
+                    </div>
                 </div>
-            </div>
-        @endif
+            @endif
+        </h2>
     </div>
 </div>
