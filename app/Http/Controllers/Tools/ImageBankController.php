@@ -11,6 +11,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 class ImageBankController extends Controller
 {
@@ -32,7 +33,8 @@ class ImageBankController extends Controller
      */
     public function create()
     {
-        return view("tools.image-bank.create");
+        $method = explode('/', URL::current());
+        return view("tools.image-bank.editable", ['method' => end($method)]);
     }
 
     /**
@@ -117,7 +119,12 @@ class ImageBankController extends Controller
      */
     public function edit($id)
     {
-        //
+        $method = explode('/', URL::current());
+        $imageBankById = ImageBank::with('createdBy')->find($id)->first();
+        return view('tools.image-bank.editable',
+            ['method' => end($method),
+                'imageBank'=>$imageBankById
+                ]);
     }
 
     /**
@@ -127,9 +134,26 @@ class ImageBankController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ImageBankRequest $request, $id)
     {
-        //
+        try {
+            $input = $request->validated();
+            $data = [
+                "title" => $input["title"],
+                "photographer" => $input["photographer"],
+                "copyright" => $input["copyright"],
+                "caption" => $input["caption"],
+                "keywords" => $input["keywords"],
+                "image_alt" => $input["image_alt"],
+                "description" => $input["description"],
+                "updated_by" => Auth::user()->uuid
+            ];
+            $imageBankById = ImageBank::find($id)->first();
+            $imageBankById->update($data);
+            return redirect()->route('image-bank.index')->with('status', 'Successfully Edit Meta Image');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
     }
 
     /**
