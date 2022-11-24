@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller implements NewsServices
 {
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -125,8 +125,8 @@ class NewsController extends Controller implements NewsServices
     {
         $method = explode('/', URL::current());
         $users = User::with(['roles'])->get();
-        $categories = Category::all();
-        $tags = Tag::all();
+        $categories = Category::whereJsonContains('types','news')->get();
+//        $tags = Tag::all();
         //        return response()->json($users);
 
 
@@ -134,7 +134,7 @@ class NewsController extends Controller implements NewsServices
             'method' => end($method),
             'categories' => $categories,
             'users' => $users,
-            'tags' => $tags,
+//            'tags' => $tags,
             'contributors' => []
         ]);
     }
@@ -149,19 +149,19 @@ class NewsController extends Controller implements NewsServices
     {
         $data = $request->input();
         $news_paginations = array();
-        
+
         try {
             foreach ($data['keywords'] as $t) {
                 if (is_numeric($t)){
                     $keyArr[] =  $t;
-                }   
+                }
                 else{
-                    $newKeyword = Keywords::create(['keywords'=>$t, 
+                    $newKeyword = Keywords::create(['keywords'=>$t,
                                                 'created_at' => now(),
                                                 'created_by' => Auth::user()->uuid,
                                             ]);
                     $keyArr[] = $newKeyword->id;
-                }   
+                }
             }
 
             for ($i = 0; $i < count($data['title']) - 1; $i++) {
@@ -275,8 +275,8 @@ class NewsController extends Controller implements NewsServices
     {
         $method = explode('/', URL::current());
         $news = News::where('id', $id)->with(['users', 'news_paginations'])->first();
-        $categories = Category::all();
-        $tags = Tag::all();
+        $categories = Category::whereJsonContains('types','news')->get();;
+//        $tags = Tag::all();
         $keywords = Keywords::all();
         $contributors = $news->users;
         $users = User::with(['roles'])->get();
@@ -284,7 +284,7 @@ class NewsController extends Controller implements NewsServices
             'method' => end($method),
             'categories' => $categories,
             'news' => $news,
-            'tags' => $tags,
+//            'tags' => $tags,
             'keywords' => $keywords,
             'contributors' => $contributors,
             'users' => $users
@@ -349,14 +349,14 @@ class NewsController extends Controller implements NewsServices
             foreach ($data['keywords'] as $t) {
                 if (is_numeric($t)){
                     $keyArr[] =  $t;
-                }   
+                }
                 else{
-                    $newKeyword = Keywords::create(['keywords'=>$t, 
+                    $newKeyword = Keywords::create(['keywords'=>$t,
                                                 'created_at' => now(),
                                                 'created_by' => Auth::user()->uuid,
                                             ]);
                     $keyArr[] = $newKeyword->id;
-                }   
+                }
             }
 
             $input = [
@@ -475,22 +475,22 @@ class NewsController extends Controller implements NewsServices
         }
     }
 
-    public function select(Request $request)
-    {
-        //$data = Tag::where('tags', 'LIKE',  '%' .request('q'). '%')->paginate(10)->withQueryString();
-        //return response()->json($data);
-        $data = [];
-
-        if ($request->has('q')) {
-            $search = $request->q;
-            $data = Tag::select("id", "tags")
-                ->where('tags', 'LIKE', "%$search%")
-                ->paginate(10)->withQueryString(); 
-        } else {
-            $data = Tag::paginate(10)->withQueryString();
-        }
-        return response()->json($data);
-    }
+//    public function select(Request $request)
+//    {
+//        //$data = Tag::where('tags', 'LIKE',  '%' .request('q'). '%')->paginate(10)->withQueryString();
+//        //return response()->json($data);
+//        $data = [];
+//
+//        if ($request->has('q')) {
+//            $search = $request->q;
+//            $data = Tag::select("id", "tags")
+//                ->where('tags', 'LIKE', "%$search%")
+//                ->paginate(10)->withQueryString();
+//        } else {
+//            $data = Tag::paginate(10)->withQueryString();
+//        }
+//        return response()->json($data);
+//    }
 
     public function select2(Request $request)
     {
@@ -502,7 +502,7 @@ class NewsController extends Controller implements NewsServices
             $search = $request->q;
             $data = Keywords::select("id", "keywords")
                 ->where('keywords', 'LIKE', "%$search%")
-                ->paginate(10)->withQueryString(); 
+                ->paginate(10)->withQueryString();
         } else {
             $data = Keywords::paginate(10)->withQueryString();
         }

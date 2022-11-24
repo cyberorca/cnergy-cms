@@ -104,8 +104,8 @@ class VideoController extends Controller
     {
         $method = explode('/', URL::current());
         $users = User::all();
-        $categories = Category::all();
-        $tags = Tag::all();
+        $categories =Category::whereJsonContains('types','video')->get();
+//        $tags = Tag::all();
         $types = 'video';
         $date = date('Y-m-d');
         $time = time();
@@ -114,7 +114,7 @@ class VideoController extends Controller
             'categories' => $categories,
             'types' => $types,
             'users' => $users,
-            'tags' => $tags,
+//            'tags' => $tags,
             'contributors' => []
         ]);
     }
@@ -146,14 +146,14 @@ class VideoController extends Controller
             foreach ($data['keywords'] as $t) {
                 if (is_numeric($t)){
                     $keyArr[] =  $t;
-                }   
+                }
                 else{
-                    $newKeyword = Keywords::create(['keywords'=>$t, 
+                    $newKeyword = Keywords::create(['keywords'=>$t,
                                                 'created_at' => now(),
                                                 'created_by' => Auth::user()->uuid,
                                             ]);
                     $keyArr[] = $newKeyword->id;
-                }   
+                }
             }
 
             $news = new News([
@@ -240,8 +240,8 @@ class VideoController extends Controller
     {
         $method = explode('/', URL::current());
         $news = News::where('id', $id)->with('news_videos:id,video,news_id')->first();
-        $categories = Category::all();
-        $tags = Tag::all();
+        $categories = Category::whereJsonContains('types','video')->get();
+//        $tags = Tag::all();
         $keywords = Keywords::all();
         $types = 'video';
         $contributors = $news->users;
@@ -251,7 +251,7 @@ class VideoController extends Controller
             'categories' => $categories,
             'types' => $types,
             'news' => $news,
-            'tags' => $tags,
+//            'tags' => $tags,
             'keywords' => $keywords,
             'contributors' => $contributors,
             'users' => $users
@@ -276,14 +276,14 @@ class VideoController extends Controller
             foreach ($data['keywords'] as $t) {
                 if (is_numeric($t)){
                     $keyArr[] =  $t;
-                }   
+                }
                 else{
-                    $newKeyword = Keywords::create(['keywords'=>$t, 
+                    $newKeyword = Keywords::create(['keywords'=>$t,
                                                 'created_at' => now(),
                                                 'created_by' => Auth::user()->uuid,
                                             ]);
                     $keyArr[] = $newKeyword->id;
-                }   
+                }
             }
             $input = [
                 'is_headline' => $request->has('isHeadline') == false ? '0' : '1',

@@ -80,24 +80,30 @@ class NewsTaggingController extends Controller
     {
         if ($request->ajax()) {
             $tags = $request->tags;
-            $newsById = News::find($request->id);
-            $tagsFilled = [];
+            //checking isIdNews
+            if ($request->has('id')) {
+                $newsById = News::find($request->id);
+                $tagsFilled = [];
 
-            if ($tags != null) {
-                $newsById->tags()->detach();
-                //data temp tags
-                $tagsFilled = $this->getTagsFilled($tags);
+                if ($tags != null) {
+                    $newsById->tags()->detach();
+                    //data temp tags
+                    $tagsFilled = $this->getTagsFilled($tags);
 
 //               return response()->json($tagsFilled);
-                foreach ($tagsFilled as $id) {
-                    $newsById->tags()->attach($id, ['created_by' => auth()->id(), 'created_at' => now()]);
-                }
+                    foreach ($tagsFilled as $id) {
+                        $newsById->tags()->attach($id, ['created_by' => auth()->id(), 'created_at' => now()]);
+                    }
 
+                } else {
+                    $newsById->tags()->detach();
+                }
             } else {
-                $newsById->tags()->detach();
+                $tagsFilled = $this->getTagsFilled($tags);
             }
+
         }
-        return response()->json(['news' => $newsById, 'tagFilled' => $tagsFilled]);
+        return response()->json(['tagFilled' => $tagsFilled]);
     }
 
     public function getTagging(Request $request)
@@ -170,9 +176,9 @@ class NewsTaggingController extends Controller
 
         //filter tags convert to new array
         foreach ($tags as $t) {
-            $isTagReady = Tag::where('tags', '=', $t)->orWhere('id','=',$t)->exists();
+            $isTagReady = Tag::where('tags', '=', $t)->orWhere('id', '=', $t)->exists();
             if ($isTagReady) {
-                $getId = Tag::where('tags', '=', $t)->orWhere('id','=',$t)->first()->id;
+                $getId = Tag::where('tags', '=', $t)->orWhere('id', '=', $t)->first()->id;
                 array_push($tagsFilled, $getId);
             } else {
                 if (!is_numeric($t)) {
