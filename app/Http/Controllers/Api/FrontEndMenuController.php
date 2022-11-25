@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\FrontEndMenu;
 use App\Http\Resources\FrontEndMenuCollection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class FrontEndMenuController extends Controller
 {

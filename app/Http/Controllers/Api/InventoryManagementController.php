@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\InventoryManagement;
 use App\Http\Resources\InventoryCollection;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Get Inventory Management

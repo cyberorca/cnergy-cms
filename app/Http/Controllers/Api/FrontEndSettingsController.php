@@ -9,6 +9,7 @@ use App\Http\Resources\StaticPageCollection;
 use App\Models\FrontEndSetting;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Cache;
 
 class FrontEndSettingsController extends Controller
 {
