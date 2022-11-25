@@ -88,7 +88,7 @@ class NewsController extends Controller
      */
     public function index(Request $request)
     {
-        $news = News::with(['categories', 'tags', 'users', 'news_paginations'])
+        $news = News::with(['categories', 'tags', 'users', 'news_paginations', 'keywords'])
         ->where('is_published','=','1')
         ->where('published_at','<=',now());
 
