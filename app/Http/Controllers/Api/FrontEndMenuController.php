@@ -60,7 +60,7 @@ class FrontEndMenuController extends Controller
             $fe_menus->where('id', '=', $request->get('id', 2));
         }*/
 
-        $fe_menus = FrontEndMenu::latest();
+        $fe_menus = FrontEndMenu::orderBy('id');
 
         $true = FrontEndMenu::select('parent_id')
         ->whereNotNull('parent_id');

@@ -124,7 +124,9 @@ class FrontEndMenuController extends Controller
         try {
             $input = $request->validated();
             if($input['type'] == 'anchor') {
-                $input['slug'] = Str::slug($input['slug']);
+                if($input['slug'] === null){
+                    $input['slug'] = Str::slug($input['title']);
+                }
                 $input['target'] = 'self';
             }
             if($input['type'] == 'label') {
@@ -132,7 +134,9 @@ class FrontEndMenuController extends Controller
                 $input['slug'] = '#';
             }
             if($input['type'] == 'link') {
-                $input['slug'] = Str::slug($input['slug']);
+                if($input['slug'] === null){
+                    $input['slug'] = Str::slug($input['title']);
+                }
             }
             // $input['slug'] = Str::slug($input['title']);
             $input['position'] = json_encode($input['position']);
