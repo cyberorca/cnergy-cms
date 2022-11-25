@@ -57,6 +57,10 @@ class CategoriesController extends Controller
 
         $nested = intval($request->get("nested"));
 
-        return response()->json($nested!==1 ? $category->paginate($limit)->withQueryString()->toArray() : Category::convertCategoryDataToResponseAPI($category->paginate($limit)->withQueryString()->toArray()));
+        if(!Cache::has("categoriesCache")){
+            Cache::put("categoriesCache", $nested!==1 ? $category->paginate($limit)->withQueryString()->toArray() : Category::convertCategoryDataToResponseAPI($category->paginate($limit)->withQueryString()->toArray()), now()->addMinutes(10));
+        }
+    
+        return response()->json(Cache::get("categoriesCache"));
     }
 }

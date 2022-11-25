@@ -42,8 +42,10 @@ class InventoryManagementController extends Controller
             $inventoryManagement->where('type', '=', $type);
         }
 
-        return response()->json(new InventoryCollection($inventoryManagement->get()));
-
+        if(!Cache::has("inventoryManagementCache")){
+            Cache::put("inventoryManagementCache", new InventoryCollection($inventoryManagement->get()), now()->addMinutes(10));
+        }
+    
+        return response()->json(Cache::get("inventoryManagementCache"));
     }
-
 }

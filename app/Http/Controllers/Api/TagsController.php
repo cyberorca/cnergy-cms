@@ -57,11 +57,11 @@ class TagsController extends Controller
             $limit = 20;
         }
 
-        if(!Cache::has("tags_api")){
-            Cache::forever("tags_api", new TagCollection($tag->paginate($limit)->withQueryString()));
+        if(!Cache::has("tagsCache")){
+            Cache::put("tagsCache", new TagCollection($tag->paginate($limit)->withQueryString()), now()->addMinutes(10));
         }
 
-        return response()->json(Cache::get("tags_api"));
+        return response()->json(Cache::get("tagsCache"));
     }
 
 }
