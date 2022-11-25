@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\InventoryManagement;
 use App\Http\Resources\InventoryCollection;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Get Inventory Management
@@ -42,8 +43,10 @@ class InventoryManagementController extends Controller
             $inventoryManagement->where('type', '=', $type);
         }
 
-        return response()->json(new InventoryCollection($inventoryManagement->get()));
-
+        if(!Cache::has("inventoryManagementCache")){
+            Cache::put("inventoryManagementCache", new InventoryCollection($inventoryManagement->get()), now()->addMinutes(10));
+        }
+    
+        return response()->json(Cache::get("inventoryManagementCache"));
     }
-
 }

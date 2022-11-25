@@ -9,6 +9,7 @@ use App\Http\Resources\StaticPageCollection;
 use App\Models\FrontEndSetting;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Cache;
 
 class FrontEndSettingsController extends Controller
 {
@@ -38,8 +39,11 @@ class FrontEndSettingsController extends Controller
     public function index()
     {
         $menu_settings = FrontEndSetting::first()->makeHidden(['token', 'deleted_at', 'id']);
-        return response()
-            ->json(new IndexFrontEndSettingResource($menu_settings),
-            Response::HTTP_OK);
+        
+        if(!Cache::has("frontEndSettingsCache")){
+            Cache::put("frontEndSettingsCache", new IndexFrontEndSettingResource($menu_settings), now()->addMinutes(10));
+        }
+    
+        return response()->json(Cache::get("frontEndSettingsCache"), Response::HTTP_OK);
     }
 }
