@@ -1,7 +1,7 @@
 <div>
     <div class="d-flex input-file-uploader">
         <span class="w-100 btn btn-success d-flex justify-content-center align-items-center" data-bs-toggle="modal"
-            data-bs-target="#image-bank" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Image"><i
+            data-bs-target="#image-bank" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Image" id="upload_image_bank_button"><i
                 class="bi bi-upload mb-2"></i>&nbsp;&nbsp;
             Add Image</span>
         <input type="hidden" name="upload_image_selected" id="upload_image_selected" />
@@ -14,20 +14,20 @@
     </div>
     <div class="image-file-preview mt-3">
         <img src="@if (!isset($item)) {{ asset('assets/images/preview-image.jpg') }} @else {{ Storage::url($item->image) }} @endif"
-            alt="" srcset="" id="image_preview_result">
+            alt="" srcset="" id="image_preview_result" selectedImage="false">
     </div>
 
     {{-- <div class="p-2 px-3 border mt-2">
         <p class="m-0" id="image_title">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab officiis non architecto odit.</p>
     </div> --}}
     <hr>
-    <div class="modal fade text-left " id="image-bank" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
+    <div class="modal fade text-left" id="image-bank" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
         aria-hidden="true" aria-type="{{ $type }}">
         <div class="modal-dialog modal-dialog-scrollable d-flex justify-content-center modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="myModalLabel1">Image Bank</h5>
-                    <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close rounded-pill close-modals-button" id="" data-bs-dismiss="modal" aria-label="Close">
                         <i data-feather="x"></i>
                     </button>
                 </div>
@@ -150,9 +150,9 @@
                             <span class="d-none d-sm-block">Save Image</span>
                         </button>
                     @endif
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-outline-secondary close-modals-button" data-bs-dismiss="modal">
                         <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Cancel</span>
+                        <span class="d-none d-sm-block close-modals-button">Cancel</span>
                     </button>
                 </div>
 

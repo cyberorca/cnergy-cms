@@ -71,7 +71,8 @@ function saveData(sortedData) {
     const input = {
         sortedData: sortedData[type_data]
     } 
-
+    console.log(input);
+    return
     const url = `/master/${type_data}/api/change`
 
     $.ajax({

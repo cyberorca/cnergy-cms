@@ -30,8 +30,8 @@ add_page_button.addEventListener('click', function () {
 function textareaElement(page_no, other, edit) {
     let child = document.createElement("textarea");
     child.name = edit ? `content[${id_news ?? ''}][${other.id}]` : `content[]`
-    child.rows = 10
-    child.cols = 30
+    child.setAttribute("rows", 20);
+    child.setAttribute("cols", 30);
     child.classList.add("my-editor", "form-control", 'my-3', `editors${page_no}`)
     child.id = `#editor-${page_no}`
 
@@ -136,7 +136,7 @@ const newAddContent = (child, edit = false, other) => {
     new_add_content.querySelector("#synopsis").remove();
     new_add_content.querySelector(".my-editor").remove();
     if (!edit) {
-        new_add_content.querySelector(".mce-tinymce").remove();
+        new_add_content.querySelector(".tox-tinymce").remove();
     }
     new_add_content.querySelector(".card-header").remove();
     // new_add_content.querySelector(".card-header-text").innerHTML = `Page ${index + 1}`
@@ -177,7 +177,7 @@ function tinyMCEConfig(index_pages) {
             "insertdatetime media nonbreaking save table contextmenu directionality",
             "emoticons template paste textcolor colorpicker textpattern"
         ],
-        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | imagebank bullist numlist outdent indent | link image media",
         relative_urls: false,
         file_browser_callback: function (field_name, url, type, win) {
             var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName(
@@ -200,13 +200,29 @@ function tinyMCEConfig(index_pages) {
                 resizable: "yes",
                 close_previous: "no"
             });
-        }
+        },
+        setup: (editor) => {
+            editor.ui.registry.addButton('imagebank', {
+                text: 'Image Bank',
+                icon: 'image',
+                onAction: () => {
+                    const {
+                        id
+                    } = editor;
+                    const img_uploader_modal = document.getElementById("image-bank");
+                    img_uploader_modal.classList.add("show");
+                    img_uploader_modal.style.display = "block";
+                    img_uploader_modal.setAttribute("tinymce-image-bank", true);
+                    img_uploader_modal.setAttribute("target-mce", id);
+                }
+            });
+        },
     });
 }
 
 if (document.body.contains(document.getElementById("news_paginations"))) {
     const news_paginations = JSON.parse(document.getElementById("news_paginations").value);
-    if(news_paginations.length){
+    if (news_paginations.length) {
         let page_count = 2;
         news_paginations.map((el, i) => {
             index = page_count;
