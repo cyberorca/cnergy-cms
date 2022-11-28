@@ -33,7 +33,6 @@
             display: none;
         }
 
-
         a[aria-expanded=false] .bi-chevron-up {
             display: none;
         }
@@ -135,6 +134,7 @@
 
 @section('javascript')
     <script src="{{ asset('assets/extensions/toastify-js/src/toastify.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
     {{-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
@@ -142,59 +142,78 @@
 
 
     <script>
+        {{-- Get Tags Checked --}}
         $(document).ready(function() {
-            $("#tags").select2({
-                placeholder: 'Select Tags',
+            $('#tags').select2({
+                width: '100%',
+                multiple: true,
+                tags: true,
+                tokenSeparators: [',', '\n'],
+                // maximumSelectionSize: 12,
+                // minimumInputLength: 2,
+                placeholder: "Select Tags",
                 allowClear: true,
                 ajax: {
-                    url: "{{ route('tag.index') }}",
+                    url: "{{ route('tagging.search') }}",
+                    type: "post",
                     dataType: 'json',
                     delay: 250,
-                    processResults: function({
-                        data
-                    }) {
+                    global: false,
+                    cache: true,
+                    data: function(params) {
                         return {
-                            results: $.map(data, function(item) {
-                                return {
-                                    id: item.id,
-                                    text: item.tags
-                                }
-                            })
-                        }
-                    }
+                            _token: '{{ csrf_token() }}',
+                            search: params.term
+                        };
+                    },
+                    processResults: function(response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    success: function(response) {
+                        console.log('response', response)
+                    },
+                    error: function(error) {
+                        console.log(error, 'error get tags');
+                    },
                 }
             });
         });
-
-        var keywords = [];
-
-        $('#keyword').on('select2:select', function(e) {
-            const {
-                params: {
-                    data
-                }
-            } = e;
-            var findItem = keywords.map(el => el.text);
-            keywords.push(data);
-            // console.log(keywords);
-            console.log('select');
-        });
-        $('#keyword').on('select2:selecting', function(e) {
-            console.log('selecting');
-        });
-        $('#keyword').on('select2:unselect', function(e) {
-            const {
-                params: {
-                    data
-                }
-            } = e;
-            keywords = keywords.filter(el => el.text !== data.text)
+        $(document).ready(function() {
+            {{--  Auto Save Tags --}}
+            $('#tags').change(function() {
+                var tags = $('#tags').val();
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('tagging.edit') }}",
+                    @if ($method === 'edit')
+                        data: {
+                            id: {{ $news->id }},
+                            tags: tags,
+                            _token: @json(csrf_token())
+                        },
+                    @else
+                        data: {
+                            tags: tags,
+                            _token: @json(csrf_token())
+                        },
+                    @endif
+                    success: function(data) {
+                        console.log(data);
+                    },
+                    error: function(error) {
+                        console.log(error, 'error auto save inline');
+                    },
+                });
+            });
         });
         $(document).ready(function() {
             $("#keyword").select2({
                 tags: true,
                 placeholder: 'Select Keywords',
                 allowClear: true,
+                tokenSeparators: [',', '\n'],
                 ajax: {
                     url: "{{ route('keyword.index') }}",
                     dataType: 'json',
@@ -216,12 +235,112 @@
         });
     </script>
 
+    <script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/4/tinymce.min.js"
+        referrerpolicy="origin"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        var editor_config = {
+            path_absolute: "/",
+            selector: "textarea.my-editor",
+            plugins: [
+                "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+                "searchreplace wordcount visualblocks visualchars code fullscreen",
+                "insertdatetime media nonbreaking save table contextmenu directionality",
+                "emoticons template paste textcolor colorpicker textpattern"
+            ],
+            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+            relative_urls: false,
+            file_browser_callback: function(field_name, url, type, win) {
+                var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName(
+                    'body')[0].clientWidth;
+                var y = window.innerHeight || document.documentElement.clientHeight || document
+                    .getElementsByTagName('body')[0].clientHeight;
+                var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
+                if (type == 'image') {
+                    cmsURL = cmsURL + "&type=Images";
+                } else {
+                    cmsURL = cmsURL + "&type=Files";
+                }
+                tinyMCE.activeEditor.windowManager.open({
+                    file: cmsURL,
+                    title: 'Filemanager',
+                    width: x * 0.8,
+                    height: y * 0.8,
+                    resizable: "yes",
+                    close_previous: "no"
+                });
+            }
+        };
+        tinymce.init(editor_config);
+    </script>
+
+    <script src="{{ asset('assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/form-element-select.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+
+    $('#keyword').on('select2:select', function(e) {
+    const {
+    params: {
+    data
+    }
+    } = e;
+    var findItem = keywords.map(el => el.text);
+    keywords.push(data);
+    // console.log(keywords);
+    console.log('select');
+    });
+    $('#keyword').on('select2:selecting', function(e) {
+    console.log('selecting');
+    });
+    $('#keyword').on('select2:unselect', function(e) {
+    const {
+    params: {
+    data
+    }
+    } = e;
+    keywords = keywords.filter(el => el.text !== data.text)
+    });
+    $(document).ready(function() {
+    $("#keyword").select2({
+    tags: true,
+    placeholder: 'Select Keywords',
+    allowClear: true,
+    ajax: {
+    url: "{{ route('keyword.index') }}",
+    dataType: 'json',
+    delay: 250,
+    processResults: function({
+    data
+    }) {
+    return {
+    results: $.map(data, function(item) {
+    return {
+    id: item.id,
+    text: item.keywords
+    }
+    })
+    .trigger('change');
+    });
+    </script>
+    {{--
+        <script src="/path/to/cdn/jquery.slim.min.js"></script>
+        <script src="/path/to/js/jquery.dateandtime.js"></script>
+        <script>
+            $(function() {
+                $('.example').dateAndTime();
+            });
+        });
+    </script>
+
     {{-- <script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/4/tinymce.min.js"
         referrerpolicy="origin"></script> --}}
 
     <script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/5/tinymce.min.js"
         referrerpolicy="origin"></script>
-        
+
     <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
     {{-- <script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
@@ -267,7 +386,9 @@
                     text: 'Image Bank',
                     icon: 'image',
                     onAction: () => {
-                        const { id } = editor;
+                        const {
+                            id
+                        } = editor;
                         const img_uploader_modal = document.getElementById("image-bank");
                         img_uploader_modal.classList.add("show");
                         img_uploader_modal.style.display = "block";

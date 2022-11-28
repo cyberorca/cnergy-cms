@@ -37,7 +37,7 @@ class IndexNewsResource extends JsonResource
             "news_synopsis" => $this->synopsis,
             "news_description" => $this->description,
             "news_content" => $this->content,
-            "news_image_prefix" => env('APP_URL') . '/',
+            "news_image_prefix" => '/trstdly/',
             /*"news_image" => [
                 "real"=> $this->image,
             ],*/
@@ -79,12 +79,13 @@ class IndexNewsResource extends JsonResource
             "news_url_full" => env('APP_URL') . '/' . Str::slug(strtolower($this->categories->category)) . '/read/' . $this->slug,
             "news_url_full_mobile" => null,
             "news_paging" => $this->convertDataToResponse3($this->news_paginations),
-            "news_paging_order" => null,
+            "news_paging_order" => 'asc',
             "news_quote" => [
 
             ],
             "news_tag" => $this->convertDataToResponse2($this->tags),
-            "news_keywords" => self::keywordResponse($this->keywords),
+            "news_keywords" => $this->convertDataToResponse4($this->keywords),
+            //"news_keywords" => self::keywordResponse($this->keywords),
             "news_related" => [
 
             ],
@@ -109,7 +110,7 @@ class IndexNewsResource extends JsonResource
             return null;
         }else{
             return [
-                "real" => env('APP_URL') . '/' . $this->image
+                "real" => env('APP_URL') . $this->image
             ];
         }
     }
@@ -144,8 +145,8 @@ class IndexNewsResource extends JsonResource
                 "id" => $item->id,
                 "no" => $item->order_by_no,
                 "title" => $item->title,
-                "type" => null,
-                "url" => null,
+                "type" => 'text',
+                "url" =>  $this->slug,
                 "content" => $item->content,
                 "media" => null,
                 "cdn_image" => [
@@ -153,6 +154,16 @@ class IndexNewsResource extends JsonResource
                     "cdnimg_url" => null,
                     "file_image" => null,
                 ],
+            ];
+        });
+    }
+
+    private function convertDataToResponse4($dataRaw2){
+        return $dataRaw2->transform(function ($item, $key) {
+            return [
+                "news_keyword_id" => $item->pivot->id,
+                "keyword_id" => $item->id,
+                "keyword_name" => $item->keywords,
             ];
         });
     }

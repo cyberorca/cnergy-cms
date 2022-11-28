@@ -8,6 +8,7 @@ use App\Http\Resources\StaticPageCollection;
 use App\Models\StaticPage;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Cache;
 
 class StaticPageController extends Controller
 {
@@ -45,27 +46,21 @@ class StaticPageController extends Controller
         if($request->get("slug")){
             $staticPage->where('slug', '=', $request->get('slug', ''));
         }
-
-        return response()->json(
-            new StaticPageCollection($staticPage->get()),
-            Response::HTTP_OK);
-
-        // possible filter dev
-        // $limit = $request->get('limit', 20);
-        // if($limit > 20){
-        //     $limit = 20;
-        // }
-        // return response()->json(new StaticPageCollection($staticPage->paginate($limit)->withQueryString()))->setStatusCode(200);
-        // $staticPage = StaticPage::latest()->with(['users'])->paginate(10);
-        // return response()->json(new StaticPageCollection($staticPage))->setStatusCode(200);
+        
+        if(!Cache::has("staticPageCache")){
+            Cache::put("staticPageCache", new StaticPageCollection($staticPage->get()), now()->addMinutes(10));
+        }
+    
+        return response()->json(Cache::get("staticPageCache"), Response::HTTP_OK);
     }
 
     public function show($slug){
-        $video_news = StaticPage::where('slug', $slug)->with('users')
-            ->get();
-        if ($video_news==null){
-            return response()->json(['message'=>'Video News Not Found'],Response::HTTP_NOT_FOUND);
+        $filterSlug = StaticPage::where('slug', $slug)->with('users')->get();
+
+        if ($filterSlug == null){
+            return response()->json(['message'=>'Slug Not Found'],Response::HTTP_NOT_FOUND);
         }
-        return response()->json(new StaticPageCollection($video_news), Response::HTTP_OK);
+
+        return response()->json(new StaticPageCollection($filterSlug), Response::HTTP_OK);
     }
 }

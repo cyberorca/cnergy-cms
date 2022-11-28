@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 class CategoriesController extends Controller
 {
@@ -57,6 +58,10 @@ class CategoriesController extends Controller
 
         $nested = intval($request->get("nested"));
 
-        return response()->json($nested!==1 ? $category->paginate($limit)->withQueryString()->toArray() : Category::convertCategoryDataToResponseAPI($category->paginate($limit)->withQueryString()->toArray()));
+        if(!Cache::has("categoriesCache")){
+            Cache::put("categoriesCache", $nested!==1 ? $category->paginate($limit)->withQueryString()->toArray() : Category::convertCategoryDataToResponseAPI($category->paginate($limit)->withQueryString()->toArray()), now()->addMinutes(10));
+        }
+    
+        return response()->json(Cache::get("categoriesCache"));
     }
 }

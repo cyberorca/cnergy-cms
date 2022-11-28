@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\FrontEndMenu;
 use App\Http\Resources\FrontEndMenuCollection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class FrontEndMenuController extends Controller
 {
@@ -60,7 +61,7 @@ class FrontEndMenuController extends Controller
             $fe_menus->where('id', '=', $request->get('id', 2));
         }*/
 
-        $fe_menus = FrontEndMenu::latest();
+        $fe_menus = FrontEndMenu::orderBy('id');
 
         $true = FrontEndMenu::select('parent_id')
         ->whereNotNull('parent_id');
@@ -89,7 +90,12 @@ class FrontEndMenuController extends Controller
         if($limit > 20){
             $limit = 20;
         }
-        return response()->json(new FrontEndMenuCollection($fe_menus->paginate($limit)->withQueryString()));
+
+        if(!Cache::has("frontEndMenuCache")){
+            Cache::put("frontEndMenuCache", new FrontEndMenuCollection($fe_menus->paginate($limit)->withQueryString()), now()->addMinutes(10));
+        }
+    
+        return response()->json(Cache::get("frontEndMenuCache"));
         //return response()->json(new FrontEndMenuCollection($fe_menus->withQueryString()));
     }
 
