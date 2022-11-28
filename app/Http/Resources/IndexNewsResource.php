@@ -110,7 +110,7 @@ class IndexNewsResource extends JsonResource
             return null;
         }else{
             return [
-                "real" => env('APP_URL') . '/' . $this->image
+                "real" => env('APP_URL') . '/storage' . $this->image
             ];
         }
     }
