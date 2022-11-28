@@ -96,7 +96,7 @@
 
                         <div class="form-group" id="content_box">
                             <label for="content" class="form-label">Content</label>
-                            <textarea name="content[]" class="my-editor form-control" id="content" cols="30" rows="10" required>
+                            <textarea name="content[]" class="my-editor form-control" id="content" cols="30" rows="20" required>
                                     @if ($method === 'edit')
 {{ $news->content }}
 @endif
@@ -135,7 +135,6 @@
 
 @section('javascript')
     <script src="{{ asset('assets/extensions/toastify-js/src/toastify.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
     {{-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
@@ -170,7 +169,11 @@
         var keywords = [];
 
         $('#keyword').on('select2:select', function(e) {
-            const { params: { data } } = e;
+            const {
+                params: {
+                    data
+                }
+            } = e;
             var findItem = keywords.map(el => el.text);
             keywords.push(data);
             // console.log(keywords);
@@ -180,7 +183,11 @@
             console.log('selecting');
         });
         $('#keyword').on('select2:unselect', function(e) {
-            const { params: { data } } = e;
+            const {
+                params: {
+                    data
+                }
+            } = e;
             keywords = keywords.filter(el => el.text !== data.text)
         });
         $(document).ready(function() {
@@ -209,8 +216,14 @@
         });
     </script>
 
-    <script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/4/tinymce.min.js"
+    {{-- <script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/4/tinymce.min.js"
+        referrerpolicy="origin"></script> --}}
+
+    <script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/5/tinymce.min.js"
         referrerpolicy="origin"></script>
+        
+    <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
+    {{-- <script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
@@ -225,7 +238,7 @@
                 "insertdatetime media nonbreaking save table contextmenu directionality",
                 "emoticons template paste textcolor colorpicker textpattern"
             ],
-            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | imagebank bullist numlist outdent indent | link media",
             relative_urls: false,
             file_browser_callback: function(field_name, url, type, win) {
                 var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName(
@@ -248,7 +261,21 @@
                     resizable: "yes",
                     close_previous: "no"
                 });
-            }
+            },
+            setup: (editor) => {
+                editor.ui.registry.addButton('imagebank', {
+                    text: 'Image Bank',
+                    icon: 'image',
+                    onAction: () => {
+                        const { id } = editor;
+                        const img_uploader_modal = document.getElementById("image-bank");
+                        img_uploader_modal.classList.add("show");
+                        img_uploader_modal.style.display = "block";
+                        img_uploader_modal.setAttribute("tinymce-image-bank", true);
+                        img_uploader_modal.setAttribute("target-mce", id);
+                    }
+                });
+            },
         };
 
         tinymce.init(editor_config);
@@ -259,6 +286,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 
     <script>
+        $('.close-modals-button').on('click', function() {
+            $('#image-bank').removeClass("show").css("display", "none")
+        });
         $(function() {
             $('input')
                 .on('change', function(event) {

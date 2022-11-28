@@ -123,6 +123,7 @@ if (image_bank_type == 'photonews') {
             if (i == 0) {
                 if (image_preview_result.getAttribute("selectedImage") === 'false') {
                     image_preview_result.src = path + el.slug;
+                    upload_image_selected.value = path + el.slug;
                     image_preview_result.setAttribute("selectedImage", true);
                 }
             }

@@ -93,13 +93,34 @@ upload_image_button.onchange = evt => {
     }
 }
 
+const upload_image_bank_button = document.getElementById("upload_image_bank_button");
+const img_uploader_modal = document.getElementById("image-bank");
+let imageURLTinyMCE = '';
+
+upload_image_bank_button.addEventListener('click', function () {
+    img_uploader_modal.setAttribute("tinymce-image-bank", false);
+})
+
 function selectImage() {
     const imageSrc = this.parentElement.children[0].getAttribute("src");
-    const imageTitle = this.parentElement.children[1].innerHTML;
-    //  image_title.innerHTML = imageTitle;
-    image_preview_result.src = imageSrc;
-    upload_image_selected.value = imageSrc;
-    upload_image_button.value = null;
+    var tiny_mce_image_bank = img_uploader_modal.getAttribute("tinymce-image-bank");
+    if (tiny_mce_image_bank === 'false') {
+        image_preview_result.src = imageSrc;
+        upload_image_selected.value = imageSrc;
+        upload_image_button.value = null;
+        return
+    }
+
+    const targetTinyMCE = img_uploader_modal.getAttribute("target-mce");
+    const oldTextTinyMCETarget = tinymce.get(targetTinyMCE).getContent();
+    tinymce.get(targetTinyMCE).setContent(
+        oldTextTinyMCETarget + 
+        `
+        <img src="${imageSrc}" alt="" data-mce-src="${imageSrc.split("http://127.0.0.1:8000")[1]}">
+        `
+    );
+    imageURLTinyMCE = imageSrc;
+    $('#image-bank').removeClass("show").css("display", "none")
 }
 
 async function search() {
