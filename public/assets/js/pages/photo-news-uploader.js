@@ -92,10 +92,10 @@ upload_image_button.onchange = evt => {
     }
 }
 
-if($(`.button-old-photo-news`).length > 0){
-   var buttonsOldPhotoNews = document.querySelectorAll('.button-old-photo-news');
+if ($(`.button-old-photo-news`).length > 0) {
+    var buttonsOldPhotoNews = document.querySelectorAll('.button-old-photo-news');
     buttonsOldPhotoNews.forEach((el, i) => {
-        el.addEventListener('click', function(){
+        el.addEventListener('click', function () {
             const url = $(el).attr("url-data")
             image_preview_result.src = url;
             upload_image_selected.value = url;
@@ -110,39 +110,48 @@ if (image_bank_type == 'photonews') {
     $("#save_photo_news").click(function () {
         selectedPhotoNews.map((el, i) => {
             $("#other_page").append(cardPhotoNews(el, index_photonews))
-            $(`.bi-trash`).click(function(){
+            $(`.bi-trash`).click(function () {
                 document.querySelector(`#imagephotonews-${index_photonews-1}`).remove();
             })
-            $(`#button-photonews-selected-${index_photonews}`).click(function(){
-                const url = $(this).attr("url-data")
+            var url = '';
+            $(`#button-photonews-selected-${index_photonews}`).click(function () {
+                url += $(this).attr("url-data")
                 image_preview_result.src = url;
+                image_preview_result.setAttribute("selectedImage", true);
                 upload_image_selected.value = url;
             })
-            
+            if (i == 0) {
+                if (image_preview_result.getAttribute("selectedImage") === 'false') {
+                    image_preview_result.src = path + el.slug;
+                    upload_image_selected.value = path + el.slug;
+                    image_preview_result.setAttribute("selectedImage", true);
+                }
+            }
+
             index_photonews++;
         })
         selectedPhotoNews = [];
     })
 }
 
-function deleteImage(){
+function deleteImage() {
     var buttonsOldPhotoNews2 = document.querySelectorAll('.bi-trash');
-         buttonsOldPhotoNews2.forEach((el, i) => {
-             el.addEventListener('click', function(){
-                 const id = $(el).attr("id")
-                 document.querySelector(`#imagephotonews-${id}`).remove();
-             })
-         })
+    buttonsOldPhotoNews2.forEach((el, i) => {
+        el.addEventListener('click', function () {
+            const id = $(el).attr("id")
+            document.querySelector(`#imagephotonews-${id}`).remove();
+        })
+    })
 }
 
-$(`.bi-trash`).click(function(){
+$(`.bi-trash`).click(function () {
     deleteImage();
 })
 
 function selectImage() {
     if (image_bank_type == 'photonews') {
         const image = JSON.parse($(this).siblings('input').val());
-        if(this.getAttribute("status-selected") === 'true'){
+        if (this.getAttribute("status-selected") === 'true') {
             this.innerHTML = `<i class="bi bi-plus-circle"></i>&nbsp;&nbsp;Select`
             this.setAttribute('status-selected', 'false')
             selectedPhotoNews = selectedPhotoNews.filter((el) => el.slug !== image.slug);
@@ -152,7 +161,7 @@ function selectImage() {
             this.innerHTML = `<i class="bi bi-dash-circle"></i>&nbsp;&nbsp;Deselect`
         }
         const status_selected = $("[status-selected=true]").length;
-        if(status_selected <= 0){
+        if (status_selected <= 0) {
             $("#save_photo_news").attr("disabled", true)
         } else {
             $("#save_photo_news").removeAttr("disabled")
@@ -299,7 +308,14 @@ function tinyMCEConfig(index_pages) {
 }
 
 const cardPhotoNews = (image, index) => {
-    const { title, slug, caption, keywords, copyright, description } = image;
+    const {
+        title,
+        slug,
+        caption,
+        keywords,
+        copyright,
+        description
+    } = image;
     return `<div class="card" id="imagephotonews-${+index}">
     <div class="card-header d-flex justify-content-between">
         <a data-bs-toggle="collapse" class="d-flex justify-content-between w-100" href="#photonews-${+index}" aria-expanded="false"
@@ -316,8 +332,7 @@ const cardPhotoNews = (image, index) => {
                 <div class="col-md-5 col-12">
                     <div class="form-group">
                         <div class="image-file-preview mt-3">
-                            <img src="${path}/${slug}" alt="" srcset=""
-                                id="image_preview_result">
+                            <img src="${path}/${slug}" alt="" srcset="">
                             <input type="hidden" name="photonews[${+index}][url]" value="${slug}" />
                         </div>
                         <div class="form-group">
