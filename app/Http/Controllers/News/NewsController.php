@@ -169,6 +169,7 @@ class NewsController extends Controller implements NewsServices
                     'title' => $data['title'][$i + 1],
                     // 'synopsis' => $data['synopsis'][$i + 1],
                     'content' => $data['content'][$i + 1],
+                    'slug' => Str::slug($data['title'][$i + 1]),
                     'order_by_no' => $i
                 ];
             }
@@ -243,6 +244,7 @@ class NewsController extends Controller implements NewsServices
                         'title' => $news_page['title'],
                         'content' => $news_page['content'],
                         'order_by_no' => $news_page['order_by_no'],
+                        'slug' => $news_page['slug'],
                         'news_id' => $news->id,
                     ]);
                 }
