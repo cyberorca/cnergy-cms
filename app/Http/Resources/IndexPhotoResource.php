@@ -38,7 +38,7 @@ class IndexPhotoResource extends JsonResource
             'news_synopsis' => $this->synopsis,
             'news_content' => $this->content,
             'news_description' => $this->description,
-            'news_image_prefix' => env('APP_URL') . '/',
+            'news_image_prefix' => '/trstdly/',
             // 'news_image' => [
             //     'real' => $this->image,
             // ],
@@ -84,7 +84,7 @@ class IndexPhotoResource extends JsonResource
             // 'news_quote' => '',
             // 'news_video' => $this->videoResponse($this->video),
             'news_tag' => IndexPhotoTagResource::collection($this->tags),
-            'news_keywords' => self::keywordResponse($this->keywords),
+            'news_keywords' => $this->keywordResponse($this->keywords),
             'news_related' => [],
             'news_dfp' => [],
             'news_dmp' => [],
@@ -141,10 +141,14 @@ class IndexPhotoResource extends JsonResource
         ];
     }
 
-    private function keywordResponse($keywords)
-    {
-        if (!empty($keywords))
-            return explode(',', $keywords);
+    private function keywordResponse($dataRaw2){
+        return $dataRaw2->transform(function ($item, $key) {
+            return [
+                "news_keyword_id" => $item->pivot->id,
+                "keyword_id" => $item->id,
+                "keyword_name" => $item->keywords,
+            ];
+        });
     }
 
     private function newsImage($image){
@@ -152,7 +156,7 @@ class IndexPhotoResource extends JsonResource
             return null;
         }else{
             return [
-                "real" => env('APP_URL') . '/' . $this->image
+                "real" => env('APP_URL') . '/storage/' . $this->image
             ];
         }
     }
@@ -161,7 +165,7 @@ class IndexPhotoResource extends JsonResource
         if($image2 === NULL){
             return null;
         }else{
-            $info = ImageBank::where('slug', '=', $image2)->get('description')->first();
+            $info = ImageBank::where('slug', '=', '/'. $image2)->get('description')->first();
             if($info === NULL){
                 return null;
             }else{
