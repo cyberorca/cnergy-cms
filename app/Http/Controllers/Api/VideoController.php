@@ -9,6 +9,7 @@ use App\Models\News;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Cache;
 
 class VideoController extends Controller
 {

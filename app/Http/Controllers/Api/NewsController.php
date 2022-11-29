@@ -10,6 +10,7 @@ use App\Models\NewsPagination;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 class NewsController extends Controller
 {

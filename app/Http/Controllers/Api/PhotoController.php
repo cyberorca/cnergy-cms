@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\PhotoCollection;
 use App\Models\News;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class PhotoController extends Controller
 {
