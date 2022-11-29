@@ -8,10 +8,12 @@
         "php": "^8.0.2",
         "darkaonline/l5-swagger": "^8.4",
         "guzzlehttp/guzzle": "^7.2",
+        "intervention/image": "^2.7",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.7",
+        "lsolesen/pel": "^0.9.12",
         "unisharp/laravel-filemanager": "^2.5",
         "vi-kon/laravel-diff": "^1.0"
     },

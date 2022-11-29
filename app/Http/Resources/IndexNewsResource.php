@@ -36,7 +36,7 @@ class IndexNewsResource extends JsonResource
             "news_subtitle" => null,
             "news_synopsis" => $this->synopsis,
             "news_description" => $this->description,
-            "news_content" => $this->content,
+            "news_content" => htmlspecialchars($this->content),
             "news_image_prefix" => '/trstdly/',
             /*"news_image" => [
                 "real"=> $this->image,
@@ -110,7 +110,7 @@ class IndexNewsResource extends JsonResource
             return null;
         }else{
             return [
-                "real" => env('APP_URL') . $this->image
+                "real" => env('APP_URL') . '/storage' . $this->image
             ];
         }
     }
@@ -146,7 +146,7 @@ class IndexNewsResource extends JsonResource
                 "no" => $item->order_by_no,
                 "title" => $item->title,
                 "type" => 'text',
-                "url" =>  $this->slug,
+                "url" =>  $item->slug,
                 "content" => $item->content,
                 "media" => null,
                 "cdn_image" => [
