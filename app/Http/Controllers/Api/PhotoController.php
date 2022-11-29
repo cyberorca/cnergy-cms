@@ -148,7 +148,11 @@ class PhotoController extends Controller
             $photo->where('is_verify_age', '=', $request->get('sensitive', ''));
         }
 
-        return response()->json(new PhotoCollection($photo->paginate($limit)->withQueryString()));
+        if(!Cache::has("photoCache")){
+            Cache::put("photoCache", new PhotoCollection($photo->paginate($limit)->withQueryString()), now()->addMinutes(10));
+        }
+    
+        return response()->json(Cache::get("photoCache"));
     }
 
 }

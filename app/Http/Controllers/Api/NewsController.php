@@ -149,7 +149,11 @@ class NewsController extends Controller
             $news->where('updated_at', '>=', $last_update);
         }
 
-        return response()->json(new NewsCollection($news->paginate($limit)->withQueryString()));
+        if(!Cache::has("newsCache")){
+            Cache::put("newsCache", new NewsCollection($news->paginate($limit)->withQueryString()), now()->addMinutes(10));
+        }
+    
+        return response()->json(Cache::get("newsCache"));
     }
 
 }
