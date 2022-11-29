@@ -5,16 +5,18 @@ namespace App\Http\Controllers\Tools;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ImageBankRequest;
 use App\Http\Utils\FileFormatPath;
+use App\Http\Utils\ImageMetadata;
 use App\Models\ImageBank;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 
 class ImageBankController extends Controller
 {
+    use ImageMetadata;
+
     /**
      * Display a listing of the resource.
      *
@@ -40,7 +42,7 @@ class ImageBankController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(ImageBankRequest $request)
@@ -62,7 +64,9 @@ class ImageBankController extends Controller
                 $fileFormatPath = new FileFormatPath('image-bank', $file);
                 $data['slug'] = $fileFormatPath->storeFile();
             }
-            ImageBank::create($data);
+            $imageBank = ImageBank::create($data);
+            $this->setMetaData($imageBank, $input["copyright"],  $input["description"]);
+
             return redirect()->route('image-bank.index')->with('status', 'Successfully Add Image');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
@@ -88,7 +92,8 @@ class ImageBankController extends Controller
                 $fileFormatPath = new FileFormatPath('image-bank', $file);
                 $data['slug'] = $fileFormatPath->storeFile();
             }
-            ImageBank::create($data);
+            $imageBank = ImageBank::create($data);
+            $this->setMetaData($imageBank, $input["copyright"],  $input["description_image"]);
             return response()->json([
                 'message' => 'Successfully add image',
                 'data' => [
@@ -103,7 +108,7 @@ class ImageBankController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -114,24 +119,25 @@ class ImageBankController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         $method = explode('/', URL::current());
-        $imageBankById = ImageBank::with('createdBy')->find($id)->first();
+        $imageBankById = ImageBank::with('createdBy')->where('id', $id)->first();
+//        $this->getMetaData($imageBankById->slug);
         return view('tools.image-bank.editable',
             ['method' => end($method),
-                'imageBank'=>$imageBankById
-                ]);
+                'imageBank' => $imageBankById
+            ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(ImageBankRequest $request, $id)
@@ -150,6 +156,7 @@ class ImageBankController extends Controller
             ];
             $imageBankById = ImageBank::find($id)->first();
             $imageBankById->update($data);
+            $this->setMetaData($imageBankById, $input["copyright"], $input["description"]);
             return redirect()->route('image-bank.index')->with('status', 'Successfully Edit Meta Image');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
@@ -159,7 +166,7 @@ class ImageBankController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
