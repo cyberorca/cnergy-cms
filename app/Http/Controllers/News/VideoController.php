@@ -298,7 +298,7 @@ class VideoController extends Controller
                 'is_disable_interactions' => $request->has('isDisableInteractions') == false ? '0' : '1',
                 'is_branded_content' => $request->has('isBrandedContent') == false ? '0' : '1',
                 'title' => $data['title'],
-                'slug' => Str::slug($data['title']),
+                //'slug' => Str::slug($data['title']),
                 'content' => $data['content'],
                 'synopsis' => $data['synopsis'],
                 'image' => $data['image'] ?? $newsById->image,
