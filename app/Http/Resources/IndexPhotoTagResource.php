@@ -15,7 +15,7 @@ class IndexPhotoTagResource extends JsonResource
     public function toArray($request)
     {
         return [
-            "news_tag_id" => "",
+            "news_tag_id" => $this->pivot->news_id,
             "tag_id" => $this->id,
             "tag_name" => $this->tags,
             "tag_url" => $this->slug,

@@ -126,7 +126,9 @@ class PhotoController extends Controller implements NewsServices
     {
         $method = explode('/', URL::current());
         $users = User::all();
-        $categories = Category::whereJsonContains('types','photonews')->get();
+        $categories = Category::whereNull('deleted_at')
+        ->where('is_active','=','1')
+        ->whereJsonContains('types','photonews')->get();
 //        $tags = Tag::all();
         $types = 'photonews';
         $date = date('Y-m-d');
@@ -272,14 +274,16 @@ class PhotoController extends Controller implements NewsServices
     {
         $method = explode('/', URL::current());
         $news = News::where('id', $id)->with(['users', 'news_photo'])->first();
-        $categories = Category::whereJsonContains('types','photonews')->get();
+        $categories = Category::whereNull('deleted_at')
+        ->where('is_active','=','1')
+        ->whereJsonContains('types','photonews')->get();
 //        $tags = Tag::all();
         $keywords = Keywords::all();
         $types = 'photonews';
         $contributors = $news->users;
         $users = User::with(['roles'])->get();
         return view('news.photonews.editable', [
-            'method' => end($method),
+            'method' => end($method), 
             'categories' => $categories,
             'types' => $types,
             'news' => $news,

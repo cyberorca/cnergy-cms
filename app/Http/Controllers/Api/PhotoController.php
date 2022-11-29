@@ -90,6 +90,7 @@ class PhotoController extends Controller
             ->where('published_at', '<=', now())
             ->latest('published_at');
 
+        // return response()->json($photo->get());
         $limit = $request->get('limit', 20);
         if ($limit > 20) {
             $limit = 20;
