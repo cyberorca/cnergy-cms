@@ -104,7 +104,9 @@ class VideoController extends Controller
     {
         $method = explode('/', URL::current());
         $users = User::all();
-        $categories =Category::whereJsonContains('types','video')->get();
+        $categories =Category::whereNull('deleted_at')
+        ->where('is_active','=','1')
+        ->whereJsonContains('types','video')->get();
 //        $tags = Tag::all();
         $types = 'video';
         $date = date('Y-m-d');
@@ -129,7 +131,7 @@ class VideoController extends Controller
     {
         $data = $request->input();
         $date = $data['date'];
-        $time = $data['time'];
+        $time = $data['time']; 
         $mergeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
         // return response()->json($request->all());
         try {
@@ -240,7 +242,9 @@ class VideoController extends Controller
     {
         $method = explode('/', URL::current());
         $news = News::where('id', $id)->with('news_videos:id,video,news_id')->first();
-        $categories = Category::whereJsonContains('types','video')->get();
+        $categories = Category::whereNull('deleted_at')
+        ->where('is_active','=','1')
+        ->whereJsonContains('types','video')->get();
 //        $tags = Tag::all();
         $keywords = Keywords::all();
         $types = 'video';
