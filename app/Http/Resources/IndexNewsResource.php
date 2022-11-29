@@ -85,7 +85,6 @@ class IndexNewsResource extends JsonResource
             ],
             "news_tag" => $this->convertDataToResponse2($this->tags),
             "news_keywords" => $this->convertDataToResponse4($this->keywords),
-            //"news_keywords" => self::keywordResponse($this->keywords),
             "news_related" => [
 
             ],
@@ -206,11 +205,5 @@ class IndexNewsResource extends JsonResource
             "name" => $userById->name,
             "image" => $userById->profile_image
         ];
-    }
-
-    private function keywordResponse($keywords)
-    {
-        if (!empty($keywords))
-            return explode(',', $keywords);
     }
 }

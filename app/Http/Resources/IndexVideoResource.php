@@ -81,7 +81,7 @@ class IndexVideoResource extends JsonResource
             ],
             "news_video" => $this->videoResponse($this->news_videos)[0] ?? null,
             "news_tag" => $this->convertDataToResponse2($this->tags),
-            "news_keywords" => self::keywordResponse($this->keywords),
+            "news_keywords" => self::convertDataToResponse4($this->keywords),
             "news_related" => [
 
             ],
@@ -131,6 +131,16 @@ class IndexVideoResource extends JsonResource
         });
     }
 
+    private function convertDataToResponse4($dataRaw2){
+        return $dataRaw2->transform(function ($item, $key) {
+            return [
+                "news_keyword_id" => $item->pivot->id,
+                "keyword_id" => $item->id,
+                "keyword_name" => $item->keywords,
+            ];
+        });
+    }
+
     private function arrayUserToObjectUser($array)
     {
         $temp = array();
@@ -169,12 +179,6 @@ class IndexVideoResource extends JsonResource
             "name" => $userById->name,
             "image" => $userById->profile_image
         ];
-    }
-
-    private function keywordResponse($keywords)
-    {
-        if (!empty($keywords))
-            return explode(',', $keywords);
     }
 
     private function videoResponse($video)
