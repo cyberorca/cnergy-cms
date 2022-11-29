@@ -37,7 +37,7 @@ class IndexVideoResource extends JsonResource
             "news_synopsis" => $this->synopsis,
             "news_description" => $this->description,
             "news_content" => $this->content,
-            "news_image_prefix" => env('APP_URL') . '/',
+            "news_image_prefix" => '/trstdly/',
             "news_image" => $this->newsImage($this->image),
             "news_image_thumbnail" => [
                 "real" => null,
@@ -119,7 +119,7 @@ class IndexVideoResource extends JsonResource
                 "no" => $item->order_by_no,
                 "title" => $item->title,
                 "type" => null,
-                "url" => null,
+                "url" => $item->slug,
                 "content" => $item->content,
                 "media" => null,
                 "cdn_image" => [
@@ -195,7 +195,7 @@ class IndexVideoResource extends JsonResource
             return null;
         }else{
             return [
-                "real" => env('APP_URL') . '/' . $this->image
+                "real" => env('APP_URL') . '/storage' . $this->image
             ];
         }
     }
