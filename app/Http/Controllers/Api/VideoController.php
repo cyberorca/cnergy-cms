@@ -158,7 +158,11 @@ class VideoController extends Controller
             $limit = 10;
         }
 
-        return response()->json(new VideoCollection($video->paginate($limit)->withQueryString()));
+        if(!Cache::has("videoCache")){
+            Cache::put("videoCache", new VideoCollection($video->paginate($limit)->withQueryString()), now()->addMinutes(10));
+        }
+    
+        return response()->json(Cache::get("videoCache"));
     }
 
     /**
