@@ -125,7 +125,10 @@ class NewsController extends Controller implements NewsServices
     {
         $method = explode('/', URL::current());
         $users = User::with(['roles'])->get();
-        $categories = Category::whereJsonContains('types','news')->get();
+        $categories = Category::whereNull('deleted_at')
+        ->where('is_active','=','1')
+        ->whereJsonContains('types','news')
+        ->get(); 
 //        $tags = Tag::all();
         //        return response()->json($users);
 
@@ -277,8 +280,10 @@ class NewsController extends Controller implements NewsServices
     {
         $method = explode('/', URL::current());
         $news = News::where('id', $id)->with(['users', 'news_paginations'])->first();
-        $categories = Category::whereJsonContains('types','news')->get();;
-//        $tags = Tag::all();
+        $categories = Category::whereNull('deleted_at')
+        ->where('is_active','=','1')
+        ->whereJsonContains('types','news')->get();;
+//        $tags = Tag::all(); 
         $keywords = Keywords::all();
         $contributors = $news->users;
         $users = User::with(['roles'])->get();
