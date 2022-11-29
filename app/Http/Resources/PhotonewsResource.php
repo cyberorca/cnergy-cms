@@ -18,9 +18,7 @@ class PhotonewsResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'url' => $this->slug,
-            'image' => [
-                'real' => ''
-            ],
+            'image' =>  $this->newsImage($this->image), 
             'description' => $this->description,
             'keywords' => $this->keywords,
             'photographer' => null,
@@ -32,5 +30,14 @@ class PhotonewsResource extends JsonResource
                 'file_image' => '',
             ]
         ];
+    }
+    private function newsImage($image){
+        if($image === NULL){
+            return null;
+        }else{
+            return [
+                "real" => env('APP_URL') . '/storage/' . $this->url
+            ];
+        }
     }
 }
