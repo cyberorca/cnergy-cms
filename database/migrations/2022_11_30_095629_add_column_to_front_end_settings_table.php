@@ -20,6 +20,7 @@ return new class extends Migration
             $table->longText('logo_url')->nullable();
             $table->longText('copyright')->nullable();
             $table->longText('email_domain')->nullable();
+            $table->json('image_info')->nullable();
         });
     }
 
