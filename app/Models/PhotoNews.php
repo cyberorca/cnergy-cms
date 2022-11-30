@@ -33,8 +33,14 @@ class PhotoNews extends Model
         'deleted_at',
         'deleted_by',
         'news_id',
+        'photo_id',
     ];
 
     protected $deletedAt = ['deleted_at'];
+        
+    public function id_image(){
+        return $this->belongsTo(ImageBank::class, 'photo_id');
+    }
+
 
 }

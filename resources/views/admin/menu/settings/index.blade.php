@@ -301,11 +301,14 @@
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">API Access Token</label>
                                         @php 
-                                        $token = last(array_values( json_decode($menu_settings->token , true))) 
+                                        if($menu_settings->token ?? null) {
+                                            $token = last(array_values( json_decode($menu_settings->token , true)));
+                                        }
+                                         
                                         @endphp
                                         <input type="text" readonly class="form-control" id="basicInput"
                                             name="api_access_token" placeholder="Enter API Access Token"
-                                            value="{{ $token }}"/>
+                                            value="@if ($menu_settings->token ?? null){{ $token }} @endif"/>
                                     </div>
                                     
                                     <div class="form-group">

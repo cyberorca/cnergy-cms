@@ -31,6 +31,9 @@
                 <div class="col-md-7 col-12">
                     <div class="form-group">
                         <label for="caption" class="mb-2">Caption</label>
+                        <input type="hidden" class="form-control" id="caption"
+                            name="photonews[old][{{ $item->id }}][photo_id]" placeholder="Enter Caption " required
+                            value="{{ $item->photo_id }}" />
                         <input type="text" class="form-control" id="caption"
                             name="photonews[old][{{ $item->id }}][caption]" placeholder="Enter Caption " required
                             value="{{ $item->image }}" />

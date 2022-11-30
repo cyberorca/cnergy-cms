@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Utils\FileFormatPath;
+use App\Models\ImageBank;
 use Illuminate\Support\Facades\Storage;
 
 class PhotoController extends Controller implements NewsServices
@@ -152,6 +153,7 @@ class PhotoController extends Controller implements NewsServices
     public function store(Request $request)
     {
         $data = $request->input();
+        // return response()->json($data);
         $date = $data['date'];
         $time = $data['time'];
         $mergeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
@@ -229,7 +231,8 @@ class PhotoController extends Controller implements NewsServices
                         'order_by_no' => $index,
                         'news_id' => $news->id,
                         'created_by' => auth()->id(),
-                        'is_active' => "1"
+                        'is_active' => "1",
+                        'photo_id' => $photonews['id'],
                     ]);
                     $index++;
                 }
@@ -304,7 +307,7 @@ class PhotoController extends Controller implements NewsServices
     public function update(Request $request, $id)
     {
         $data = $request->input();
-        //return $data['photonews']['old'];
+        // return $data;
         $news = News::where('id', $id)->with(['users', 'news_photo'])->first();
         $i=0;
         foreach ($news->news_photo as $item){
@@ -331,7 +334,8 @@ class PhotoController extends Controller implements NewsServices
                         'created_by' => $data['photonews']['old'][$key]['created_by'],
                         'updated_by' => auth()->id(),
                         'news_id' => $id,
-                        'id' => $key
+                        'id' => $key,
+                        'photo_id' => $data['photonews']['old'][$key]['photo_id'],
                     ];
 
                     $new[$i] = $key;
@@ -359,7 +363,8 @@ class PhotoController extends Controller implements NewsServices
                     'updated_by' => null,
                     'is_active' => "1",
                     'news_id' => $id,
-                    'id' => null
+                    'id' => null,
+                    'photo_id' => $data['photonews'][$key]['id'] ?? null,
                 ];
                 $i++;
             }

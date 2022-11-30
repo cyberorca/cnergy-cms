@@ -15,4 +15,9 @@ class ImageBank extends Model
     public function createdBy(){
         return $this->belongsTo(User::class,'created_by','uuid');
     }
+        
+    public function news_photo_id(){
+        return $this->hasMany(PhotoNews::class, 'photo_id');
+    }
+
 }

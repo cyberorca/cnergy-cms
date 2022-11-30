@@ -24,27 +24,13 @@ class PhotonewsResource extends JsonResource
             'keywords' => $this->keywords,
             'photographer' => null,
             'copyright' => $this->copyright,
-            'photo_id' => $this->photoId($this->image),
+            'photo_id' => $this->photo_id,
             'cdn_image' => [
                 'klimg_url' => '',
                 'cdnimg_url' => '',
                 'file_image' => '',
             ]
         ];
-    }
-
-    private function photoId($image){
-        return response()->json($image);
-        if($image === NULL){
-            return null;
-        }else{
-            $info = ImageBank::where('slug', '=', '/'. $image)->get('id')->first();
-            if($info === NULL){
-                return null;
-            }else{
-                return $info->id;
-            }
-        }
     }
 
     private function newsImage($image){
