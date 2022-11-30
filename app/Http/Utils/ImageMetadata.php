@@ -18,10 +18,11 @@ trait ImageMetadata
     {
         $path = Storage::get($slug);
         $data = new PelDataWindow($path);
+        $extension = preg_replace('/^.*\.([^.]+)$/D', '$1', basename($slug));
         if (PelJpeg::isValid($data) || PelTiff::isValid($data))
             return true;
         else
-            return 'Cannot edit metadata because invalid image format only supported jpeg,tiff,jfif';
+            return 'Cannot edit metadata format '.$extension.' because invalid image format only supported jpeg,tiff,jfif';
 
     }
 
