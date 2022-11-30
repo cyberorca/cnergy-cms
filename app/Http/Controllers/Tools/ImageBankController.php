@@ -65,7 +65,17 @@ class ImageBankController extends Controller
                 $data['slug'] = $fileFormatPath->storeFile();
             }
             $imageBank = ImageBank::create($data);
-            $this->setMetaData($imageBank, $input["copyright"],  $input["description"]);
+            $isFormatSupport = $this->isFormat($imageBank->slug);
+            if ($isFormatSupport ===true){
+                $this->setMetaData($imageBank->slug,
+                    $input["copyright"],
+                    $input["description"],
+                    $input["photographer"],
+                    $input["title"],
+                    $input["keywords"]
+                );
+            }
+
 
             return redirect()->route('image-bank.index')->with('status', 'Successfully Add Image');
         } catch (\Throwable $e) {
@@ -93,7 +103,17 @@ class ImageBankController extends Controller
                 $data['slug'] = $fileFormatPath->storeFile();
             }
             $imageBank = ImageBank::create($data);
-            $this->setMetaData($imageBank, $input["copyright"],  $input["description_image"]);
+            $isFormatSupport = $this->isFormat($imageBank->slug);
+            if ($isFormatSupport===true) {
+                $this->setMetaData($imageBank->slug,
+                    $input["copyright"],
+                    $input["description_image"],
+                    $input["photographer"],
+                    $input["title_image"],
+                    $input["keywords"]
+                );
+            }
+
             return response()->json([
                 'message' => 'Successfully add image',
                 'data' => [
@@ -127,10 +147,15 @@ class ImageBankController extends Controller
         $method = explode('/', URL::current());
         $imageBankById = ImageBank::with('createdBy')->where('id', $id)->first();
 //        $this->getMetaData($imageBankById->slug);
-        return view('tools.image-bank.editable',
+
+        $isFormatSupport = $this->isFormat($imageBankById->slug);
+        if ($isFormatSupport ===true)
+            return view('tools.image-bank.editable',
             ['method' => end($method),
                 'imageBank' => $imageBankById
             ]);
+        else
+            return back()->withErrors(['error' => $isFormatSupport]);
     }
 
     /**
@@ -156,7 +181,15 @@ class ImageBankController extends Controller
             ];
             $imageBankById = ImageBank::find($id)->first();
             $imageBankById->update($data);
-            $this->setMetaData($imageBankById, $input["copyright"], $input["description"]);
+
+            $this->setMetaData($imageBankById->slug,
+                $input["copyright"],
+                $input["description"],
+                $input["photographer"],
+                $input["title"],
+                $input["keywords"]
+            );
+
             return redirect()->route('image-bank.index')->with('status', 'Successfully Edit Meta Image');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());

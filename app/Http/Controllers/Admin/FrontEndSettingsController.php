@@ -23,7 +23,8 @@ class FrontEndSettingsController extends Controller
     public function index()
     {
         $menu_settings = FrontEndSetting::first();
-        return view('admin.menu.settings.index', compact('menu_settings'));
+        $info_config = ["desktop", "photo", "video", "tag"];
+        return view('admin.menu.settings.index', compact('menu_settings', 'info_config'));
     }
 
     /**
@@ -88,6 +89,43 @@ class FrontEndSettingsController extends Controller
             $token = $input["token_name"];
             $code = $latest_token[$input["token_name"]];
             return redirect()->back()->with('status', 'Successfully Generate Token - ' . $token . ' : ' . $code . ' ');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+    }
+
+    public function imageSize(Request $request)
+    {
+        try {
+            $data = $request->all();
+            $result = json_encode(
+                [
+                    "tag" => [
+                        "photo" => $data['photo_size_tag']
+                    ],
+                    "video" => [
+                        "headline" => $data['photo_size_video'],
+                        "secondary" => $data['secondary_size_video'],
+                        "thumbnail" => $data['thumbnail_size_video']
+                    ],
+                    "photonews" => [
+                        "headline" => $data['photo_size_photo'],
+                        "secondary" => $data['secondary_size_photo'],
+                        "thumbnail" => $data['thumbnail_size_photo']
+                    ],
+                    "news" =>[
+                        "headline" => $data['photo_size_desktop'],
+                        "secondary" => $data['secondary_size_desktop'],
+                        "thumbnail" => $data['thumbnail_size_desktop']
+                    ],
+                ]
+            );
+            FrontEndSetting::updateOrCreate([
+                'id' => 1
+            ], [
+                'image_info' => $result
+            ]);
+            return redirect()->back()->with('status', 'Successfully Input Image Size Info');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -184,4 +222,6 @@ class FrontEndSettingsController extends Controller
     {
         //
     }
+
+    
 }
