@@ -105,6 +105,12 @@ class FrontEndSettingsController extends Controller
                 "robot_txt" => $input["robot_txt"],
                 "ads_txt" => $input["ads_txt"],
                 "embed_code_data_studio" => $input["embed_code_data_studio"],
+                "domain_name" => $input["domain_name"],
+                "domain_url" => $input["domain_url"],
+                "domain_url_mobile" => $input["domain_url_mobile"],
+                "logo_url" => $input["logo_url"],
+                "copyright" => $input["copyright"],
+                "email_domain" => $input["email_domain"],
             ];
 
             FrontEndSetting::updateOrCreate([

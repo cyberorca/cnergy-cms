@@ -239,18 +239,44 @@
                             <div class="card-body">
                                 @csrf
                                 <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="basicInput" class="mb-2">Domain Name</label>
+                                        <input type="text" class="form-control @error('domain_name') is-invalid @enderror"
+                                            id="basicInput" name="domain_name" placeholder="Enter Domain Name"
+                                            value="@if ($menu_settings ?? null){{ $menu_settings->domain_name }}@endif"/>
+                                        @error('domain_name')
+                                            <div class="invalid-feedback">
+                                                <i class="bx bx-radio-circle"></i>
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="basicInput" class="mb-2">Domain URL</label>
+                                        <input type="text" class="form-control" id="basicInput"
+                                            name="domain_url" placeholder="Enter Domain URL"
+                                            value="@if ($menu_settings ?? null){{ $menu_settings->domain_url }}@endif"/>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="basicInput" class="mb-2">Logo URL</label>
+                                        <input type="text" class="form-control" id="basicInput"
+                                            name="logo_url" placeholder="Enter Logo URL"
+                                            value="@if ($menu_settings ?? null){{ $menu_settings->logo_url }}@endif"/>
+                                    </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Facebook Fanspage</label>
                                         <input type="text" class="form-control" id="basicInput"
                                             name="facebook_fanspage" placeholder="Enter Facebook Fanspage"
-                                            value="@if ($menu_settings ?? null) {{ $menu_settings->facebook_fanspage }} @endif" />
+                                            value="@if ($menu_settings ?? null){{ $menu_settings->facebook_fanspage }}@endif"/>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">CSE ID</label>
                                         <input type="text" class="form-control" id="basicInput" name="cse_id"
-                                            placeholder="Enter CSE ID" value="@if ($menu_settings ?? null) {{ $menu_settings->cse_id }} @endif" />
+                                            placeholder="Enter CSE ID" value="@if ($menu_settings ?? null){{ $menu_settings->cse_id }}@endif"/>
                                     </div>
 
                                     <div class="form-group">
@@ -271,6 +297,31 @@
                             <div class="card-body d-flex flex-column gap-2">
                                 @csrf
                                 <div class="col-md-12">
+
+                                    <div class="form-group">
+                                        <label for="basicInput" class="mb-2">API Access Token</label>
+                                        @php 
+                                        $token = last(array_values( json_decode($menu_settings->token , true))) 
+                                        @endphp
+                                        <input type="text" readonly class="form-control" id="basicInput"
+                                            name="api_access_token" placeholder="Enter API Access Token"
+                                            value="{{ $token }}"/>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="basicInput" class="mb-2">Domain URL Mobile</label>
+                                        <input type="text" class="form-control" id="basicInput"
+                                            name="domain_url_mobile" placeholder="Enter Domain URL Mobile"
+                                            value="@if ($menu_settings ?? null){{ $menu_settings->domain_url_mobile }}@endif"/>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="basicInput" class="mb-2">Copyright</label>
+                                        <input type="text" class="form-control" id="basicInput"
+                                            name="copyright" placeholder="Enter Copyright"
+                                            value="@if ($menu_settings ?? null){{ $menu_settings->copyright }}@endif"/>
+                                    </div>
+
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Advertiser ID</label>
                                         <input type="text" class="form-control" id="basicInput" name="advertiser_id" placeholder="Enter Advertiser ID" value="@if ($menu_settings ?? null){{ $menu_settings->advertiser_id }}@endif"/>
@@ -285,6 +336,14 @@
                                         <label for="basicInput" class="mb-2">Ads txt</label>
                                         <textarea type="text" class="form-control" name="ads_txt" placeholder="Enter Ads txt">@if ($menu_settings ?? null){{ $menu_settings->ads_txt }}@endif</textarea>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label for="basicInput" class="mb-2">Email Domain</label>
+                                        <input type="email" class="form-control" id="basicInput"
+                                            name="email_domain" placeholder="Enter Email Domain"
+                                            value="@if ($menu_settings ?? null){{ $menu_settings->email_domain }}@endif"/>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
