@@ -25,7 +25,7 @@ trait ImageMetadata
 
     }
 
-    public function checkFormat($slug)
+    private function checkFormat($slug)
     {
         $path = Storage::get($slug);
         $data = new PelDataWindow($path);
