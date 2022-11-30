@@ -14,13 +14,21 @@ use lsolesen\pel\PelTiff;
 
 trait ImageMetadata
 {
-    public function setMetaData($imageBankById, $copyright , $description){
-        $slug = $imageBankById->slug;
+    public function isFormat($slug)
+    {
         $path = Storage::get($slug);
         $data = new PelDataWindow($path);
-        $tiff = null;
-        $file = null;
+        if (PelJpeg::isValid($data) || PelTiff::isValid($data))
+            return true;
+        else
+            return 'Cannot edit metadata because invalid image format only supported jpeg,tiff,jfif';
 
+    }
+
+    public function checkFormat($slug)
+    {
+        $path = Storage::get($slug);
+        $data = new PelDataWindow($path);
         // If it is a JPEG-image, check if EXIF-headers exists
         if (PelJpeg::isValid($data)) {
             $jpeg = $file = new PelJpeg();
@@ -31,19 +39,33 @@ trait ImageMetadata
             if ($exif == null) {
                 $exif = new PelExif();
                 $jpeg->setExif($exif);
-
                 $tiff = new PelTiff();
                 $exif->setTiff($tiff);
             } else {
                 $tiff = $exif->getTiff();
             }
+            return ['tiff' => $tiff, 'file' => $file];
         } // If it is a TIFF EXIF-headers will always be set
         elseif (PelTiff::isValid($data)) {
             $tiff = $file = new PelTiff();
             $tiff->load($data);
+            return ['tiff' => $tiff, 'file' => $file];
         } else {
-            throw new \Exception('Invalid image format');
+            throw new \Exception('Invalid image format only supported jpeg or tiff');
         }
+    }
+
+    public function setMetaData($slug,
+                                $copyright,
+                                $description,
+                                $photographer,
+                                $title,
+                                $keywords,
+    )
+    {
+        $checkFormat = $this->checkFormat($slug);
+        $tiff = $checkFormat['tiff'];
+        $file = $checkFormat['file'];
 
         // Get the first Ifd, where most common EXIF-tags reside
         $ifd0 = $tiff->getIfd();
@@ -55,14 +77,14 @@ trait ImageMetadata
         }
 
         // See if the COPYRIGHT-tag already exists in Ifd
-        $make = $ifd0->getEntry(PelTag::COPYRIGHT);
+        $copyrightImg = $ifd0->getEntry(PelTag::COPYRIGHT);
 
         // Create COPYRIGHT-tag if not found, otherwise just change the value
-        if ($make == null) {
-            $make = new PelEntryAscii(PelTag::COPYRIGHT, $copyright);
-            $ifd0->addEntry($make);
+        if ($copyrightImg == null) {
+            $copyrightImg = new PelEntryAscii(PelTag::COPYRIGHT, $copyright);
+            $ifd0->addEntry($copyrightImg);
         } else {
-            $make->setValue($copyright);
+            $copyrightImg->setValue($copyright);
         }
 
         // See if the DESCRIPTION-tag already exists in Ifd
@@ -70,17 +92,51 @@ trait ImageMetadata
 
         // Create DESCRIPTION-tag if not found, otherwise just change the value
         if ($imageDesc == null) {
-            $imageDesc = new PelEntryAscii(PelTag::IMAGE_DESCRIPTION,$description);
+            $imageDesc = new PelEntryAscii(PelTag::IMAGE_DESCRIPTION, $description);
             $ifd0->addEntry($imageDesc);
         } else {
             $imageDesc->setValue($description);
         }
-//        return dd($file->getExif());
+
+        // See if the AUTHOR-tag already exists in Ifd
+        $authorImg = $ifd0->getEntry(PelTag::XP_AUTHOR);
+
+        // Create AUTHOR-tag if not found, otherwise just change the value
+        if ($authorImg == null) {
+            $authorImg = new PelEntryAscii(PelTag::XP_AUTHOR, $photographer);
+            $ifd0->addEntry($authorImg);
+        } else {
+            $authorImg->setValue($photographer);
+        }
+
+        // See if the TITLE-tag already exists in Ifd
+        $titleImg = $ifd0->getEntry(PelTag::XP_TITLE);
+
+        // Create TITLE-tag if not found, otherwise just change the value
+        if ($titleImg == null) {
+            $titleImg = new PelEntryAscii(PelTag::XP_TITLE, $title);
+            $ifd0->addEntry($titleImg);
+        } else {
+            $titleImg->setValue($title);
+        }
+
+        // See if the KEYWORDS-tag already exists in Ifd
+        $keywordsImg = $ifd0->getEntry(PelTag::XP_KEYWORDS);
+
+        // Create KEYWORDS-tag if not found, otherwise just change the value
+        if ($keywordsImg == null) {
+            $keywordsImg = new PelEntryAscii(PelTag::XP_KEYWORDS, $keywords);
+            $ifd0->addEntry($keywordsImg);
+        } else {
+            $keywordsImg->setValue($keywords);
+        }
+
         $file->saveFile(Storage::disk('public')->path($slug));
 
     }
 
-    public function getMetaData($slug)
+    public
+    function getMetaData($slug)
     {
         $exif = Image::make(Storage::disk('public')->path($slug))->exif();
         return dd($exif);
