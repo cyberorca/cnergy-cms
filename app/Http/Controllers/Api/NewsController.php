@@ -159,14 +159,14 @@ class NewsController extends Controller
     }
     
     public function show($id){
-        $filterId = News::where('id', $id)->with('users')->get();
+        $filterId = News::with(['categories', 'tags', 'users', 'news_paginations', 'keywords'])->where('id','=',$id);
 
         if ($filterId == null){
             return response()->json(['message'=>'News Not Found'], Response::HTTP_NOT_FOUND);
         }
 
         if(!Cache::has("newsDetailCache")){
-            Cache::put("newsDetailCache", new NewsCollection($filterId), now()->addDay());
+            Cache::put("newsDetailCache", new NewsCollection($filterId->withQueryString()), now()->addDay());
         }
 
         return response()->json(Cache::get("newsDetailCache"), Response::HTTP_OK);
