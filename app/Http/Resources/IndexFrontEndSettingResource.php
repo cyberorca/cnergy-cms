@@ -55,9 +55,8 @@ class IndexFrontEndSettingResource extends JsonResource
             "cdn_image" => [
                 "klimg_url" => "",
                 "cdnimg_url" => "",
-                "file_image" => "",
-                "file_image_thumbnail" => "",
-                "file_image_potrait" => "",
+                "file_logo" => "",
+                "file_favicon" => "",
             ]
         ];
 
