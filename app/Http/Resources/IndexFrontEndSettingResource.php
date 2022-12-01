@@ -39,7 +39,7 @@ class IndexFrontEndSettingResource extends JsonResource
                 "image_group" => " ",
                 "domain_url" => $this->domain_url,
                 "domain_mobile_url" => $this->domain_url_mobile,
-                "default_image_copyright" => "&copy; 2022 trstd.ly",
+                "default_image_copyright" => "&copy; " . date("Y") . " " . $this->domain_name,
                 "image_info" => $this->image_info,
                 "url_format" => " ",
                 "logo_url" => $this->logo_url,
