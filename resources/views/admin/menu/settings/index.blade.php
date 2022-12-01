@@ -436,8 +436,8 @@
                                     @else
                                         <div id="{{ $item }}" class="tab-pane  @if ($loop->first) show active @endif">
                                             <div class="form-group">
-                                                <label class="mb-2 text-capitalize">Photo</label>
-                                                <input type="text" class="form-control" id="{{ $item }}" name="photo_size_{{ $item }}" value="" placeholder="Photo Size" />
+                                                <label class="mb-2 text-capitalize">Headline</label>
+                                                <input type="text" class="form-control" id="{{ $item }}" name="headline_size_{{ $item }}" value="" placeholder="Headline Size" />
                                             </div>  
                                             <div class="form-group">
                                                 <label class="mb-2 text-capitalize">Secondary</label>

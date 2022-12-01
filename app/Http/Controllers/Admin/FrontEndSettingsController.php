@@ -23,7 +23,7 @@ class FrontEndSettingsController extends Controller
     public function index()
     {
         $menu_settings = FrontEndSetting::first();
-        $info_config = ["desktop", "photo", "video", "tag"];
+        $info_config = ["news", "photo", "video", "tag"];
         return view('admin.menu.settings.index', compact('menu_settings', 'info_config'));
     }
 
@@ -104,19 +104,19 @@ class FrontEndSettingsController extends Controller
                         "photo" => $data['photo_size_tag']
                     ],
                     "video" => [
-                        "headline" => $data['photo_size_video'],
+                        "headline" => $data['headline_size_video'],
                         "secondary" => $data['secondary_size_video'],
                         "thumbnail" => $data['thumbnail_size_video']
                     ],
                     "photonews" => [
-                        "headline" => $data['photo_size_photo'],
+                        "headline" => $data['headline_size_photo'],
                         "secondary" => $data['secondary_size_photo'],
                         "thumbnail" => $data['thumbnail_size_photo']
                     ],
                     "news" =>[
-                        "headline" => $data['photo_size_desktop'],
-                        "secondary" => $data['secondary_size_desktop'],
-                        "thumbnail" => $data['thumbnail_size_desktop']
+                        "headline" => $data['headline_size_news'],
+                        "secondary" => $data['secondary_size_news'],
+                        "thumbnail" => $data['thumbnail_size_news']
                     ],
                 ]
             );
