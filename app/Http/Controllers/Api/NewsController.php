@@ -166,7 +166,7 @@ class NewsController extends Controller
         }
 
         if(!Cache::has("newsDetailCache")){
-            Cache::put("newsDetailCache", new NewsCollection($filterId->withQueryString()), now()->addDay());
+            Cache::put("newsDetailCache", new NewsCollection($filterId->first()), now()->addDay());
         }
 
         return response()->json(Cache::get("newsDetailCache"), Response::HTTP_OK);
