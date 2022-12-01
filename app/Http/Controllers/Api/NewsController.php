@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
+use Symfony\Component\HttpFoundation\Response;
 
 class NewsController extends Controller
 {
@@ -156,5 +157,18 @@ class NewsController extends Controller
     
         return response()->json(Cache::get("newsCache"));
     }
+    
+    public function show($id){
+        $filterId = News::where('id', $id)->with('users')->get();
 
+        if ($filterId == null){
+            return response()->json(['message'=>'News Not Found'], Response::HTTP_NOT_FOUND);
+        }
+
+        if(!Cache::has("newsDetailCache")){
+            Cache::put("newsDetailCache", new NewsCollection($filterId), now()->addDay());
+        }
+
+        return response()->json(Cache::get("newsDetailCache"), Response::HTTP_OK);
+    }
 }

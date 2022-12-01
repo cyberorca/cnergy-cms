@@ -58,9 +58,13 @@ class StaticPageController extends Controller
         $filterSlug = StaticPage::where('slug', $slug)->with('users')->get();
 
         if ($filterSlug == null){
-            return response()->json(['message'=>'Slug Not Found'],Response::HTTP_NOT_FOUND);
+            return response()->json(['message'=>'Slug Not Found'], Response::HTTP_NOT_FOUND);
         }
 
-        return response()->json(new StaticPageCollection($filterSlug), Response::HTTP_OK);
+        if(!Cache::has("staticPageDetailCache")){
+            Cache::put("staticPageDetailCache", new StaticPageCollection($filterSlug), now()->addDay());
+        }
+
+        return response()->json(Cache::get("staticPageDetailCache"), Response::HTTP_OK);
     }
 }
