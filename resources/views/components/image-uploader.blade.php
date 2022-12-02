@@ -143,6 +143,12 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <div class="form-check me-auto">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" id="add_meta_image_checkbox" value="false">
+                            Add caption, copyright & photographer below image
+                        </label>
+                    </div>
                     @if ($type === 'photonews')
                         <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="save_photo_news"
                             disabled>

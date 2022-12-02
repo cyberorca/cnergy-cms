@@ -4,13 +4,57 @@ var upload_image_button = document.getElementById("upload_image_button")
 var image_list_parent = document.getElementById("image_list_parent")
 
 var image_bank_modal = document.getElementById("image_bank_modal")
-//  var image_title = document.getElementById("image_title")
 
+let path = document.getElementById('path_image').value;
 var search_image_bank_input = document.getElementById("search_image_bank_input")
 var search_image_bank_button = document.getElementById("search_image_bank_button")
 let list = []
 var upload_image_selected = document.getElementById("upload_image_selected")
 var save_uploaded_image = document.getElementById("save_uploaded_image")
+
+const upload_image_bank_button = document.getElementById("upload_image_bank_button");
+const img_uploader_modal = document.getElementById("image-bank");
+let imageURLTinyMCE = '';
+
+const insertIntoTinyMCEditor = ({ metaImage, imageSrc }) => {
+    var add_meta_image_checkbox = document.getElementById("add_meta_image_checkbox")
+    const targetTinyMCE = img_uploader_modal.getAttribute("target-mce");
+    const oldTextTinyMCETarget = tinymce.get(targetTinyMCE).getContent();
+
+    const {
+        copyright,
+        caption,
+        photographer
+    } = metaImage;
+
+    const textContent = `${oldTextTinyMCETarget} <p style="text-align: center;">
+        <img src="${imageSrc}" alt="${caption}" width="400" height="auto" data-mce-src="${imageSrc}">
+        ${add_meta_image_checkbox.checked ? 
+            `<span class="content-image-caption" style="text-align: center;display: block; color: #525252 ">
+        ${caption}<br />&copy; 2022 ${copyright}/${photographer}</span>
+        </span>`
+            : ''}
+    </p>`
+    tinymce.get(targetTinyMCE).setContent(textContent);
+}
+
+function selectImage() {
+    const imageSrc = this.parentElement.children[0].getAttribute("src");
+
+    var tiny_mce_image_bank = img_uploader_modal.getAttribute("tinymce-image-bank");
+    if (tiny_mce_image_bank === 'false') {
+        image_preview_result.src = imageSrc;
+        upload_image_selected.value = imageSrc;
+        upload_image_button.value = null;
+        return
+    }
+    insertIntoTinyMCEditor({
+        metaImage: JSON.parse(this.parentNode.querySelector("[data-key='data_image']").value),
+        imageSrc: imageSrc
+    });
+    $('#image-bank').removeClass("show").css("display", "none")
+}
+
 save_uploaded_image.addEventListener('click', async function () {
     var form = document.querySelectorAll("#form-upload-image input, #form-upload-image textarea");
     var fd = new FormData();
@@ -42,15 +86,23 @@ save_uploaded_image.addEventListener('click', async function () {
         dataType: 'json',
         success: function ({
             message,
-            data: {
-                image_slug
-            }
+            data
         }) {
-            //  console.log(message, image_slug);
-            image_preview_result.src = `${path}/${image_slug}`;
-            $(button).html(` <i class="bx bx-x d-block d-sm-none"></i>
+            var tiny_mce_image_bank = img_uploader_modal.getAttribute("tinymce-image-bank");
+
+            if (tiny_mce_image_bank === 'false') {
+                image_preview_result.src = `${path}/${image_slug}`;
+                $(button).html(` <i class="bx bx-x d-block d-sm-none"></i>
             <span class="d-sm-block"><i class="bi bi-save"></i>&nbsp;&nbsp;Save
             Image</span>`);
+            } else {
+                insertIntoTinyMCEditor({
+                    metaImage: data,
+                    imageSrc: `${path}/${data.slug}`,
+                })
+                $('#image-bank').removeClass("show").css("display", "none")
+            }
+
             new Toastify({
                 text: message,
                 duration: 3000,
@@ -83,7 +135,6 @@ save_uploaded_image.addEventListener('click', async function () {
     });
 })
 
-let path = document.getElementById('path_image').value;
 
 upload_image_button.onchange = evt => {
     const [file] = upload_image_button.files
@@ -93,35 +144,11 @@ upload_image_button.onchange = evt => {
     }
 }
 
-const upload_image_bank_button = document.getElementById("upload_image_bank_button");
-const img_uploader_modal = document.getElementById("image-bank");
-let imageURLTinyMCE = '';
 
 upload_image_bank_button.addEventListener('click', function () {
     img_uploader_modal.setAttribute("tinymce-image-bank", false);
 })
 
-function selectImage() {
-    const imageSrc = this.parentElement.children[0].getAttribute("src");
-    var tiny_mce_image_bank = img_uploader_modal.getAttribute("tinymce-image-bank");
-    if (tiny_mce_image_bank === 'false') {
-        image_preview_result.src = imageSrc;
-        upload_image_selected.value = imageSrc;
-        upload_image_button.value = null;
-        return
-    }
-
-    const targetTinyMCE = img_uploader_modal.getAttribute("target-mce");
-    const oldTextTinyMCETarget = tinymce.get(targetTinyMCE).getContent();
-    tinymce.get(targetTinyMCE).setContent(
-        oldTextTinyMCETarget + 
-        `
-        <img src="${imageSrc}" alt="" data-mce-src="${imageSrc.split("http://127.0.0.1:8000")[1]}">
-        `
-    );
-    imageURLTinyMCE = imageSrc;
-    $('#image-bank').removeClass("show").css("display", "none")
-}
 
 async function search() {
     const query = '?title=' + search_image_bank_input.value;
@@ -183,12 +210,22 @@ function makeList(data) {
         const {
             title,
             slug,
-            caption
+            caption,
+            copyright,
+            photographer
         } = el;
+
+        const meta_data = JSON.stringify({
+            copyright: copyright,
+            caption: caption,
+            photographer: photographer,
+        })
+
         let str = `
            <div class="image-card border p-0 image-card border p-0 d-flex flex-column align-items-center">
                <img src="${path}/${slug}"
                    alt="" class="w-100 image_bank_modal">
+                   <input type="hidden" data-key="data_image" value='${meta_data}' />
                <p class="mx-2 font-14 mt-3 mb-1">${title}</p>
                <span class="mx-2 btn-warning font-14 w-100 button-action button_image_bank_modal" data-bs-dismiss="modal"><i
                        class="bi bi-plus-circle"></i>&nbsp;&nbsp;Select</span>
