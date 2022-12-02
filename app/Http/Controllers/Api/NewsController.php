@@ -165,8 +165,9 @@ class NewsController extends Controller
             return response()->json(['message'=>'News Not Found'], Response::HTTP_NOT_FOUND);
         }
 
-        if(!Cache::has("newsDetailCache")){
-            Cache::put("newsDetailCache", new IndexNewsResource($filterId), now()->addDay());
+        $cacheKey = "newsDetail-$id";
+        if(!Cache::has($cacheKey)){
+            Cache::put($cacheKey, new IndexNewsResource($filterId), now()->addDay());
         }
 
         return response()->json(Cache::get("newsDetailCache"), Response::HTTP_OK);
