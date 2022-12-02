@@ -56,9 +56,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get("/front-end-menu/create/{id?}", [FrontEndMenuController::class, 'create'])->name('front-end-menu.create');
         Route::resource('front-end-menu', FrontEndMenuController::class)->except(['create']);
 
-        Route::post("/generate/token", [FrontEndSettingsController::class, 'generateToken'])->name('generate.token');
+        Route::post("/generate/token", [FrontEndSettingsController::class, 'generateToken'])->name('generate.token'); 
         Route::resource('/front-end-setting', FrontEndSettingsController::class);
         Route::post("/generate/configuration", [FrontEndSettingsController::class, 'generateConfiguration'])->name('generate.configuration');
+        Route::post("/imagesize", [FrontEndSettingsController::class, 'imageSize'])->name('imagesize.info'); 
         
         Route::get("/menu/create/{id?}", [MenuController::class, 'create'])->name('menu.create');
         Route::post("/menu/api/change/", [MenuController::class, 'changeOrderMenu']);

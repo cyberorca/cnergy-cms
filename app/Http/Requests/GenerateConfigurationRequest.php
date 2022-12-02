@@ -31,6 +31,12 @@ class GenerateConfigurationRequest extends FormRequest
             "robot_txt" => 'nullable',
             "ads_txt" => 'nullable',
             "embed_code_data_studio" => 'nullable',
+            "domain_name" => 'required',
+            "domain_url" => 'nullable',
+            "domain_url_mobile" => 'nullable',
+            "logo_url" => 'nullable',
+            "copyright" => 'nullable',
+            "email_domain" => 'nullable',
         ];
     }
 }

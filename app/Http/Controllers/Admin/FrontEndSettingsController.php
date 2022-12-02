@@ -23,7 +23,8 @@ class FrontEndSettingsController extends Controller
     public function index()
     {
         $menu_settings = FrontEndSetting::first();
-        return view('admin.menu.settings.index', compact('menu_settings'));
+        $info_config = ["news", "photo", "video", "tag"];
+        return view('admin.menu.settings.index', compact('menu_settings', 'info_config'));
     }
 
     /**
@@ -93,6 +94,43 @@ class FrontEndSettingsController extends Controller
         }
     }
 
+    public function imageSize(Request $request)
+    {
+        try {
+            $data = $request->all();
+            $result = json_encode(
+                [
+                    "tag" => [
+                        "photo" => $data['photo_size_tag']
+                    ],
+                    "video" => [
+                        "headline" => $data['headline_size_video'],
+                        "secondary" => $data['secondary_size_video'],
+                        "thumbnail" => $data['thumbnail_size_video']
+                    ],
+                    "photonews" => [
+                        "headline" => $data['headline_size_photo'],
+                        "secondary" => $data['secondary_size_photo'],
+                        "thumbnail" => $data['thumbnail_size_photo']
+                    ],
+                    "news" =>[
+                        "headline" => $data['headline_size_news'],
+                        "secondary" => $data['secondary_size_news'],
+                        "thumbnail" => $data['thumbnail_size_news']
+                    ],
+                ]
+            );
+            FrontEndSetting::updateOrCreate([
+                'id' => 1
+            ], [
+                'image_info' => $result
+            ]);
+            return redirect()->back()->with('status', 'Successfully Input Image Size Info');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+    }
+
     public function generateConfiguration(GenerateConfigurationRequest $request)
     {
         try {
@@ -105,6 +143,12 @@ class FrontEndSettingsController extends Controller
                 "robot_txt" => $input["robot_txt"],
                 "ads_txt" => $input["ads_txt"],
                 "embed_code_data_studio" => $input["embed_code_data_studio"],
+                "domain_name" => $input["domain_name"],
+                "domain_url" => $input["domain_url"],
+                "domain_url_mobile" => $input["domain_url_mobile"],
+                "logo_url" => $input["logo_url"],
+                "copyright" => $input["copyright"],
+                "email_domain" => $input["email_domain"],
             ];
 
             FrontEndSetting::updateOrCreate([
@@ -178,4 +222,6 @@ class FrontEndSettingsController extends Controller
     {
         //
     }
+
+    
 }

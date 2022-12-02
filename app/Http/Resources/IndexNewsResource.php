@@ -36,7 +36,7 @@ class IndexNewsResource extends JsonResource
             "news_subtitle" => null,
             "news_synopsis" => $this->synopsis,
             "news_description" => $this->description,
-            "news_content" => $this->content,
+            "news_content" => htmlspecialchars($this->content),
             "news_image_prefix" => '/trstdly/',
             /*"news_image" => [
                 "real"=> $this->image,
@@ -85,7 +85,6 @@ class IndexNewsResource extends JsonResource
             ],
             "news_tag" => $this->convertDataToResponse2($this->tags),
             "news_keywords" => $this->convertDataToResponse4($this->keywords),
-            //"news_keywords" => self::keywordResponse($this->keywords),
             "news_related" => [
 
             ],
@@ -110,7 +109,7 @@ class IndexNewsResource extends JsonResource
             return null;
         }else{
             return [
-                "real" => env('APP_URL') . $this->image
+                "real" => env('APP_URL') . '/storage' . $this->image
             ];
         }
     }
@@ -146,7 +145,7 @@ class IndexNewsResource extends JsonResource
                 "no" => $item->order_by_no,
                 "title" => $item->title,
                 "type" => 'text',
-                "url" =>  $this->slug,
+                "url" =>  $item->slug,
                 "content" => $item->content,
                 "media" => null,
                 "cdn_image" => [
@@ -206,11 +205,5 @@ class IndexNewsResource extends JsonResource
             "name" => $userById->name,
             "image" => $userById->profile_image
         ];
-    }
-
-    private function keywordResponse($keywords)
-    {
-        if (!empty($keywords))
-            return explode(',', $keywords);
     }
 }

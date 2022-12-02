@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\PhotoCollection;
 use App\Models\News;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class PhotoController extends Controller
 {
@@ -90,6 +91,7 @@ class PhotoController extends Controller
             ->where('published_at', '<=', now())
             ->latest('published_at');
 
+        // return response()->json($photo->get());
         $limit = $request->get('limit', 20);
         if ($limit > 20) {
             $limit = 20;
@@ -147,7 +149,11 @@ class PhotoController extends Controller
             $photo->where('is_verify_age', '=', $request->get('sensitive', ''));
         }
 
-        return response()->json(new PhotoCollection($photo->paginate($limit)->withQueryString()));
+        if(!Cache::has("photoCache")){
+            Cache::put("photoCache", new PhotoCollection($photo->paginate($limit)->withQueryString()), now()->addMinutes(10));
+        }
+
+        return response()->json(Cache::get("photoCache"));
     }
 
 }

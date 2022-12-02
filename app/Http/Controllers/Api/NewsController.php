@@ -10,6 +10,8 @@ use App\Models\NewsPagination;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
+use Symfony\Component\HttpFoundation\Response;
 
 class NewsController extends Controller
 {
@@ -149,7 +151,24 @@ class NewsController extends Controller
             $news->where('updated_at', '>=', $last_update);
         }
 
-        return response()->json(new NewsCollection($news->paginate($limit)->withQueryString()));
+        if(!Cache::has("newsCache")){
+            Cache::put("newsCache", new NewsCollection($news->paginate($limit)->withQueryString()), now()->addMinutes(10));
+        }
+    
+        return response()->json(Cache::get("newsCache"));
     }
+    
+    public function show($id){
+        $filterId = News::with(['categories', 'tags', 'users', 'news_paginations', 'keywords'])->where('id','=',$id);
 
+        if ($filterId == null){
+            return response()->json(['message'=>'News Not Found'], Response::HTTP_NOT_FOUND);
+        }
+
+        if(!Cache::has("newsDetailCache")){
+            Cache::put("newsDetailCache", new NewsCollection($filterId->first()), now()->addDay());
+        }
+
+        return response()->json(Cache::get("newsDetailCache"), Response::HTTP_OK);
+    }
 }

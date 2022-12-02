@@ -364,6 +364,7 @@ function tinyMCEConfig(index_pages) {
 
 const cardPhotoNews = (image, index) => {
     const {
+        id,
         title,
         slug,
         caption,
@@ -399,6 +400,7 @@ const cardPhotoNews = (image, index) => {
                     </div>
                 </div>
                 <div class="col-md-7 col-12">
+                    <input type="hidden" name="photonews[${+index}][id]" value="${id}" />
                     <div class="form-group">
                         <label for="caption" class="mb-2">Caption</label>
                         <input type="text" class="form-control" id="caption" name="photonews[${+index}][caption]"

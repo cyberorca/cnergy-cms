@@ -37,7 +37,7 @@ class IndexVideoResource extends JsonResource
             "news_synopsis" => $this->synopsis,
             "news_description" => $this->description,
             "news_content" => $this->content,
-            "news_image_prefix" => env('APP_URL') . '/',
+            "news_image_prefix" => '/trstdly/',
             "news_image" => $this->newsImage($this->image),
             "news_image_thumbnail" => [
                 "real" => null,
@@ -81,7 +81,7 @@ class IndexVideoResource extends JsonResource
             ],
             "news_video" => $this->videoResponse($this->news_videos)[0] ?? null,
             "news_tag" => $this->convertDataToResponse2($this->tags),
-            "news_keywords" => self::keywordResponse($this->keywords),
+            "news_keywords" => self::convertDataToResponse4($this->keywords),
             "news_related" => [
 
             ],
@@ -119,7 +119,7 @@ class IndexVideoResource extends JsonResource
                 "no" => $item->order_by_no,
                 "title" => $item->title,
                 "type" => null,
-                "url" => null,
+                "url" => $item->slug,
                 "content" => $item->content,
                 "media" => null,
                 "cdn_image" => [
@@ -127,6 +127,16 @@ class IndexVideoResource extends JsonResource
                     "cdnimg_url" => null,
                     "file_image" => null,
                 ],
+            ];
+        });
+    }
+
+    private function convertDataToResponse4($dataRaw2){
+        return $dataRaw2->transform(function ($item, $key) {
+            return [
+                "news_keyword_id" => $item->pivot->id,
+                "keyword_id" => $item->id,
+                "keyword_name" => $item->keywords,
             ];
         });
     }
@@ -171,12 +181,6 @@ class IndexVideoResource extends JsonResource
         ];
     }
 
-    private function keywordResponse($keywords)
-    {
-        if (!empty($keywords))
-            return explode(',', $keywords);
-    }
-
     private function videoResponse($video)
     {
         $array = array();
@@ -195,7 +199,7 @@ class IndexVideoResource extends JsonResource
             return null;
         }else{
             return [
-                "real" => env('APP_URL') . '/' . $this->image
+                "real" => env('APP_URL') . '/storage' . $this->image
             ];
         }
     }
