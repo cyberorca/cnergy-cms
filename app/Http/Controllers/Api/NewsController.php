@@ -171,6 +171,6 @@ class NewsController extends Controller
             Cache::put($cacheKey, new IndexNewsResource($filterId), now()->addDay());
         }
 
-        return response()->json($cacheKey, Response::HTTP_OK);
+        return response()->json(Cache::get($cacheKey), Response::HTTP_OK);
     }
 }
