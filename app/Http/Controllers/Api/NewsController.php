@@ -159,7 +159,7 @@ class NewsController extends Controller
     }
     
     public function show($id){
-        $filterId = News::with(['categories', 'tags', 'users'])->where('id', $id)->where('types','=','news')->first();
+        $filterId = News::with(['users'])->where('id', $id)->first();
 
         if ($filterId == null){
             return response()->json(['message'=>'News Not Found'], Response::HTTP_NOT_FOUND);
