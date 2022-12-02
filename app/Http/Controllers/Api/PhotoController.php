@@ -9,6 +9,7 @@ use App\Http\Resources\IndexPhotoResource;
 use App\Models\News;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Symfony\Component\HttpFoundation\Response;
 
 class PhotoController extends Controller
 {
