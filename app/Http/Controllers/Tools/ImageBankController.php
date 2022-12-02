@@ -116,9 +116,7 @@ class ImageBankController extends Controller
 
             return response()->json([
                 'message' => 'Successfully add image',
-                'data' => [
-                    'image_slug' => $data['slug']
-                ]
+                'data' => $imageBank
             ], 200);
         } catch (\Throwable $e) {
             return response()->json($e->getMessage(), 500);
