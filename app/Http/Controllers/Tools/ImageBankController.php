@@ -86,12 +86,10 @@ class ImageBankController extends Controller
                 $fileFormatPath = new FileFormatPath('image-bank', $file);
                 $data['slug'] = $fileFormatPath->storeFile();
             }
-            ImageBank::create($data);
+            $image = ImageBank::create($data);
             return response()->json([
                 'message' => 'Successfully add image',
-                'data' => [
-                    'image_slug' => $data['slug']
-                ]
+                'data' => $image
             ], 200);
         } catch (\Throwable $e) {
             return response()->json($e->getMessage(), 500);

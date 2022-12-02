@@ -11,6 +11,77 @@ let list = []
 var upload_image_selected = document.getElementById("upload_image_selected")
 var save_uploaded_image = document.getElementById("save_uploaded_image")
 
+const upload_image_bank_button = document.getElementById("upload_image_bank_button");
+const img_uploader_modal = document.getElementById("image-bank");
+let imageURLTinyMCE = '';
+
+upload_image_bank_button.addEventListener('click', function () {
+    img_uploader_modal.setAttribute("tinymce-image-bank", false);
+})
+
+const insertIntoTinyMCEditor = ({ metaImage, imageSrc }) => {
+    var add_meta_image_checkbox = document.getElementById("add_meta_image_checkbox")
+    const targetTinyMCE = img_uploader_modal.getAttribute("target-mce");
+    const oldTextTinyMCETarget = tinymce.get(targetTinyMCE).getContent();
+
+    const {
+        copyright,
+        caption,
+        photographer
+    } = metaImage;
+
+    const textContent = `${oldTextTinyMCETarget} <p style="text-align: center;">
+        <img src="${imageSrc}" alt="${caption}" width="400" height="auto" data-mce-src="${imageSrc}">
+        ${add_meta_image_checkbox.checked ? 
+            `<span class="content-image-caption" style="text-align: center;display: block; color: #525252 ">
+        ${caption}<br />&copy; 2022 ${copyright}/${photographer}</span>
+        </span>`
+            : ''}
+    </p>`
+    tinymce.get(targetTinyMCE).setContent(textContent);
+}
+
+function selectImage() {
+
+    if (image_bank_type == 'photonews') {
+        const imageSrc = this.parentElement.children[0].getAttribute("src");
+        var tiny_mce_image_bank = img_uploader_modal.getAttribute("tinymce-image-bank");
+        
+        if (tiny_mce_image_bank === 'false') {
+            const image = JSON.parse($(this).siblings('input').val());
+            if (this.getAttribute("status-selected") === 'true') {
+                this.innerHTML = `<i class="bi bi-plus-circle"></i>&nbsp;&nbsp;Select`
+                this.setAttribute('status-selected', 'false')
+                selectedPhotoNews = selectedPhotoNews.filter((el) => el.slug !== image.slug);
+            } else {
+                this.setAttribute('status-selected', 'true')
+                selectedPhotoNews.push(image);
+                this.innerHTML = `<i class="bi bi-dash-circle"></i>&nbsp;&nbsp;Deselect`
+            }
+            const status_selected = $("[status-selected=true]").length;
+            if (status_selected <= 0) {
+                $("#save_photo_news").attr("disabled", true)
+            } else {
+                $("#save_photo_news").removeAttr("disabled")
+            }
+            this.classList.toggle('btn-warning')
+            this.classList.toggle('btn-danger')
+
+        } else {
+            insertIntoTinyMCEditor({
+                metaImage: JSON.parse(this.parentNode.querySelector("[data-key='data_image']").value),
+                imageSrc: imageSrc
+            });
+            imageURLTinyMCE = imageSrc;
+            $('#image-bank').removeClass("show").css("display", "none")
+        }
+    } else {
+        const imageSrc = this.parentElement.children[0].getAttribute("src");
+        image_preview_result.src = imageSrc;
+        upload_image_selected.value = imageSrc;
+        upload_image_button.value = null;
+    }
+}
 save_uploaded_image.addEventListener('click', async function () {
     var form = document.querySelectorAll("#form-upload-image input, #form-upload-image textarea");
     var fd = new FormData();
@@ -41,15 +112,22 @@ save_uploaded_image.addEventListener('click', async function () {
         dataType: 'json',
         success: function ({
             message,
-            data: {
-                image_slug
-            }
+            data
         }) {
-            //  console.log(message, image_slug);
-            image_preview_result.src = `${path}/${image_slug}`;
-            $(button).html(` <i class="bx bx-x d-block d-sm-none"></i>
-            <span class="d-sm-block"><i class="bi bi-save"></i>&nbsp;&nbsp;Save
-            Image</span>`);
+            var tiny_mce_image_bank = img_uploader_modal.getAttribute("tinymce-image-bank");
+
+            if (tiny_mce_image_bank === 'false') {
+                image_preview_result.src = `${path}/${image_slug}`;
+                $(button).html(` <i class="bx bx-x d-block d-sm-none"></i>
+                <span class="d-sm-block"><i class="bi bi-save"></i>&nbsp;&nbsp;Save
+                Image</span>`);
+            } else {
+                insertIntoTinyMCEditor({
+                    metaImage: data,
+                    imageSrc: `${path}/${data.slug}`,
+                })
+                $('#image-bank').removeClass("show").css("display", "none")
+            }
             new Toastify({
                 text: message,
                 duration: 3000,
@@ -148,36 +226,6 @@ $(`.bi-trash`).click(function () {
     deleteImage();
 })
 
-function selectImage() {
-    if (image_bank_type == 'photonews') {
-        const image = JSON.parse($(this).siblings('input').val());
-        if (this.getAttribute("status-selected") === 'true') {
-            this.innerHTML = `<i class="bi bi-plus-circle"></i>&nbsp;&nbsp;Select`
-            this.setAttribute('status-selected', 'false')
-            selectedPhotoNews = selectedPhotoNews.filter((el) => el.slug !== image.slug);
-        } else {
-            this.setAttribute('status-selected', 'true')
-            selectedPhotoNews.push(image);
-            this.innerHTML = `<i class="bi bi-dash-circle"></i>&nbsp;&nbsp;Deselect`
-        }
-        const status_selected = $("[status-selected=true]").length;
-        if (status_selected <= 0) {
-            $("#save_photo_news").attr("disabled", true)
-        } else {
-            $("#save_photo_news").removeAttr("disabled")
-        }
-        this.classList.toggle('btn-warning')
-        this.classList.toggle('btn-danger')
-    } else {
-        const imageSrc = this.parentElement.children[0].getAttribute("src");
-        // const imageTitle = this.parentElement.children[1].innerHTML;
-        //  image_title.innerHTML = imageTitle;
-        image_preview_result.src = imageSrc;
-        upload_image_selected.value = imageSrc;
-        upload_image_button.value = null;
-    }
-    // console.log(selectedPhotoNews);
-}
 
 async function search() {
     const query = '?title=' + search_image_bank_input.value;
@@ -241,14 +289,21 @@ function makeList(data) {
             slug,
             caption,
             copyright,
-            keywords
+            photographer
         } = el;
+
+        const meta_data = JSON.stringify({
+            copyright: copyright,
+            caption: caption,
+            photographer: photographer,
+        })
+
         let str = `
            <div class="image-card border p-0 image-card border p-0 d-flex flex-column align-items-center">
                <img src="${path}/${slug}"
                    alt="" class="w-100 image_bank_modal">
                <p class="mx-2 font-14 mt-3 mb-1">${title}</p>
-               <input type="hidden" data-key="data_image" value='${JSON.stringify(el)}' />
+               <input type="hidden" data-key="data_image" value='${meta_data}' />
                <span class="mx-2 btn-warning font-14 w-100 button-action button_image_bank_modal" status-selected="false" ${image_bank_type !== "photonews" ? `data-bs-dismiss="modal"` : null}><i
                        class="bi bi-plus-circle"></i>&nbsp;&nbsp;Select</span>
 
