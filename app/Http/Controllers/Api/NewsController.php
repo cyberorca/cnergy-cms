@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\NewsCollection;
+use App\Http\Resources\IndexNewsResource;
 use App\Models\News;
 use App\Models\User;
 use App\Models\NewsPagination;
