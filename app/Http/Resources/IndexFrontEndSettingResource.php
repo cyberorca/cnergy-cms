@@ -33,6 +33,31 @@ class IndexFrontEndSettingResource extends JsonResource
             "twitter_username" => $this->twitter_username,
             "created_at" => date('Y-m-d H:i:s', strtotime($this->created_at)),
             "updated_at" => date('Y-m-d H:i:s', strtotime($this->updated_at)),
+            "reldomain" => [
+                "domain_name" => $this->domain_name,
+                "rubrics_area" => " ",
+                "image_group" => " ",
+                "domain_url" => $this->domain_url,
+                "domain_mobile_url" => $this->domain_url_mobile,
+                "default_image_copyright" => "&copy; " . date("Y") . " " . $this->domain_name,
+                "image_info" => $this->image_info,
+                "url_format" => " ",
+                "logo_url" => $this->logo_url,
+                "fanspage_id" => " ",
+                "cse_id" => $this->cse_id,
+                "gtm_id" => $this->gtm_id,
+                "advertiser_id" => $this->advertiser_id,
+                "email_domain" => $this->email_domain,
+                "code_data_studio" => $this->embed_code_data_studio,
+                "robots_txt" => $this->robot_txt,
+                "ads_txt" => $this->ads_txt,
+            ],
+            "cdn_image" => [
+                "klimg_url" => "",
+                "cdnimg_url" => "",
+                "file_logo" => "",
+                "file_favicon" => "",
+            ]
         ];
 
         return [

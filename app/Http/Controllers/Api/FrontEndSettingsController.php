@@ -39,7 +39,7 @@ class FrontEndSettingsController extends Controller
     public function index()
     {
         $menu_settings = FrontEndSetting::first()->makeHidden(['token', 'deleted_at', 'id']);
-        
+        // return response()->json($menu_settings->get());
         if(!Cache::has("frontEndSettingsCache")){
             Cache::put("frontEndSettingsCache", new IndexFrontEndSettingResource($menu_settings), now()->addMinutes(10));
         }

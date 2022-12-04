@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\NewsCollection;
+use App\Http\Resources\IndexNewsResource;
 use App\Models\News;
 use App\Models\User;
 use App\Models\NewsPagination;
@@ -11,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
+use Symfony\Component\HttpFoundation\Response;
 
 class NewsController extends Controller
 {
@@ -156,5 +158,19 @@ class NewsController extends Controller
     
         return response()->json(Cache::get("newsCache"));
     }
+    
+    public function show($id){
+        $filterId = News::with(['users'])->where('id', $id)->first();
 
+        if ($filterId == null){
+            return response()->json(['message'=>'News Not Found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $cacheKey = "newsDetail-$id";
+        if(!Cache::has($cacheKey)){
+            Cache::put($cacheKey, new IndexNewsResource($filterId), now()->addDay());
+        }
+
+        return response()->json(Cache::get($cacheKey), Response::HTTP_OK);
+    }
 }

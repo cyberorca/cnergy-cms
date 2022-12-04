@@ -23,8 +23,29 @@ class FrontEndSettingsController extends Controller
     public function index()
     {
         $menu_settings = FrontEndSetting::first();
-        $info_config = ["desktop", "photo", "video", "tag"];
-        return view('admin.menu.settings.index', compact('menu_settings', 'info_config'));
+        $info_config = ["news", "photo", "video", "tag"];
+        $info_config2 = ["headline", "secondary", "thumbnail"];
+        $i = null;
+        if(isset($menu_settings['image_info'])){
+            $array_response = json_decode($menu_settings['image_info'], true);
+
+            foreach ($info_config as $item){
+                if($item === 'tag'){
+                    $i[$item]["photo"] = $array_response[$item]["photo"];
+                }else if($item === 'photo'){
+                    foreach ($info_config2 as $item2){
+                        $i[$item][$item2] = $array_response["photonews"][$item2];
+                    }
+                }else{
+                    foreach ($info_config2 as $item2){
+                        $i[$item][$item2] = $array_response[$item][$item2];
+                    }
+                }
+            }
+        }
+        
+
+        return view('admin.menu.settings.index', compact('menu_settings', 'info_config','info_config2', 'i'));
     }
 
     /**
@@ -104,19 +125,19 @@ class FrontEndSettingsController extends Controller
                         "photo" => $data['photo_size_tag']
                     ],
                     "video" => [
-                        "headline" => $data['photo_size_video'],
+                        "headline" => $data['headline_size_video'],
                         "secondary" => $data['secondary_size_video'],
                         "thumbnail" => $data['thumbnail_size_video']
                     ],
                     "photonews" => [
-                        "headline" => $data['photo_size_photo'],
+                        "headline" => $data['headline_size_photo'],
                         "secondary" => $data['secondary_size_photo'],
                         "thumbnail" => $data['thumbnail_size_photo']
                     ],
                     "news" =>[
-                        "headline" => $data['photo_size_desktop'],
-                        "secondary" => $data['secondary_size_desktop'],
-                        "thumbnail" => $data['thumbnail_size_desktop']
+                        "headline" => $data['headline_size_news'],
+                        "secondary" => $data['secondary_size_news'],
+                        "thumbnail" => $data['thumbnail_size_news']
                     ],
                 ]
             );
