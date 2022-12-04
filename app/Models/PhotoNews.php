@@ -48,12 +48,12 @@ class PhotoNews extends Model
 
     public function getDescriptionForEvent(string $eventName): string
     {
-        return "You have {$eventName} photoNews";
+        return "You have {$eventName} photonews";
     }
 
     public function getLogNameToUse(): ?string
     {
-        return "photoNews";
+        return "photonews";
     }
 
     public function getActivitylogOptions(): LogOptions

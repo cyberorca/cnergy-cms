@@ -104,15 +104,19 @@ class News extends Model
 
     public function getDescriptionForEvent(string $eventName): string
     {
-        return "You have {$eventName}" . $this->types;
+        return "You have {$eventName} " . $this->convertType($this->types);
+    }
+
+    private function convertType($types){
+        if ($types === 'video')
+            return $types . 'news';
+        else
+            return $types;
     }
 
     public function getLogNameToUse(): ?string
     {
-        if ($this->types === 'video')
-            return $this->types . 'news';
-        else
-            return $this->types;
+     return self::convertType($this->types);
     }
 
     public function getActivitylogOptions(): LogOptions

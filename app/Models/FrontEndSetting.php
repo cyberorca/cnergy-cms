@@ -17,7 +17,7 @@ class FrontEndSetting extends Model
 
     public function getDescriptionForEvent(string $eventName): string
     {
-        return "You have {$eventName} fronted setting";
+        return "You have {$eventName} frontend setting";
     }
 
     public function getLogNameToUse(): ?string
