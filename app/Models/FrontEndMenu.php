@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class FrontEndMenu extends Model
 {
-    use HasFactory;
+    use HasFactory,LogsActivity;
 
     protected $guarded = [];
 
@@ -102,5 +104,22 @@ class FrontEndMenu extends Model
         }
 
         return $arr;
+    }
+
+    protected $recordEvents = ['created', 'updated', 'deleted'];
+
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "You have {$eventName} frontend menu";
+    }
+
+    public function getLogNameToUse(): ?string
+    {
+        return "frontend menu";
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
     }
 }

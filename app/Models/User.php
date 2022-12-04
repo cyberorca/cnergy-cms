@@ -11,10 +11,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, LogsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -58,16 +60,35 @@ class User extends Authenticatable
 
     public $timestamps = false;
 
-    public function roles(){
+    public function roles()
+    {
         return $this->belongsTo(Role::class, 'role_id', 'id');
     }
 
     public static function boot()
-{
-    parent::boot();
+    {
+        parent::boot();
 
-    static::creating(function ($model) {
-        $model->uuid = Str::uuid();
-    });
-}
+        static::creating(function ($model) {
+            $model->uuid = Str::uuid();
+        });
+    }
+
+
+    protected $recordEvents = ['created', 'updated', 'deleted'];
+
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "You have {$eventName} user";
+    }
+
+    public function getLogNameToUse(): ?string
+    {
+        return "user";
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
 }
