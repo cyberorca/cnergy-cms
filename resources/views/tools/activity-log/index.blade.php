@@ -13,16 +13,17 @@
         <div class="card-body">
             <form class="row g-3" method="GET">
                 <div class="col-md-4">
-                    <label for="inputName" class="form-label">Name</label>
-                    <input name="inputName" id="inputName" placeholder="Name" type="text" class="form-control">
-                </div>
-                <div class="col-md-4">
                     <label for="inputState" class="form-label">Date</label>
                     <div class="input-group">
                         <input type="date" class="form-control" name="startDate">
                         &nbsp;&nbsp;&nbsp;<p>To</p>&nbsp;&nbsp;&nbsp;
                         <input type="date" class="form-control" name="endDate">
                     </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="inputModelID" class="form-label">Model ID</label>
+                    <input name="inputModelID" id="inputModelID" placeholder="Model ID" type="text" class="form-control">
                 </div>
 
                 <div class="col-md-4">
@@ -34,9 +35,10 @@
                         @endforeach
                     </select>
                 </div>
+
                 <div class="col-md-4">
-                    <label for="inputModelID" class="form-label">Model ID</label>
-                    <input name="inputModelID" id="inputModelID" placeholder="Model ID" type="text" class="form-control">
+                    <label for="inputName" class="form-label">Name</label>
+                    <input name="inputName" id="inputName" placeholder="Name" type="text" class="form-control">
                 </div>
 
                 <div class="d-flex justify-content-end gap-3 mt-3">

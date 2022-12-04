@@ -13,6 +13,14 @@ class ActivityLogController extends Controller
     {
         $activity = Activity::with('causer')->orderBy("id", "desc")->latest();
 
+
+        if ($request->get('inputName')) {
+            $name = $request->get('inputName');
+            $activity->whereHas('causer', function ($query) use ($name) {
+              $query->where('name','like','%' .$name. '%' );
+            });
+        }
+
         if ($request->get('startDate') && $request->get('endDate')) {
             $startDate = Carbon::parse(($request->get('startDate')))
                 ->toDateTimeString();
