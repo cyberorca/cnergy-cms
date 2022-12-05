@@ -24,7 +24,7 @@
             border-radius: .25em;
         }
 
-        label {
+        .form-group label {
             font-weight: 700 !important;
         }
 
@@ -55,24 +55,24 @@
                                             New
                                         @endif Image
                                     </span></div> --}}
-                                        {{-- <label for="site_logo" class="mb-2">File</label> --}}
-                                        <div class="flex flex-column">
-                                            @if ($method === 'edit')
-                                                <img src="{{ Storage::url($imageBank->slug) }}" class="mb-3 image-preview w-100"
-                                                    alt="{{ $imageBank->image_alt }}">
-                                            @else
-                                                <img src="{{ asset('assets/images/preview-image.jpg') }}"
-                                                    class="mb-3 image-preview w-100" alt="Your Image" id="image_preview">
-                                                <input type="file" class="form-control" name="image_input"
-                                                    id="image_input" accept="image/*" />
-                                                @error('site_logo')
-                                                    <div class="invalid-feedback">
-                                                        <i class="bx bx-radio-circle"></i>
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
-                                            @endif
-                                        </div>
+                                {{-- <label for="site_logo" class="mb-2">File</label> --}}
+                                <div class="flex flex-column">
+                                    @if ($method === 'edit')
+                                        <img src="{{ Storage::url($imageBank->slug) }}" class="mb-3 image-preview w-100"
+                                            alt="{{ $imageBank->image_alt }}">
+                                    @else
+                                        <img src="{{ asset('assets/images/preview-image.jpg') }}"
+                                            class="mb-3 image-preview w-100" alt="Your Image" id="image_preview">
+                                        <input type="file" class="form-control" name="image_input" id="image_input"
+                                            accept="image/*" />
+                                        @error('site_logo')
+                                            <div class="invalid-feedback">
+                                                <i class="bx bx-radio-circle"></i>
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -119,7 +119,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-md-6">
 
                         <div class="card-body d-flex flex-column gap-2">
