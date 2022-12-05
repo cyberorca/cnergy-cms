@@ -98,6 +98,8 @@
                                             <button onclick="copyUrl()" type="button" class="btn btn-primary">Copy Link
                                             </button>
                                         </div>
+                                        <div>File size: - </div>
+                                        <div>Dimensions: - </div>
                                     </div>
 
                                     <script>
