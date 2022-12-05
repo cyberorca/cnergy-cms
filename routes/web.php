@@ -13,6 +13,7 @@ use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\News\PhotoController;
 use App\Http\Controllers\News\VideoController;
 use App\Http\Controllers\Profile\ProfileController;
+use App\Http\Controllers\Tools\ActivityLogController;
 use App\Http\Controllers\Tools\ImageBankController;
 use App\Http\Controllers\Tools\InventoryManagementController;
 use App\Http\Controllers\Tools\NewsDraftController;
@@ -56,15 +57,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get("/front-end-menu/create/{id?}", [FrontEndMenuController::class, 'create'])->name('front-end-menu.create');
         Route::resource('front-end-menu', FrontEndMenuController::class)->except(['create']);
 
-        Route::post("/generate/token", [FrontEndSettingsController::class, 'generateToken'])->name('generate.token'); 
+        Route::post("/generate/token", [FrontEndSettingsController::class, 'generateToken'])->name('generate.token');
         Route::resource('/front-end-setting', FrontEndSettingsController::class);
         Route::post("/generate/configuration", [FrontEndSettingsController::class, 'generateConfiguration'])->name('generate.configuration');
-        Route::post("/imagesize", [FrontEndSettingsController::class, 'imageSize'])->name('imagesize.info'); 
-        
+        Route::post("/imagesize", [FrontEndSettingsController::class, 'imageSize'])->name('imagesize.info');
+
         Route::get("/menu/create/{id?}", [MenuController::class, 'create'])->name('menu.create');
         Route::post("/menu/api/change/", [MenuController::class, 'changeOrderMenu']);
         Route::resource('menu', MenuController::class)->except(['create']);
-        
+
 
         Route::get("/menu/create/{id?}", [MenuController::class, 'create'])->name('menu.create');
         Route::post("/menu/api/change/", [MenuController::class, 'changeOrderMenu']);
@@ -82,6 +83,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('static-page', StaticPageController::class);
         Route::resource('news-draft', NewsDraftController::class);
         Route::resource('inventory-management', InventoryManagementController::class);
+        Route::resource('activity-log', ActivityLogController::class)->only(['index']);
     });
 
     // Documentation

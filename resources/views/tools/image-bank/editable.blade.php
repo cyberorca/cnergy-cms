@@ -38,7 +38,7 @@
             <div class="card">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="card-header"><span class="h5">Edit Meta Image</span></div>
+                        <div class="card-header"><span class="h5">@if($method === 'edit') Edit Meta @else New @endif  Image</span></div>
                     </div>
                     <div class="col-md-6">
 
