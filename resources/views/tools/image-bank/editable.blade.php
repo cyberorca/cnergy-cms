@@ -117,9 +117,7 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <div class="card">
-                        
-                    </div> --}}
+                    
                     <div class="col-md-6">
 
                         <div class="card-body d-flex flex-column gap-2">
