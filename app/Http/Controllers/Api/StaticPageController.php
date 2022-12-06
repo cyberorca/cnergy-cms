@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\IndexStaticPageResource;
 use App\Http\Resources\StaticPageCollection;
+use App\Http\Utils\CacheStorage;
 use App\Models\StaticPage;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,9 +48,10 @@ class StaticPageController extends Controller
         }
         
         if(!Cache::has("staticPageCache")){
+            CacheStorage::cache("staticPageCache", 'static-page');
             Cache::put("staticPageCache", new StaticPageCollection($staticPage->get()), now()->addMinutes(10));
         }
-    
+
         return response()->json(Cache::get("staticPageCache"), Response::HTTP_OK);
     }
 
@@ -60,12 +61,12 @@ class StaticPageController extends Controller
         if (count($filterSlug) <= null){
             return response()->json(['message'=>'Static Page Not Found'], Response::HTTP_NOT_FOUND);
         }
-
-        $cacheKey = "staticPage-$slug";
-        if(!Cache::has($cacheKey)){
-            Cache::put($cacheKey, new StaticPageCollection($filterSlug), now()->addDay());
+        $cache_key = "static-page-$slug";
+        if(!Cache::has($cache_key)){
+            CacheStorage::cache($cache_key, 'static-page');
+            Cache::put($cache_key, new StaticPageCollection($filterSlug), now()->addDay());
         }
 
-        return response()->json(Cache::get($cacheKey), Response::HTTP_OK);
+        return response()->json(Cache::get($cache_key), Response::HTTP_OK);
     }
 }

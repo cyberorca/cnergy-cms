@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Utils\CacheStorage;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -59,6 +60,7 @@ class CategoriesController extends Controller
         $nested = intval($request->get("nested"));
 
         if(!Cache::has("categoriesCache")){
+            CacheStorage::cache("categoriesCache", 'categories');
             Cache::put("categoriesCache", $nested!==1 ? $category->paginate($limit)->withQueryString()->toArray() : Category::convertCategoryDataToResponseAPI($category->paginate($limit)->withQueryString()->toArray()), now()->addMinutes(10));
         }
     

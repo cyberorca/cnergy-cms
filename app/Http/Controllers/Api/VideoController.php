@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\IndexVideoResource;
 use App\Http\Resources\VideoCollection;
+use App\Http\Utils\CacheStorage;
 use App\Models\News;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -160,6 +161,7 @@ class VideoController extends Controller
         }
 
         if(!Cache::has("videoCache")){
+            CacheStorage::cache("videoCache", 'video-news');
             Cache::put("videoCache", new VideoCollection($video->paginate($limit)->withQueryString()), now()->addMinutes(10));
         }
     
@@ -214,6 +216,7 @@ class VideoController extends Controller
 
         $cacheKey = "videoDetail-$id";
         if(!Cache::has($cacheKey)){
+            CacheStorage::cache($cacheKey, 'video-news');
             Cache::put($cacheKey, new IndexVideoResource($filterId), now()->addDay());
         }
 
