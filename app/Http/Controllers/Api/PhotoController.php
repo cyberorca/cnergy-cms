@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\PhotoCollection;
+use App\Http\Utils\CacheStorage;
 use App\Http\Resources\IndexPhotoResource;
 use App\Models\News;
 use Carbon\Carbon;
@@ -152,6 +153,7 @@ class PhotoController extends Controller
         }
 
         if(!Cache::has("photoCache")){
+            CacheStorage::cache("photoCache", 'photo-news');
             Cache::put("photoCache", new PhotoCollection($photo->paginate($limit)->withQueryString()), now()->addMinutes(10));
         }
 
@@ -170,6 +172,7 @@ class PhotoController extends Controller
 
         $cacheKey = "photoDetail-$id";
         if(!Cache::has($cacheKey)){
+            CacheStorage::cache($cacheKey, 'photo-news');
             Cache::put($cacheKey, new IndexPhotoResource($filterId), now()->addDay());
         }
 

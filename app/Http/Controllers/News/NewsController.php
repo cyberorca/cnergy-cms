@@ -324,6 +324,7 @@ class NewsController extends Controller implements NewsServices
                 $news_paginations_old[$i] = [
                     'title' => $data['title'][$id][$key],
                     'content' => $data['content'][$id][$key],
+                    'slug' => Str::slug($data['title'][$id][$key]),
                     'order_by_no' => $i,
                     'news_id' => $id,
                     'id' => $key
@@ -340,6 +341,7 @@ class NewsController extends Controller implements NewsServices
                 $news_paginations_old[$i] = [
                     'title' => $data['title'][$key],
                     'content' => $data['content'][$key],
+                    'slug' => Str::slug($data['title'][$key]),
                     'order_by_no' => $i,
                     'news_id' => $id,
                     'id' => null
@@ -347,6 +349,7 @@ class NewsController extends Controller implements NewsServices
                 $i++;
             }
         }
+
 
         $newsById = News::find($id);
         $date = $data['date'];

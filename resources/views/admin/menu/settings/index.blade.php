@@ -150,7 +150,7 @@
                                 <label for="site_logo" class="mb-2">Site Logo (.png)</label>
 
                                 <div class="flex flex-column">
-                                    <img src="@if ($menu_settings ?? null) {{ Storage::url($menu_settings->site_logo) }} @else {{ asset('assets/images/site_logo.png') }} @endif"
+                                    <img src="@if ($menu_settings->site_logo ?? null) {{ Storage::url($menu_settings->site_logo) }} @else {{ asset('assets/images/preview-image.jpg') }} @endif"
                                         class="mb-3 image-preview" alt="Your Image" id="site_logo_preview">
                                     <input type="file" class="form-control" name="site_logo" id="site_logo_input"
                                         accept="image/png"
@@ -170,7 +170,7 @@
                                 <label for="favicon" class="mb-2">Favicon (.ico)</label>
 
                                 <div class="flex flex-column">
-                                    <img src="@if ($menu_settings ?? null) {{ Storage::url($menu_settings->favicon) }} @else {{ asset('assets/images/site_logo.png') }} @endif"
+                                    <img src="@if ($menu_settings->favicon ?? null) {{ Storage::url($menu_settings->favicon) }} @else {{ asset('assets/images/preview-image.jpg') }} @endif"
                                         class="mb-3 image-preview" alt="Your Image" id="favicon_preview">
                                     <input type="file" class="form-control" name="favicon" id="favicon_input"
                                         accept="image/x-icon"
@@ -231,9 +231,10 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Domain Name</label>
-                                        <input type="text" class="form-control @error('domain_name') is-invalid @enderror"
+                                        <input type="text"
+                                            class="form-control @error('domain_name') is-invalid @enderror"
                                             id="basicInput" name="domain_name" placeholder="Enter Domain Name"
-                                            value="@if ($menu_settings ?? null){{ $menu_settings->domain_name }}@endif"/>
+                                            value="@if ($menu_settings ?? null) {{ $menu_settings->domain_name }} @endif" />
                                         @error('domain_name')
                                             <div class="invalid-feedback">
                                                 <i class="bx bx-radio-circle"></i>
@@ -241,42 +242,52 @@
                                             </div>
                                         @enderror
                                     </div>
-                                    
+
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Domain URL</label>
-                                        <input type="text" class="form-control" id="basicInput"
-                                            name="domain_url" placeholder="Enter Domain URL"
-                                            value="@if ($menu_settings ?? null){{ $menu_settings->domain_url }}@endif"/>
+                                        <input type="text" class="form-control" id="basicInput" name="domain_url"
+                                            placeholder="Enter Domain URL"
+                                            value="@if ($menu_settings ?? null) {{ $menu_settings->domain_url }} @endif" />
                                     </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Logo URL</label>
-                                        <input type="text" class="form-control" id="basicInput"
-                                            name="logo_url" placeholder="Enter Logo URL"
-                                            value="@if ($menu_settings ?? null){{ $menu_settings->logo_url }}@endif"/>
+                                        <input type="text" class="form-control" id="basicInput" name="logo_url"
+                                            placeholder="Enter Logo URL"
+                                            value="@if ($menu_settings ?? null) {{ $menu_settings->logo_url }} @endif" />
                                     </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Facebook Fanspage</label>
                                         <input type="text" class="form-control" id="basicInput"
                                             name="facebook_fanspage" placeholder="Enter Facebook Fanspage"
-                                            value="@if ($menu_settings ?? null){{ $menu_settings->facebook_fanspage }}@endif"/>
+                                            value="@if ($menu_settings ?? null) {{ $menu_settings->facebook_fanspage }} @endif" />
                                     </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">CSE ID</label>
                                         <input type="text" class="form-control" id="basicInput" name="cse_id"
-                                            placeholder="Enter CSE ID" value="@if ($menu_settings ?? null){{ $menu_settings->cse_id }}@endif"/>
+                                            placeholder="Enter CSE ID"
+                                            value="@if ($menu_settings ?? null) {{ $menu_settings->cse_id }} @endif" />
                                     </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Robot txt</label>
-                                        <textarea type="text" class="form-control" id="basicInput" name="robot_txt" placeholder="Enter Robot txt">@if ($menu_settings ?? null){{ $menu_settings->robot_txt }}@endif</textarea>
+                                        <textarea type="text" class="form-control" id="basicInput" name="robot_txt" placeholder="Enter Robot txt">
+@if ($menu_settings ?? null)
+{{ $menu_settings->robot_txt }}
+@endif
+</textarea>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Embed Code Data Studio</label>
-                                        <textarea type="text" class="form-control" id="basicInput" name="embed_code_data_studio" placeholder="Enter Embed Code Data Studio">@if($menu_settings ?? null){{ $menu_settings->embed_code_data_studio }}@endif</textarea>
+                                        <textarea type="text" class="form-control" id="basicInput" name="embed_code_data_studio"
+                                            placeholder="Enter Embed Code Data Studio">
+@if ($menu_settings ?? null)
+{{ $menu_settings->embed_code_data_studio }}
+@endif
+</textarea>
                                     </div>
 
                                 </div>
@@ -290,51 +301,59 @@
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">API Access Token</label>
-                                        @php 
-                                        if($menu_settings->token ?? null) {
-                                            $token = last(array_values( json_decode($menu_settings->token , true)));
-                                        }
-                                         
+                                        @php
+                                            if ($menu_settings->token ?? null) {
+                                                $token = last(array_values(json_decode($menu_settings->token, true)));
+                                            }
+                                            
                                         @endphp
                                         <input type="text" readonly class="form-control" id="basicInput"
                                             name="api_access_token" placeholder="Enter API Access Token"
-                                            value="@if ($menu_settings->token ?? null){{ $token }} @endif"/>
+                                            value="@if ($menu_settings->token ?? null) {{ $token }} @endif" />
                                     </div>
-                                    
+
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Domain URL Mobile</label>
                                         <input type="text" class="form-control" id="basicInput"
                                             name="domain_url_mobile" placeholder="Enter Domain URL Mobile"
-                                            value="@if ($menu_settings ?? null){{ $menu_settings->domain_url_mobile }}@endif"/>
+                                            value="@if ($menu_settings ?? null) {{ $menu_settings->domain_url_mobile }} @endif" />
                                     </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Copyright</label>
-                                        <input type="text" class="form-control" id="basicInput"
-                                            name="copyright" placeholder="Enter Copyright"
-                                            value="@if ($menu_settings ?? null){{ $menu_settings->copyright }}@endif"/>
+                                        <input type="text" class="form-control" id="basicInput" name="copyright"
+                                            placeholder="Enter Copyright"
+                                            value="@if ($menu_settings ?? null) {{ $menu_settings->copyright }} @endif" />
                                     </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Advertiser ID</label>
-                                        <input type="text" class="form-control" id="basicInput" name="advertiser_id" placeholder="Enter Advertiser ID" value="@if ($menu_settings ?? null){{ $menu_settings->advertiser_id }}@endif"/>
+                                        <input type="text" class="form-control" id="basicInput" name="advertiser_id"
+                                            placeholder="Enter Advertiser ID"
+                                            value="@if ($menu_settings ?? null) {{ $menu_settings->advertiser_id }} @endif" />
                                     </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">GTM ID</label>
-                                        <input type="text" class="form-control" id="basicInput" name="gtm_id" placeholder="Enter GTM ID" value="@if ($menu_settings ?? null){{ $menu_settings->gtm_id }}@endif"/>
+                                        <input type="text" class="form-control" id="basicInput" name="gtm_id"
+                                            placeholder="Enter GTM ID"
+                                            value="@if ($menu_settings ?? null) {{ $menu_settings->gtm_id }} @endif" />
                                     </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Ads txt</label>
-                                        <textarea type="text" class="form-control" name="ads_txt" placeholder="Enter Ads txt">@if ($menu_settings ?? null){{ $menu_settings->ads_txt }}@endif</textarea>
+                                        <textarea type="text" class="form-control" name="ads_txt" placeholder="Enter Ads txt">
+@if ($menu_settings ?? null)
+{{ $menu_settings->ads_txt }}
+@endif
+</textarea>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Email Domain</label>
-                                        <input type="email" class="form-control" id="basicInput"
-                                            name="email_domain" placeholder="Enter Email Domain"
-                                            value="@if ($menu_settings ?? null){{ $menu_settings->email_domain }}@endif"/>
+                                        <input type="email" class="form-control" id="basicInput" name="email_domain"
+                                            placeholder="Enter Email Domain"
+                                            value="@if ($menu_settings ?? null) {{ $menu_settings->email_domain }} @endif" />
                                     </div>
 
                                 </div>
@@ -352,11 +371,68 @@
         </div>
 
         <div class="card col-md-12">
-
-            <div class="card-header"><span class="h5">Image Size Info</span></div>
+            <div class="card-header"><span class="h5">Generate Token</span></div>
 
             <div class="card-body d-flex flex-column gap-2">
 
+                <form action="{{ route('generate.token') }}" method="post">
+                    @csrf
+                    <div class="col-md-12">
+
+                        <div class="form-group">
+
+                            <label for="basicInput" class="mb-2">Token Name</label>
+
+                            <input type="text" class="form-control @error('token_name') is-invalid @enderror"
+                                id="basicInput" name="token_name" placeholder="Enter token name" value="" />
+                            @error('token_name')
+                                <div class="invalid-feedback">
+                                    <i class="bx bx-radio-circle"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
+
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-3 mt-3">
+
+                            <a href="{{ route('menu.index') }}" class="btn btn-light" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Back to Table Menu">Back
+                            </a>
+
+                            <button class="btn btn-primary" type="submit" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Create Menu">Save
+                            </button>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card col-md-6">
+            <div class="card-header"><span class="h5">Clear API Cache</span></div>
+            <div class="card-body">
+                <form action="{{ route('clearcache') }}" method="post">
+                    @csrf
+                    <p>Clear API Cache for :</p>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <fieldset class="form-group m-0">
+                            <select class="form-select" id="" name="key">
+                                @foreach ($cache_keys as $key => $value)
+                                    <option value="{{ $key }}">{{ $value }}</option>
+                                @endforeach
+                            </select>
+                        </fieldset>
+                        <button class="btn btn-danger" type="submit">Clear API Cache</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card col-md-6">
+            <div class="card-header"><span class="h5">Image Size Info</span></div>
+            <div class="card-body d-flex flex-column gap-2">
                 <form action="{{ route('imagesize.info') }}" method="post">
                     <div class="col-md-12">
                         <div class="form-group">
@@ -364,47 +440,50 @@
                                 @foreach ($info_config as $item)
                                     <li class="nav-item" role="presentation">
                                         <a class="nav-link nav-link-inventory @if ($loop->first) active @endif text-capitalize"
-                                            id="{{ $item }}-tab" data-bs-toggle="tab" href="#{{ $item }}" role="tab"
-                                            aria-controls="{{ $item }}" aria-selected="true">{{ $item }}</a>
+                                            id="{{ $item }}-tab" data-bs-toggle="tab"
+                                            href="#{{ $item }}" role="tab"
+                                            aria-controls="{{ $item }}"
+                                            aria-selected="true">{{ $item }}</a>
                                     </li>
                                 @endforeach
                             </ul>
-                            
+
                         </div>
                         <div class="card-body ">
-                        @csrf
+                            @csrf
                             <div class="tab-content" id="myTabContent">
                                 @foreach ($info_config as $item)
-                                    @if($item === 'tag')
+                                    @if ($item === 'tag')
                                         <div id="{{ $item }}" class="tab-pane">
                                             <div class="form-group">
                                                 <label class="mb-2 text-capitalize">Photo</label>
                                                 <input type="text" class="form-control" id="{{ $item }}" name="photo_size_{{ $item }}" 
-                                                value="@if ($menu_settings ?? null){{ $i[$item]["photo"] }}@endif" placeholder="Photo Size" />
+                                                value="@if ($i ?? null){{ $i[$item]["photo"] }}@endif" placeholder="Photo Size" />
                                             </div>  
                                         </div>
                                     @else
-                                        <div id="{{ $item }}" class="tab-pane  @if ($loop->first) show active @endif">
+                                        <div id="{{ $item }}"
+                                            class="tab-pane  @if ($loop->first) show active @endif">
                                             <div class="form-group">
                                                 <label class="mb-2 text-capitalize">Headline</label>
                                                 <input type="text" class="form-control" id="{{ $item }}" name="headline_size_{{ $item }}" 
-                                                value="@if ($menu_settings ?? null){{ $i[$item]["headline"] }}@endif" placeholder="Headline Size" />
+                                                value="@if ($i ?? null){{ $i[$item]["headline"] }}@endif" placeholder="Headline Size" />
                                             </div>  
                                             <div class="form-group">
                                                 <label class="mb-2 text-capitalize">Secondary</label>
                                                 <input type="text" class="form-control" id="{{ $item }}" name="secondary_size_{{ $item }}" 
-                                                value="@if ($menu_settings ?? null){{ $i[$item]["secondary"] }}@endif" placeholder="Secondary Size" />
+                                                value="@if ($i ?? null){{ $i[$item]["secondary"] }}@endif" placeholder="Secondary Size" />
                                             </div> 
                                             <div class="form-group">
                                                 <label class="mb-2 text-capitalize">Thumbnail</label>
                                                 <input type="text" class="form-control" id="{{ $item }}" name="thumbnail_size_{{ $item }}" 
-                                                value="@if ($menu_settings ?? null){{ $i[$item]["thumbnail"] }}@endif" placeholder="Thumbnail Size" />
+                                                value="@if ($i ?? null){{ $i[$item]["thumbnail"] }}@endif" placeholder="Thumbnail Size" />
                                             </div> 
                                         </div> 
                                     @endif
                                 @endforeach
-                            </div>   
-                        </div>    
+                            </div>
+                        </div>
 
                         <div class="d-flex justify-content-end gap-3 mt-3">
                            
