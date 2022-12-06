@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\FrontEndMenu;
 use App\Http\Resources\FrontEndMenuCollection;
+use App\Http\Utils\CacheStorage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -92,6 +93,7 @@ class FrontEndMenuController extends Controller
         }
 
         if(!Cache::has("frontEndMenuCache")){
+            CacheStorage::cache("frontEndMenuCache", 'front-end-menu');
             Cache::put("frontEndMenuCache", new FrontEndMenuCollection($fe_menus->paginate($limit)->withQueryString()), now()->addMinutes(10));
         }
     

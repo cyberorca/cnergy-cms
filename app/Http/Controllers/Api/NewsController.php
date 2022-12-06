@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\NewsCollection;
+use App\Http\Utils\CacheStorage;
 use App\Http\Resources\IndexNewsResource;
 use App\Models\News;
 use App\Models\User;
@@ -153,6 +154,7 @@ class NewsController extends Controller
         }
 
         if(!Cache::has("newsCache")){
+            CacheStorage::cache("newsCache", 'news');
             Cache::put("newsCache", new NewsCollection($news->paginate($limit)->withQueryString()), now()->addMinutes(10));
         }
     
@@ -168,6 +170,7 @@ class NewsController extends Controller
 
         $cacheKey = "newsDetail-$id";
         if(!Cache::has($cacheKey)){
+            CacheStorage::cache($cacheKey, 'news');
             Cache::put($cacheKey, new IndexNewsResource($filterId), now()->addDay());
         }
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Tag;
 use App\Http\Resources\TagCollection;
+use App\Http\Utils\CacheStorage;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -58,6 +59,7 @@ class TagsController extends Controller
         }
 
         if(!Cache::has("tagsCache")){
+            CacheStorage::cache("tagsCache", 'tag');
             Cache::put("tagsCache", new TagCollection($tag->paginate($limit)->withQueryString()), now()->addMinutes(10));
         }
 
