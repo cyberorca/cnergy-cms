@@ -10,6 +10,7 @@ use App\Http\Utils\FileFormatPath;
 use App\Models\FrontEndSetting;
 use App\Models\MenuSetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -24,7 +25,8 @@ class FrontEndSettingsController extends Controller
     {
         $menu_settings = FrontEndSetting::first();
         $info_config = ["news", "photo", "video", "tag"];
-        return view('admin.menu.settings.index', compact('menu_settings', 'info_config'));
+        $cache_keys = config('cache-keys');
+        return view('admin.menu.settings.index', compact('menu_settings', 'info_config', 'cache_keys'));
     }
 
     /**
@@ -221,6 +223,26 @@ class FrontEndSettingsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function cacheClear(Request $request)
+    {
+        $data = $request->all();
+
+        if(Cache::has($data['key'])){
+            $cache_keys = Cache::get($data['key']);
+
+            foreach($cache_keys as $key){
+                Cache::forget($key);
+            }
+            
+            Cache::forget($data['key']);
+        }
+
+        return response()->json([
+            "message" => "successfully clear cache",
+        ]);
+        
     }
 
     

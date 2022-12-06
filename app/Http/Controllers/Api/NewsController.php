@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\NewsCollection;
+use App\Http\Utils\CacheStorage;
 use App\Models\News;
 use App\Models\User;
 use App\Models\NewsPagination;
@@ -152,6 +153,7 @@ class NewsController extends Controller
         }
 
         if(!Cache::has("newsCache")){
+            CacheStorage::cache("newsCache", 'news');
             Cache::put("newsCache", new NewsCollection($news->paginate($limit)->withQueryString()), now()->addMinutes(10));
         }
     
@@ -164,8 +166,9 @@ class NewsController extends Controller
         if ($filterId == null){
             return response()->json(['message'=>'News Not Found'], Response::HTTP_NOT_FOUND);
         }
-
-        if(!Cache::has("newsDetailCache")){
+        $cache_key = "static-page-" . $filterId->id;
+        if(!Cache::has($cache_key)){
+            CacheStorage::cache($cache_key, 'news');
             Cache::put("newsDetailCache", new NewsCollection($filterId->first()), now()->addDay());
         }
 
