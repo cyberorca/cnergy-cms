@@ -28,26 +28,26 @@ class FrontEndSettingsController extends Controller
         $cache_keys = config('cache-keys');
         $info_config2 = ["headline", "secondary", "thumbnail"];
         $i = null;
-        if(isset($menu_settings['image_info'])){
+        if (isset($menu_settings['image_info'])) {
             $array_response = json_decode($menu_settings['image_info'], true);
 
-            foreach ($info_config as $item){
-                if($item === 'tag'){
+            foreach ($info_config as $item) {
+                if ($item === 'tag') {
                     $i[$item]["photo"] = $array_response[$item]["photo"];
-                }else if($item === 'photo'){
-                    foreach ($info_config2 as $item2){
+                } else if ($item === 'photo') {
+                    foreach ($info_config2 as $item2) {
                         $i[$item][$item2] = $array_response["photonews"][$item2];
                     }
-                }else{
-                    foreach ($info_config2 as $item2){
+                } else {
+                    foreach ($info_config2 as $item2) {
                         $i[$item][$item2] = $array_response[$item][$item2];
                     }
                 }
             }
         }
-        
 
-        return view('admin.menu.settings.index', compact('menu_settings', 'info_config','info_config2', 'i', 'cache_keys'));
+
+        return view('admin.menu.settings.index', compact('menu_settings', 'info_config', 'info_config2', 'i', 'cache_keys'));
     }
 
     /**
@@ -136,7 +136,7 @@ class FrontEndSettingsController extends Controller
                         "secondary" => $data['secondary_size_photo'],
                         "thumbnail" => $data['thumbnail_size_photo']
                     ],
-                    "news" =>[
+                    "news" => [
                         "headline" => $data['headline_size_news'],
                         "secondary" => $data['secondary_size_news'],
                         "thumbnail" => $data['thumbnail_size_news']
@@ -248,23 +248,28 @@ class FrontEndSettingsController extends Controller
 
     public function cacheClear(Request $request)
     {
-        $data = $request->all();
 
-        if(Cache::has($data['key'])){
-            $cache_keys = Cache::get($data['key']);
+        try {
+            $data = $request->all();
 
-            foreach($cache_keys as $key){
-                Cache::forget($key);
+            if($data['key'] === 'all'){
+                Cache::flush();
+                return redirect()->back()->with('status', 'Successfully Clear All API Cache');
             }
-            
-            Cache::forget($data['key']);
+
+            if (Cache::has($data['key'])) {
+                $cache_keys = Cache::get($data['key']);
+
+                foreach ($cache_keys as $key) {
+                    Cache::forget($key);
+                }
+
+                Cache::forget($data['key']);
+            }
+
+            return redirect()->back()->with('status', 'Successfully Clear API Cache');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors($e->getMessage());
         }
-
-        return response()->json([
-            "message" => "successfully clear cache",
-        ]);
-        
     }
-
-    
 }

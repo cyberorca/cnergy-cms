@@ -61,12 +61,12 @@ class StaticPageController extends Controller
         if (count($filterSlug) <= null){
             return response()->json(['message'=>'Static Page Not Found'], Response::HTTP_NOT_FOUND);
         }
-        $cache_key = "static-page-$slug-" . $filterSlug->id;
+        $cache_key = "static-page-$slug";
         if(!Cache::has($cache_key)){
             CacheStorage::cache($cache_key, 'static-page');
             Cache::put($cache_key, new StaticPageCollection($filterSlug), now()->addDay());
         }
 
-        return response()->json(Cache::get('static-page'), Response::HTTP_OK);
+        return response()->json(Cache::get($cache_key), Response::HTTP_OK);
     }
 }

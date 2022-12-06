@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'all' => 'All',
     'news' => 'News',
     'photo-news' => 'Photo News',
     'video-news' => 'Video News',

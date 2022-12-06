@@ -160,7 +160,7 @@
                                 <label for="site_logo" class="mb-2">Site Logo (.png)</label>
 
                                 <div class="flex flex-column">
-                                    <img src="@if ($menu_settings ?? null) {{ Storage::url($menu_settings->site_logo) }} @else {{ asset('assets/images/site_logo.png') }} @endif"
+                                    <img src="@if ($menu_settings->site_logo ?? null) {{ Storage::url($menu_settings->site_logo) }} @else {{ asset('assets/images/preview-image.jpg') }} @endif"
                                         class="mb-3 image-preview" alt="Your Image" id="site_logo_preview">
                                     <input type="file" class="form-control" name="site_logo" id="site_logo_input"
                                         accept="image/png"
@@ -180,7 +180,7 @@
                                 <label for="favicon" class="mb-2">Favicon (.ico)</label>
 
                                 <div class="flex flex-column">
-                                    <img src="@if ($menu_settings ?? null) {{ Storage::url($menu_settings->favicon) }} @else {{ asset('assets/images/site_logo.png') }} @endif"
+                                    <img src="@if ($menu_settings->favicon ?? null) {{ Storage::url($menu_settings->favicon) }} @else {{ asset('assets/images/preview-image.jpg') }} @endif"
                                         class="mb-3 image-preview" alt="Your Image" id="favicon_preview">
                                     <input type="file" class="form-control" name="favicon" id="favicon_input"
                                         accept="image/x-icon"
@@ -468,7 +468,7 @@
                                             <div class="form-group">
                                                 <label class="mb-2 text-capitalize">Photo</label>
                                                 <input type="text" class="form-control" id="{{ $item }}" name="photo_size_{{ $item }}" 
-                                                value="@if ($menu_settings ?? null){{ $i[$item]["photo"] }}@endif" placeholder="Photo Size" />
+                                                value="@if ($i ?? null){{ $i[$item]["photo"] }}@endif" placeholder="Photo Size" />
                                             </div>  
                                         </div>
                                     @else
@@ -477,17 +477,17 @@
                                             <div class="form-group">
                                                 <label class="mb-2 text-capitalize">Headline</label>
                                                 <input type="text" class="form-control" id="{{ $item }}" name="headline_size_{{ $item }}" 
-                                                value="@if ($menu_settings ?? null){{ $i[$item]["headline"] }}@endif" placeholder="Headline Size" />
+                                                value="@if ($i ?? null){{ $i[$item]["headline"] }}@endif" placeholder="Headline Size" />
                                             </div>  
                                             <div class="form-group">
                                                 <label class="mb-2 text-capitalize">Secondary</label>
                                                 <input type="text" class="form-control" id="{{ $item }}" name="secondary_size_{{ $item }}" 
-                                                value="@if ($menu_settings ?? null){{ $i[$item]["secondary"] }}@endif" placeholder="Secondary Size" />
+                                                value="@if ($i ?? null){{ $i[$item]["secondary"] }}@endif" placeholder="Secondary Size" />
                                             </div> 
                                             <div class="form-group">
                                                 <label class="mb-2 text-capitalize">Thumbnail</label>
                                                 <input type="text" class="form-control" id="{{ $item }}" name="thumbnail_size_{{ $item }}" 
-                                                value="@if ($menu_settings ?? null){{ $i[$item]["thumbnail"] }}@endif" placeholder="Thumbnail Size" />
+                                                value="@if ($i ?? null){{ $i[$item]["thumbnail"] }}@endif" placeholder="Thumbnail Size" />
                                             </div> 
                                         </div> 
                                     @endif
