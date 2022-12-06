@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\InventoryManagement;
 use App\Http\Resources\InventoryCollection;
+use App\Http\Utils\CacheStorage;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Cache;
 
@@ -44,6 +45,7 @@ class InventoryManagementController extends Controller
         }
 
         if(!Cache::has("inventoryManagementCache")){
+            CacheStorage::cache("inventoryManagementCache", 'inventory');
             Cache::put("inventoryManagementCache", new InventoryCollection($inventoryManagement->get()), now()->addMinutes(10));
         }
     

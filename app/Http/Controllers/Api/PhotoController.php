@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\PhotoCollection;
 use App\Http\Utils\CacheStorage;
+use App\Http\Resources\IndexPhotoResource;
 use App\Models\News;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Symfony\Component\HttpFoundation\Response;
 
 class PhotoController extends Controller
 {
@@ -158,4 +160,22 @@ class PhotoController extends Controller
         return response()->json(Cache::get("photoCache"));
     }
 
+    public function show($id){
+        $filterId = News::with(['users'])
+        ->where('id', $id)
+        ->where('types','=','photonews')
+        ->first();
+
+        if ($filterId == null){
+            return response()->json(['message'=>'Photonews Not Found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $cacheKey = "photoDetail-$id";
+        if(!Cache::has($cacheKey)){
+            CacheStorage::cache($cacheKey, 'photo-news');
+            Cache::put($cacheKey, new IndexPhotoResource($filterId), now()->addDay());
+        }
+
+        return response()->json(Cache::get($cacheKey), Response::HTTP_OK);
+    }
 }

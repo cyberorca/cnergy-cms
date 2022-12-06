@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\NewsCollection;
 use App\Http\Utils\CacheStorage;
+use App\Http\Resources\IndexNewsResource;
 use App\Models\News;
 use App\Models\User;
 use App\Models\NewsPagination;
@@ -161,17 +162,18 @@ class NewsController extends Controller
     }
     
     public function show($id){
-        $filterId = News::with(['categories', 'tags', 'users', 'news_paginations', 'keywords'])->where('id','=',$id);
+        $filterId = News::with(['users'])->where('id', $id)->first();
 
         if ($filterId == null){
             return response()->json(['message'=>'News Not Found'], Response::HTTP_NOT_FOUND);
         }
-        $cache_key = "static-page-" . $filterId->id;
-        if(!Cache::has($cache_key)){
-            CacheStorage::cache($cache_key, 'news');
-            Cache::put("newsDetailCache", new NewsCollection($filterId->first()), now()->addDay());
+
+        $cacheKey = "newsDetail-$id";
+        if(!Cache::has($cacheKey)){
+            CacheStorage::cache($cacheKey, 'news');
+            Cache::put($cacheKey, new IndexNewsResource($filterId), now()->addDay());
         }
 
-        return response()->json(Cache::get("newsDetailCache"), Response::HTTP_OK);
+        return response()->json(Cache::get($cacheKey), Response::HTTP_OK);
     }
 }

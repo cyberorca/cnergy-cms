@@ -26,7 +26,28 @@ class FrontEndSettingsController extends Controller
         $menu_settings = FrontEndSetting::first();
         $info_config = ["news", "photo", "video", "tag"];
         $cache_keys = config('cache-keys');
-        return view('admin.menu.settings.index', compact('menu_settings', 'info_config', 'cache_keys'));
+        $info_config2 = ["headline", "secondary", "thumbnail"];
+        $i = null;
+        if(isset($menu_settings['image_info'])){
+            $array_response = json_decode($menu_settings['image_info'], true);
+
+            foreach ($info_config as $item){
+                if($item === 'tag'){
+                    $i[$item]["photo"] = $array_response[$item]["photo"];
+                }else if($item === 'photo'){
+                    foreach ($info_config2 as $item2){
+                        $i[$item][$item2] = $array_response["photonews"][$item2];
+                    }
+                }else{
+                    foreach ($info_config2 as $item2){
+                        $i[$item][$item2] = $array_response[$item][$item2];
+                    }
+                }
+            }
+        }
+        
+
+        return view('admin.menu.settings.index', compact('menu_settings', 'info_config','info_config2', 'i', 'cache_keys'));
     }
 
     /**

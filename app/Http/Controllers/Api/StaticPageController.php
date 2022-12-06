@@ -57,6 +57,7 @@ class StaticPageController extends Controller
 
     public function show($slug){
         $filterSlug = StaticPage::where('slug', $slug)->with('users')->get();
+
         if (count($filterSlug) <= null){
             return response()->json(['message'=>'Static Page Not Found'], Response::HTTP_NOT_FOUND);
         }

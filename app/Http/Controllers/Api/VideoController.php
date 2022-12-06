@@ -205,16 +205,21 @@ class VideoController extends Controller
      * )
      */
     public function show($id){
-        $video_news = News::with(['categories', 'tags','users', 'news_videos:id,video,news_id'])
-            ->where('id', $id)
-            ->where('types','=','video')
-            ->where('is_published','=','1')
-            ->where('published_at','<=',now())
-            ->latest('published_at')
-            ->first();
-        if ($video_news==null){
-            return response()->json(['message'=>'ID Not Found'],Response::HTTP_NOT_FOUND);
+        $filterId = News::with(['categories', 'tags','users', 'news_videos:id,video,news_id'])
+        ->where('id', $id)
+        ->where('types','=','video')
+        ->first();
+
+        if ($filterId == null){
+            return response()->json(['message'=>'Video Not Found'], Response::HTTP_NOT_FOUND);
         }
-        return response()->json(new IndexVideoResource($video_news));
+
+        $cacheKey = "videoDetail-$id";
+        if(!Cache::has($cacheKey)){
+            CacheStorage::cache($cacheKey, 'video-news');
+            Cache::put($cacheKey, new IndexVideoResource($filterId), now()->addDay());
+        }
+
+        return response()->json(Cache::get($cacheKey), Response::HTTP_OK);
     }
 }
