@@ -206,8 +206,8 @@ class VideoController extends Controller
      */
     public function show($id){
         $filterId = News::with(['categories', 'tags','users', 'news_videos:id,video,news_id'])
-        ->where('id', $id)
         ->where('types','=','video')
+        ->where('id', $id)
         ->first();
 
         if ($filterId == null){

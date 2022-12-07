@@ -90,6 +90,7 @@ class PhotoController extends Controller
     public function index(Request $request)
     {
         $photo = News::with(['categories', 'tags', 'users', 'news_photo'])
+            ->where('types','=','photonews')
             ->where('is_published', '=', '1')
             ->where('published_at', '<=', now())
             ->latest('published_at');
@@ -162,8 +163,8 @@ class PhotoController extends Controller
 
     public function show($id){
         $filterId = News::with(['users'])
-        ->where('id', $id)
         ->where('types','=','photonews')
+        ->where('id', $id)
         ->first();
 
         if ($filterId == null){
