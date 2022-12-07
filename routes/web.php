@@ -13,6 +13,7 @@ use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\News\PhotoController;
 use App\Http\Controllers\News\VideoController;
 use App\Http\Controllers\Profile\ProfileController;
+use App\Http\Controllers\TodayTag\TodayTagController;
 use App\Http\Controllers\Tools\ActivityLogController;
 use App\Http\Controllers\Tools\ImageBankController;
 use App\Http\Controllers\Tools\InventoryManagementController;
@@ -113,6 +114,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/image-bank/api/create', [ImageBankController::class, 'upload_image']);
 
     Route::resource('profile', ProfileController::class);
+    Route::resource('todaytag', TodayTagController::class);
 });
 // Route::post('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])
 //     ->middleware(['auth', 'signed']) // <-- don't remove "signed"
