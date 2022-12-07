@@ -145,12 +145,13 @@ class ImageBankController extends Controller
         $method = explode('/', URL::current());
         $imageBankById = ImageBank::with('createdBy')->where('id', $id)->first();
 //        $this->getMetaData($imageBankById->slug);
-
         $isFormatSupport = $this->isFormat($imageBankById->slug);
         if ($isFormatSupport ===true)
             return view('tools.image-bank.editable',
             ['method' => end($method),
-                'imageBank' => $imageBankById
+                'imageBank' => $imageBankById,
+                'fileSize'=> $this->getFileSizeImage($imageBankById->slug),
+                'dimension'=>$this->getDimensionImage($imageBankById->slug)
             ]);
         else
             return back()->withErrors(['error' => $isFormatSupport]);
