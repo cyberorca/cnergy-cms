@@ -140,10 +140,9 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script src="{{ asset('assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/form-element-select.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 
-    
+
 
 
     <script>
@@ -291,8 +290,8 @@
     </script>
 
 
-<script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/5/tinymce.min.js"
-    referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/5/tinymce.min.js"
+        referrerpolicy="origin"></script>
     <script>
         var editor_config = {
             path_absolute: "/",
@@ -347,8 +346,8 @@
 
         tinymce.init(editor_config);
     </script>
-
-<script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/form-element-select.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/image-uploader.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 
     <script>

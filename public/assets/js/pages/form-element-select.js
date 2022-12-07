@@ -19,12 +19,12 @@ var content_box = document.getElementById("content_box");
 var card_content = document.getElementById("card_content");
 var liveToast = document.getElementById("liveToast");
 var id_news = document.getElementById("id_news") ? document.getElementById("id_news").value : null;
-let index = 2;
+let indexOfPage = 2;
 add_page_button.addEventListener('click', function () {
-    collapseElement(false, index);
-    tinyMCEConfig(`${index}`)
-    console.log(index);
-    index++;
+    collapseElement(false, indexOfPage);
+    tinyMCEConfig(`${indexOfPage}`)
+    console.log("NUM NEW", indexOfPage);
+    indexOfPage++;
 })
 
 function textareaElement(page_no, other, edit) {
@@ -40,10 +40,10 @@ function textareaElement(page_no, other, edit) {
 
 function changeAllPageAfterDeleted() {
     const collapse = document.querySelectorAll(".text-collapse-news-pagination");
-    index = 2;
+    indexOfPage = 2;
     collapse.forEach((el) => {
-        el.innerHTML = `Page ${index}`
-        index++;
+        el.innerHTML = `Page ${indexOfPage}`
+        indexOfPage++;
     })
 }
 
@@ -117,7 +117,7 @@ const collapseLinkElement = (page_no, edit = false, other) => {
             changeAllPageAfterDeleted();
         }
     })
-
+    
     collapseBox.append(collapseLink)
     collapseBox.append(deleteCollapse)
     return collapseBox;
@@ -223,17 +223,16 @@ function tinyMCEConfig(index_pages) {
 if (document.body.contains(document.getElementById("news_paginations"))) {
     const news_paginations = JSON.parse(document.getElementById("news_paginations").value);
     if (news_paginations.length) {
-        let page_count = 2;
+        indexOfPage = 2;
         news_paginations.map((el, i) => {
-            index = page_count;
-            collapseElement(true, `${el.news_id}-${index}`, {
+            collapseElement(true, `${el.news_id}-${indexOfPage}`, {
                 content: el.content,
                 title: el.title,
                 id: el.id
             })
-            tinyMCEConfig(`${el.news_id}-${index}`)
-            page_count++;
+            tinyMCEConfig(`${el.news_id}-${indexOfPage}`)
+            indexOfPage++;
+            console.log("NUM OLD", indexOfPage);
         })
-        index++;
     }
 }
