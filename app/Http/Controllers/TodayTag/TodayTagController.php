@@ -4,6 +4,8 @@ namespace App\Http\Controllers\TodayTag;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\TodayTag;
+use Illuminate\Support\Facades\Redirect;
 
 class TodayTagController extends Controller
 {
@@ -12,9 +14,19 @@ class TodayTagController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view("today-tag.index");
+        $tag = TodayTag::latest();
+        if ($request->get('inputTitle')) {
+            $tag->where('title', 'like', '%' . $request->inputTitle . '%');
+        } 
+
+        if ($request->get('inputCategory')) {
+            $tag-> where('category_id', 'like', '%' . $request->inputCategory . '%');
+        }
+        return view("today-tag.index",  [
+            'today_tag' => $tag->paginate(10)->withQueryString(),
+        ]);
     }
 
     /**
@@ -78,8 +90,13 @@ class TodayTagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($tag)
     {
-        //
+        try {
+            TodayTag::destroy($tag);
+            return Redirect::back()->with('status', 'Successfully Delete Today Tag');
+        } catch (\Throwable $e) {
+            return Redirect::back()->withErrors($e->getMessage());
+        }
     }
 }
