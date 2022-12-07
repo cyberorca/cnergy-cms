@@ -24,7 +24,7 @@ class TodayTagController extends Controller
      */
     public function create()
     {
-        //
+        return view("today-tag.editable");
     }
 
     /**
