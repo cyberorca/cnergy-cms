@@ -20,7 +20,7 @@
 
                     <div class="col-md-5">
                         <label for="inputCategory" class="form-label">Category</label>
-                        <select name="category" id="inputState" class="form-select">
+                        <select name="inputCategory" id="category" class="form-select">
                             <option value="" selected>All</option>
                             <option value="1">Category 1</option>
                             <option value="2">Category 2</option>
