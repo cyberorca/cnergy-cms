@@ -5,6 +5,9 @@ namespace App\Http\Controllers\TodayTag;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TodayTag;
+use App\Models\Category;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 class TodayTagController extends Controller
@@ -36,7 +39,16 @@ class TodayTagController extends Controller
      */
     public function create()
     {
-        return view("today-tag.editable");
+        $method = explode('/', URL::current());
+        $categories = Category::whereNull('deleted_at')
+        ->where('is_active','=','1')
+        ->whereJsonContains('types','news')
+        ->get(); 
+
+        return view('today-tag.editable', [
+            'method' => end($method),
+            'categories' => $categories,
+        ]);
     }
 
     /**
@@ -47,7 +59,36 @@ class TodayTagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->input();
+        if($data['type']==="external_link"){
+            if($data['url']=== null){
+                return redirect()->back()->withErrors('Please fill url data');
+            }else{
+                $tag=null;
+            }
+        }else{
+            if(isset($data['Tag'])){
+                $tag = json_encode($data['Tag']);
+            }else{
+                return redirect()->back()->withErrors('Please fill tag data');
+            }
+        }
+        $result = new TodayTag([
+            'order_by_no' => $data['order'],
+            'title' => $data['title'],
+            'types' => $data['type'],
+            'category_id' => $data['category'],
+            'tag' => $tag,
+            'url' => $data['url'],
+            'created_at' => now(),
+            'created_by' => Auth::user()->uuid,
+        ]);
+        try {
+            $result->save();
+            return redirect()->back()->with('status', 'Successfully Create Today Tag');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
     }
 
     /**
@@ -69,7 +110,18 @@ class TodayTagController extends Controller
      */
     public function edit($id)
     {
-        //
+        $method = explode('/', URL::current());
+        $categories = Category::whereNull('deleted_at')
+        ->where('is_active','=','1')
+        ->whereJsonContains('types','news')
+        ->get(); 
+        $today_tag = TodayTag::find($id);
+        
+            return view('today-tag.editable', [
+                'method' => end($method),
+                'categories' => $categories,
+            ])->with('today_tag', $today_tag);
+        
     }
 
     /**
@@ -81,7 +133,37 @@ class TodayTagController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->input();
+
+        if($data['type']==="external_link"){
+            if($data['url']=== null){
+                return redirect()->back()->withErrors('Please fill url data');
+            }else{
+                $tag=null;
+            }
+        }else{
+            $data['url']=null;
+            if(isset($data['Tag'])){
+                $tag = json_encode($data['Tag']);
+            }else{
+                return redirect()->back()->withErrors('Please fill tag data');
+            }
+        }
+        try {
+            $today_tag = TodayTag::find($id);
+            $today_tag->order_by_no = $data['order'];
+            $today_tag->types = $data['type'];
+            $today_tag->tag = $tag;
+            $today_tag->url = $data['url'];
+            $today_tag->title = $data['title'];
+            $today_tag->category_id = $data["category"];
+            $today_tag->updated_at = now();
+            $today_tag->updated_by = Auth::user()->uuid;
+            $today_tag->save();
+            return redirect()->route("today-tag.index")->with('status', 'Successfully Update Today Tag');
+        } catch (\Throwable $exception) {
+            return redirect()->back()->withErrors($exception->getMessage());
+        }
     }
 
     /**

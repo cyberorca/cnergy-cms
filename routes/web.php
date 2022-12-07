@@ -126,7 +126,7 @@ Route::get('/auth/callback', [LoginController::class, 'handleProviderCallback'])
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-//Route::get('selTag', [NewsController::class, 'select'])->name('tag.index');
+Route::get('selTag', [NewsController::class, 'select'])->name('tag.index');
 Route::get('selKeyword', [NewsController::class, 'select2'])->name('keyword.index');
 
 Route::get('/email/verify/{token}', [LoginController::class, 'verify'])->name('email.verify');

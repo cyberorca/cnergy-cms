@@ -12,4 +12,8 @@ class TodayTag extends Model
     protected $table = 'today_tag';
 
     protected $primaryKey = 'id';
+
+    public $timestamps = false;
+
+    protected $fillable = ['order_by_no', 'title','url', 'types', 'tag', 'category_id', 'created_at', 'created_by'];
 }
