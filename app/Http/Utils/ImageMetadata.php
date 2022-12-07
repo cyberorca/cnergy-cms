@@ -142,4 +142,15 @@ trait ImageMetadata
         $exif = Image::make(Storage::disk('public')->path($slug))->exif();
         return dd($exif);
     }
+
+    public function getFileSizeImage($slug){
+        $fileSize = Image::make(Storage::disk('public')->path($slug))->filesize();
+        return $fileSize;
+    }
+
+    public function getDimensionImage($slug){
+        $width = Image::make(Storage::disk('public')->path($slug))->width();
+        $height = Image::make(Storage::disk('public')->path($slug))->height();
+        return $width.' x '.$height;
+    }
 }
