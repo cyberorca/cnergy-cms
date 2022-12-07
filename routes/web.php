@@ -103,6 +103,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::prefix('tags')->group(function () {
             Route::resource('tag-management', TagsController::class);
             Route::resource('news-tagging', NewsTaggingController::class)->only(['index']);
+            Route::resource('today-tag', TodayTagController::class);
             Route::post('tagging-search', [NewsTaggingController::class,'getTagging'])->name('tagging.search');
             Route::post('tagging-multi', [NewsTaggingController::class,'multiTagging'])->name('tagging.multi');
             Route::post('tagging-update', [NewsTaggingController::class,'updateTagging'])->name('tagging.edit');
@@ -114,7 +115,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/image-bank/api/create', [ImageBankController::class, 'upload_image']);
 
     Route::resource('profile', ProfileController::class);
-    Route::resource('todaytag', TodayTagController::class);
 });
 // Route::post('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])
 //     ->middleware(['auth', 'signed']) // <-- don't remove "signed"
