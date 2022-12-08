@@ -13,6 +13,7 @@ use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\News\PhotoController;
 use App\Http\Controllers\News\VideoController;
 use App\Http\Controllers\Profile\ProfileController;
+use App\Http\Controllers\TodayTag\TodayTagController;
 use App\Http\Controllers\Tools\ActivityLogController;
 use App\Http\Controllers\Tools\ImageBankController;
 use App\Http\Controllers\Tools\InventoryManagementController;
@@ -101,7 +102,9 @@ Route::group(['middleware' => 'auth'], function () {
         });
         Route::prefix('tags')->group(function () {
             Route::resource('tag-management', TagsController::class);
+            Route::resource('today-tag', TodayTagController::class);
             Route::resource('news-tagging', NewsTaggingController::class)->only(['index']);
+            Route::resource('today-tag', TodayTagController::class);
             Route::post('tagging-search', [NewsTaggingController::class,'getTagging'])->name('tagging.search');
             Route::post('tagging-multi', [NewsTaggingController::class,'multiTagging'])->name('tagging.multi');
             Route::post('tagging-update', [NewsTaggingController::class,'updateTagging'])->name('tagging.edit');
@@ -123,7 +126,7 @@ Route::get('/auth/callback', [LoginController::class, 'handleProviderCallback'])
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-//Route::get('selTag', [NewsController::class, 'select'])->name('tag.index');
+Route::get('selTag', [NewsController::class, 'select'])->name('tag.index');
 Route::get('selKeyword', [NewsController::class, 'select2'])->name('keyword.index');
 
 Route::get('/email/verify/{token}', [LoginController::class, 'verify'])->name('email.verify');
