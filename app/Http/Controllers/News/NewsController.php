@@ -485,23 +485,22 @@ class NewsController extends Controller implements NewsServices
             ], 500);
         }
     }
+    public function select(Request $request)
+    {
+        //$data = Tag::where('tags', 'LIKE',  '%' .request('q'). '%')->paginate(10)->withQueryString();
+        //return response()->json($data);
+        $data = [];
 
-//    public function select(Request $request)
-//    {
-//        //$data = Tag::where('tags', 'LIKE',  '%' .request('q'). '%')->paginate(10)->withQueryString();
-//        //return response()->json($data);
-//        $data = [];
-//
-//        if ($request->has('q')) {
-//            $search = $request->q;
-//            $data = Tag::select("id", "tags")
-//                ->where('tags', 'LIKE', "%$search%")
-//                ->paginate(10)->withQueryString();
-//        } else {
-//            $data = Tag::paginate(10)->withQueryString();
-//        }
-//        return response()->json($data);
-//    }
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = Tag::select("id", "tags")
+                ->where('tags', 'LIKE', "%$search%")
+                ->paginate(10)->withQueryString();
+        } else {
+            $data = Tag::paginate(10)->withQueryString();
+        }
+        return response()->json($data);
+    }
 
     public function select2(Request $request)
     {
