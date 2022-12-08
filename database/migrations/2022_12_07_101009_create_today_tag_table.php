@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('order_by_no');
             $table->string('title', 255);
+            $table->longText('url')->nullable();
             $table->enum('types', ['news_tag', 'sponsorship_tag', 'external_link']);
             $table->json('tag');
             $table->unsignedBigInteger('category_id');
