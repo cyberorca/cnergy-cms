@@ -104,7 +104,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::resource('tag-management', TagsController::class);
             Route::resource('today-tag', TodayTagController::class);
             Route::resource('news-tagging', NewsTaggingController::class)->only(['index']);
-            Route::post('today-tag', TodayTagController::class);
+            Route::resource('today-tag', TodayTagController::class);
             Route::post('tagging-search', [NewsTaggingController::class,'getTagging'])->name('tagging.search');
             Route::post('tagging-multi', [NewsTaggingController::class,'multiTagging'])->name('tagging.multi');
             Route::post('tagging-update', [NewsTaggingController::class,'updateTagging'])->name('tagging.edit');
