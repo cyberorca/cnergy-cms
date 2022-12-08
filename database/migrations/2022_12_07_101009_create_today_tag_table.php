@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('title', 255);
             $table->longText('url')->nullable();
             $table->enum('types', ['news_tag', 'sponsorship_tag', 'external_link']);
-            $table->json('tag');
+            $table->json('tag')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->timestamp('created_at', 0)->nullable();
             $table->uuid('created_by');
