@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\News;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\NewsRequest;
 use App\Models\Menu;
 use Carbon\Carbon;
 use App\Models\Keywords;
@@ -128,7 +129,7 @@ class NewsController extends Controller implements NewsServices
         $categories = Category::whereNull('deleted_at')
         ->where('is_active','=','1')
         ->whereJsonContains('types','news')
-        ->get(); 
+        ->get();
 //        $tags = Tag::all();
         //        return response()->json($users);
 
@@ -148,7 +149,7 @@ class NewsController extends Controller implements NewsServices
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(NewsRequest|Request $request)
     {
         $data = $request->input();
         $news_paginations = array();
@@ -283,7 +284,7 @@ class NewsController extends Controller implements NewsServices
         $categories = Category::whereNull('deleted_at')
         ->where('is_active','=','1')
         ->whereJsonContains('types','news')->get();;
-//        $tags = Tag::all(); 
+//        $tags = Tag::all();
         $keywords = Keywords::all();
         $contributors = $news->users;
         $users = User::with(['roles'])->get();
@@ -305,7 +306,7 @@ class NewsController extends Controller implements NewsServices
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(NewsRequest|Request $request, $id)
     {
         $data = $request->input();
         $news_paginations_old = array();
@@ -316,7 +317,7 @@ class NewsController extends Controller implements NewsServices
             'content' => $data['content'][0]
         ];
 
-        
+
 
         $i = 1;
         if (count($data['title']) > 1 && isset($data['title'][$id])) {
@@ -332,7 +333,7 @@ class NewsController extends Controller implements NewsServices
                 $i++;
             }
         }
-        
+
         if (count($data['title']) > 1) {
             foreach ($data['title'] as $key => $value) {
                 if (in_array($key, [0, $id])) {

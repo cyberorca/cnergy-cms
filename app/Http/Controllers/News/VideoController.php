@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\News;
 
+use App\Http\Requests\NewsRequest;
 use App\Models\Menu;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -127,11 +128,11 @@ class VideoController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(NewsRequest|Request $request)
     {
         $data = $request->input();
         $date = $data['date'];
-        $time = $data['time']; 
+        $time = $data['time'];
         $mergeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
         // return response()->json($request->all());
         try {
@@ -269,7 +270,7 @@ class VideoController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(NewsRequest|Request $request, $id)
     {
         $data = $request->input();
         $newsById = News::find($id);

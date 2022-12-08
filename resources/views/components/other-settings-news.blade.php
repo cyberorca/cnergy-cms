@@ -108,7 +108,7 @@
                 <div class="form-group">
                     <div class="row">
                         <select name="tags[]" class="form-select" style='width: 100%;' multiple="multiple"
-                                id="tags" required>
+                                id="tags" >
                             @if ($method === 'edit')
                                 @foreach($news->tags as $value)
                                     <option value="{{ $value->id }}" selected> {{ $value->tags }} </option>
@@ -178,7 +178,7 @@
                     <div class="row">
                         <label class="mb-2">Keyword</label><br>
                         <select name="keywords[]" class="form-select" style='width: 100%;' multiple="multiple"
-                                id="keyword" required>
+                                id="keyword" >
                             @if ($method === 'edit')
                                 @foreach ($keywords as $id => $keyword)
                                     <option value="{{ $keyword->id }}"

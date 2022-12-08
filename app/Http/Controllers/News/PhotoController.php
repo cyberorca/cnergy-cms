@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\News;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\NewsRequest;
 use App\Http\Services\NewsServices;
 use App\Models\Menu;
 use App\Models\Role;
@@ -150,7 +151,7 @@ class PhotoController extends Controller implements NewsServices
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(NewsRequest|Request $request)
     {
         $data = $request->input();
         // return response()->json($data);
@@ -286,7 +287,7 @@ class PhotoController extends Controller implements NewsServices
         $contributors = $news->users;
         $users = User::with(['roles'])->get();
         return view('news.photonews.editable', [
-            'method' => end($method), 
+            'method' => end($method),
             'categories' => $categories,
             'types' => $types,
             'news' => $news,
@@ -304,7 +305,7 @@ class PhotoController extends Controller implements NewsServices
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(NewsRequest|Request $request, $id)
     {
         $data = $request->input();
         // return $data;
