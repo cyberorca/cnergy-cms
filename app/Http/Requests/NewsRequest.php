@@ -24,17 +24,8 @@ class NewsRequest extends FormRequest
     public function rules()
     {
         return [
-//            'tag' => 'required|max:255',
-//            'is_active' => 'nullable',
-            'title' => 'required',
-            'synopsis' => 'required',
-            'content' => 'required',
-            'date' => 'required',
-            'time' => 'required',
-            'isPublished'=>'required',
-            'category'=>'required',
-            'description'=>'required',
-            'reporters'=>'required',
+            'tag' => 'required|max:255',
+            'is_active' => 'nullable',
         ];
     }
 }

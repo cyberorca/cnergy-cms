@@ -128,7 +128,7 @@ class VideoController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(NewsRequest|Request $request)
+    public function store(Request $request)
     {
         $data = $request->input();
         $date = $data['date'];
@@ -270,7 +270,7 @@ class VideoController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(NewsRequest|Request $request, $id)
+    public function update(Request $request, $id)
     {
         $data = $request->input();
         $newsById = News::find($id);
