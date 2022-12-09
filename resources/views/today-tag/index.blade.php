@@ -30,7 +30,7 @@
 
                     <div class="col-md-2">
                         <label for="inputId" class="form-label">ID</label>
-                        <input name="inputId" id="Id" placeholder="Id" type="text" class="form-control">
+                        <input name="inputId" id="Id" placeholder="ID" type="text" class="form-control">
                     </div>
 
                     <div class="d-flex justify-content-end gap-3 mt-3">
@@ -109,10 +109,10 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            Delete Tag '{{ $t->titel }}' ?
+                                            Delete Tag '{{ $t->title }}' ?
                                         </div>
                                         <div class="modal-footer">
-                                            <form action="{{ route('today_tag.destroy', $t->id) }}" method="post">
+                                            <form action="{{ route('today-tag.destroy', $t->id) }}" method="post">
                                                 {{ method_field('delete') }}
                                                 @csrf
                                                 <button type="button" class="btn btn-secondary"
