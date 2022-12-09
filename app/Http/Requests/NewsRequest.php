@@ -25,7 +25,7 @@ class NewsRequest extends FormRequest
     {
         return [
             'tag' => 'required|max:255',
-            'is_active' => 'nullable'
+            'is_active' => 'nullable',
         ];
     }
 }
