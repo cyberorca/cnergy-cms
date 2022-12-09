@@ -152,18 +152,20 @@ class NewsController extends Controller implements NewsServices
     {
         $data = $request->input();
         $news_paginations = array();
-
+        $keyArr[]= null;
         try {
-            foreach ($data['keywords'] as $t) {
-                if (is_numeric($t)){
-                    $keyArr[] =  $t;
-                }
-                else{
-                    $newKeyword = Keywords::create(['keywords'=>$t,
-                                                'created_at' => now(),
-                                                'created_by' => Auth::user()->uuid,
-                                            ]);
-                    $keyArr[] = $newKeyword->id;
+            if ($data['keywords']!=null){
+                foreach ($data['keywords'] as $t) {
+                    if (is_numeric($t)){
+                        $keyArr[] =  $t;
+                    }
+                    else{
+                        $newKeyword = Keywords::create(['keywords'=>$t,
+                            'created_at' => now(),
+                            'created_by' => Auth::user()->uuid,
+                        ]);
+                        $keyArr[] = $newKeyword->id;
+                    }
                 }
             }
 
@@ -233,12 +235,17 @@ class NewsController extends Controller implements NewsServices
                 );
                 $log->save();
             }
-            foreach ($data['tags'] as $t) {
-                $news->tags()->attach($t, ['created_by' => auth()->id()]);
+
+            if ($request->has('tags')){
+                foreach ($data['tags'] as $t) {
+                    $news->tags()->attach($t, ['created_by' => auth()->id()]);
+                }
             }
 
-            foreach ($keyArr as $k) {
-                $news->keywords()->attach($k, ['created_by' => auth()->id()]);
+            if ($keyArr!=null){
+                foreach ($keyArr as $k) {
+                    $news->keywords()->attach($k, ['created_by' => auth()->id()]);
+                }
             }
 
             if (count($news_paginations)) {
@@ -355,18 +362,20 @@ class NewsController extends Controller implements NewsServices
         $date = $data['date'];
         $time = $data['time'];
         $margeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
+        $keyArr[] = null;
         try {
-
-            foreach ($data['keywords'] as $t) {
-                if (is_numeric($t)){
-                    $keyArr[] =  $t;
-                }
-                else{
-                    $newKeyword = Keywords::create(['keywords'=>$t,
-                                                'created_at' => now(),
-                                                'created_by' => Auth::user()->uuid,
-                                            ]);
-                    $keyArr[] = $newKeyword->id;
+            if ($data['keywords']!=null){
+                foreach ($data['keywords'] as $t) {
+                    if (is_numeric($t)){
+                        $keyArr[] =  $t;
+                    }
+                    else{
+                        $newKeyword = Keywords::create(['keywords'=>$t,
+                            'created_at' => now(),
+                            'created_by' => Auth::user()->uuid,
+                        ]);
+                        $keyArr[] = $newKeyword->id;
+                    }
                 }
             }
 
@@ -410,13 +419,18 @@ class NewsController extends Controller implements NewsServices
                 $input['image'] = explode(Storage::url(""), $data['upload_image_selected'])[1];
             }
             $newsById->update($input);
-            $newsById::find($id)->tags()->detach();
-            foreach ($data['tags'] as $t) {
-                $newsById->tags()->attach($t, ['created_by' => auth()->id()]);
+            if ($request->has('tags')){
+                $newsById::find($id)->tags()->detach();
+                foreach ($data['tags'] as $t) {
+                    $newsById->tags()->attach($t, ['created_by' => auth()->id()]);
+                }
             }
-            $newsById::find($id)->keywords()->detach();
-            foreach ($keyArr as $k) {
-                $newsById->keywords()->attach($k, ['created_by' => auth()->id()]);
+
+            if ($keyArr!=null){
+                $newsById::find($id)->keywords()->detach();
+                foreach ($keyArr as $k) {
+                    $newsById->keywords()->attach($k, ['created_by' => auth()->id()]);
+                }
             }
 
             NewsPagination::upsert($news_paginations_old, ['id'], ['title', 'content', 'order_by_no']);
