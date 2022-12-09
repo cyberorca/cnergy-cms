@@ -195,14 +195,15 @@
                     <select name="reporters[]"
                             class="choices form-select multiple-remove"
                             multiple="multiple"
-                            id="reporter" required>
+                            id="reporter">
                         <optgroup label="reporter">
-                            @if ($method === 'create')
+
+                            @if ($method === 'create' and auth()->user()->roles->role ==='Reporter')
                             <option
                                 selected
-
                                 value="{{auth()->user()->uuid}}">{{auth()->user()->name}}</option>
                             @endif
+
                             @foreach($users as $user)
                                 @if($user->roles->role === 'Reporter')
                                     <option
