@@ -29,6 +29,11 @@
                                                 $i=1;
                                             @endphp
                                             @while($i<=20)
+                                                @foreach ($order as $orderby)
+                                                    @if($i === $orderby->order_by_no)
+                                                        @php $i++; @endphp
+                                                    @endif
+                                                @endforeach
                                                 <option  value="{{$i}}" @if ($method === 'edit' and $today_tag->order_by_no === $i) selected @endif>{{$i}}</option>
                                                 @php $i++; @endphp
                                             @endwhile
@@ -79,10 +84,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Category</label>
-                                        <select class="form-select" name="category" id="category" required>
-                                        @if ($method === 'create')
-                                            <option value="" disabled selected>Select Category</option>
-                                        @endif
+                                        <select class="form-select" name="category" id="category" >
+                                        <option value="" @if ($method === 'edit' and $today_tag->category_id === null) selected @endif>All</option>
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}"
                                                     @if ($method === 'edit' and $category->id === $today_tag->category_id) selected @endif>
@@ -115,9 +118,9 @@
 <script>
     $(document).ready(function() {
             $("#tag").select2({
-                tags: true,
                 placeholder: 'Select Tags',
                 allowClear: true,
+                maximumSelectionLength: 1,
                 tokenSeparators: [',', '\n'],
                 ajax: {
                     url: "{{ route('tag.index') }}",
@@ -138,23 +141,7 @@
                 }
             });
 
-            $('#tag').change(function() {
-                var tags = $('#tag').val();
-                $.ajax({
-                    type: "POST",
-                    url: "{{ route('tagging.edit') }}",
-                        data: {
-                            tags: tags,
-                            _token: @json(csrf_token())
-                        },
-                    success: function(data) {
-                        console.log(data);
-                    },
-                    error: function(error) {
-                        console.log(error, 'error auto save inline');
-                    },
-                });
-            });
+            
         });
     </script>
     <script>
