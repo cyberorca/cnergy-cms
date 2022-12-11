@@ -19,7 +19,8 @@ class TodayTagController extends Controller
      */
     public function index(Request $request)
     {
-        $tag = TodayTag::latest();
+        $tag = TodayTag::with(['categoryId']);
+        $categories = Category::all();
         if ($request->get('inputTitle')) {
             $tag->where('title', 'like', '%' . $request->inputTitle . '%');
         } 
@@ -27,8 +28,14 @@ class TodayTagController extends Controller
         if ($request->get('inputCategory')) {
             $tag-> where('category_id', 'like', '%' . $request->inputCategory . '%');
         }
+
+        if ($request->get('inputId')) {
+            $tag-> where('id', 'like', '%' . $request->inputId . '%');
+        }
+
         return view("today-tag.index",  [
             'today_tag' => $tag->paginate(10)->withQueryString(),
+            'categories' => $categories,
         ]);
     }
 

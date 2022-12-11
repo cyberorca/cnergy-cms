@@ -20,11 +20,19 @@
 
                     <div class="col-md-5">
                         <label for="inputCategory" class="form-label">Category</label>
-                        <select name="inputCategory" id="category" class="form-select">
+                        {{-- <select name="inputCategory" id="category" class="form-select">
                             <option value="" selected>All</option>
                             <option value="1">Category 1</option>
                             <option value="2">Category 2</option>
                             <option value="3">Category 3</option>
+                        </select> --}}
+                        <select class="form-select" name="inputCategory" id="category">
+                            <option value="" selected>All</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">
+                                    {{ $category->category }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
 
@@ -83,9 +91,9 @@
                                 <td>{{ $t->order_by_no }}</td>
                                 <td>{{ $t->id }}</td>
                                 <td>{{ $t->title }}</td>
-                                <td>{{ $t->tag }}</td>
+                                <td>{{ implode(" ", json_decode($t->tag, true)) }}</td>
                                 <td>{{ $t->types }}</td>
-                                <td>{{ $t->category_id }}</td>
+                                <td>{{ $t->categoryId->category }}</td>
                                 <td>
                                     <a href="{{ route('today-tag.edit', $t->id) }}" class="btn icon btn-warning"
                                         data-bs-toggle="tooltip" data-bs-placement="top" title="Update Today Tag Data">
