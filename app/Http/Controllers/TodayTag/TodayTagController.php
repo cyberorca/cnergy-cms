@@ -44,10 +44,11 @@ class TodayTagController extends Controller
         ->where('is_active','=','1')
         ->whereJsonContains('types','news')
         ->get(); 
-
+        $order = TodayTag::get();
         return view('today-tag.editable', [
             'method' => end($method),
             'categories' => $categories,
+            'order' => $order,
         ]);
     }
 
@@ -85,7 +86,7 @@ class TodayTagController extends Controller
         ]);
         try {
             $result->save();
-            return redirect()->back()->with('status', 'Successfully Create Today Tag');
+            return redirect()->route("today-tag.index")->with('status', 'Successfully Create Today Tag');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
@@ -116,10 +117,12 @@ class TodayTagController extends Controller
         ->whereJsonContains('types','news')
         ->get(); 
         $today_tag = TodayTag::find($id);
+        $order = TodayTag::get();
         
             return view('today-tag.editable', [
                 'method' => end($method),
                 'categories' => $categories,
+                'order' => $order,
             ])->with('today_tag', $today_tag);
         
     }
