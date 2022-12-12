@@ -28,6 +28,8 @@ class User extends Authenticatable
 
     protected $primaryKey = 'uuid';
 
+    public $incrementing = false;
+
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
