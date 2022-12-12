@@ -91,7 +91,7 @@
                                 <td>{{ $t->order_by_no }}</td>
                                 <td>{{ $t->id }}</td>
                                 <td>{{ $t->title }}</td>
-                                <td>{{ implode(" ", json_decode($t->tag, true)) }}</td>
+                                <td>{{ $t->tag }}</td>
                                 <td>{{ $t->types }}</td>
                                 <td>{{ $t->categoryId->category }}</td>
                                 <td>
