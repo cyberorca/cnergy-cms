@@ -32,7 +32,8 @@ return new class extends Migration
 
             $table->foreign('category_id')
             ->references('id')
-            ->on('categories');
+            ->on('categories')
+            ->nullable();
 
             $table->foreign('created_by')
                 ->references('uuid')
