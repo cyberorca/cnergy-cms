@@ -94,8 +94,7 @@ class NewsController extends Controller
     {
         $news = News::with(['categories', 'tags', 'users', 'news_paginations', 'keywords'])
         ->where('types','=','news')
-        ->where('is_published','=','1')
-        ->where('published_at','<=',now());
+        ->where('is_published','=','1');
 
         $order = $request->get('orderby');
         if($order){
@@ -165,7 +164,9 @@ class NewsController extends Controller
     public function show($id){
         $filterId = News::with(['users'])
         ->where('types','=','news')
-        ->where('id', $id)->first();
+        ->where('id', $id)
+        ->where('is_published','=','1')
+        ->first();
 
         if ($filterId == null){
             return response()->json(['message'=>'News Not Found'], Response::HTTP_NOT_FOUND);

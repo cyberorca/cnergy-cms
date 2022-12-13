@@ -98,9 +98,7 @@ class VideoController extends Controller
 
         $video = News::with(['categories', 'tags','users', 'news_videos:id,video,news_id'])
             ->where('types','=','video')
-            ->where('is_published','=','1')
-            ->where('published_at','<=',now())
-            ->latest('published_at');
+            ->where('is_published','=','1');
 
         $alltype = $request->get('alltype', 0);
         if ($alltype == 0) {
@@ -208,6 +206,7 @@ class VideoController extends Controller
         $filterId = News::with(['categories', 'tags','users', 'news_videos:id,video,news_id'])
         ->where('types','=','video')
         ->where('id', $id)
+        ->where('is_published','=','1')
         ->first();
 
         if ($filterId == null){
