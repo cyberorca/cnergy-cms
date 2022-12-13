@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('title', 255);
             $table->longText('url')->nullable();
             $table->enum('types', ['news_tag', 'sponsorship_tag', 'external_link']);
-            $table->json('tag');
-            $table->unsignedBigInteger('category_id');
+            $table->json('tag')->nullable();
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->timestamp('created_at', 0)->nullable();
             $table->uuid('created_by');
             $table->timestamp('updated_at', 0)->nullable();
@@ -32,8 +32,7 @@ return new class extends Migration
 
             $table->foreign('category_id')
             ->references('id')
-            ->on('categories')
-            ->nullable();
+            ->on('categories');
 
             $table->foreign('created_by')
                 ->references('uuid')

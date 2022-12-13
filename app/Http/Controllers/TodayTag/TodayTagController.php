@@ -49,7 +49,6 @@ class TodayTagController extends Controller
         $method = explode('/', URL::current());
         $categories = Category::whereNull('deleted_at')
         ->where('is_active','=','1')
-        ->whereJsonContains('types','news')
         ->get(); 
         $order = TodayTag::get();
         return view('today-tag.editable', [
@@ -121,7 +120,6 @@ class TodayTagController extends Controller
         $method = explode('/', URL::current());
         $categories = Category::whereNull('deleted_at')
         ->where('is_active','=','1')
-        ->whereJsonContains('types','news')
         ->get(); 
         $today_tag = TodayTag::find($id);
         $order = TodayTag::get();
