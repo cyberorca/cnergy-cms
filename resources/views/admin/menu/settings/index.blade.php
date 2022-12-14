@@ -234,7 +234,7 @@
                                         <input type="text"
                                             class="form-control @error('domain_name') is-invalid @enderror"
                                             id="basicInput" name="domain_name" placeholder="Enter Domain Name"
-                                            value="@if ($menu_settings ?? null) {{ $menu_settings->domain_name }} @endif" />
+                                            value="@if ($menu_settings ?? null){{ $menu_settings->domain_name }}@endif" />
                                         @error('domain_name')
                                             <div class="invalid-feedback">
                                                 <i class="bx bx-radio-circle"></i>
@@ -247,47 +247,41 @@
                                         <label for="basicInput" class="mb-2">Domain URL</label>
                                         <input type="text" class="form-control" id="basicInput" name="domain_url"
                                             placeholder="Enter Domain URL"
-                                            value="@if ($menu_settings ?? null) {{ $menu_settings->domain_url }} @endif" />
+                                            value="@if ($menu_settings ?? null){{ $menu_settings->domain_url }}@endif" />
                                     </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Logo URL</label>
                                         <input type="text" class="form-control" id="basicInput" name="logo_url"
                                             placeholder="Enter Logo URL"
-                                            value="@if ($menu_settings ?? null) {{ $menu_settings->logo_url }} @endif" />
+                                            value="@if ($menu_settings ?? null){{ $menu_settings->logo_url }}@endif" />
                                     </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Facebook Fanspage</label>
                                         <input type="text" class="form-control" id="basicInput"
                                             name="facebook_fanspage" placeholder="Enter Facebook Fanspage"
-                                            value="@if ($menu_settings ?? null) {{ $menu_settings->facebook_fanspage }} @endif" />
+                                            value="@if ($menu_settings ?? null){{ $menu_settings->facebook_fanspage }}@endif" />
                                     </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">CSE ID</label>
                                         <input type="text" class="form-control" id="basicInput" name="cse_id"
                                             placeholder="Enter CSE ID"
-                                            value="@if ($menu_settings ?? null) {{ $menu_settings->cse_id }} @endif" />
+                                            value="@if ($menu_settings ?? null){{ $menu_settings->cse_id }}@endif" />
                                     </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Robot txt</label>
                                         <textarea type="text" class="form-control" id="basicInput" name="robot_txt" placeholder="Enter Robot txt">
-@if ($menu_settings ?? null)
-{{ $menu_settings->robot_txt }}
-@endif
-</textarea>
+@if ($menu_settings ?? null){{ $menu_settings->robot_txt }}@endif</textarea>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Embed Code Data Studio</label>
                                         <textarea type="text" class="form-control" id="basicInput" name="embed_code_data_studio"
                                             placeholder="Enter Embed Code Data Studio">
-@if ($menu_settings ?? null)
-{{ $menu_settings->embed_code_data_studio }}
-@endif
-</textarea>
+@if ($menu_settings ?? null){{ $menu_settings->embed_code_data_studio }}@endif</textarea>
                                     </div>
 
                                 </div>
@@ -316,37 +310,34 @@
                                         <label for="basicInput" class="mb-2">Domain URL Mobile</label>
                                         <input type="text" class="form-control" id="basicInput"
                                             name="domain_url_mobile" placeholder="Enter Domain URL Mobile"
-                                            value="@if ($menu_settings ?? null) {{ $menu_settings->domain_url_mobile }} @endif" />
+                                            value="@if ($menu_settings ?? null){{ $menu_settings->domain_url_mobile }}@endif" />
                                     </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Copyright</label>
                                         <input type="text" class="form-control" id="basicInput" name="copyright"
                                             placeholder="Enter Copyright"
-                                            value="@if ($menu_settings ?? null) {{ $menu_settings->copyright }} @endif" />
+                                            value="@if ($menu_settings ?? null){{ $menu_settings->copyright }}@endif" />
                                     </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Advertiser ID</label>
                                         <input type="text" class="form-control" id="basicInput" name="advertiser_id"
                                             placeholder="Enter Advertiser ID"
-                                            value="@if ($menu_settings ?? null) {{ $menu_settings->advertiser_id }} @endif" />
+                                            value="@if ($menu_settings ?? null){{ $menu_settings->advertiser_id }}@endif" />
                                     </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">GTM ID</label>
                                         <input type="text" class="form-control" id="basicInput" name="gtm_id"
                                             placeholder="Enter GTM ID"
-                                            value="@if ($menu_settings ?? null) {{ $menu_settings->gtm_id }} @endif" />
+                                            value="@if ($menu_settings ?? null){{ $menu_settings->gtm_id }}@endif" />
                                     </div>
 
                                     <div class="form-group">
                                         <label for="basicInput" class="mb-2">Ads txt</label>
                                         <textarea type="text" class="form-control" name="ads_txt" placeholder="Enter Ads txt">
-@if ($menu_settings ?? null)
-{{ $menu_settings->ads_txt }}
-@endif
-</textarea>
+@if ($menu_settings ?? null){{ $menu_settings->ads_txt }}@endif</textarea>
                                     </div>
 
                                     <div class="form-group">

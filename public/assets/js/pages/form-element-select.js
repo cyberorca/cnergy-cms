@@ -143,6 +143,7 @@ const newAddContent = (child, edit = false, other) => {
     new_add_content.querySelector("#content_box").append(child);
     new_add_content.querySelector("#title").name = edit ? `title[${id_news ?? ''}][${other.id}]` : `title[]`
     new_add_content.querySelector("#title").value = edit ? `${other.title}` : ``
+    new_add_content.querySelector("#title").removeAttribute("required");
     return new_add_content;
 }
 

@@ -171,10 +171,10 @@ class NewsController extends Controller implements NewsServices
 
             for ($i = 0; $i < count($data['title']) - 1; $i++) {
                 $news_paginations[$i] = [
-                    'title' => $data['title'][$i + 1],
+                    'title' => $data['title'][$i + 1] ?? '',
                     // 'synopsis' => $data['synopsis'][$i + 1],
                     'content' => $data['content'][$i + 1],
-                    'slug' => Str::slug($data['title'][$i + 1]),
+                    'slug' => Str::slug($data['title'][$i + 1]) ?? '',
                     'order_by_no' => $i
                 ];
             }
@@ -238,7 +238,12 @@ class NewsController extends Controller implements NewsServices
 
             if ($request->has('tags')){
                 foreach ($data['tags'] as $t) {
-                    $news->tags()->attach($t, ['created_by' => auth()->id()]);
+                    if (!is_numeric($t)){
+                        $checkId=Tag::where('tags',$t)->first('id');
+                        $news->tags()->attach($checkId, ['created_by' => auth()->id()]);
+                    }else{
+                        $news->tags()->attach($t, ['created_by' => auth()->id()]);
+                    }
                 }
             }
 
@@ -422,7 +427,12 @@ class NewsController extends Controller implements NewsServices
             if ($request->has('tags')){
                 $newsById::find($id)->tags()->detach();
                 foreach ($data['tags'] as $t) {
-                    $newsById->tags()->attach($t, ['created_by' => auth()->id()]);
+                    if (!is_numeric($t)){
+                        $checkId=Tag::where('tags',$t)->first('id');
+                        $newsById->tags()->attach($checkId, ['created_by' => auth()->id()]);
+                    }else{
+                        $newsById->tags()->attach($t, ['created_by' => auth()->id()]);
+                    }
                 }
             }
 
