@@ -68,7 +68,8 @@ class TagsController extends Controller
     }
 
     public function show($id){
-        $filterId = Tag::where('id', $id)
+        $filterId = Tag::whereNull('deleted_at')
+        ->where('id', $id)
         ->first();
 
         if ($filterId == null){
