@@ -68,8 +68,7 @@ class TagsController extends Controller
     }
 
     public function show($id){
-        $filterId = Tag::with(['users'])
-        ->where('id', $id)
+        $filterId = Tag::where('id', $id)
         ->first();
 
         if ($filterId == null){
