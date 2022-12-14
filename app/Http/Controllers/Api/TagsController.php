@@ -78,7 +78,7 @@ class TagsController extends Controller
         $cacheKey = "tagDetail-$id";
         if(!Cache::has($cacheKey)){
             CacheStorage::cache($cacheKey, 'tag');
-            Cache::put($cacheKey, new TagCollection($tag), now()->addDay());
+            Cache::put($cacheKey, new TagCollection($filterId), now()->addDay());
         }
 
         return response()->json(Cache::get($cacheKey), Response::HTTP_OK);
