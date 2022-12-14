@@ -100,8 +100,8 @@
                                             <button onclick="copyUrl()" type="button" class="btn btn-primary">Copy Link
                                             </button>
                                         </div>
-                                        <div>File size: - </div>
-                                        <div>Dimensions: - </div>
+                                        <div>File size: {{$fileSize}} </div>
+                                        <div>Dimensions: {{$dimension}}</div>
                                     </div>
 
                                     <script>

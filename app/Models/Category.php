@@ -65,6 +65,10 @@ class Category extends Model
         return $this->hasMany(Category::class, 'parent_id')->with('child.child');
     }
 
+    public function categoryId(){
+        return $this->hasMany(TodayTag::class, 'category_id');
+    }
+
     public function slug()
     {
         return $this->slug;

@@ -86,19 +86,12 @@
                         <div class="form-group">
                             <label for="synopsis" class="form-label mb-2">Synopsis</label>
                             <textarea name="synopsis" class="form-control" id="synopsis" cols="30" rows="3" required
-                                placeholder="Enter Synopsis">
-@if ($method === 'edit')
-{{ $news->synopsis }}
-@endif
-</textarea>
+                                placeholder="Enter Synopsis">@if ($method === 'edit'){{ $news->synopsis }}@endif</textarea>
                         </div>
 
                         <div class="form-group" id="content_box">
                             <label for="content" class="form-label">Content</label>
-                            <textarea name="content[]" class="my-editor form-control" id="content" cols="30" rows="20" required>
-                                    @if ($method === 'edit')
-{{ $news->content }}
-@endif
+                            <textarea name="content[]" class="my-editor form-control" id="content" cols="30" rows="20" required>@if ($method === 'edit'){{ $news->content }}@endif
                             </textarea>
                         </div>
                     </div>
@@ -239,56 +232,6 @@
         });
     </script>
 
-    <script>
-        $('#keyword').on('select2:select', function(e) {
-            const {
-                params: {
-                    data
-                }
-            } = e;
-            var findItem = keywords.map(el => el.text);
-            keywords.push(data);
-            // console.log(keywords);
-            console.log('select');
-        });
-        $('#keyword').on('select2:selecting', function(e) {
-            console.log('selecting');
-        });
-        $('#keyword').on('select2:unselect', function(e) {
-            const {
-                params: {
-                    data
-                }
-            } = e;
-            keywords = keywords.filter(el => el.text !== data.text)
-        });
-        $(document).ready(function() {
-            $("#keyword").select2({
-                tags: true,
-                placeholder: 'Select Keywords',
-                allowClear: true,
-                ajax: {
-                    url: "{{ route('keyword.index') }}",
-                    dataType: 'json',
-                    delay: 250,
-                    processResults: function({
-                        data
-                    }) {
-                        return {
-                            results: $.map(data, function(item) {
-                                    return {
-                                        id: item.id,
-                                        text: item.keywords
-                                    }
-                                })
-                                .trigger('change')
-                        };
-                    }
-                }
-            });
-        })
-    </script>
-
 
     <script src="https://cdn.tiny.cloud/1/vadmwvgg5mg6fgloc7tol190sn52g6mrsnk0dguphazk7y41/tinymce/5/tinymce.min.js"
         referrerpolicy="origin"></script>
@@ -378,7 +321,7 @@
                 .trigger('change');
         });
     </script>
-    {{-- 
+    {{--
     <script src="/path/to/cdn/jquery.slim.min.js"></script>
     <script src="/path/to/js/jquery.dateandtime.js"></script>
     <script>

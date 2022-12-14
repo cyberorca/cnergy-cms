@@ -14,8 +14,8 @@
                             <label for="basicInput">Publish Status</label>
                         </div>
                         <div class="col-md-6">
-                            <input class="form-check-input" type="radio" value="1" name="isPublished"
-                                   @if ($method === 'edit' and $news->is_published == '1') checked @endif />
+                            <input class="form-check-input" type="radio" value="1" name="isPublished" required
+                                   @if ($method === 'edit' and $news->is_published == '1') checked @else checked @endif />
                             <label class="form-check-label">
                                 On
                             </label>
@@ -32,10 +32,10 @@
                             <label for="publishedAt">Schedule</label>
                         </div>
                         <div class="col-md-6">
-                            <input type="date" class="example" name="date"
-                                   @if ($method === 'edit') value="{{ date('Y-m-d', strtotime($news->published_at)) }}" @endif>
-                            <input type="time" class="example" name="time"
-                                   @if ($method === 'edit') value="{{ date('H:i', strtotime($news->published_at)) }}" @endif>
+                            <input type="date" class="example" name="date" required
+                                   @if ($method === 'edit') value="{{ date('Y-m-d', strtotime($news->published_at)) }}" @else value="{{ date('Y-m-d', strtotime(now()))}}"  @endif>
+                            <input type="time" class="example" name="time" required
+                                   @if ($method === 'edit') value="{{ date('H:i', strtotime($news->published_at)) }}" @else value="{{ date('H:i', strtotime(now()))}}" @endif>
                             <input class="" type="text" name="jQueryScript" value=" "
                                    done="true" style="display: none;">
                         </div>
@@ -75,7 +75,7 @@
                 <div class="form-group">
                     <div class="row">
                         <fieldset class="form-group">
-                            <select class="form-select" name="category" id="category">
+                            <select required class="form-select" name="category" id="category">
                                 @if ($method === 'create')
                                     <option value="" disabled selected>Select Category</option>
                                 @endif
@@ -108,7 +108,7 @@
                 <div class="form-group">
                     <div class="row">
                         <select name="tags[]" class="form-select" style='width: 100%;' multiple="multiple"
-                                id="tags" required>
+                                id="tags" >
                             @if ($method === 'edit')
                                 @foreach($news->tags as $value)
                                     <option value="{{ $value->id }}" selected> {{ $value->tags }} </option>
@@ -131,7 +131,7 @@
             <hr/>
             <div class="collapse show fade" id="tujuh">
                 <div class="form-group">
-                    <textarea name="description" class="form-control" id="description" cols="30" rows="3" required
+                    <textarea required name="description" class="form-control" id="description" cols="30" rows="3"
                               placeholder="Enter description">@if($method === 'edit'){{ $news->description }}@endif</textarea>
 
                 </div>
@@ -178,7 +178,7 @@
                     <div class="row">
                         <label class="mb-2">Keyword</label><br>
                         <select name="keywords[]" class="form-select" style='width: 100%;' multiple="multiple"
-                                id="keyword" required>
+                                id="keyword" >
                             @if ($method === 'edit')
                                 @foreach ($keywords as $id => $keyword)
                                     <option value="{{ $keyword->id }}"
@@ -197,6 +197,13 @@
                             multiple="multiple"
                             id="reporter">
                         <optgroup label="reporter">
+
+                            @if ($method === 'create' and auth()->user()->roles->role ==='Reporter')
+                            <option
+                                selected
+                                value="{{auth()->user()->uuid}}">{{auth()->user()->name}}</option>
+                            @endif
+
                             @foreach($users as $user)
                                 @if($user->roles->role === 'Reporter')
                                     <option

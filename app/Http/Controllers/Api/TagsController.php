@@ -9,6 +9,7 @@ use App\Http\Resources\TagCollection;
 use App\Http\Utils\CacheStorage;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class TagsController extends Controller
 {
@@ -66,4 +67,20 @@ class TagsController extends Controller
         return response()->json(Cache::get("tagsCache"));
     }
 
+    public function show($id){
+        $filterId = Tag::where('id', $id)
+        ->first();
+
+        if ($filterId == null){
+            return response()->json(['message'=>'Tag Not Found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $cacheKey = "tagDetail-$id";
+        if(!Cache::has($cacheKey)){
+            CacheStorage::cache($cacheKey, 'tag');
+            Cache::put($cacheKey, new TagCollection($filterId), now()->addDay());
+        }
+
+        return response()->json(Cache::get($cacheKey), Response::HTTP_OK);
+    }
 }

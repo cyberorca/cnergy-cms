@@ -136,9 +136,9 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->input();
-        
+
         try {
-            User::where('uuid', $id)->update([
+            User::find($id)?->update([
                 'name' => ucwords($data['name']),
                 'email' => $data['email'],
                 'role_id' => $data['role'],

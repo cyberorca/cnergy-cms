@@ -43,33 +43,23 @@
 
                             <div class="form-group">
                                 <label for="basicInput" class="mb-2">Site Description</label>
-                                <textarea type="text" class="form-control @error('site_description') is-invalid @enderror" id="basicInput"
-                                    name="site_description" placeholder="Enter site description">
-                                @if ($menu_settings ?? null)
-{{ $menu_settings->site_description }}
-@endif
-                            </textarea>
+                                <textarea type="text" class="form-control @error('site_description') is-invalid @enderror" id="basicInput" name="site_description" placeholder="Enter site description">@if ($menu_settings ?? null) {{ $menu_settings->site_description }} @endif</textarea>
                                 @error('site_description')
-                                    <div class="invalid-feedback">
-                                        <i class="bx bx-radio-circle"></i>
-                                        {{ $message }}
-                                    </div>
+                                <div class="invalid-feedback">
+                                    <i class="bx bx-radio-circle"></i>
+                                    {{ $message }}
+                                </div>
                                 @enderror
                             </div>
 
                             <div class="form-group">
                                 <label for="basicInput" class="mb-2">Adresss</label>
-                                <textarea type="text" class="form-control @error('address') is-invalid @enderror" id="basicInput" name="address"
-                                    placeholder="Enter address">
-                                @if ($menu_settings ?? null)
-{{ $menu_settings->address }}
-@endif
-                            </textarea>
+                                <textarea type="text" class="form-control @error('address') is-invalid @enderror" id="basicInput" name="address" placeholder="Enter address">@if ($menu_settings ?? null) {{ $menu_settings->address }} @endif</textarea>
                                 @error('address')
-                                    <div class="invalid-feedback">
-                                        <i class="bx bx-radio-circle"></i>
-                                        {{ $message }}
-                                    </div>
+                                <div class="invalid-feedback">
+                                    <i class="bx bx-radio-circle"></i>
+                                    {{ $message }}
+                                </div>
                                 @enderror
                             </div>
 

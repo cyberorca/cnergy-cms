@@ -78,7 +78,7 @@
                     @foreach ($activity as $l)
                         <tr>
                             <td>{{$no++}}</td>
-                            <td>{{$l->causer->name}}</td>
+                            <td>{{$l->causer->name?? 'Null because Causer Id Not Insert'}}</td>
                             <td>{{$l->created_at}}</td>
                             <td>{{$l->log_name}}</td>
                             <td>{{$l->subject_id}}</td>
