@@ -32,6 +32,8 @@ function textareaElement(page_no, other, edit) {
     child.name = edit ? `content[${id_news ?? ''}][${other.id}]` : `content[]`
     child.setAttribute("rows", 20);
     child.setAttribute("cols", 30);
+    child.rows = 20;
+    child.cols = 30;
     child.classList.add("my-editor", "form-control", 'my-3', `editors${page_no}`)
     child.id = `#editor-${page_no}`
 
@@ -169,7 +171,7 @@ function tinyMCEConfig(index_pages) {
     tinymce.init({
         selector: `textarea.editors${index_pages}`,
         themes: 'modern',
-        height: 400,
+        height: '400px',
         path_absolute: "/",
         plugins: [
             "advlist autolink lists link image charmap print preview hr anchor pagebreak",
@@ -232,7 +234,6 @@ if (document.body.contains(document.getElementById("news_paginations"))) {
             })
             tinyMCEConfig(`${el.news_id}-${indexOfPage}`)
             indexOfPage++;
-            console.log("NUM OLD", indexOfPage);
         })
     }
 }

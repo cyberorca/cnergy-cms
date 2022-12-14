@@ -105,7 +105,7 @@
                     {{-- <div> --}}
                     {{-- </div> --}}
                 </div>
-                <span class="w-100 btn btn-success d-flex justify-content-center align-items-center" id="upload_image_bank_button" data-bs-toggle="modal"
+                <span class="w-100 btn btn-success d-flex justify-content-center align-items-center" id="upload_image_bank_button_photonews" data-bs-toggle="modal"
                     data-bs-target="#image-bank" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Image"><i
                         class="bi bi-upload mb-2"></i>&nbsp;&nbsp;
                     Add Image</span>

@@ -12,14 +12,24 @@ var upload_image_selected = document.getElementById("upload_image_selected")
 var save_uploaded_image = document.getElementById("save_uploaded_image")
 
 const upload_image_bank_button = document.getElementById("upload_image_bank_button");
+const upload_image_bank_button_photonews = document.getElementById("upload_image_bank_button_photonews");
 const img_uploader_modal = document.getElementById("image-bank");
 let imageURLTinyMCE = '';
 
 upload_image_bank_button.addEventListener('click', function () {
+    const img_uploader_modal = document.getElementById("image-bank");
     img_uploader_modal.setAttribute("tinymce-image-bank", false);
 })
 
-const insertIntoTinyMCEditor = ({ metaImage, imageSrc }) => {
+upload_image_bank_button_photonews.addEventListener('click', function () {
+    const img_uploader_modal = document.getElementById("image-bank");
+    img_uploader_modal.setAttribute("tinymce-image-bank", false);
+})
+
+const insertIntoTinyMCEditor = ({
+    metaImage,
+    imageSrc
+}) => {
     var add_meta_image_checkbox = document.getElementById("add_meta_image_checkbox")
     const targetTinyMCE = img_uploader_modal.getAttribute("target-mce");
     const oldTextTinyMCETarget = tinymce.get(targetTinyMCE).getContent();
@@ -42,44 +52,36 @@ const insertIntoTinyMCEditor = ({ metaImage, imageSrc }) => {
 }
 
 function selectImage() {
-
-    if (image_bank_type == 'photonews') {
-        const imageSrc = this.parentElement.children[0].getAttribute("src");
-        var tiny_mce_image_bank = img_uploader_modal.getAttribute("tinymce-image-bank");
-        
-        if (tiny_mce_image_bank === 'false') {
-            const image = JSON.parse($(this).siblings('input').val());
-            if (this.getAttribute("status-selected") === 'true') {
-                this.innerHTML = `<i class="bi bi-plus-circle"></i>&nbsp;&nbsp;Select`
-                this.setAttribute('status-selected', 'false')
-                selectedPhotoNews = selectedPhotoNews.filter((el) => el.slug !== image.slug);
-            } else {
-                this.setAttribute('status-selected', 'true')
-                selectedPhotoNews.push(image);
-                this.innerHTML = `<i class="bi bi-dash-circle"></i>&nbsp;&nbsp;Deselect`
-            }
-            const status_selected = $("[status-selected=true]").length;
-            if (status_selected <= 0) {
-                $("#save_photo_news").attr("disabled", true)
-            } else {
-                $("#save_photo_news").removeAttr("disabled")
-            }
-            this.classList.toggle('btn-warning')
-            this.classList.toggle('btn-danger')
-
+    const imageSrc = this.parentElement.children[0].getAttribute("src");
+    const img_uploader_modal = document.getElementById("image-bank");
+    var tiny_mce_image_bank = img_uploader_modal.getAttribute("tinymce-image-bank");
+    if (tiny_mce_image_bank === 'false') {
+        const image = JSON.parse($(this).siblings('input').val());
+        if (this.getAttribute("status-selected") === 'true') {
+            this.innerHTML = `<i class="bi bi-plus-circle"></i>&nbsp;&nbsp;Select`
+            this.setAttribute('status-selected', 'false')
+            selectedPhotoNews = selectedPhotoNews.filter((el) => el.slug !== image.slug);
         } else {
-            insertIntoTinyMCEditor({
-                metaImage: JSON.parse(this.parentNode.querySelector("[data-key='data_image']").value),
-                imageSrc: imageSrc
-            });
-            imageURLTinyMCE = imageSrc;
-            $('#image-bank').removeClass("show").css("display", "none")
+            this.setAttribute('status-selected', 'true')
+            selectedPhotoNews.push(image);
+            this.innerHTML = `<i class="bi bi-dash-circle"></i>&nbsp;&nbsp;Deselect`
         }
+        const status_selected = $("[status-selected=true]").length;
+        if (status_selected <= 0) {
+            $("#save_photo_news").attr("disabled", true)
+        } else {
+            $("#save_photo_news").removeAttr("disabled")
+        }
+        this.classList.toggle('btn-warning')
+        this.classList.toggle('btn-danger')
+
     } else {
-        const imageSrc = this.parentElement.children[0].getAttribute("src");
-        image_preview_result.src = imageSrc;
-        upload_image_selected.value = imageSrc;
-        upload_image_button.value = null;
+        insertIntoTinyMCEditor({
+            metaImage: JSON.parse(this.parentNode.querySelector("[data-key='data_image']").value),
+            imageSrc: imageSrc
+        });
+        imageURLTinyMCE = imageSrc;
+        $('#image-bank').removeClass("show").css("display", "none")
     }
 }
 save_uploaded_image.addEventListener('click', async function () {
@@ -115,9 +117,9 @@ save_uploaded_image.addEventListener('click', async function () {
             data
         }) {
             var tiny_mce_image_bank = img_uploader_modal.getAttribute("tinymce-image-bank");
-
+            const { slug } = data;
             if (tiny_mce_image_bank === 'false') {
-                image_preview_result.src = `${path}/${image_slug}`;
+                image_preview_result.src = `${path}/${slug}`;
                 $(button).html(` <i class="bx bx-x d-block d-sm-none"></i>
                 <span class="d-sm-block"><i class="bi bi-save"></i>&nbsp;&nbsp;Save
                 Image</span>`);
@@ -292,11 +294,7 @@ function makeList(data) {
             photographer
         } = el;
 
-        const meta_data = JSON.stringify({
-            copyright: copyright,
-            caption: caption,
-            photographer: photographer,
-        })
+        const meta_data = JSON.stringify(el)
 
         let str = `
            <div class="image-card border p-0 image-card border p-0 d-flex flex-column align-items-center">

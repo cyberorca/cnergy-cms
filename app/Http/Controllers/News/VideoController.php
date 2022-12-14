@@ -137,7 +137,7 @@ class VideoController extends Controller
         try {
             if ($request->file('upload_image') && !$data['upload_image_selected']) {
                 $file = $request->file('upload_image');
-                $fileFormatPath = new FileFormatPath('video/image', $file);
+                $fileFormatPath = new FileFormatPath('trstdly', $file);
                 $data['image'] = $fileFormatPath->storeFile();
             }
 
@@ -322,7 +322,7 @@ class VideoController extends Controller
 
             if ($request->file('upload_image') && !$data['upload_image_selected']) {
                 $file = $request->file('upload_image');
-                $fileFormatPath = new FileFormatPath('video/image', $file);
+                $fileFormatPath = new FileFormatPath('trstdly', $file);
                 $input['image'] = $fileFormatPath->storeFile();
             }
 
