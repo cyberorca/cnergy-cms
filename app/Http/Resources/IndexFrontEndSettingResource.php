@@ -43,7 +43,7 @@ class IndexFrontEndSettingResource extends JsonResource
                 "image_info" => $this->image_info,
                 "url_format" => " ",
                 "logo_url" => $this->logo_url,
-                "fanspage_id" => " ",
+                "fanspage_id" => $this->facebook_fanspage,
                 "cse_id" => $this->cse_id,
                 "gtm_id" => $this->gtm_id,
                 "advertiser_id" => $this->advertiser_id,
