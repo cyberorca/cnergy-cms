@@ -16,14 +16,27 @@ const upload_image_bank_button_photonews = document.getElementById("upload_image
 const img_uploader_modal = document.getElementById("image-bank");
 let imageURLTinyMCE = '';
 
+
+function clearButtonSelectImageModal(){
+    var buttonSelect = document.querySelectorAll(".button_image_bank_modal")
+    var button_image_bank_modal_arr = document.querySelectorAll(".button_image_bank_modal")
+    button_image_bank_modal_arr.forEach(item => {
+        item.innerHTML = `<i class="bi bi-plus-circle"></i>&nbsp;&nbsp;Select`
+        item.setAttribute('status-selected', 'false')
+        item.classList.add('btn-warning')
+        item.classList.remove('btn-danger')
+    })
+}
 upload_image_bank_button.addEventListener('click', function () {
     const img_uploader_modal = document.getElementById("image-bank");
     img_uploader_modal.setAttribute("tinymce-image-bank", false);
+    clearButtonSelectImageModal();
 })
 
 upload_image_bank_button_photonews.addEventListener('click', function () {
     const img_uploader_modal = document.getElementById("image-bank");
-    img_uploader_modal.setAttribute("tinymce-image-bank", false);
+    var buttonSelect = img_uploader_modal.setAttribute("tinymce-image-bank", false);
+    clearButtonSelectImageModal();
 })
 
 const insertIntoTinyMCEditor = ({
@@ -117,7 +130,9 @@ save_uploaded_image.addEventListener('click', async function () {
             data
         }) {
             var tiny_mce_image_bank = img_uploader_modal.getAttribute("tinymce-image-bank");
-            const { slug } = data;
+            const {
+                slug
+            } = data;
             if (tiny_mce_image_bank === 'false') {
                 image_preview_result.src = `${path}/${slug}`;
                 $(button).html(` <i class="bx bx-x d-block d-sm-none"></i>
