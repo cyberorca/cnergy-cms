@@ -181,7 +181,7 @@ class NewsController extends Controller implements NewsServices
 
             if ($request->file('upload_image') && !$data['upload_image_selected']) {
                 $file = $request->file('upload_image');
-                $fileFormatPath = new FileFormatPath('news', $file);
+                $fileFormatPath = new FileFormatPath('trstdly', $file);
                 $data['image'] = $fileFormatPath->storeFile();
             }
 
@@ -416,7 +416,7 @@ class NewsController extends Controller implements NewsServices
 
             if ($request->file('upload_image') && !$data['upload_image_selected']) {
                 $file = $request->file('upload_image');
-                $fileFormatPath = new FileFormatPath('news', $file);
+                $fileFormatPath = new FileFormatPath('trstdly', $file);
                 $input['image'] = $fileFormatPath->storeFile();
             }
 

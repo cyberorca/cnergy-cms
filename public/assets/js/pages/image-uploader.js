@@ -73,7 +73,6 @@ save_uploaded_image.addEventListener('click', async function () {
             value = file[0]
         }
         fd.append(name, value);
-        console.log(name, value);
     })
     let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     fd.append('_token', token);
@@ -96,9 +95,9 @@ save_uploaded_image.addEventListener('click', async function () {
             data
         }) {
             var tiny_mce_image_bank = img_uploader_modal.getAttribute("tinymce-image-bank");
-
+            const { slug } = data;
             if (tiny_mce_image_bank === 'false') {
-                image_preview_result.src = `${path}/${image_slug}`;
+                image_preview_result.src = `${path}/${slug}`;
                 $(button).html(` <i class="bx bx-x d-block d-sm-none"></i>
             <span class="d-sm-block"><i class="bi bi-save"></i>&nbsp;&nbsp;Save
             Image</span>`);

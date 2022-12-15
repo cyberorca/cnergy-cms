@@ -22,8 +22,7 @@ trait ImageMetadata
         if (PelJpeg::isValid($data) || PelTiff::isValid($data))
             return true;
         else
-            return 'Cannot edit metadata format '.$extension.' because invalid image format only supported jpeg,tiff,jfif';
-
+            return 'Cannot edit metadata format ' . $extension . ' because invalid image format only supported jpeg,tiff,jfif';
     }
 
     private function checkFormat($slug)
@@ -56,14 +55,14 @@ trait ImageMetadata
         }
     }
 
-    public function setMetaData($slug,
-                                $copyright,
-                                $description,
-                                $photographer,
-                                $title,
-                                $keywords,
-    )
-    {
+    public function setMetaData(
+        $slug,
+        $copyright,
+        $description,
+        $photographer,
+        $title,
+        $keywords,
+    ) {
         $checkFormat = $this->checkFormat($slug);
         $tiff = $checkFormat['tiff'];
         $file = $checkFormat['file'];
@@ -133,7 +132,6 @@ trait ImageMetadata
         }
 
         $file->saveFile(Storage::disk('public')->path($slug));
-
     }
 
     public
