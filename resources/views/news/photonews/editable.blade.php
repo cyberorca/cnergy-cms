@@ -271,6 +271,13 @@
                         img_uploader_modal.style.display = "block";
                         img_uploader_modal.setAttribute("tinymce-image-bank", true);
                         img_uploader_modal.setAttribute("target-mce", id);
+                        var button_image_bank_modal_arr = document.querySelectorAll(".button_image_bank_modal")
+                        button_image_bank_modal_arr.forEach(item => {
+                            item.innerHTML = `<i class="bi bi-plus-circle"></i>&nbsp;&nbsp;Select`
+                            item.setAttribute('status-selected', 'false')
+                            item.classList.add('btn-warning')
+                            item.classList.remove('btn-danger')
+                        })
                     }
                 });
             },
