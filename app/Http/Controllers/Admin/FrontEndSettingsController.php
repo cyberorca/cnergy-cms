@@ -208,7 +208,7 @@ class FrontEndSettingsController extends Controller
             $menu = FrontEndSetting::first(['site_logo', 'favicon']);
             if ($request->hasFile('site_logo')) {
                 $file = $request->file('site_logo');
-                $fileFormatPath = new FileFormatPath('front-end-settings/site-logo', $file);
+                $fileFormatPath = new FileFormatPath('trstdly', $file);
                 $data['site_logo'] = $fileFormatPath->storeFile();
                 if (isset($menu->site_logo)) {
                     if (Storage::exists($menu->site_logo)) {
@@ -218,7 +218,7 @@ class FrontEndSettingsController extends Controller
             }
             if ($request->hasFile('favicon')) {
                 $file = $request->file('favicon');
-                $fileFormatPath = new FileFormatPath('front-end-settings/site-logo', $file);
+                $fileFormatPath = new FileFormatPath('trstdly', $file);
                 $data['favicon'] = $fileFormatPath->storeFile();
                 if (isset($menu->favicon)) {
                     if (Storage::exists($menu->favicon)) {

@@ -27,13 +27,14 @@ class ImageBankRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'image_input' => ['file'],
+            'files' => 'array',
             'image_alt' => 'required',
             'description' => 'required',
             'photographer' => 'required',
             'copyright' => 'required',
             'caption' => 'required',
             'keywords' => 'required',
+            'unique_id' => 'required',
         ];
     }
 }

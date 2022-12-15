@@ -2,13 +2,9 @@
 
 @section('css')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('assets/css/pages/image_bank.css') }}">
     <style>
-        .image-preview {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
         .bootstrap-tagsinput {
             width: 100%;
         }
@@ -37,15 +33,20 @@
 @section('body')
     <x-page-heading title="Meta Data Image" subtitle="Edit or Fill Meta Data Image" />
     <section class="section">
-
+        {{-- <form action="{{ route('file-upload') }}" class="dropzone" id="my-awesome-dropzone">
+            @csrf
+            <input type="hidden" name="file" class="opacity-25"/>
+        </form> --}}
         <form
             action="@if ($method === 'edit') {{ route('image-bank.update', $imageBank->id) }}
-            @else{{ route('image-bank.store') }} @endif"
+        @else{{ route('image-bank.store') }} @endif"
             method="post" enctype="multipart/form-data">
+
+            @csrf
+            <input type="hidden" name="unique_id" id="unique-id">
             <div class="card p-4">
                 <div class="row">
-                    <div class="col-md-5">
-
+                    <div class="@if ($method === 'edit') col-md-5 @else col-md-12 @endif">
                         <div class="card-body d-flex flex-column gap-2">
                             <div class="col-md-12">
                                 {{-- <div class="card-header"><span class="h5">
@@ -61,10 +62,12 @@
                                         <img src="{{ Storage::url($imageBank->slug) }}" class="mb-3 image-preview w-100"
                                             alt="{{ $imageBank->image_alt }}">
                                     @else
-                                        <img src="{{ asset('assets/images/preview-image.jpg') }}"
-                                            class="mb-3 image-preview w-100" alt="Your Image" id="image_preview">
-                                        <input type="file" class="form-control" name="image_input" id="image_input"
-                                            accept="image/*" />
+                                        <div class="multiple-image dropzone" id="dropzone">
+                                            {{-- <input type="file" id="image_input" multiple
+                                                data-max-file-size="3MB" data-max-files="10" /> --}}
+                                        </div>
+                                        {{-- <div class="multiple-image" id="multiple_image">
+                                        </div> --}}
                                         @error('site_logo')
                                             <div class="invalid-feedback">
                                                 <i class="bx bx-radio-circle"></i>
@@ -77,12 +80,11 @@
                         </div>
                     </div>
 
-                    <div class="col-md-7">
-                        <div class="card-body d-flex flex-column gap-2">
+                    @if ($method === 'edit')
+                        <div class="col-md-7">
+                            <div class="card-body d-flex flex-column gap-2">
 
-                            <div class="col-md-12">
-                                @csrf
-                                @if ($method === 'edit')
+                                <div class="col-md-12">
                                     @method('PUT')
                                     <div class="row">
                                         <div class="form-group imageInfo"><i class="bi bi-calendar"></i>
@@ -115,15 +117,13 @@
                                             navigator.clipboard.writeText(copyText.value);
                                         }
                                     </script>
-                                @endif
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
 
                     <div class="col-md-6">
-
                         <div class="card-body d-flex flex-column gap-2">
-
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="basicInput" class="mb-2">Title</label>
@@ -226,10 +226,10 @@
                                 <div class="d-flex flex-column">
                                     <textarea name="description" class="form-control" id="description" cols="30" rows="3"
                                         placeholder="Enter Description">
-@if ($method === 'edit')
+                                            @if ($method === 'edit')
 {{ $imageBank->description }}
 @endif
-</textarea>
+                                    </textarea>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end gap-3 mt-3">
@@ -249,7 +249,6 @@
 
 @section('javascript')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
-
     <script>
         $(function() {
             $('input')
@@ -272,14 +271,56 @@
                 .trigger('change');
         });
     </script>
+
+
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <script src="{{ asset('assets/js/pages/image-bank.js') }}"></script>
     <script>
-        var image_preview = document.getElementById("image_preview")
-        var image_input = document.getElementById("image_input")
-        image_input.onchange = evt => {
-            const [file] = image_input.files
-            if (file) {
-                image_preview.src = URL.createObjectURL(file)
+        Dropzone.autoDiscover = false;
+        var uniqueID = Date.now();
+        document.getElementById('unique-id').value = uniqueID;
+        let myDropzone = new Dropzone("div#dropzone", {
+            url: "{{ route('file-upload') }}",
+            autoQueue: true,
+            addRemoveLinks: true,
+            maxFiles: 100,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'X-UNIQUE-ID': uniqueID
+            },
+            success: function(file, response) {
+                const {
+                    data,
+                    unique_id
+                } = response;
+                document.getElementById('unique-id').value = unique_id;
+            },
+            removedfile: function(file) {
+                const { name, xhr: { response } } = file;
+                const { data } = JSON.parse(response);
+                const fullPathName = data[0].full_path_name;
+
+                $.ajax({
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'X-UNIQUE-ID': uniqueID
+                    },
+                    url: "{{ route('file-upload.delete') }}",
+                    data: {
+                        name: fullPathName,
+                    },
+                    sucess: function(data) {
+                        console.log('success: ' + data);
+                    }
+                });
+                var _ref;
+                return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) :
+                    void 0;
             }
-        }
+        });
+        window.onbeforeunload = function(event) {
+            
+        };
     </script>
 @endsection

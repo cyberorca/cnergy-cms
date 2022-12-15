@@ -8,9 +8,9 @@ use App\Http\Utils\FileFormatPath;
 use App\Http\Utils\ImageMetadata;
 use App\Models\ImageBank;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 
 class ImageBankController extends Controller
@@ -59,23 +59,36 @@ class ImageBankController extends Controller
                 "description" => $input["description"],
                 "created_by" => Auth::user()->uuid
             ];
-            if ($request->hasFile('image_input')) {
-                $file = $request->file('image_input');
-                $fileFormatPath = new FileFormatPath('image-bank', $file);
-                $data['slug'] = $fileFormatPath->storeFile();
-            }
-            $imageBank = ImageBank::create($data);
-            $isFormatSupport = $this->isFormat($imageBank->slug);
-            if ($isFormatSupport ===true){
-                $this->setMetaData($imageBank->slug,
-                    $input["copyright"],
-                    $input["description"],
-                    $input["photographer"],
-                    $input["title"],
-                    $input["keywords"]
-                );
+
+
+            $arrFileName = array();
+            $folderPath = 'tmp/' . $request->unique_id . '/';
+            $files = Storage::allFiles($folderPath);
+            $realPath = new FileFormatPath();
+            foreach ($files as $path) {
+                $file = pathinfo($path);
+                $fileName = $realPath->getPath() . '/' . $file['basename'];
+                Storage::move($file['dirname'] . '/' . $file['basename'], $fileName);
+                array_push($arrFileName, $fileName);
             }
 
+            Storage::deleteDirectory($folderPath);
+
+            foreach ($arrFileName as $name) {
+                $data['slug'] = $name;
+                $imageBank = ImageBank::create($data);
+                $isFormatSupport = $this->isFormat($imageBank->slug);
+                if ($isFormatSupport === true) {
+                    $this->setMetaData(
+                        $imageBank->slug,
+                        $input["copyright"],
+                        $input["description"],
+                        $input["photographer"],
+                        $input["title"],
+                        $input["keywords"]
+                    );
+                }
+            }
 
             return redirect()->route('image-bank.index')->with('status', 'Successfully Add Image');
         } catch (\Throwable $e) {
@@ -99,13 +112,14 @@ class ImageBankController extends Controller
             ];
             if ($request->hasFile('image_input')) {
                 $file = $request->file('image_input');
-                $fileFormatPath = new FileFormatPath('image-bank', $file);
+                $fileFormatPath = new FileFormatPath('trstdly', $file);
                 $data['slug'] = $fileFormatPath->storeFile();
             }
             $imageBank = ImageBank::create($data);
             $isFormatSupport = $this->isFormat($imageBank->slug);
-            if ($isFormatSupport===true) {
-                $this->setMetaData($imageBank->slug,
+            if ($isFormatSupport === true) {
+                $this->setMetaData(
+                    $imageBank->slug,
                     $input["copyright"],
                     $input["description_image"],
                     $input["photographer"],
@@ -181,7 +195,8 @@ class ImageBankController extends Controller
             $imageBankById = ImageBank::find($id)->first();
             $imageBankById->update($data);
 
-            $this->setMetaData($imageBankById->slug,
+            $this->setMetaData(
+                $imageBankById->slug,
                 $input["copyright"],
                 $input["description"],
                 $input["photographer"],
@@ -225,20 +240,35 @@ class ImageBankController extends Controller
         return response()->json($image_bank);
     }
 
-    public function displayImage($filename)
+    public function storeImage(Request $request)
     {
-        $path = storage_path('app/public/' . $filename);
-        // return $filename;
-        if (!File::exists($path)) {
-            abort(404);
+        try {
+            $temp = array();
+            $uniqueID = request()->header('X-UNIQUE-ID');
+            if ($request->hasFile('file')) {
+                $file = $request->file('file');
+                $fileFormatPath = new FileFormatPath("tmp/$uniqueID", $file);
+                array_push($temp, $fileFormatPath->storeFileTemp());
+                return response()->json([
+                    'message' => 'successfully add image',
+                    'data' => $temp,
+                    'unique_id' => $uniqueID,
+                ], 201);
+            }
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors($e->getMessage());
         }
+    }
 
-        $file = File::get($path);
-        $type = File::mimeType($path);
-
-        $response = Response::make($file, 200);
-
-        // $response->header("Content-Type", $type);
-        return $response;
+    public function deleteImageTemp(Request $request)
+    {
+        try {
+            Storage::delete($request->name);
+            return response()->json([
+                'message' => 'successfully delete image',
+            ], 201);
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
     }
 }

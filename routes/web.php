@@ -114,6 +114,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('image/{filename}', [ImageBankController::class, 'displayImage'])->name('image.displayImage');
     Route::get('/image-bank/api/list/', [ImageBankController::class, 'apiList'])->name('image_bank.api');
     Route::post('/image-bank/api/create', [ImageBankController::class, 'upload_image']);
+    Route::post('/image-bank/api/image/store', [ImageBankController::class, 'storeImage'])->name('file-upload');
+    Route::post('/image-bank/api/image/delete', [ImageBankController::class, 'deleteImageTemp'])->name('file-upload.delete');
 
     Route::resource('profile', ProfileController::class);
 });
