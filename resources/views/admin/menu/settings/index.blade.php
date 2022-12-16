@@ -37,7 +37,7 @@
                     <form action="{{ route('front-end-setting.update', 1) }}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        <div class="d-flex justify-content-between gap-2">
+                        <div class="d-flex justify-content-between">
                             <div class="card col-md-5">
                                 <div class="card-header">
                                     <span class="h5">General Settings</span>
@@ -406,7 +406,7 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-between gap-2">
+                        <div class="d-flex justify-content-between">
                             <div class="col-6">
                                 <div class="card">
                                     <div class="card-header"><span class="h5">Image Size Info</span></div>
