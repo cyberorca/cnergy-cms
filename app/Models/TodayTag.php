@@ -20,4 +20,8 @@ class TodayTag extends Model
     public function categoryId(){
         return $this->belongsTo(Category::class, 'category_id');
     }
+
+    public function tagId(){
+        return $this->hasOne(Tag::class, 'tag_id');
+    }
 }
