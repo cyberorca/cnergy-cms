@@ -13,8 +13,8 @@
 @section('body')
     <x-page-heading title="Menu Settings Config" subtitle="Manage Frontend Settings" />
     <section class="section">
-        <div class="card col-md-12">
-            <div class="card-body d-flex flex-column gap-2">
+        <div class="card col-md-12" style="margin-bottom:0px; border-bottom-right-radius: 0px; border-bottom-left-radius: 0px;">
+            <div class="card-body d-flex flex-column ">
                 <ul class="nav nav-tabs" id="myTab2" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link nav-link-inventor active text-capitalize"
@@ -32,13 +32,14 @@
                     </li>
                 </ul>
             </div>
+        </div>
             <div class="tab-content" id="myTabContent">
                 <div id="frontendsetting" class="tab-pane show active">
                     <form action="{{ route('front-end-setting.update', 1) }}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="d-flex justify-content-between">
-                            <div class="card col-md-5">
+                            <div class="card col-md-5" style="border-top-right-radius: 0px; border-top-left-radius: 0px;">
                                 <div class="card-header">
                                     <span class="h5">General Settings</span>
                                 </div>
@@ -154,12 +155,11 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="card col-md-7">
+                            <div class="card col-md-7" style=" border-top-right-radius: 0px; border-top-left-radius: 0px;">
 
                                 <div class="card-header"><span class="h5">Visual Settings</span></div>
 
-                                <div class="card-body d-flex flex-column gap-2">
+                                <div class="card-body d-flex flex-column">
                                     @csrf
                                     <div class="col-md-12">
 
@@ -406,7 +406,7 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between gap-2">
                             <div class="col-6">
                                 <div class="card">
                                     <div class="card-header"><span class="h5">Image Size Info</span></div>
@@ -497,7 +497,11 @@
                                     </div>
                                 </div>
                             </div> 
+                        </div>
                     </div>
+                </div>
+            </div>
+        </div>
     </section>
 @endsection
 
