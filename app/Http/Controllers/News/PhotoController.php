@@ -331,12 +331,11 @@ class PhotoController extends Controller implements NewsServices
 
         $i=0;
         if (count($data['photonews']['old']) >= 1) {
-
                 foreach ($data['photonews']['old'] as $key => $value) {
                     $news_images_old[$i] = [
                         'title' => $data['title'],
                         'image' => $data['photonews']['old'][$key]['caption'],
-                        'url' => $data['photonews']['old'][$key]['url'],
+                        'url' => explode(Storage::url(""), $data['photonews']['old'][$key]['url'])[1] ?? null,
                         'copyright' => $data['photonews']['old'][$key]['copyright'],
                         'description' => $data['photonews']['old'][$key]['description'],
                         'keywords' => $data['photonews']['old'][$key]['keywords'],
@@ -365,7 +364,7 @@ class PhotoController extends Controller implements NewsServices
                 $news_images_old[$i] = [
                     'title' => $data['title'],
                     'image' => $data['photonews'][$key]['caption'],
-                    'url' => $data['photonews'][$key]['url'],
+                    'url' => explode(Storage::url(""), $data['photonews'][$key]['url'])[0] ?? null,
                     'copyright' => $data['photonews'][$key]['copyright'],
                     'description' => $data['photonews'][$key]['description'],
                     'keywords' => $data['photonews'][$key]['keywords'],
@@ -380,6 +379,8 @@ class PhotoController extends Controller implements NewsServices
                 $i++;
             }
         }
+
+        // return response()->json($news_images_old);
 
         if(count($new) !== count($old)){
             $diff=array_diff($old, $new);
