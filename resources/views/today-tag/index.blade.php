@@ -91,9 +91,18 @@
                                 <td>{{ $t->order_by_no }}</td>
                                 <td>{{ $t->id }}</td>
                                 <td>{{ $t->title }}</td>
-                                <td>{{ $t->tag }}</td>
+                                {{-- <td>{{ implode(" " , json_decode($t->tag, true)) }}</td> --}}
+                                @if ($t->types === 'news_tag')
+                                    <td>{{ json_decode($t->tag, true)[0] ?? 'empty' }}</td>
+                                @endif
+                                @if ($t->types === 'sponsorship_tag')
+                                    <td>{{ json_decode($t->tag, true)[0] ?? 'empty' }}</td>
+                                @endif
+                                @if ($t->types === 'external_link')
+                                    <td>{{ $t->url }}</td>
+                                @endif
                                 <td>{{ $t->types }}</td>
-                                <td>{{ $t->categoryId->category }}</td>
+                                <td>{{ $t->categoryId->category ?? 'empty' }}</td>
                                 <td>
                                     <a href="{{ route('today-tag.edit', $t->id) }}" class="btn icon btn-warning"
                                         data-bs-toggle="tooltip" data-bs-placement="top" title="Update Today Tag Data">

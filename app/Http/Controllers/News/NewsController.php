@@ -171,10 +171,10 @@ class NewsController extends Controller implements NewsServices
 
             for ($i = 0; $i < count($data['title']) - 1; $i++) {
                 $news_paginations[$i] = [
-                    'title' => $data['title'][$i + 1],
+                    'title' => $data['title'][$i + 1] ?? '',
                     // 'synopsis' => $data['synopsis'][$i + 1],
                     'content' => $data['content'][$i + 1],
-                    'slug' => Str::slug($data['title'][$i + 1]),
+                    'slug' => Str::slug($data['title'][$i + 1]) ?? '',
                     'order_by_no' => $i
                 ];
             }
