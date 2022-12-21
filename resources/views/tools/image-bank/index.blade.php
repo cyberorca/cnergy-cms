@@ -53,7 +53,7 @@
                     @foreach ($image_bank as $item)
                         <div class="image-card border p-0">
                             {{-- <img src="{{ url('') . '/storage' . $item->slug }}" alt="" class="w-100"> --}}
-                            <img src="{{ Storage::url($item->slug) }}" alt="" class="w-100">
+                            <img src="{{  Storage::url(preg_replace('/.jpg$/', '-200xauto.jpg', $item->slug)) }}" alt="" class="w-100">
                             <div class="d-flex flex-column gap-2 p-2">
                                 <p class="m-0 font-14">{{ $item->title }}</p>
                                 <div class="d-flex">
