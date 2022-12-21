@@ -25,6 +25,7 @@ class ImageBankController extends Controller
     public function index()
     {
         $image_bank = ImageBank::all();
+
         return view("tools.image-bank.index", compact("image_bank"));
     }
 
@@ -65,13 +66,15 @@ class ImageBankController extends Controller
             $folderPath = 'tmp/' . $request->unique_id . '/';
             $files = Storage::allFiles($folderPath);
             $realPath = new FileFormatPath();
+            $pattern = "/-200xauto.jpg/";
             foreach ($files as $path) {
                 $file = pathinfo($path);
                 $fileName = $realPath->getPath() . '/' . $file['basename'];
                 Storage::move($file['dirname'] . '/' . $file['basename'], $fileName);
-                array_push($arrFileName, $fileName);
+                if (!preg_match($pattern, $fileName)) {
+                    array_push($arrFileName, $fileName);
+                }
             }
-
             Storage::deleteDirectory($folderPath);
 
             foreach ($arrFileName as $name) {
@@ -158,15 +161,18 @@ class ImageBankController extends Controller
     {
         $method = explode('/', URL::current());
         $imageBankById = ImageBank::with('createdBy')->where('id', $id)->first();
-//        $this->getMetaData($imageBankById->slug);
+        //        $this->getMetaData($imageBankById->slug);
         $isFormatSupport = $this->isFormat($imageBankById->slug);
-        if ($isFormatSupport ===true)
-            return view('tools.image-bank.editable',
-            ['method' => end($method),
-                'imageBank' => $imageBankById,
-                'fileSize'=> $this->getFileSizeImage($imageBankById->slug),
-                'dimension'=>$this->getDimensionImage($imageBankById->slug)
-            ]);
+        if ($isFormatSupport === true)
+            return view(
+                'tools.image-bank.editable',
+                [
+                    'method' => end($method),
+                    'imageBank' => $imageBankById,
+                    'fileSize' => $this->getFileSizeImage($imageBankById->slug),
+                    'dimension' => $this->getDimensionImage($imageBankById->slug)
+                ]
+            );
         else
             return back()->withErrors(['error' => $isFormatSupport]);
     }

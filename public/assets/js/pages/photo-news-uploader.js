@@ -45,15 +45,16 @@ const insertIntoTinyMCEditor = ({
 }) => {
     var add_meta_image_checkbox = document.getElementById("add_meta_image_checkbox")
     const targetTinyMCE = img_uploader_modal.getAttribute("target-mce");
-    const oldTextTinyMCETarget = tinymce.get(targetTinyMCE).getContent();
-
+    var ed = tinymce.get(targetTinyMCE); // get editor instance
+    var range = ed.selection.getRng(); // get range
+    var newNode = ed.getDoc().createElement("p"); 
     const {
         copyright,
         caption,
         photographer
     } = metaImage;
 
-    const textContent = `${oldTextTinyMCETarget} <p style="text-align: center;">
+    const textContent = `<p style="text-align: center;">
         <img src="${imageSrc}" alt="${caption}" width="400" height="auto" data-mce-src="${imageSrc}">
         ${add_meta_image_checkbox.checked ? 
             `<span class="content-image-caption" style="text-align: center;display: block; color: #525252 ">
@@ -61,7 +62,9 @@ const insertIntoTinyMCEditor = ({
         </span>`
             : ''}
     </p>`
-    tinymce.get(targetTinyMCE).setContent(textContent);
+    newNode.innerHTML = textContent;
+
+    range.insertNode(newNode);
 }
 
 function selectImage() {

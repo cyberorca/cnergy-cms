@@ -10,6 +10,7 @@ use App\Http\Utils\CacheStorage;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Resources\IndexTagResource;
 
 class TagsController extends Controller
 {
@@ -79,7 +80,7 @@ class TagsController extends Controller
         $cacheKey = "tagDetail-$id";
         if(!Cache::has($cacheKey)){
             CacheStorage::cache($cacheKey, 'tag');
-            Cache::put($cacheKey, new TagCollection($filterId), now()->addDay());
+            Cache::put($cacheKey, new IndexTagResource($filterId), now()->addDay());
         }
 
         return response()->json(Cache::get($cacheKey), Response::HTTP_OK);
