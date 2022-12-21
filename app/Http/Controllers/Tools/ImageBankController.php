@@ -24,7 +24,15 @@ class ImageBankController extends Controller
      */
     public function index()
     {
-        $image_bank = ImageBank::all();
+        $image_bank = array();
+        $arr_image_bank = ImageBank::all();
+        foreach ($arr_image_bank as $item) {
+            $pattern = "/-200x.+\.png/";
+            if (preg_match($pattern, $item['slug'])) {
+                array_push($image_bank, $item);
+            }
+        }
+
         return view("tools.image-bank.index", compact("image_bank"));
     }
 
@@ -71,6 +79,8 @@ class ImageBankController extends Controller
                 Storage::move($file['dirname'] . '/' . $file['basename'], $fileName);
                 array_push($arrFileName, $fileName);
             }
+
+            // return response()->json($arrFileName);
 
             Storage::deleteDirectory($folderPath);
 
@@ -158,15 +168,18 @@ class ImageBankController extends Controller
     {
         $method = explode('/', URL::current());
         $imageBankById = ImageBank::with('createdBy')->where('id', $id)->first();
-//        $this->getMetaData($imageBankById->slug);
+        //        $this->getMetaData($imageBankById->slug);
         $isFormatSupport = $this->isFormat($imageBankById->slug);
-        if ($isFormatSupport ===true)
-            return view('tools.image-bank.editable',
-            ['method' => end($method),
-                'imageBank' => $imageBankById,
-                'fileSize'=> $this->getFileSizeImage($imageBankById->slug),
-                'dimension'=>$this->getDimensionImage($imageBankById->slug)
-            ]);
+        if ($isFormatSupport === true)
+            return view(
+                'tools.image-bank.editable',
+                [
+                    'method' => end($method),
+                    'imageBank' => $imageBankById,
+                    'fileSize' => $this->getFileSizeImage($imageBankById->slug),
+                    'dimension' => $this->getDimensionImage($imageBankById->slug)
+                ]
+            );
         else
             return back()->withErrors(['error' => $isFormatSupport]);
     }

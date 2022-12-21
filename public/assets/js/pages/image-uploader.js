@@ -106,6 +106,9 @@ save_uploaded_image.addEventListener('click', async function () {
                     metaImage: data,
                     imageSrc: `${path}/${data.slug}`,
                 })
+                $(button).html(` <i class="bx bx-x d-block d-sm-none"></i>
+            <span class="d-sm-block"><i class="bi bi-save"></i>&nbsp;&nbsp;Save
+            Image</span>`);
                 $('#image-bank').removeClass("show").css("display", "none")
             }
 
