@@ -122,7 +122,9 @@ Route::group(['middleware' => ['usersPermissionRoles:1']], function () {
 // Route::post('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])
 //     ->middleware(['auth', 'signed']) // <-- don't remove "signed"
 //     ->name('verification.verify');
-
+Route::get('/phpinfo', function() {
+    return phpinfo();
+});
 Route::get('/auth/redirect', [LoginController::class, 'redirectToProvider']);
 Route::get('/auth/callback', [LoginController::class, 'handleProviderCallback']);
 Route::get('/login', [LoginController::class, 'index'])->name('login');

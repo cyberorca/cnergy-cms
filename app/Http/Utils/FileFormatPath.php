@@ -2,11 +2,10 @@
 
 namespace App\Http\Utils;
 
-use App\Models\User;
-use Exception;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\ImageManager;
 
 class FileFormatPath
 {
@@ -57,44 +56,32 @@ class FileFormatPath
             $fileName = $this->getFileName();
             $folderPath = $this->getPath();
             Storage::putFileAs($folderPath, $this->file, $fileName);
+            $this->resizeImage($folderPath, $fileName);
 
             return [
                 'full_path_name' => $folderPath . $fileName,
                 'directory' => $folderPath,
                 'file_name' => $fileName,
             ];
-
         } catch (\Throwable $e) {
+            die($e);
             return $e;
         }
     }
 
-    public function base64ToImage($files)
+    public function resizeImage($folderPath, $fileName)
     {
-        $fileName = "";
-        $numItems = count($files);
-        $i = 1;
-        foreach ($files as $file) {
-            $extension = explode('/', explode(':', substr($file, 0, strpos($file, ';')))[1])[1]; 
-            $replace = substr($file, 0, strpos($file, ',') + 1);
-            $image = str_replace($replace, '', $file);
-            $image = str_replace(' ', '+', $image);
-            $decoded_file = base64_decode($image); 
-            $name = uniqid();
-            $realName = $this->getPath() . substr(time(), 5) . '-' . $name . '.' . $extension;
-            if ($i !== $numItems) {
-                $fileName .= $realName . ",";
-            } else {
-                $fileName .= $realName;
-            }
-            try {
-                Storage::put($realName, $decoded_file);
-            } catch (Exception $e) {
-                echo $e->getMessage();
-            }
-            $i++;
+        try {
+            $image_driver = new ImageManager();
+            $image = $image_driver->make($this->file)->orientate();
+            $image->resize(200, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            $nameOfFile = implode("-200x" . $image->getHeight(), explode("." . $this->file->getClientOriginalExtension(), $fileName, 2));
+            Storage::put($folderPath . $nameOfFile . ".png", $image->encode($this->file->getClientOriginalExtension()));
+        } catch (\Throwable $e) {
+            die($e);
+            return $e;
         }
-        return $fileName;
     }
-
 }
