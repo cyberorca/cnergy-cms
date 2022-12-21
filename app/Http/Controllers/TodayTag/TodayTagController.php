@@ -67,7 +67,8 @@ class TodayTagController extends Controller
     public function store(Request $request)
     {
         $data = $request->input();
-        return response()->json($data);
+        // return response()->json($data);
+        dd($data);
 
         if($data['type']==="external_link"){
             if($data['url']=== null){
