@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TodayTag;
 use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -67,7 +68,6 @@ class TodayTagController extends Controller
     public function store(Request $request)
     {
         $data = $request->input();
-        return response()->json($data);
 
         if($data['type']==="external_link"){
             if($data['url']=== null){
@@ -77,7 +77,7 @@ class TodayTagController extends Controller
             }
         }else{
             if(isset($data['Tag'])){
-                $tag = ($data['Tag']);
+                $tag = $data['Tag'];
             }else{
                 return redirect()->back()->withErrors('Please fill tag data');
             }
@@ -87,7 +87,7 @@ class TodayTagController extends Controller
             'title' => $data['title'],
             'types' => $data['type'],
             'category_id' => $data['category'],
-            'tag_id' => $tag,
+            'tag_id' => implode(' ', $tag),
             'url' => $data['url'],
             'created_at' => now(),
             'created_by' => Auth::user()->uuid,
@@ -125,10 +125,11 @@ class TodayTagController extends Controller
         ->get(); 
         $today_tag = TodayTag::find($id);
         $order = TodayTag::get();
-        
+        $tags = Tag::where('id','=',$today_tag->tag_id)->first();; 
             return view('today-tag.editable', [
                 'method' => end($method),
                 'categories' => $categories,
+                'tags' => $tags,
                 'order' => $order,
             ])->with('today_tag', $today_tag);
         
@@ -154,7 +155,7 @@ class TodayTagController extends Controller
         }else{
             $data['url']=null;
             if(isset($data['Tag'])){
-                $tag = json_encode($data['Tag']);
+                $tag = $data['Tag'];
             }else{
                 return redirect()->back()->withErrors('Please fill tag data');
             }
@@ -163,7 +164,7 @@ class TodayTagController extends Controller
             $today_tag = TodayTag::find($id);
             $today_tag->order_by_no = $data['order'];
             $today_tag->types = $data['type'];
-            $today_tag->tag_id = $tag;
+            $today_tag->tag_id = implode(' ', $tag);
             $today_tag->url = $data['url'];
             $today_tag->title = $data['title'];
             $today_tag->category_id = $data["category"];
