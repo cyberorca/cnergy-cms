@@ -29,7 +29,7 @@ class FileFormatPath
         $fileName = $fullFileNameExtension;
         // path_name_file = /news/2022/10/04/23423/zico-artonang.jpg
         // path_name_file = /news/2022/10/04/23423-zico-artonang.jpg
-        return  substr(time(), 5) . '-' . Str::slug($fileName) . '.' . $this->file->getClientOriginalExtension();
+        return substr(time(), 5) . '-' . Str::slug($fileName) . '.jpg';
     }
 
     public function getFullPathName()
@@ -77,8 +77,8 @@ class FileFormatPath
             $image->resize(200, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
-            $nameOfFile = implode("-200x" . $image->getHeight(), explode("." . $this->file->getClientOriginalExtension(), $fileName, 2));
-            Storage::put($folderPath . $nameOfFile . ".png", $image->encode($this->file->getClientOriginalExtension()));
+            $nameOfFile = implode("-200xauto", explode(".jpg", $fileName, 2));
+            Storage::put($folderPath . $nameOfFile . ".jpg", $image->encode($this->file->getClientOriginalExtension()));
         } catch (\Throwable $e) {
             die($e);
             return $e;
