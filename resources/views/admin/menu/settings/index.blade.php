@@ -382,11 +382,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="basicInput" class="mb-2">Ads txt</label>
-                                                        <textarea type="text" class="form-control" name="ads_txt" placeholder="Enter Ads txt">
-                @if ($menu_settings ?? null)
-                {{ $menu_settings->ads_txt }}
-                @endif
-                </textarea>
+                                                        <textarea type="text" class="form-control" name="ads_txt" placeholder="Enter Ads txt">@if ($menu_settings ?? null) {{ $menu_settings->ads_txt }} @endif</textarea>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="basicInput" class="mb-2">Email Domain</label>
