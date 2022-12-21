@@ -28,7 +28,7 @@ class TodayTagResource extends JsonResource
 
     private function tagResponse($tag2)
     {
-        $tag2 = Tag::where('tags', '=', $tag2)->get(['id', 'tags as name', 'slug as url'])->first();
+        $tag2 = Tag::where('id', '=', $tag2)->get(['id', 'tags as name', 'slug as url'])->first();
         return $tag2;
     }
 

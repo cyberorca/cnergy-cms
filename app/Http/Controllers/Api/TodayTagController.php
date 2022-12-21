@@ -18,6 +18,7 @@ class TodayTagController extends Controller
             $limit = 20;
         }
     
+        // return response()->json($todayTag->get());
         return response()->json(new TodayTagCollection($todayTag->paginate($limit)->withQueryString()));
     }
 }
