@@ -24,14 +24,7 @@ class ImageBankController extends Controller
      */
     public function index()
     {
-        $image_bank = array();
-        $arr_image_bank = ImageBank::all();
-        foreach ($arr_image_bank as $item) {
-            $pattern = "/-200x.+\.png/";
-            if (preg_match($pattern, $item['slug'])) {
-                array_push($image_bank, $item);
-            }
-        }
+        $image_bank = ImageBank::all();
 
         return view("tools.image-bank.index", compact("image_bank"));
     }
@@ -73,15 +66,15 @@ class ImageBankController extends Controller
             $folderPath = 'tmp/' . $request->unique_id . '/';
             $files = Storage::allFiles($folderPath);
             $realPath = new FileFormatPath();
+            $pattern = "/-200xauto.jpg/";
             foreach ($files as $path) {
                 $file = pathinfo($path);
                 $fileName = $realPath->getPath() . '/' . $file['basename'];
                 Storage::move($file['dirname'] . '/' . $file['basename'], $fileName);
-                array_push($arrFileName, $fileName);
+                if (!preg_match($pattern, $fileName)) {
+                    array_push($arrFileName, $fileName);
+                }
             }
-
-            // return response()->json($arrFileName);
-
             Storage::deleteDirectory($folderPath);
 
             foreach ($arrFileName as $name) {
