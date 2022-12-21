@@ -219,7 +219,12 @@ class PhotoController extends Controller implements NewsServices
 
             if ($request->has('tags')) {
                 foreach ($data['tags'] as $t) {
-                    $news->tags()->attach($t, ['created_by' => auth()->id()]);
+                    if (!is_numeric($t)){
+                        $checkId=Tag::where('tags',$t)->first('id');
+                        $news->tags()->attach($checkId, ['created_by' => auth()->id()]);
+                    }else{
+                        $news->tags()->attach($t, ['created_by' => auth()->id()]);
+                    }
                 }
             }
 
@@ -459,10 +464,16 @@ class PhotoController extends Controller implements NewsServices
             ];
 
             $newsById->update($input);
-            if ($request->has('tags')) {
+
+            if ($request->has('tags')){
                 $newsById::find($id)->tags()->detach();
                 foreach ($data['tags'] as $t) {
-                    $newsById->tags()->attach($t, ['created_by' => auth()->id()]);
+                    if (!is_numeric($t)){
+                        $checkId=Tag::where('tags',$t)->first('id');
+                        $newsById->tags()->attach($checkId, ['created_by' => auth()->id()]);
+                    }else{
+                        $newsById->tags()->attach($t, ['created_by' => auth()->id()]);
+                    }
                 }
             }
 

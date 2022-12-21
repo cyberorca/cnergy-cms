@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigInteger('news_id')->unsigned();
             $table->integer('order_by_no');
             $table->string('title', 255);
+            $table->string('slug', 255);
             $table->longText('content');
             $table->softDeletes();
             $table->uuid('deleted_by')->nullable();

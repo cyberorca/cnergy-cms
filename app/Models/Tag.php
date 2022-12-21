@@ -46,4 +46,8 @@ class Tag extends Model
     {
         return LogOptions::defaults();
     }
+
+    public function tagId(){
+        return $this->belongsTo(TodayTag::class, 'tag_id');
+    }
 }

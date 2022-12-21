@@ -31,10 +31,13 @@
                                             @while($i<=20)
                                                 @foreach ($order as $orderby)
                                                     @if($i === $orderby->order_by_no)
+                                                        @if($method === 'edit' and $today_tag->order_by_no === $i)
+                                                        <option  value="{{$i}}" selected>{{$i}}</option>
+                                                        @endif
                                                         @php $i++; @endphp
                                                     @endif
                                                 @endforeach
-                                                <option  value="{{$i}}" @if ($method === 'edit' and $today_tag->order_by_no === $i) selected @endif>{{$i}}</option>
+                                                <option  value="{{$i}}">{{$i}}</option>
                                                 @php $i++; @endphp
                                             @endwhile
                                         </select>
@@ -53,13 +56,8 @@
                                         <label for="basicInput" class="mb-2">Tag</label>
                                         <select name="Tag[]" class="form-select" style='width: 100%;' multiple="multiple"
                                                 id="tag" >
-                                                @if ($method === 'edit' && isset($today_tag->tag))
-                                                    @php
-                                                    $array_response = json_decode($today_tag->tag, true);
-                                                    @endphp
-                                                    @foreach($array_response as $value)
-                                                        <option value="{{ $value }}" selected> {{ $value}} </option>
-                                                    @endforeach
+                                                @if ($method === 'edit')
+                                                        <option value="{{ $tags->id }}" selected> {{ $tags->tags}} </option>
                                                 @endif
                                         </select>
                                     </div>
@@ -132,7 +130,7 @@
                         return {
                             results: $.map(data, function(item) {
                                 return {
-                                    id: item.tags,
+                                    id: item.id,
                                     text: item.tags
                                 }
                             })

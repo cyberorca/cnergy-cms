@@ -49,17 +49,17 @@ class IndexNewsResource extends JsonResource
                 "real"=> null,
             ],
             "news_image_headline" => null,
-            "news_imageinfo" => $this->newsImageInfo($this->image),
+            "news_imageinfo" => $this->description,
             "news_url" => $this->slug,
             "news_date_publish" => $this->published_at,
             "news_type" => $this->types,
             "news_reporter" => self::arrayUserToObjectUser(json_decode($this->reporters)),
-            'news_editor' => self::arrayUserToObjectUserEditor(json_decode($this->contributors)),
+            'news_editor' => self::arrayUserToObjectUserEditor($this->created_by),
             'news_photographer' => self::arrayUserToObjectUser(json_decode($this->photographers)),
             "news_hastag" => null,
             "news_city" => null,
             "news_sponsorship" => null,
-            "has_paging" => count($this->news_paginations),
+            "has_paging" => $this->paging(count($this->news_paginations), 1),
             "is_splitter" => null,
             "paging_style"=> null,
             "news_mature" => $this->is_adult_content,
@@ -79,7 +79,7 @@ class IndexNewsResource extends JsonResource
             "news_url_full" => env('APP_URL') . '/' . Str::slug(strtolower($this->categories->category)) . '/read/' . $this->slug,
             "news_url_full_mobile" => null,
             "news_paging" => $this->convertDataToResponse3($this->news_paginations),
-            "news_paging_order" => 'asc',
+            "news_paging_order" => $this->paging(count($this->news_paginations), 0),
             "news_quote" => [
 
             ],
@@ -113,7 +113,7 @@ class IndexNewsResource extends JsonResource
             ];
         }
     }
-
+ 
     private function newsImageInfo($image2){
         if($image2 === NULL){
             return null;
@@ -125,6 +125,23 @@ class IndexNewsResource extends JsonResource
                 return $info->description;
             }
         }
+    }
+
+    private function paging($page, $temp){
+        if($temp === 1){
+            if($page>0){
+                return 1;
+            }else{
+                return 0;
+            }
+        }else{
+            if($page>0){
+                return "asc";
+            }else{
+                return null;
+            }
+        }
+        
     }
 
     private function convertDataToResponse2($dataRaw2){
@@ -146,7 +163,7 @@ class IndexNewsResource extends JsonResource
                 "title" => $item->title,
                 "type" => 'text',
                 "url" =>  $item->slug,
-                "content" => $item->content,
+                "content" => htmlspecialchars($item->content),
                 "media" => null,
                 "cdn_image" => [
                     "klimg_url" => null,
@@ -182,7 +199,7 @@ class IndexNewsResource extends JsonResource
 
     private function arrayUserToObjectUserEditor($array)
     {
-        $temp = array();
+       /* $temp = array();
         if ($array != null) {
             foreach ($array as $uuid) {
                 if (User::join('roles', 'users.role_id', '=', 'roles.id')
@@ -194,7 +211,13 @@ class IndexNewsResource extends JsonResource
                     );
             }
         }
-        return $temp;
+        return $temp;*/
+        $userById = User::where('uuid', '=', $array)->get(['name','profile_image'])->first();
+        return [
+            "id" => $array,
+            "name" => $userById->name,
+            "image" => $userById->profile_image
+        ];
     }
 
     private function userResponse($uuid)

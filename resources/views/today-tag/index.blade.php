@@ -93,10 +93,10 @@
                                 <td>{{ $t->title }}</td>
                                 {{-- <td>{{ implode(" " , json_decode($t->tag, true)) }}</td> --}}
                                 @if ($t->types === 'news_tag')
-                                    <td>{{ json_decode($t->tag, true)[0] ?? 'empty' }}</td>
+                                    <td>{{ json_decode($t->tag_id, true)[0] ?? 'empty' }}</td>
                                 @endif
                                 @if ($t->types === 'sponsorship_tag')
-                                    <td>{{ json_decode($t->tag, true)[0] ?? 'empty' }}</td>
+                                    <td>{{ json_decode($t->tag_id, true)[0] ?? 'empty' }}</td>
                                 @endif
                                 @if ($t->types === 'external_link')
                                     <td>{{ $t->url }}</td>
