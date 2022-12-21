@@ -115,7 +115,6 @@ class PhotoController extends Controller implements NewsServices
             'newsRole' => $newsRole
             // 'categories' => Category::whereNull("parent_id"),
         ]);
-
     }
 
     /**
@@ -128,9 +127,9 @@ class PhotoController extends Controller implements NewsServices
         $method = explode('/', URL::current());
         $users = User::all();
         $categories = Category::whereNull('deleted_at')
-        ->where('is_active','=','1')
-        ->whereJsonContains('types','photonews')->get();
-//        $tags = Tag::all();
+            ->where('is_active', '=', '1')
+            ->whereJsonContains('types', 'photonews')->get();
+        //        $tags = Tag::all();
         $types = 'photonews';
         $date = date('Y-m-d');
         $time = time();
@@ -139,7 +138,7 @@ class PhotoController extends Controller implements NewsServices
             'categories' => $categories,
             'types' => $types,
             'users' => $users,
-//            'tags' => $tags,
+            //            'tags' => $tags,
             'contributors' => []
         ]);
     }
@@ -153,19 +152,20 @@ class PhotoController extends Controller implements NewsServices
     public function store(Request $request)
     {
         $data = $request->input();
-        // return response()->json($data);
+
+        return explode(Storage::url(""), $data['upload_image_selected'])[1] ?? null;
         $date = $data['date'];
         $time = $data['time'];
         $mergeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
-        $keyArr[]= null;
+        $keyArr[] = null;
         try {
-            if ($data['keywords']!=null){
+            if ($data['keywords'] != null) {
                 foreach ($data['keywords'] as $t) {
-                    if (is_numeric($t)){
+                    if (is_numeric($t)) {
                         $keyArr[] =  $t;
-                    }
-                    else{
-                        $newKeyword = Keywords::create(['keywords'=>$t,
+                    } else {
+                        $newKeyword = Keywords::create([
+                            'keywords' => $t,
                             'created_at' => now(),
                             'created_by' => Auth::user()->uuid,
                         ]);
@@ -217,35 +217,37 @@ class PhotoController extends Controller implements NewsServices
                 $log->save();
             }
 
-            if ($request->has('tags')){
+            if ($request->has('tags')) {
                 foreach ($data['tags'] as $t) {
                     $news->tags()->attach($t, ['created_by' => auth()->id()]);
                 }
             }
 
-            if ($keyArr!=null){
+            if ($keyArr != null) {
                 foreach ($keyArr as $k) {
                     $news->keywords()->attach($k, ['created_by' => auth()->id()]);
                 }
             }
 
             $index = 1;
-            if (count($data['photonews'])) {
-                foreach ($data['photonews'] as $photonews) {
-                    PhotoNews::create([
-                        'title' => $news->title,
-                        'image' => $photonews['caption'],
-                        'url' => $photonews['url'],
-                        'copyright' => $photonews['copyright'],
-                        'description' => $photonews['description'],
-                        'keywords' => $photonews['keywords'],
-                        'order_by_no' => $index,
-                        'news_id' => $news->id,
-                        'created_by' => auth()->id(),
-                        'is_active' => "1",
-                        'photo_id' => $photonews['id'],
-                    ]);
-                    $index++;
+            if (isset($data['photonews'])) {
+                if (count($data['photonews'])) {
+                    foreach ($data['photonews'] as $photonews) {
+                        PhotoNews::create([
+                            'title' => $news->title,
+                            'image' => $photonews['caption'],
+                            'url' => $photonews['url'],
+                            'copyright' => $photonews['copyright'],
+                            'description' => $photonews['description'],
+                            'keywords' => $photonews['keywords'],
+                            'order_by_no' => $index,
+                            'news_id' => $news->id,
+                            'created_by' => auth()->id(),
+                            'is_active' => "1",
+                            'photo_id' => $photonews['id'],
+                        ]);
+                        $index++;
+                    }
                 }
             }
 
@@ -257,14 +259,13 @@ class PhotoController extends Controller implements NewsServices
 
     function deleteNewsImages($data)
     {
-        for($i=0;$i<count($data);$i++){
-                PhotoNews::where('id', $data[$i])->update([
-                    'deleted_by' => Auth::user()->uuid,
-                    'is_active' => '0',
-                ]);
-                PhotoNews::destroy($data[$i]);
+        for ($i = 0; $i < count($data); $i++) {
+            PhotoNews::where('id', $data[$i])->update([
+                'deleted_by' => Auth::user()->uuid,
+                'is_active' => '0',
+            ]);
+            PhotoNews::destroy($data[$i]);
         }
-
     }
 
     /**
@@ -289,9 +290,9 @@ class PhotoController extends Controller implements NewsServices
         $method = explode('/', URL::current());
         $news = News::where('id', $id)->with(['users', 'news_photo'])->first();
         $categories = Category::whereNull('deleted_at')
-        ->where('is_active','=','1')
-        ->whereJsonContains('types','photonews')->get();
-//        $tags = Tag::all();
+            ->where('is_active', '=', '1')
+            ->whereJsonContains('types', 'photonews')->get();
+        //        $tags = Tag::all();
         $keywords = Keywords::all();
         $types = 'photonews';
         $contributors = $news->users;
@@ -301,7 +302,7 @@ class PhotoController extends Controller implements NewsServices
             'categories' => $categories,
             'types' => $types,
             'news' => $news,
-//            'tags' => $tags,
+            //            'tags' => $tags,
             'keywords' => $keywords,
             'contributors' => $contributors,
             'users' => $users
@@ -318,20 +319,25 @@ class PhotoController extends Controller implements NewsServices
     public function update(Request $request, $id)
     {
         $data = $request->input();
-        // return $data;
+        // return $data;    
+        $new = array();
+        $old = array();
         $news = News::where('id', $id)->with(['users', 'news_photo'])->first();
-        $i=0;
-        foreach ($news->news_photo as $item){
+        $i = 0;
+        foreach ($news->news_photo as $item) {
             $old[$i] = $item->id;
             $i++;
         }
 
         //return $id_image[];
         $news_images_old = array();
-
-        $i=0;
-        if (count($data['photonews']['old']) >= 1) {
+        $i = 0;
+        if (isset($data['photonews'])) {
+            if (isset($data['photonews']['old']) && count($data['photonews']['old']) >= 1) {
                 foreach ($data['photonews']['old'] as $key => $value) {
+                    if ($key !== "old") {
+                        continue;
+                    }
                     $news_images_old[$i] = [
                         'title' => $data['title'],
                         'image' => $data['photonews']['old'][$key]['caption'],
@@ -351,51 +357,53 @@ class PhotoController extends Controller implements NewsServices
                     $new[$i] = $key;
                     $i++;
                 }
-           // }
-        }
-
-       // return $old;
-
-        if (count($data['photonews']) >= 1) {
-            foreach ($data['photonews'] as $key => $value) {
-                if ($key === "old") {
-                    continue;
-                }
-                $news_images_old[$i] = [
-                    'title' => $data['title'],
-                    'image' => $data['photonews'][$key]['caption'],
-                    'url' => explode(Storage::url(""), $data['photonews'][$key]['url'])[0] ?? null,
-                    'copyright' => $data['photonews'][$key]['copyright'],
-                    'description' => $data['photonews'][$key]['description'],
-                    'keywords' => $data['photonews'][$key]['keywords'],
-                    'order_by_no' => $i,
-                    'created_by' => auth()->id(),
-                    'updated_by' => null,
-                    'is_active' => "1",
-                    'news_id' => $id,
-                    'id' => null,
-                    'photo_id' => $data['photonews'][$key]['id'] ?? null,
-                ];
-                $i++;
+                // }
             }
-        }
 
-        // return response()->json($news_images_old);
+            // return $old;
 
-        if(count($new) !== count($old)){
-            $diff=array_diff($old, $new);
+            if (count($data['photonews']) >= 1) {
+                foreach ($data['photonews'] as $key => $value) {
+                    if ($key === "old") {
+                        continue;
+                    }
+                    $news_images_old[$i] = [
+                        'title' => $data['title'],
+                        'image' => $data['photonews'][$key]['caption'],
+                        'url' => explode(Storage::url(""), $data['photonews'][$key]['url'])[0] ?? null,
+                        'copyright' => $data['photonews'][$key]['copyright'],
+                        'description' => $data['photonews'][$key]['description'],
+                        'keywords' => $data['photonews'][$key]['keywords'],
+                        'order_by_no' => $i,
+                        'created_by' => auth()->id(),
+                        'updated_by' => null,
+                        'is_active' => "1",
+                        'news_id' => $id,
+                        'id' => null,
+                        'photo_id' => $data['photonews'][$key]['id'] ?? null,
+                    ];
+                    $i++;
+                }
+            }
 
-            $i=0;
-            if(count($diff)>0){
-                foreach ($diff as $value){
-                    if($value !== null){
-                        $x[$i] = $value;
-                        $i++;
+            // return response()->json($news_images_old);
+
+            if (count($new) !== count($old)) {
+                $diff = array_diff($old, $new);
+
+                $i = 0;
+                if (count($diff) > 0) {
+                    foreach ($diff as $value) {
+                        if ($value !== null) {
+                            $x[$i] = $value;
+                            $i++;
+                        }
                     }
                 }
+                $this->deleteNewsImages($x);
             }
-            $this->deleteNewsImages($x);
         }
+
         //return $diff;
 
         $newsById = News::find($id);
@@ -404,13 +412,13 @@ class PhotoController extends Controller implements NewsServices
         $margeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
         $keyArr[] = null;
         try {
-            if ($data['keywords']!=null){
+            if ($data['keywords'] != null) {
                 foreach ($data['keywords'] as $t) {
-                    if (is_numeric($t)){
+                    if (is_numeric($t)) {
                         $keyArr[] =  $t;
-                    }
-                    else{
-                        $newKeyword = Keywords::create(['keywords'=>$t,
+                    } else {
+                        $newKeyword = Keywords::create([
+                            'keywords' => $t,
                             'created_at' => now(),
                             'created_by' => Auth::user()->uuid,
                         ]);
@@ -451,26 +459,26 @@ class PhotoController extends Controller implements NewsServices
             ];
 
             $newsById->update($input);
-            if ($request->has('tags')){
+            if ($request->has('tags')) {
                 $newsById::find($id)->tags()->detach();
                 foreach ($data['tags'] as $t) {
                     $newsById->tags()->attach($t, ['created_by' => auth()->id()]);
                 }
             }
 
-            if ($keyArr!=null){
+            if ($keyArr != null) {
                 $newsById::find($id)->keywords()->detach();
                 foreach ($keyArr as $k) {
                     $newsById->keywords()->attach($k, ['created_by' => auth()->id()]);
                 }
             }
 
-            PhotoNews::upsert($news_images_old, ['id'], ['title','is_active', 'url', 'image', 'description', 'keywords', 'copyright', 'order_by_no', 'created_by', 'news_id', 'updated_by']);
+            PhotoNews::upsert($news_images_old, ['id'], ['title', 'is_active', 'url', 'image', 'description', 'keywords', 'copyright', 'order_by_no', 'created_by', 'news_id', 'updated_by']);
 
             $log = new Log(
                 [
                     'news_id' => $id,
-                    'updated_at'=>now(),
+                    'updated_at' => now(),
                     'updated_by' => \auth()->id(),
                     'updated_content' => json_encode($newsById->getChanges())
                 ]
@@ -481,7 +489,6 @@ class PhotoController extends Controller implements NewsServices
         } catch (\Throwable $e) {
             return Redirect::back()->withErrors($e->getMessage());
         }
-
     }
 
     /**
