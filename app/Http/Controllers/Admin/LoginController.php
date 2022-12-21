@@ -14,11 +14,7 @@ class LoginController extends Controller
 {
     public function index()
     {
-        if (\auth()->id() != null) {
-            return redirect('/');
-        } else {
-            return view('admin.login.index');
-        }
+        return view('admin.login.index');
     }
 
     public function redirectToProvider()
