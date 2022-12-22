@@ -50,12 +50,12 @@ class IndexPhotoResource extends JsonResource
                 'real' => ''
             ],
             'news_image_headline' => '',
-            'news_imageinfo' => $this->newsImageInfo($this->image),
+            'news_imageinfo' => $this->description,
             'news_url' => $this->slug,
             'news_date_publish' => $this->published_at,
             'news_type' => $this->types,
             'news_reporter' => self::arrayUserToObjectUser(json_decode($this->reporters)),
-            'news_editor' => self::arrayUserToObjectUserEditor(json_decode($this->contributors)),
+            'news_editor' => self::arrayUserToObjectUserEditor($this->created_by),
             'news_photographer' => self::arrayUserToObjectUser(json_decode($this->photographers)),
             'news_hastag' => '',
             'news_city' => '',
@@ -114,7 +114,7 @@ class IndexPhotoResource extends JsonResource
 
     private function arrayUserToObjectUserEditor($array)
     {
-        $temp = array();
+        /*$temp = array();
         if ($array != null) {
             foreach ($array as $uuid) {
                 if (User::join('roles', 'users.role_id', '=', 'roles.id')
@@ -128,7 +128,13 @@ class IndexPhotoResource extends JsonResource
                     );
             }
         }
-        return $temp;
+        return $temp;*/
+        $userById = User::where('uuid', '=', $array)->get(['name','profile_image'])->first();
+        return [
+            "id" => $array,
+            "name" => $userById->name,
+            "image" => $userById->profile_image
+        ];
     }
 
     private function userResponse($uuid)
