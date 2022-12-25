@@ -66,7 +66,7 @@ class ImageBankController extends Controller
             $folderPath = 'tmp/' . $request->unique_id . '/';
             $files = Storage::allFiles($folderPath);
             $realPath = new FileFormatPath();
-            $pattern = "/-200xauto.jpg/";
+            $pattern = "/200xauto-/";
             foreach ($files as $path) {
                 $file = pathinfo($path);
                 $fileName = $realPath->getPath() . '/' . $file['basename'];
@@ -75,6 +75,9 @@ class ImageBankController extends Controller
                     array_push($arrFileName, $fileName);
                 }
             }
+
+            // return $arrFileName;
+
             Storage::deleteDirectory($folderPath);
 
             foreach ($arrFileName as $name) {
@@ -117,6 +120,7 @@ class ImageBankController extends Controller
                 $file = $request->file('image_input');
                 $fileFormatPath = new FileFormatPath('trstdly', $file);
                 $data['slug'] = $fileFormatPath->storeFile();
+                $fileFormatPath->storeFileTemp();
             }
             $imageBank = ImageBank::create($data);
             $isFormatSupport = $this->isFormat($imageBank->slug);

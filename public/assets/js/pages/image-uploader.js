@@ -24,7 +24,7 @@ const insertIntoTinyMCEditor = ({
     const targetTinyMCE = img_uploader_modal.getAttribute("target-mce");
     var ed = tinymce.get(targetTinyMCE); // get editor instance
     var range = ed.selection.getRng(); // get range
-    var newNode = ed.getDoc().createElement("p"); 
+    var newNode = ed.getDoc().createElement("p");
     const {
         copyright,
         caption,
@@ -49,15 +49,16 @@ function selectImage() {
     const imageSrc = this.parentElement.children[0].getAttribute("src");
 
     var tiny_mce_image_bank = img_uploader_modal.getAttribute("tinymce-image-bank");
+    let pattern = new RegExp('/200xauto-');
     if (tiny_mce_image_bank === 'false') {
-        image_preview_result.src = imageSrc;
-        upload_image_selected.value = imageSrc;
+        image_preview_result.src = imageSrc.replace(pattern, '');
+        upload_image_selected.value = imageSrc.replace(pattern, '');
         upload_image_button.value = null;
         return
     }
     insertIntoTinyMCEditor({
         metaImage: JSON.parse(this.parentNode.querySelector("[data-key='data_image']").value),
-        imageSrc: imageSrc
+        imageSrc: imageSrc.replace(pattern, '')
     });
     $('#image-bank').removeClass("show").css("display", "none")
 }
@@ -95,7 +96,9 @@ save_uploaded_image.addEventListener('click', async function () {
             data
         }) {
             var tiny_mce_image_bank = img_uploader_modal.getAttribute("tinymce-image-bank");
-            const { slug } = data;
+            const {
+                slug
+            } = data;
             if (tiny_mce_image_bank === 'false') {
                 image_preview_result.src = `${path}/${slug}`;
                 $(button).html(` <i class="bx bx-x d-block d-sm-none"></i>
@@ -230,10 +233,18 @@ function makeList(data) {
             caption: caption,
             photographer: photographer,
         })
+        const welcome = slug;
+        const arr = welcome.split('/');
+        const currImage = arr[arr.length - 1];
+        const image = '200xauto-' + currImage;
+        arr[arr.length - 1] = image;
+        const realPath = arr.join('/');
+        
+
 
         let str = `
            <div class="image-card border p-0 image-card border p-0 d-flex flex-column align-items-center">
-               <img src="${path}/${slug}"
+               <img src="${path}/${realPath}"
                    alt="" class="w-100 image_bank_modal">
                    <input type="hidden" data-key="data_image" value='${meta_data}' />
                <p class="mx-2 font-14 mt-3 mb-1">${title}</p>

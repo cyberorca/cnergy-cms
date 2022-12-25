@@ -16,8 +16,51 @@ const upload_image_bank_button_photonews = document.getElementById("upload_image
 const img_uploader_modal = document.getElementById("image-bank");
 let imageURLTinyMCE = '';
 
+var buttonsOldPhotoNews2 = document.querySelectorAll('.bi-trash');
+buttonsOldPhotoNews2.forEach((el, i) => {
+    el.addEventListener('click', function () {
+        if (confirm('Delete Current Page ?')) {
+            const id = $(el).siblings("#photonews_old_id").val();
+            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const data = {
+                id: id,
+                _token: token
+            }
+            if(id){
+                $.ajax({
+                    url: "/update/news/photo/api/delete",
+                    type: 'POST',
+                    data: data,
+                    success: function ({
+                        message
+                    }) {
+                        document.querySelector(`#imagephotonews-${id}`).remove();
+                        new Toastify({
+                            text: message,
+                            duration: 3000,
+                            close: true,
+                            gravity: "bottom",
+                            position: "right",
+                            backgroundColor: "#4fbe87",
+                        }).showToast()
+                    },
+                    error: function (err) {
+                        new Toastify({
+                            text: err,
+                            duration: 3000,
+                            close: true,
+                            gravity: "bottom",
+                            position: "right",
+                            backgroundColor: "#ff0000",
+                        }).showToast()
+                    }
+                });
+            }
+        }
+    })
+})
 
-function clearButtonSelectImageModal(){
+function clearButtonSelectImageModal() {
     var buttonSelect = document.querySelectorAll(".button_image_bank_modal")
     var button_image_bank_modal_arr = document.querySelectorAll(".button_image_bank_modal")
     button_image_bank_modal_arr.forEach(item => {
@@ -47,7 +90,7 @@ const insertIntoTinyMCEditor = ({
     const targetTinyMCE = img_uploader_modal.getAttribute("target-mce");
     var ed = tinymce.get(targetTinyMCE); // get editor instance
     var range = ed.selection.getRng(); // get range
-    var newNode = ed.getDoc().createElement("p"); 
+    var newNode = ed.getDoc().createElement("p");
     const {
         copyright,
         caption,
@@ -233,20 +276,6 @@ if (image_bank_type == 'photonews') {
     })
 }
 
-function deleteImage() {
-    var buttonsOldPhotoNews2 = document.querySelectorAll('.bi-trash');
-    buttonsOldPhotoNews2.forEach((el, i) => {
-        el.addEventListener('click', function () {
-            const id = $(el).attr("id")
-            document.querySelector(`#imagephotonews-${id}`).remove();
-        })
-    })
-}
-
-$(`.bi-trash`).click(function () {
-    deleteImage();
-})
-
 
 async function search() {
     const query = '?title=' + search_image_bank_input.value;
@@ -308,16 +337,20 @@ function makeList(data) {
         const {
             title,
             slug,
-            caption,
-            copyright,
-            photographer
         } = el;
 
         const meta_data = JSON.stringify(el)
 
+        const welcome = slug;
+        const arr = welcome.split('/');
+        const currImage = arr[arr.length - 1];
+        const image = '200xauto-' + currImage;
+        arr[arr.length - 1] = image;
+        const realPath = arr.join('/');
+
         let str = `
            <div class="image-card border p-0 image-card border p-0 d-flex flex-column align-items-center">
-               <img src="${path}/${slug}"
+               <img src="${path}/${realPath}"
                    alt="" class="w-100 image_bank_modal">
                <p class="mx-2 font-14 mt-3 mb-1">${title}</p>
                <input type="hidden" data-key="data_image" value='${meta_data}' />
@@ -391,11 +424,11 @@ const cardPhotoNews = (image, index) => {
     } = image;
     return `<div class="card" id="imagephotonews-${+index}">
     <div class="card-header d-flex justify-content-between">
-        <a data-bs-toggle="collapse" class="d-flex justify-content-between w-100" href="#photonews-${+index}" aria-expanded="false"
-            aria-controls="collapseExample">
-            <span class="h4 text-capitalize m-0">Image</span>
-            <i class="bi bi-chevron-up pull-right fs-6 me-3"></i>
-            <i class="bi bi-chevron-down pull-right fs-6 me-3"></i>
+    <a data-bs-toggle="collapse" class="d-flex justify-content-between w-100" href="#photonews-${+index}" aria-expanded="false"
+    aria-controls="collapseExample">
+        <span class="h4 text-capitalize m-0">Image</span>
+        <i class="bi bi-chevron-up pull-right fs-6 me-3"></i>
+        <i class="bi bi-chevron-down pull-right fs-6 me-3"></i>
         </a>
         <i class="bi bi-trash pull-right text-danger fw-bold"></i> 
     </div>
@@ -417,7 +450,6 @@ const cardPhotoNews = (image, index) => {
                     </div>
                 </div>
                 <div class="col-md-7 col-12">
-                    <input type="hidden" name="photonews[${+index}][id]" value="${id}" />
                     <div class="form-group">
                         <label for="caption" class="mb-2">Caption</label>
                         <input type="text" class="form-control" id="caption" name="photonews[${+index}][caption]"
