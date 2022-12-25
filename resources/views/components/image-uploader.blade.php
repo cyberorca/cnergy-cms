@@ -4,7 +4,7 @@
             data-bs-target="#image-bank" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Image" id="upload_image_bank_button"><i
                 class="bi bi-upload mb-2"></i>&nbsp;&nbsp;
             Add Image</span>
-        <input type="hidden" name="upload_image_selected" id="upload_image_selected" />
+        <input type="hidden" name="upload_image_selected" id="upload_image_selected"  value="@if (isset($item)) {{ Storage::url($item->image) }} @endif"/>
         {{-- <span class="border">OR</span>
         <div class="input-upload-file">
             <input type="file" name="upload_image" id="upload_image_button" />
@@ -13,6 +13,7 @@
         </div> --}}
     </div>
     <div class="image-file-preview mt-3">
+        
         <img src="@if (!isset($item)) {{ asset('assets/images/preview-image.jpg') }} @else {{ Storage::url($item->image) }} @endif"
             alt="" srcset="" id="image_preview_result" selectedImage="false">
     </div>
