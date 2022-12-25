@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TodayTag;
 use App\Http\Resources\TodayTagCollection;
+use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\TodayTagResource;
 
@@ -19,9 +20,13 @@ class TodayTagController extends Controller
         if($limit > 20){
             $limit = 20;
         }
-    
-        // return response()->json($todayTag->get());
-        return response()->json(new TodayTagCollection($todayTag->paginate($limit)->withQueryString()));
+        
+        if(!Cache::has("todayTagCache")){
+            CacheStorage::cache("todayTagCache", 'today-tag');
+            Cache::put("todayTagCache", new TodayTagCollection($todayTag->paginate($limit)->withQueryString()), now()->addMinutes(10));
+        }
+
+        return response()->json(Cache::get("todayTagCache"));
     }
 
     public function show($id){
