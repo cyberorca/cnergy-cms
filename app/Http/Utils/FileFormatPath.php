@@ -77,8 +77,7 @@ class FileFormatPath
             $image->resize(200, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
-            $nameOfFile = implode("-200xauto", explode(".jpg", $fileName, 2));
-            Storage::put($folderPath . $nameOfFile . ".jpg", $image->encode($this->file->getClientOriginalExtension()));
+            Storage::put($folderPath . '200xauto-' . $fileName, $image->encode($this->file->getClientOriginalExtension()));
         } catch (\Throwable $e) {
             die($e);
             return $e;

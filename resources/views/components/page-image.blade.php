@@ -6,6 +6,7 @@
             <i class="bi bi-chevron-up pull-right fs-6 me-3"></i>
             <i class="bi bi-chevron-down pull-right fs-6 me-3"></i>
         </a>
+        <input type="hidden" id="photonews_old_id" value="{{ $item->id }}" />
         <i class="bi bi-trash pull-right text-danger fw-bold" id="{{ $item->id }}"></i>
     </div>
     <div class="collapse show fade photonews" id="photonews-{{ $item->id }}">

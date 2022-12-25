@@ -97,6 +97,7 @@ Route::group(['middleware' => ['usersPermissionRoles:1']], function () {
         Route::prefix('news')->group(function () {
             Route::post('/pagination/api/delete/', [NewsController::class, 'deleteNewsPagination'])->name('news.api.news_pagination');
             Route::resource('news', NewsController::class);
+            Route::post('/photo/api/delete', [PhotoController::class, 'deleteNewsImages']);
             Route::resource('photo', PhotoController::class);
             Route::resource('video', VideoController::class);
         });

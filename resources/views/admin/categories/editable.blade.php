@@ -29,7 +29,7 @@
     <div class="card col-md-7">
 
         <div class="card-header">
-            <span class="h4 text-capitalize">{{ $method }} Category</span>
+            <span class="h4 text-capitalize">{{ $method !== 'edit' ? 'Create' : 'Edit' }} Category</span>
         </div>
 
         <div class="card-body d-flex flex-column gap-2">
