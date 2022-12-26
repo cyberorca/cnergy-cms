@@ -27,6 +27,11 @@ class FrontEndMenuController extends Controller
      *         name="nested",
      *         @OA\Schema(type="boolean")
      *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="position",
+     *         @OA\Schema(type="string", enum = {"header", "footer"})
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="success",
@@ -96,7 +101,7 @@ class FrontEndMenuController extends Controller
             CacheStorage::cache("frontEndMenuCache", 'front-end-menu');
             Cache::put("frontEndMenuCache", new FrontEndMenuCollection($fe_menus->paginate($limit)->withQueryString()), now()->addMinutes(10));
         }
-    
+
         return response()->json(Cache::get("frontEndMenuCache"));
         //return response()->json(new FrontEndMenuCollection($fe_menus->withQueryString()));
     }

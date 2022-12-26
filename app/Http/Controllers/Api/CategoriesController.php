@@ -27,6 +27,11 @@ class CategoriesController extends Controller
      *         name="limit",
      *         @OA\Schema(type="int")
      *     ),
+     *     @OA\Parameter(
+     *         in="query",
+     *         name="nested",
+     *         @OA\Schema(type="boolean")
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="success",
@@ -63,7 +68,7 @@ class CategoriesController extends Controller
             CacheStorage::cache("categoriesCache", 'categories');
             Cache::put("categoriesCache", $nested!==1 ? $category->paginate($limit)->withQueryString()->toArray() : Category::convertCategoryDataToResponseAPI($category->paginate($limit)->withQueryString()->toArray()), now()->addMinutes(10));
         }
-    
+
         return response()->json(Cache::get("categoriesCache"));
     }
 }
