@@ -14,7 +14,7 @@ use App\Http\Resources\TodayTagResource;
 class TodayTagController extends Controller
 {
     /**
-     * Today Tag
+     * Get Today Tag
      * @OA\Get (
      *     tags={"Today Tag"},
      *     path="/api/today-tag/",
