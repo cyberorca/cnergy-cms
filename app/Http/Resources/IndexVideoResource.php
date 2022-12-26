@@ -51,7 +51,7 @@ class IndexVideoResource extends JsonResource
             "news_date_publish" => $this->published_at,
             "news_type" => $this->types,
             "news_reporter" => self::arrayUserToObjectUser(json_decode($this->reporters)),
-            'news_editor' => self::arrayUserToObjectUserEditor(json_decode($this->created_by)),
+            'news_editor' => self::arrayUserToObjectUser(json_decode($this->created_by)),
             'news_photographer' => self::arrayUserToObjectUser(json_decode($this->photographers)),
             "news_hastag" => null,
             "news_city" => null,
@@ -152,29 +152,6 @@ class IndexVideoResource extends JsonResource
             }
         }
         return $temp;
-    }
-
-    private function arrayUserToObjectUserEditor($array)
-    {
-        // $temp = array();
-        // if ($array != null) {
-        //     foreach ($array as $uuid) {
-        //         if (User::join('roles', 'users.role_id', '=', 'roles.id')
-        //             ->where('roles.role', "Editor")
-        //             ->where('uuid', $uuid)
-        //             ->exists())
-        //             array_push($temp,
-        //                 self::userResponse($uuid)
-        //             );
-        //     }
-        // }
-        // return $temp;
-        $userById = User::where('uuid', '=', $array)->get(['name','profile_image'])->first();
-        return [
-            "id" => $array,
-            "name" => $userById->name,
-            "image" => $userById->profile_image
-        ];
     }
 
     private function userResponse($uuid)
