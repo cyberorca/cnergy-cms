@@ -693,7 +693,7 @@
                 "tags": [
                     "Static Page"
                 ],
-                "summary": "Get Static Page By slug",
+                "summary": "Get Static Page By Slug",
                 "operationId": "c84f19fd41fe00665c4f137c6f8df5db",
                 "parameters": [
                     {
@@ -790,6 +790,70 @@
                                         "message": {
                                             "type": "string",
                                             "example": "The security token is invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Authentication_Token": []
+                    }
+                ]
+            }
+        },
+        "/api/tag/{id}/": {
+            "get": {
+                "tags": [
+                    "Tag"
+                ],
+                "summary": "Get Tag By ID",
+                "operationId": "5879fd6eafd64b5f9f79771a50de65a6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "400": {
+                        "description": "bad request"
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The security token is invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ID Not Found"
                                         }
                                     },
                                     "type": "object"
