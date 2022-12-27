@@ -18,12 +18,12 @@ class PhotonewsResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'url' => $this->slug,
+            'url' => $this->url .'-00'. $this->order_by_no,
             'image' =>  $this->newsImage($this->image), 
             'description' => $this->description,
             'keywords' => $this->keywords,
-            'photographer' => null,
-            'copyright' => $this->copyright,
+            'photographer' => self::photo($this->photo_id),
+            'copyright' => '&copy; 2022 '. $this->copyright,
             'photo_id' => $this->photo_id,
             'cdn_image' => [
                 'klimg_url' => '',
@@ -41,5 +41,11 @@ class PhotonewsResource extends JsonResource
                 "real" => env('APP_URL') . '/storage/' . $this->url
             ];
         }
+    }
+
+    private function photo($id)
+    {
+        $photo = ImageBank::where('id', '=', $id)->get(['photographer'])->first();
+        return $photo->photographer;
     }
 }

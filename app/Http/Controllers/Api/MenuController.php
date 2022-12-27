@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class MenuController extends Controller
 {
     /**
-     * Get Menu
+     * Get Menu from CMS
      * @OA\Get (
      *     tags={"Menu"},
      *     path="/api/menu/",

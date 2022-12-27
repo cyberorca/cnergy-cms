@@ -157,10 +157,46 @@ class NewsController extends Controller
             CacheStorage::cache("newsCache", 'news');
             Cache::put("newsCache", new NewsCollection($news->paginate($limit)->withQueryString()), now()->addMinutes(10));
         }
-    
+
         return response()->json(Cache::get("newsCache"));
     }
-    
+
+    /**
+     * Get News By ID
+     * @OA\Get (
+     *     tags={"News"},
+     *     path="/api/news/{id}/",
+     *     security={{"Authentication_Token":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *     ),
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="bad request",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="unauthorized",
+     *       @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="The security token is invalid"),
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="not found",
+     *       @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="ID Not Found"),
+     *          )
+     *     )
+     * )
+     */
     public function show($id){
         $filterId = News::with(['users'])
         ->where('types','=','news')
