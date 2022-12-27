@@ -56,6 +56,7 @@ function selectImage() {
         upload_image_button.value = null;
         return
     }
+
     insertIntoTinyMCEditor({
         metaImage: JSON.parse(this.parentNode.querySelector("[data-key='data_image']").value),
         imageSrc: imageSrc.replace(pattern, '')
@@ -241,7 +242,7 @@ function makeList(data) {
         const image = '200xauto-' + currImage;
         arr[arr.length - 1] = image;
         const realPath = arr.join('/');
-        
+
 
 
         let str = `

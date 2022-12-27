@@ -138,9 +138,10 @@ function selectImage() {
         this.classList.toggle('btn-danger')
 
     } else {
+        let pattern = new RegExp('/200xauto-');
         insertIntoTinyMCEditor({
             metaImage: JSON.parse(this.parentNode.querySelector("[data-key='data_image']").value),
-            imageSrc: imageSrc
+            imageSrc: imageSrc.replace(pattern, '')
         });
         imageURLTinyMCE = imageSrc;
         $('#image-bank').removeClass("show").css("display", "none")
