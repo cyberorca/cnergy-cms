@@ -51,7 +51,7 @@ class IndexVideoResource extends JsonResource
             "news_date_publish" => $this->published_at,
             "news_type" => $this->types,
             "news_reporter" => self::arrayUserToObjectUser(json_decode($this->reporters)),
-            'news_editor' => self::arrayUserToObjectUserEditor(json_decode($this->created_by)),
+            'news_editor' => self::userResponse($this->created_by),
             'news_photographer' => self::arrayUserToObjectUser(json_decode($this->photographers)),
             "news_hastag" => null,
             "news_city" => null,
