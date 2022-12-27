@@ -128,6 +128,8 @@ save_uploaded_image.addEventListener('click', async function () {
             form.forEach((el, i) => {
                 el.value = "";
             })
+            $(button).parent().parent().children().find("#keywords").val("");
+            $(button).parent().parent().children().find(".bootstrap-tagsinput").children('span').remove();
             upload_image_selected.value = `${path}/${slug}`;
             image_preview_modal.src = `${path.split('/storage').slice(0, -1)}/assets/images/preview-image.jpg`
         },
