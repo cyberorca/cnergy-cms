@@ -136,3 +136,4 @@ Route::get('selKeyword', [NewsController::class, 'select2'])->name('keyword.inde
 
 Route::get('/email/verify/{token}', [LoginController::class, 'verify'])->name('email.verify');
 Route::post('/front-end-menu/order/update', [FrontEndMenuController::class, 'changeOrderMenu'])->name('front-end-menu.order');
+Route::get('/documentation',function (){return redirect('/api/documentation');});
