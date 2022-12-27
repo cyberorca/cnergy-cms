@@ -46,7 +46,7 @@ class StaticPageController extends Controller
         if($request->get("slug")){
             $staticPage->where('slug', '=', $request->get('slug', ''));
         }
-        
+
         if(!Cache::has("staticPageCache")){
             CacheStorage::cache("staticPageCache", 'static-page');
             Cache::put("staticPageCache", new StaticPageCollection($staticPage->get()), now()->addMinutes(10));
@@ -55,6 +55,41 @@ class StaticPageController extends Controller
         return response()->json(Cache::get("staticPageCache"), Response::HTTP_OK);
     }
 
+    /**
+     * Get Static Page By Slug
+     * @OA\Get (
+     *     tags={"Static Page"},
+     *     path="/api/static-page/{slug}/",
+     *     security={{"Authentication_Token":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *     ),
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="slug",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="bad request",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="unauthorized",
+     *       @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="The security token is invalid"),
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="not found",
+     *       @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="ID Not Found"),
+     *          )
+     *     )
+     * )
+     */
     public function show($slug){
         $filterSlug = StaticPage::where('slug', $slug)->with('users')->get();
 

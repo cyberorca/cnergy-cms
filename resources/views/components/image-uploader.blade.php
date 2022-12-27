@@ -24,7 +24,7 @@
     <hr>
     <div class="modal fade text-left" id="image-bank" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
         aria-hidden="true" aria-type="{{ $type }}">
-        <div class="modal-dialog modal-dialog-scrollable d-flex justify-content-center modal-xl" role="document">
+        <div class="modal-dialog modal-dialog-scrollable d-flex justify-content-center modal-xl" role="document" style="z-index: 1000">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="myModalLabel1">Image Bank</h5>

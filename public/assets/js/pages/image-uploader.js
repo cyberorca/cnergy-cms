@@ -56,6 +56,7 @@ function selectImage() {
         upload_image_button.value = null;
         return
     }
+
     insertIntoTinyMCEditor({
         metaImage: JSON.parse(this.parentNode.querySelector("[data-key='data_image']").value),
         imageSrc: imageSrc.replace(pattern, '')
@@ -128,6 +129,8 @@ save_uploaded_image.addEventListener('click', async function () {
             form.forEach((el, i) => {
                 el.value = "";
             })
+            $(button).parent().parent().children().find("#keywords").val("");
+            $(button).parent().parent().children().find(".bootstrap-tagsinput").children('span').remove();
             upload_image_selected.value = `${path}/${slug}`;
             image_preview_modal.src = `${path.split('/storage').slice(0, -1)}/assets/images/preview-image.jpg`
         },
@@ -239,7 +242,7 @@ function makeList(data) {
         const image = '200xauto-' + currImage;
         arr[arr.length - 1] = image;
         const realPath = arr.join('/');
-        
+
 
 
         let str = `

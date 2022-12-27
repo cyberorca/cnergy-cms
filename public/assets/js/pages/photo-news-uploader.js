@@ -16,6 +16,9 @@ const upload_image_bank_button_photonews = document.getElementById("upload_image
 const img_uploader_modal = document.getElementById("image-bank");
 let imageURLTinyMCE = '';
 
+let selectedPhotoNews = [];
+let index_photonews = 1;
+
 var buttonsOldPhotoNews2 = document.querySelectorAll('.bi-trash');
 buttonsOldPhotoNews2.forEach((el, i) => {
     el.addEventListener('click', function () {
@@ -26,7 +29,7 @@ buttonsOldPhotoNews2.forEach((el, i) => {
                 id: id,
                 _token: token
             }
-            if(id){
+            if (id) {
                 $.ajax({
                     url: "/update/news/photo/api/delete",
                     type: 'POST',
@@ -135,9 +138,10 @@ function selectImage() {
         this.classList.toggle('btn-danger')
 
     } else {
+        let pattern = new RegExp('/200xauto-');
         insertIntoTinyMCEditor({
             metaImage: JSON.parse(this.parentNode.querySelector("[data-key='data_image']").value),
-            imageSrc: imageSrc
+            imageSrc: imageSrc.replace(pattern, '')
         });
         imageURLTinyMCE = imageSrc;
         $('#image-bank').removeClass("show").css("display", "none")
@@ -163,7 +167,6 @@ save_uploaded_image.addEventListener('click', async function () {
     aria-hidden="true"></span>
     Loading...
     `);
-    $(this).attr("disabled", true)
     $.ajax({
         url: "/image-bank/api/create",
         type: 'POST',
@@ -181,9 +184,8 @@ save_uploaded_image.addEventListener('click', async function () {
             } = data;
             if (tiny_mce_image_bank === 'false') {
                 image_preview_result.src = `${path}/${slug}`;
-                $(button).html(` <i class="bx bx-x d-block d-sm-none"></i>
-                <span class="d-sm-block"><i class="bi bi-save"></i>&nbsp;&nbsp;Save
-                Image</span>`);
+                $("#other_page").append(cardPhotoNews(data, index_photonews));
+                index_photonews++;
             } else {
                 insertIntoTinyMCEditor({
                     metaImage: data,
@@ -204,6 +206,11 @@ save_uploaded_image.addEventListener('click', async function () {
             form.forEach((el, i) => {
                 el.value = "";
             })
+            $(button).html(` <i class="bx bx-x d-block d-sm-none"></i>
+                <span class="d-sm-block"><i class="bi bi-save"></i>&nbsp;&nbsp;Save
+                Image</span>`);
+            $(button).parent().parent().children().find("#keywords").val("");
+            $(button).parent().parent().children().find(".bootstrap-tagsinput").children('span').remove();
             upload_image_selected.value = `${path}/${slug}`;
             image_preview_modal.src = `${path.split('/storage').slice(0, -1)}/assets/images/preview-image.jpg`
         },
@@ -245,9 +252,6 @@ if ($(`.button-old-photo-news`).length > 0) {
     })
 }
 
-
-let selectedPhotoNews = [];
-let index_photonews = 1;
 if (image_bank_type == 'photonews') {
     $("#save_photo_news").click(function () {
         selectedPhotoNews.map((el, i) => {
@@ -437,6 +441,7 @@ const cardPhotoNews = (image, index) => {
             <div class="row">
                 <div class="col-md-5 col-12">
                     <div class="form-group">
+                            <input type="hidden" name="photonews[${+index}][id]" value="${id}" />
                         <div class="image-file-preview mt-3">
                             <img src="${path}/${slug}" alt="" srcset="">
                             <input type="hidden" name="photonews[${+index}][url]" value="${slug}" />
