@@ -152,6 +152,7 @@ class PhotoController extends Controller implements NewsServices
     public function store(Request $request)
     {
         $data = $request->input();
+        // return $data;
         $date = $data['date'];
         $time = $data['time'];
         $mergeDate = date('Y-m-d H:i:s', strtotime("$date $time"));
