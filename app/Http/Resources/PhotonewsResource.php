@@ -18,8 +18,8 @@ class PhotonewsResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'url' => $this->url .'-00'. $this->order_by_no,
-            'image' =>  $this->newsImage($this->image), 
+            'url' => $this->slug .'-00'. $this->order_by_no,
+            'image' =>  $this->newsImage($this->image),
             'description' => $this->description,
             'keywords' => $this->keywords,
             'photographer' => self::photo($this->photo_id),

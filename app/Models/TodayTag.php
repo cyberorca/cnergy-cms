@@ -22,6 +22,6 @@ class TodayTag extends Model
     }
 
     public function tagId(){
-        return $this->hasOne(Tag::class, 'tag_id');
+        return $this->belongsTo(Tag::class, 'tag_id');
     }
 }
