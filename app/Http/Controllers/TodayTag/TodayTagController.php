@@ -58,7 +58,7 @@ class TodayTagController extends Controller
             'order' => $order,
         ]);
     }
-
+ 
     /**
      * Store a newly created resource in storage.
      *
@@ -77,7 +77,7 @@ class TodayTagController extends Controller
             }
         }else{
             if(isset($data['Tag'])){
-                $tag = $data['Tag'];
+                $tag = implode(' ', $data['Tag']);
             }else{
                 return redirect()->back()->withErrors('Please fill tag data');
             }
@@ -87,7 +87,7 @@ class TodayTagController extends Controller
             'title' => $data['title'],
             'types' => $data['type'],
             'category_id' => $data['category'],
-            'tag_id' => implode(' ', $tag),
+            'tag_id' => $tag,
             'url' => $data['url'],
             'created_at' => now(),
             'created_by' => Auth::user()->uuid,
@@ -155,7 +155,7 @@ class TodayTagController extends Controller
         }else{
             $data['url']=null;
             if(isset($data['Tag'])){
-                $tag = $data['Tag'];
+                $tag = implode(' ', $data['Tag']);
             }else{
                 return redirect()->back()->withErrors('Please fill tag data');
             }
@@ -164,7 +164,7 @@ class TodayTagController extends Controller
             $today_tag = TodayTag::find($id);
             $today_tag->order_by_no = $data['order'];
             $today_tag->types = $data['type'];
-            $today_tag->tag_id = implode(' ', $tag);
+            $today_tag->tag_id = $tag;
             $today_tag->url = $data['url'];
             $today_tag->title = $data['title'];
             $today_tag->category_id = $data["category"];
