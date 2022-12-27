@@ -138,9 +138,10 @@ function selectImage() {
         this.classList.toggle('btn-danger')
 
     } else {
+        let pattern = new RegExp('/200xauto-');
         insertIntoTinyMCEditor({
             metaImage: JSON.parse(this.parentNode.querySelector("[data-key='data_image']").value),
-            imageSrc: imageSrc
+            imageSrc: imageSrc.replace(pattern, '')
         });
         imageURLTinyMCE = imageSrc;
         $('#image-bank').removeClass("show").css("display", "none")
@@ -183,9 +184,6 @@ save_uploaded_image.addEventListener('click', async function () {
             } = data;
             if (tiny_mce_image_bank === 'false') {
                 image_preview_result.src = `${path}/${slug}`;
-                $(button).html(` <i class="bx bx-x d-block d-sm-none"></i>
-                <span class="d-sm-block"><i class="bi bi-save"></i>&nbsp;&nbsp;Save
-                Image</span>`);
                 $("#other_page").append(cardPhotoNews(data, index_photonews));
                 index_photonews++;
             } else {
@@ -208,6 +206,9 @@ save_uploaded_image.addEventListener('click', async function () {
             form.forEach((el, i) => {
                 el.value = "";
             })
+            $(button).html(` <i class="bx bx-x d-block d-sm-none"></i>
+                <span class="d-sm-block"><i class="bi bi-save"></i>&nbsp;&nbsp;Save
+                Image</span>`);
             $(button).parent().parent().children().find("#keywords").val("");
             $(button).parent().parent().children().find(".bootstrap-tagsinput").children('span').remove();
             upload_image_selected.value = `${path}/${slug}`;
