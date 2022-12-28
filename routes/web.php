@@ -83,6 +83,7 @@ Route::group(['middleware' => ['usersPermissionRoles:1']], function () {
     Route::prefix('tools')->group(function () {
         Route::resource('image-bank', ImageBankController::class);
         Route::resource('static-page', StaticPageController::class);
+        Route::get('/upload-image', [ImageBankController::class, 'create']);
         Route::resource('news-draft', NewsDraftController::class);
         Route::resource('inventory-management', InventoryManagementController::class);
         Route::resource('activity-log', ActivityLogController::class)->only(['index']);
@@ -106,9 +107,9 @@ Route::group(['middleware' => ['usersPermissionRoles:1']], function () {
             Route::resource('today-tag', TodayTagController::class);
             Route::resource('news-tagging', NewsTaggingController::class)->only(['index']);
             Route::resource('today-tag', TodayTagController::class);
-            Route::post('tagging-search', [NewsTaggingController::class,'getTagging'])->name('tagging.search');
-            Route::post('tagging-multi', [NewsTaggingController::class,'multiTagging'])->name('tagging.multi');
-            Route::post('tagging-update', [NewsTaggingController::class,'updateTagging'])->name('tagging.edit');
+            Route::post('tagging-search', [NewsTaggingController::class, 'getTagging'])->name('tagging.search');
+            Route::post('tagging-multi', [NewsTaggingController::class, 'multiTagging'])->name('tagging.multi');
+            Route::post('tagging-update', [NewsTaggingController::class, 'updateTagging'])->name('tagging.edit');
         });
     });
 
@@ -123,7 +124,7 @@ Route::group(['middleware' => ['usersPermissionRoles:1']], function () {
 // Route::post('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])
 //     ->middleware(['auth', 'signed']) // <-- don't remove "signed"
 //     ->name('verification.verify');
-Route::get('/phpinfo', function() {
+Route::get('/phpinfo', function () {
     return phpinfo();
 });
 Route::get('/auth/redirect', [LoginController::class, 'redirectToProvider']);
