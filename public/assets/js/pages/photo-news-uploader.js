@@ -223,7 +223,8 @@ save_uploaded_image.addEventListener('click', async function () {
             $(button).html(` <i class="bx bx-x d-block d-sm-none"></i>
                 <span class="d-sm-block"><i class="bi bi-save"></i>&nbsp;&nbsp;Save
                 Image</span>`);
-            $(button).parent().parent().children().find("#keywords").val("");
+             $(button).parent().parent().children().find('#keywords').tagsinput('removeAll');
+            $(button).parent().parent().children().find('#keywords').val(null).trigger('change');
             $(button).parent().parent().children().find(".bootstrap-tagsinput").children('span').remove();
             upload_image_selected.value = `${path}/${slug}`;
             image_preview_modal.src = `${path.split('/storage').slice(0, -1)}/assets/images/preview-image.jpg`
@@ -286,7 +287,8 @@ save_uploaded_image.addEventListener('click', async function () {
                 }
             })
             image_preview_modal.src = `${path.split('/storage').slice(0, -1)}/assets/images/preview-image.jpg`
-            $(button).parent().parent().children().find("#keywords").val("");
+             $(button).parent().parent().children().find('#keywords').tagsinput('removeAll');
+            $(button).parent().parent().children().find('#keywords').val(null).trigger('change');
             $(button).parent().parent().children().find(".bootstrap-tagsinput").children('span').remove();
             new Toastify({
                 text: responseText,
