@@ -135,9 +135,9 @@ class ImageBankController extends Controller
                 $this->setMetaData(
                     $imageBank->slug,
                     $input["copyright"],
-                    $input["description_image"],
+                    $input["description"],
                     $input["photographer"],
-                    $input["title_image"],
+                    $input["title"],
                     $input["keywords"]
                 );
             }
