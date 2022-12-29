@@ -7,18 +7,22 @@ use App\Models\ImageBank;
 
 class PhotonewsResource extends JsonResource
 {
+    private static $newsUrl;
+
     /**
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
+
+
     public function toArray($request)
     {
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'url' => $this->slug .'-00'. $this->order_by_no,
+            'url' => self::$newsUrl .'-00'. $this->order_by_no,
             'image' =>  $this->newsImage($this->image),
             'description' => $this->description,
             'keywords' => $this->keywords,
@@ -47,5 +51,12 @@ class PhotonewsResource extends JsonResource
     {
         $photo = ImageBank::where('id', '=', $id)->get(['photographer'])->first();
         return $photo->photographer;
+    }
+
+    public static function customCollection($resource, $newsUrl): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    {
+        //you can add as many params as you want.
+        self::$newsUrl = $newsUrl;
+        return parent::collection($resource);
     }
 }
