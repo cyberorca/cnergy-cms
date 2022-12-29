@@ -64,6 +64,11 @@ function selectImage() {
     $('#image-bank').removeClass("show").css("display", "none")
 }
 
+$('#keyword').on('select2:select', function (e) {
+    var data = e.params.data;
+    console.log(data);
+});
+
 save_uploaded_image.addEventListener('click', async function () {
     var form = document.querySelectorAll("#form-upload-image input, #form-upload-image textarea");
     var fd = new FormData();
@@ -144,8 +149,10 @@ save_uploaded_image.addEventListener('click', async function () {
                     el.previousElementSibling.classList.remove('border-danger');
                 }
             })
-            $(button).parent().parent().children().find("#keywords").val("");
+            $(button).parent().parent().children().find('#keywords').tagsinput('removeAll');
+            $(button).parent().parent().children().find('#keywords').val(null).trigger('change');
             $(button).parent().parent().children().find(".bootstrap-tagsinput").children('span').remove();
+            console.log('clear');
             upload_image_selected.value = `${path}/${slug}`;
             image_preview_modal.src = `${path.split('/storage').slice(0, -1)}/assets/images/preview-image.jpg`
         },
@@ -207,7 +214,8 @@ save_uploaded_image.addEventListener('click', async function () {
                 el.classList.remove('is-invalid')
             })
             image_preview_modal.src = `${path.split('/storage').slice(0, -1)}/assets/images/preview-image.jpg`
-            $(button).parent().parent().children().find("#keywords").val("");
+            $(button).parent().parent().children().find('#keywords').tagsinput('removeAll');
+            $(button).parent().parent().children().find('#keywords').val(null).trigger('change');
             $(button).parent().parent().children().find(".bootstrap-tagsinput").children('span').remove();
             new Toastify({
                 text: responseText,
