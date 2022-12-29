@@ -3,7 +3,6 @@ var type_data = document.querySelector("#type_data").value;
 let orderedMenu = {
     [type_data]: []
 };
-
 button.addEventListener('click', function () {
     var nestedSortableSaved = document.querySelectorAll('.accordion-item');
     nestedSortableSaved.forEach((el, index) => {
@@ -38,7 +37,7 @@ button.addEventListener('click', function () {
                 'types': ["news","video","photonews"],
                 'parent_id': parent_id ?? null,
                 'order': index
-            })    
+            })
         }
     })
     $(this).html(`
@@ -70,9 +69,8 @@ function saveData(sortedData) {
     });
     const input = {
         sortedData: sortedData[type_data]
-    } 
+    }
     console.log(input);
-    return
     const url = `/master/${type_data}/api/change`
 
     $.ajax({
