@@ -147,6 +147,9 @@ function selectImage() {
         $('#image-bank').removeClass("show").css("display", "none")
     }
 }
+
+
+
 save_uploaded_image.addEventListener('click', async function () {
     var form = document.querySelectorAll("#form-upload-image input, #form-upload-image textarea");
     var fd = new FormData();
@@ -157,10 +160,16 @@ save_uploaded_image.addEventListener('click', async function () {
             const file = el.files
             value = file[0]
         }
-        fd.append(name, value);
+        if (name === 'title_image' || name == 'description_image') {
+            var name_form = name === 'title_image' ? 'title' : 'description'
+            fd.append(name_form, value);
+        } else {
+            fd.append(name, value);
+        }
     })
     let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     fd.append('_token', token);
+    fd.append('unique_id', Math.random(10));
     const button = this;
     $(this).html(`
     <span class="spinner-border spinner-border-sm" role="status"
@@ -205,6 +214,11 @@ save_uploaded_image.addEventListener('click', async function () {
             $("#image-bank").modal("hide");
             form.forEach((el, i) => {
                 el.value = "";
+                el.classList.remove('is-invalid')
+                const name = el.name;
+                if (name === 'keywords') {
+                    el.previousElementSibling.classList.remove('border-danger');
+                }
             })
             $(button).html(` <i class="bx bx-x d-block d-sm-none"></i>
                 <span class="d-sm-block"><i class="bi bi-save"></i>&nbsp;&nbsp;Save
@@ -215,21 +229,78 @@ save_uploaded_image.addEventListener('click', async function () {
             image_preview_modal.src = `${path.split('/storage').slice(0, -1)}/assets/images/preview-image.jpg`
         },
         error: function (err) {
+
+            $(button).html(` <i class="bx bx-x d-block d-sm-none"></i>
+                <span class="d-sm-block"><i class="bi bi-save"></i>&nbsp;&nbsp;Save
+                Image</span>`);
+
+
+            const {
+                responseText,
+                responseJSON,
+                status
+            } = err;
+
+            
+            if (status === 422) {
+                const { errors } = responseJSON; 
+                Object.keys(errors).forEach(el => {
+                    new Toastify({
+                        text: errors[el],
+                        duration: 3000,
+                        close: true,
+                        gravity: "bottom",
+                        position: "right",
+                        backgroundColor: "#ff0000",
+                    }).showToast()
+                })
+                form.forEach((el, i) => {
+                    el.classList.add('is-invalid');
+                    const name = el.name;
+                    if (name === 'keywords') {
+                        el.previousElementSibling.classList.add('border-danger');
+                    }
+                })
+                return;
+            }
+
+            if(status === 500){
+                const { message } = responseJSON; 
+                new Toastify({
+                    text: message,
+                    duration: 3000,
+                    close: true,
+                    gravity: "bottom",
+                    position: "right",
+                    backgroundColor: "#ff0000",
+                }).showToast()
+                return;
+            }
+
             form.forEach((el, i) => {
                 el.value = "";
+                el.classList.remove('is-invalid')
+                const name = el.name;
+                if (name === 'keywords') {
+                    el.previousElementSibling.classList.remove('border-danger');
+                }
             })
             image_preview_modal.src = `${path.split('/storage').slice(0, -1)}/assets/images/preview-image.jpg`
+            $(button).parent().parent().children().find("#keywords").val("");
+            $(button).parent().parent().children().find(".bootstrap-tagsinput").children('span').remove();
             new Toastify({
-                text: err,
+                text: responseText,
                 duration: 3000,
                 close: true,
                 gravity: "bottom",
                 position: "right",
                 backgroundColor: "#ff0000",
             }).showToast()
+
         }
     });
 })
+
 
 let path = document.getElementById('path_image').value;
 

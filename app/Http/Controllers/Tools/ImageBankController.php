@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Tools;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;    
 use App\Http\Requests\ImageBankRequest;
 use App\Http\Utils\FileFormatPath;
 use App\Http\Utils\ImageMetadata;
@@ -102,17 +102,24 @@ class ImageBankController extends Controller
         }
     }
 
-    public function upload_image(Request $request)
+    public function upload_image(ImageBankRequest $request)
     {
         try {
-            $input = $request->all();
+            $input = $request->validated();
+
+            if(strlen($input['keywords']) >= 100){
+                return response()->json([
+                    'message' => 'keywords cannot be longer than 100 characters',
+                ], 500);
+            }
+
             $data = [
-                "title" => $input["title_image"],
+                "title" => $input["title"],
                 "photographer" => $input["photographer"],
                 "copyright" => $input["copyright"],
                 "caption" => $input["caption"],
                 "keywords" => $input["keywords"],
-                "description" => $input["description_image"],
+                "description" => $input["description"],
                 "image_alt" => $input["image_alt"],
                 "created_by" => Auth::user()->uuid
             ];

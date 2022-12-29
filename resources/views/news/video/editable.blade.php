@@ -219,7 +219,7 @@
                 "insertdatetime media nonbreaking save table contextmenu directionality",
                 "emoticons template paste textcolor colorpicker textpattern"
             ],
-            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | imagebank bullist numlist outdent indent | link media",
+            toolbar: "insertfile undo redo | styleselect | bold italic | imagebank | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media",
             relative_urls: false,
             file_browser_callback: function(field_name, url, type, win) {
                 var x = window.innerWidth || document.documentElement.clientWidth || document
