@@ -7,9 +7,9 @@
             background: transparent !important;
         }
 
-        .accordion *:hover {
+        /*.accordion *:hover { 
             background: transparent !important
-        }
+        }*/
     </style>
 @endsection
 
