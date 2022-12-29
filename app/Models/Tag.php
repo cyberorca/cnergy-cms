@@ -48,6 +48,6 @@ class Tag extends Model
     }
 
     public function tagId(){
-        return $this->belongsTo(TodayTag::class, 'tag_id');
+        return $this->hasMany(TodayTag::class, 'tag_id');
     }
 }

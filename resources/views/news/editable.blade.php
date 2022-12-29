@@ -86,13 +86,20 @@
                         <div class="form-group">
                             <label for="synopsis" class="form-label mb-2">Synopsis</label>
                             <textarea name="synopsis" class="form-control" id="synopsis" cols="30" rows="3" required
-                                placeholder="Enter Synopsis">@if ($method === 'edit'){{ $news->synopsis }}@endif</textarea>
+                                placeholder="Enter Synopsis">
+@if ($method === 'edit')
+{{ $news->synopsis }}
+@endif
+</textarea>
                         </div>
 
                         <div class="form-group" id="content_box">
                             <label for="content" class="form-label">Content</label>
-                            <textarea name="content[]" class="my-editor form-control" id="content" cols="30" rows="20" required>@if ($method === 'edit'){{ $news->content }}@endif
-                            </textarea>
+                            <textarea name="content[]" class="my-editor form-control" id="content" cols="30" rows="20" required>
+@if ($method === 'edit')
+{{ $news->content }}
+@endif
+</textarea>
                         </div>
                     </div>
                 </div>
@@ -245,7 +252,7 @@
                 "insertdatetime media nonbreaking save table contextmenu directionality",
                 "emoticons template paste textcolor colorpicker textpattern"
             ],
-            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | imagebank bullist numlist outdent indent | link media",
+            toolbar: "insertfile undo redo | styleselect | bold italic | imagebank | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media",
             relative_urls: false,
             file_browser_callback: function(field_name, url, type, win) {
                 var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName(

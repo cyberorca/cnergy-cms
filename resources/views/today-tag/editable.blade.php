@@ -56,7 +56,7 @@
                                         <label for="basicInput" class="mb-2">Tag</label>
                                         <select name="Tag[]" class="form-select" style='width: 100%;' multiple="multiple"
                                                 id="tag" >
-                                                @if ($method === 'edit')
+                                                @if ($method === 'edit' and !empty($today_tag->tag_id))
                                                         <option value="{{ $tags->id }}" selected> {{ $tags->tags}} </option>
                                                 @endif
                                         </select>
