@@ -12,17 +12,26 @@
     <style type="text/css">
         .bootstrap-tagsinput {
             width: 100%;
+            background-color: #fff;
+            border: 1px solid #dce7f1;
+            display: inline-block;
+            padding: 5px 3px;
+            color: #607080;
+            vertical-align: middle;
+            border-radius: 0.25rem;
+            line-height: 23px;
+            cursor: text;
         }
 
         .bootstrap-tagsinput .tag {
-            margin-right: 2px;
             color: white !important;
-            background-color: #38E54D;
-            padding: .2em .6em .3em;
+            background-color: #748eec;
+            margin-right: 2px;
             font-size: 100%;
-            font-weight: 700;
+            font-weight: 600;
             vertical-align: baseline;
-            border-radius: .25em;
+            border-radius: 0.25em;
+            padding: 0.2rem 0.5rem;
         }
 
         .search_select_box select {

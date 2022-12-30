@@ -74,7 +74,7 @@ class IndexPhotoResource extends JsonResource
             'news_guide' => null,
             'paging' => [],
             'quote' => [],
-            'photonews' => PhotonewsResource::collection($this->news_photo),
+            'photonews' => PhotonewsResource::customCollection($this->news_photo,$this->slug),
             'video' => null,
             'category_name' => $category->category,
             'news_url_full' => env('APP_URL') . '/' . Str::slug(strtolower($category->category)) . '/read/' . $this->slug,
