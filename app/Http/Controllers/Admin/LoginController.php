@@ -26,6 +26,7 @@ class LoginController extends Controller
     {
         try {
             $user_google_email = Socialite::driver('google')->user();
+            // dd($user_google_email);
             $user = User::where([
                 'email' => $user_google_email->getEmail(),
                 'is_active' => '1',

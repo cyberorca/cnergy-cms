@@ -76,7 +76,7 @@
     <script src="{{ asset('assets/extensions/jquery/jquery.min.js') }}"></script>
     <script>
         $(document).ready(function() {
-    
+
             // Add hover action for dropdowns
             let dropdown_hover = $(".dropdown-hover");
             dropdown_hover.on('mouseover', function() {
@@ -91,7 +91,7 @@
                 menu.removeClass('show');
                 toggle.removeClass('show').attr('aria-expanded', false);
             });
-    
+
         });
     </script>
     @yield('javascript')

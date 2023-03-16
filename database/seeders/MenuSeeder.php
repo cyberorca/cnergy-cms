@@ -36,7 +36,7 @@ class MenuSeeder extends Seeder
             array('slug' => 'inventory-management', 'menu_name' => 'Inventory Management', 'parent_id' => '3'),
             array('slug' => 'static-page', 'menu_name' => 'Static Page', 'parent_id' => '3'),
             array('slug' => 'anouncement', 'menu_name' => 'Anouncement', 'parent_id' => '3'),
-            
+
             array('slug' => 'news', 'menu_name' => 'News', 'parent_id' => '5'),
             array('slug' => 'tags', 'menu_name' => 'Tags', 'parent_id' => '5'),
             array('slug' => 'breaking-news', 'menu_name' => 'Breaking News', 'parent_id' => '5'),
@@ -80,7 +80,7 @@ class MenuSeeder extends Seeder
 
     public function makePath($menus, $menu, $name = null){
         $current = $menu['slug'];
-        
+
         $name = $current . "/" . $name;
         if(!is_null($menu['parent_id'])){
             $parent = $menus[intval($menu['parent_id'] - 1)];

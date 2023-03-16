@@ -71,7 +71,7 @@ Route::group(['middleware' => ['usersPermissionRoles:1']], function () {
 
         Route::get("/menu/create/{id?}", [MenuController::class, 'create'])->name('menu.create');
         Route::post("/menu/api/change/", [MenuController::class, 'changeOrderMenu']);
-        Route::resource('menu', MenuController::class)->except(['create']);
+        Route::resource('menu', MenuController::class)->except(['create'])->except('index');
 
         Route::post('/front-end-menu/api/change/', [FrontEndMenuController::class, 'changeOrderMenu'])->name('front-end-menu.order');
         Route::get("/category/create/{id?}", [CategoriesController::class, 'create'])->name('category.create');
